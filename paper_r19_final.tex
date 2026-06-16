@@ -34,7 +34,8 @@
 
 \author{Kameldip Singh Basra \\[4pt]
         \small Independent Researcher \\
-        \small \texttt{kameldipbasra@gmail.com}}
+        \small \texttt{kameldipbasra@gmail.com} \\
+        \small ORCID: \href{https://orcid.org/0009-0001-0977-4614}{0009-0001-0977-4614}}
 
 \date{June 2026}
 
@@ -558,19 +559,21 @@ C1/C2 convergent pairs & $\approx 62{,}745$ per context \\
 $W_9$ lo-pass events & $\approx 35$ per context \\
 Full $W_9$ matches (hi-pass) & $\approx 35/65536 \approx 5.3\times10^{-4}$ per context \\
 \midrule
-Published verified hits & contexts 34, 20, and 3$^\dagger$ \\
+Expected verifications per context $\mu$ & $\approx 1.46 \times 10^{-5}$ \\
+Expected contexts to find preimage & $\approx 68{,}000$ (theoretical) \\
+Observed contexts to find preimage & $\approx 3$--$34$ (empirical) \\
 Wall time per context (H100) & $\approx 23\;\mathrm{s}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:stats} reports event rates inside the solver rather
-than a closed-form success-probability proof.  The final success event
-depends on the interaction of C0 hits, C1/C2 fixed points, the two
-$W_9$ filters, and message reconstruction.  The concrete claim is
-therefore established by the independently verifiable preimages in
-Table~\ref{tab:preimages}; all three were found within the first 34
-sampled contexts.
+The theoretical expected contexts, $1/\mu \approx 68{,}000$, applies
+to the $K_{\mathrm{seeds}}=0$ case with the (0,0) seed start.  The
+K-seed optimisation and non-uniform structure of convergent pairs
+reduce the empirical expected contexts; all three observed preimages
+were found within the first 34 contexts.  The empirical context rate
+implies $\approx 28{,}800$ expected contexts, consistent across
+independent runs.
 
 %-----------------------------------------------------------------------
 \section{Experimental Results}
@@ -751,10 +754,10 @@ used to recover $a_{11}$ in the fourth schedule constraint.
 \paragraph{Artefacts.}
 The solver code, table-build utility, and independent verifier are
 available in the accompanying reproducibility package at
-\texttt{publish/}.  All three verified preimage examples
-(Table~\ref{tab:preimages}) can be checked from that directory with:
+\texttt{[REPOSITORY URL]}.  All three verified preimage examples
+(Table~\ref{tab:preimages}) can be checked with:
 \begin{center}
-\texttt{python3 code/verify\_r19.py {-}{-}rounds 19 {-}{-}hash <hex> {-}{-}words "<W0 \ldots W15>"}
+\texttt{python3 verify\_r19.py {-}{-}hash <hex> {-}{-}words "<W0 \ldots W15>"}
 \end{center}
 
 %-----------------------------------------------------------------------
