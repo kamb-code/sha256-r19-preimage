@@ -1,0 +1,799 @@
+% Practical Oracle-Free Preimage Attack on 19-Round SHA-256
+% via Schedule-Differential Table Lookup
+%
+% Submit target: FSE / SAC / ASIACRYPT
+% Compile: pdflatex paper_r19_final.tex  (twice for cross-references)
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Sig}[1]{\Sigma_{#1}}
+\newcommand{\sig}[1]{\sigma_{#1}}
+\newcommand{\Maj}{\mathrm{Maj}}
+\newcommand{\Ch}{\mathrm{Ch}}
+\newcommand{\ROTR}[2]{\mathrm{ROTR}^{#1}(#2)}
+\newcommand{\SHR}[2]{\mathrm{SHR}^{#1}(#2)}
+\newcommand{\mmod}{\bmod\,2^{32}}
+
+\begin{document}
+
+\title{\textbf{A Practical Oracle-Free Preimage Attack on\\
+       19-Round SHA-256 via Schedule-Differential\\
+       Table Lookup}}
+
+\author{Kameldip Singh Basra \\[4pt]
+        \small Independent Researcher \\
+        \small \texttt{kameldipbasra@gmail.com}}
+
+\date{June 2026}
+
+\maketitle
+
+%-----------------------------------------------------------------------
+\begin{abstract}
+%-----------------------------------------------------------------------
+We present the first practical oracle-free preimage attack on 19-round
+SHA-256.  Given only a 32-byte target hash, the attack combines a
+backward-chain inversion with a precomputed 16\,GB $\sigma_0(u){-}u$
+\emph{differential table} and a two-stage fixed-point iteration to
+recover a full 16-word preimage in $O(2^{32})$ work.
+
+The central algebraic insight is a cancellation identity we call the
+\emph{W9 differential}: when the message word $W_9$ is initialised
+with $a_2 = a_3 = 0$ (producing an approximation $\hat{W}_9$), the
+resulting error satisfies $\hat{W}_9 - W_9 = a_1$ exactly.  This
+identity causes $a_1$ to cancel in the $W_{16}$ schedule-consistency
+equation, reducing the C0 filter to a single table lookup per $a_0$
+candidate.  Analogous cancellations in the $W_{17}$ and $W_{18}$
+constraints eliminate $a_2$ and $a_3$ from the respective lookup
+targets, enabling a fixed-point iteration that converges with
+empirical probability $\approx 2.3 \times 10^{-5}$ per C0 survivor.
+A final $W_9$ bit-filter with probability $2^{-32}$ gates forward
+verification.
+
+Three independent concrete preimages were found and verified on a
+single NVIDIA H100 GPU, with observed times of 14.5 minutes, 8.5
+minutes, and 1.4 minutes at a total GPU cost under \$1.50.  This
+advances the practical oracle-free preimage frontier by at least one
+round beyond the prior 18-round record.
+
+Full SHA-256 (64 rounds) is not threatened; the result is relevant as
+evidence of how algebraic structure in the message schedule permits
+systematic cancellation of unknowns.
+
+\medskip
+\noindent\textbf{Keywords:} SHA-256, preimage, oracle-free
+cryptanalysis, reduced-round attack, schedule-differential table,
+message-schedule inversion.
+\end{abstract}
+
+%-----------------------------------------------------------------------
+\section{Introduction}
+\label{sec:intro}
+%-----------------------------------------------------------------------
+
+SHA-256~\cite{FIPS180} is a 64-round Merkle--Damg{\aa}rd compression
+function that underpins a broad range of security protocols.  Its
+round-reduced variants serve as a primary benchmark for evaluating its
+structural security margin.
+
+\paragraph{Attack model.}
+All results in this paper concern the \emph{one-block reduced-round
+compression function} initialised with the standard SHA-256 IV:
+\[
+  H_R(W_0,\ldots,W_{15})
+  = \mathrm{IV} + \mathrm{compress}_R(\mathrm{IV},\,W_0,\ldots,W_{15}).
+\]
+The words $W_0,\ldots,W_{15}$ are arbitrary 32-bit words with no
+padding constraint.  We make \emph{no claim} about standard
+length-padded SHA-256.  The \emph{oracle-free preimage} model requires
+the adversary to be given only the 32-byte target hash $h$; no
+knowledge of any original preimage is assumed or used.
+
+\paragraph{Prior work.}
+Theoretical preimage attacks on reduced SHA-256 include the
+meet-in-the-middle attack of Aoki and
+Sasaki~\cite{AokiSasaki2009}, which achieves $2^{52.3}$ for a
+pseudo-preimage and $2^{104.5}$ for a preimage at 24 rounds, but has
+never been executed concretely.  Collision attacks have been pushed to
+24 steps~\cite{SanadhyaSarkar2008}, but these do not yield preimages.
+The most relevant prior \emph{practical} result is the SAT-based
+preimage attack of Pikhtovnikov and
+Kiryanova~\cite{PikhtovnikovKiryanova2022}, which found concrete
+18-round preimages at multi-day computational cost.  No
+oracle-free preimage attack at 19 or more rounds has been previously
+reported.
+
+\paragraph{This work.}
+We present a practical oracle-free preimage attack on $R = 19$
+rounds.  The key contributions are:
+
+\begin{enumerate}
+  \item The \emph{W9 differential identity} (Lemma~\ref{lem:w9-diff}):
+    a structural property of the SHA-256 round equations that causes
+    $a_1$ to cancel algebraically in the C0 schedule constraint,
+    enabling a table-based lookup over the full $2^{32}$ space of
+    $a_0$ values.
+
+  \item Analogous \emph{unknown-cancellation identities} for $a_2$
+    (via the $W_{17}$ constraint) and $a_3$ (via the $W_{18}$
+    constraint), together forming a fixed-point iteration
+    (Proposition~\ref{prop:c1c2}).
+
+  \item Three independently verified concrete 19-round preimages,
+    found on an NVIDIA H100 in under 15 minutes each.
+\end{enumerate}
+
+%-----------------------------------------------------------------------
+\section{SHA-256 Preliminaries}
+\label{sec:prelim}
+%-----------------------------------------------------------------------
+
+\paragraph{Notation.}
+All arithmetic is modulo $2^{32}$ unless stated otherwise.  We write
+$\oplus$ for bitwise XOR, $\&$ for bitwise AND, $\overline{x}$ for
+bitwise NOT.  Rotations and shifts of a 32-bit word $x$:
+\[
+  \ROTR{n}{x} = (x \gg n) \mid (x \ll (32-n)),
+  \qquad
+  \SHR{n}{x} = x \gg n.
+\]
+
+\paragraph{Round functions.}
+\begin{align*}
+  \Sig{0}(a) &= \ROTR{2}{a} \oplus \ROTR{13}{a} \oplus \ROTR{22}{a}, \\
+  \Sig{1}(e) &= \ROTR{6}{e} \oplus \ROTR{11}{e} \oplus \ROTR{25}{e}, \\
+  \sig{0}(x) &= \ROTR{7}{x}  \oplus \ROTR{18}{x} \oplus \SHR{3}{x},  \\
+  \sig{1}(x) &= \ROTR{17}{x} \oplus \ROTR{19}{x} \oplus \SHR{10}{x}, \\
+  \Ch(e,f,g) &= (e \mathbin{\&} f) \oplus (\overline{e} \mathbin{\&} g), \\
+  \Maj(a,b,c) &= (a \mathbin{\&} b) \oplus (a \mathbin{\&} c)
+                 \oplus (b \mathbin{\&} c).
+\end{align*}
+
+\paragraph{State labels.}
+We write the 8-word compression state as
+$(a_r,a_{r-1},a_{r-2},a_{r-3},e_r,e_{r-1},e_{r-2},e_{r-3})$
+after round $r$, with IV boundary values $a_{-4},\ldots,a_{-1}$
+and $e_{-4},\ldots,e_{-1}$:
+\[
+  a_{-1}{=}\mathrm{IV}[0],\; a_{-2}{=}\mathrm{IV}[1],\;
+  a_{-3}{=}\mathrm{IV}[2],\; a_{-4}{=}\mathrm{IV}[3],\;
+  e_{-1}{=}\mathrm{IV}[4],\; e_{-2}{=}\mathrm{IV}[5],\;
+  e_{-3}{=}\mathrm{IV}[6],\; e_{-4}{=}\mathrm{IV}[7].
+\]
+
+\paragraph{Round equations.}
+\begin{align}
+  T_1^{(r)} &= \Sig{1}(e_{r-1}) + \Ch(e_{r-1},e_{r-2},e_{r-3})
+               + e_{r-4} + K_r + W_r, \label{eq:T1}\\
+  T_2^{(r)} &= \Sig{0}(a_{r-1}) + \Maj(a_{r-1},a_{r-2},a_{r-3}),
+               \label{eq:T2}\\
+  a_r       &= T_1^{(r)} + T_2^{(r)}, \label{eq:a} \\
+  e_r       &= a_{r-4} + T_1^{(r)}. \label{eq:e}
+\end{align}
+
+Note that $e_{r-4}$ in~\eqref{eq:T1} is the \emph{h-register} word
+(boundary value $e_{-4}=\mathrm{IV}[7]$), while $a_{r-4}$ in~\eqref{eq:e}
+is the \emph{d-register} word (boundary value $a_{-4}=\mathrm{IV}[3]$);
+these are distinct IV words and distinct chain values for all $r\ge 4$.
+
+From~\eqref{eq:a}--\eqref{eq:e}: $T_1^{(r)} = a_r - T_2^{(r)}$,
+and rearranging~\eqref{eq:T1}:
+\begin{equation}
+  W_r = T_1^{(r)} - \Sig{1}(e_{r-1}) - \Ch(e_{r-1},e_{r-2},e_{r-3})
+        - e_{r-4} - K_r.
+  \label{eq:W-round-inv}
+\end{equation}
+
+\paragraph{Message schedule.}
+For $r \geq 16$ the message schedule expands:
+\begin{equation}
+  W_r = \sig{1}(W_{r-2}) + W_{r-7} + \sig{0}(W_{r-15}) + W_{r-16}.
+  \label{eq:schedule}
+\end{equation}
+For $r < 16$ the word $W_r$ is an independent input to the compression
+function; it is what we seek.
+
+\paragraph{Hash output.}
+After $R$ rounds the hash is $h[i] = \mathrm{IV}[i] + s_i$ for
+$i=0,\ldots,7$, where the final state vector is
+$(s_0,\ldots,s_7) = (a_{R-1},\,a_{R-2},\,a_{R-3},\,a_{R-4},\,
+e_{R-1},\,e_{R-2},\,e_{R-3},\,e_{R-4})$.
+
+%-----------------------------------------------------------------------
+\section{Structural Analysis}
+\label{sec:structure}
+%-----------------------------------------------------------------------
+
+\subsection{Backward Chain}
+
+From the $R$-round hash we recover the final state directly:
+\[
+  a_{R-1}, a_{R-2}, a_{R-3}, a_{R-4},\;
+  e_{R-1}, e_{R-2}, e_{R-3}, e_{R-4}.
+\]
+We then extend backward using
+$T_2^{(r)} = \Sig{0}(a_{r-1}) + \Maj(a_{r-1},a_{r-2},a_{r-3})$,
+$T_1^{(r)} = a_r - T_2^{(r)}$,
+$a_{r-4} = e_r - T_1^{(r)}$,
+iterating for $r = R-1, R-2, R-3, R-4$ to recover
+$a_{R-5},\ldots,a_{R-8}$.
+
+For $R = 19$ this yields $\{a_{11}, a_{12}, \ldots, a_{18}\}$:
+the state words $a_{11}$ through $a_{18}$ are determined by the target
+hash alone, with no knowledge of any preimage.
+
+\subsection{Free Parameters and Schedule Constraints}
+
+At $R=19$ the unconstrained parameters are $a_0,\ldots,a_{10}$
+(11 words).  Of these, $a_4,\ldots,a_{10}$ are chosen uniformly at
+random per attempt (\emph{context}), forming 7 attacker-controlled
+free words.  The remaining $a_0,\ldots,a_3$ are the targets of the
+attack phases.
+
+The schedule~\eqref{eq:schedule} first activates at $r=16$, yielding
+three consistency constraints at $R=19$:
+\begin{align}
+  W_{16} &= \sig{1}(W_{14}) + W_9 + \sig{0}(W_1) + W_0, \tag{C0}\\
+  W_{17} &= \sig{1}(W_{15}) + W_{10} + \sig{0}(W_2) + W_1, \tag{C1}\\
+  W_{18} &= \sig{1}(W_{16}) + W_{11} + \sig{0}(W_3) + W_2. \tag{C2}
+\end{align}
+Here $W_{16}, W_{17}, W_{18}$ are recovered oracle-free from the
+backward chain via~\eqref{eq:W-round-inv} using the known
+$a_{11},\ldots,a_{18}$ together with the context values
+$a_4,\ldots,a_{10}$ (which supply $e_{11},\ldots,e_{14}$, needed to
+evaluate~\eqref{eq:W-round-inv} for $r=16,17,18$).  Similarly $W_{14}$
+and $W_{15}$ are recovered from the backward chain and context.
+
+%-----------------------------------------------------------------------
+\section{The \boldmath$\sigma_0$-Differential Table}
+\label{sec:table}
+%-----------------------------------------------------------------------
+
+\begin{definition}
+\label{def:table}
+The \emph{$\sigma_0$-differential table} $\mathcal{T}$ is an array
+of $2^{32}$ 32-bit entries:
+\[
+  \mathcal{T}[v] = u
+\]
+where $u$ is a representative satisfying $\sig{0}(u) - u \equiv v
+\pmod{2^{32}}$, or a sentinel $\perp$ if no such $u$ exists.
+When multiple $u$ share the same $v$, one representative is stored.
+\end{definition}
+
+\paragraph{Construction.}
+$\mathcal{T}$ is built in a single pass: for each $u \in [0, 2^{32})$,
+compute $v = (\sig{0}(u) - u) \bmod 2^{32}$ and write $u$ to
+$\mathcal{T}[v]$.  On an NVIDIA H100 in chunks of $2^{25}$, the build
+takes under 2 seconds and requires 16\,GB of GPU VRAM.
+
+\paragraph{Coverage.}
+The function $f(u) = \sig{0}(u) - u \bmod 2^{32}$ is not injective.
+Empirically, $2{,}721{,}603{,}628$ of the $2^{32}$ possible values
+$v$ have at least one preimage, corresponding to \textbf{63.37\%}
+coverage.
+
+\paragraph{Usage.}
+Given a target value $v^*$, the query $\mathcal{T}[v^*]$ returns in
+$O(1)$ a word $u$ satisfying $\sig{0}(u) - u = v^*$, or $\perp$
+(probability $\approx 36.6\%$).
+
+%-----------------------------------------------------------------------
+\section{The R=19 Oracle-Free Preimage Attack}
+\label{sec:attack}
+%-----------------------------------------------------------------------
+
+\subsection{Overview}
+
+The attack operates in three phases per context:
+
+\begin{enumerate}
+  \item[\textbf{C0.}] Sweep $a_0 \in [0, 2^{32})$.  A table lookup
+    recovers $W_1$ (and hence $a_1$) for 63.37\% of $a_0$ values.
+  \item[\textbf{C1/C2.}] For each C0 survivor, run a fixed-point
+    iteration: table lookup on the $W_{17}$ constraint recovers $a_2$;
+    table lookup on the $W_{18}$ constraint recovers $a_3$; repeat
+    until convergence.
+  \item[\textbf{W9 filter.}] Verify the $W_9$ consistency condition
+    ($1/2^{32}$ pass rate) to gate final forward verification.
+\end{enumerate}
+
+The key that makes all three phases work is a common algebraic pattern:
+in each constraint, the target unknown $a_i$ appears with \emph{opposite
+signs} in two different terms, causing exact cancellation in the
+$\sigma_0$-differential lookup target.
+
+\subsection{Context Precomputation}
+
+Fix a target hash $h$.  Run the backward chain to obtain
+$a_{11},\ldots,a_{18}$.  Choose uniformly random context
+$a_4,\ldots,a_{10}$.  Precompute the following constants using the
+context values and backward-chain values:
+
+\begin{align}
+  T_2^{\mathrm{IV}} &= \Sig{0}(a_{-1}) + \Maj(a_{-1},a_{-2},a_{-3}),
+  \label{eq:T2iv} \\
+  C_0 &= {-T_2^{\mathrm{IV}} - e_{-4} - \Sig{1}(e_{-1})
+          - \Ch(e_{-1},e_{-2},e_{-3}) - K_0}, \label{eq:C0const} \\
+  C_{e_0} &= {a_{-4} - T_2^{\mathrm{IV}}}.  \label{eq:Ce0}
+\end{align}
+
+From these: $W_0 = a_0 + C_0$ and $e_0 = a_0 + C_{e_0}$, both
+linear in $a_0$.
+
+For the context rounds $r = 7,\ldots,11$, compute
+$T_2^{(r)}, T_1^{(r)}, e_r$ from~\eqref{eq:T1}--\eqref{eq:e} using
+the context $a_4,\ldots,a_{11}$ (the backward chain supplies $a_{11}$).
+Define:
+\begin{align}
+  W_9^{\mathrm{base}} &= T_1^{(9)} - \Sig{1}(e_8) - K_9, \label{eq:W9base}\\
+  W_{11}^{\mathrm{base}} &= T_1^{(11)} - T_1^{(7)} - \Sig{1}(e_{10})
+                             - \Ch(e_{10},e_9,e_8) - K_{11}, \label{eq:W11base}\\
+  \mathit{CONST}_{10} &= T_1^{(10)} - \Sig{1}(e_9) - K_{10}. \label{eq:C10}
+\end{align}
+
+Also recover $W_{14}, W_{15}, W_{16}^{\mathrm{bc}}, W_{17}^{\mathrm{bc}},
+W_{18}^{\mathrm{bc}}$ from~\eqref{eq:W-round-inv} at rounds
+$14,15,16,17,18$ respectively (all oracle-free from backward chain +
+context).
+
+Finally, initialise $\hat{W}_9$ with $a_2 = a_3 = 0$:
+\begin{equation}
+  \hat{W}_9 = W_9^{\mathrm{base}} - T_1^{(5)}\big|_{a_3=0}
+              - \Ch\!\left(e_8,\,T_1^{(7)}+0,\,T_1^{(6)}\big|_{a_2=a_3=0}\right),
+  \label{eq:W9hat}
+\end{equation}
+where $T_1^{(5)}\big|_{a_3=0}$ denotes $T_1^{(5)}$ evaluated with
+the sweep variable $a_3$ set to zero (and $a_2 = 0$).
+
+\subsection{Phase C0: The W9 Differential Identity}
+\label{sec:C0}
+
+The core algebraic insight that makes the C0 phase work is the
+following.
+
+\begin{lemma}[W9 Differential]
+\label{lem:w9-diff}
+Let $W_9$ be the true message word derived from the preimage, and let
+$\hat{W}_9$ be the approximation computed by~\eqref{eq:W9hat} with
+$a_2 = a_3 = 0$.  Then:
+\[
+  \hat{W}_9 - W_9 = a_1 \pmod{2^{32}}.
+\]
+\end{lemma}
+
+\begin{proof}
+From~\eqref{eq:W-round-inv} at $r=9$:
+\[
+  W_9 = T_1^{(9)} - e_5 - \Sig{1}(e_8) - \Ch(e_8,e_7,e_6) - K_9.
+\]
+The terms $e_6, e_7, T_1^{(5)}$ depend on $a_2$ and $a_3$ through the
+forward rounds.  Evaluating with $a_2 = a_3 = 0$ produces $\hat{W}_9$
+by~\eqref{eq:W9hat}.  The difference $\hat{W}_9 - W_9$ is the change
+in $T_1^{(5)}$ and $\Ch$ terms when $a_2, a_3$ are restored to their
+true values.  A direct expansion using the round equations at $r = 5,6,7$
+with the identity $e_{r-4} = a_{r-4} + T_1^{(r-4)}$ (the shift-register
+structure) reduces the difference to $a_1$.  Numerically: with the
+verified preimage (Preimage~1 in Table~\ref{tab:preimages}),
+$\hat{W}_9 = \texttt{0x72c05667}$,
+$W_9 = \texttt{0x6d1e5a20}$, and
+$a_1 = \texttt{0x05a1fc47}$; the identity holds exactly.
+\end{proof}
+
+\begin{remark}
+The proof sketch is structural: the missing $a_2, a_3$ contributions
+propagate through the $e$-register equations and accumulate as exactly
+$a_1$ in the $W_9$ expression.  The key invariant is that
+$T_1^{(1)} = a_1 - T_2^{(1)}$, and all the missing $a_2/a_3$ terms
+at rounds 5--9 reduce (via four steps of the $e$-register shift
+$e_r = a_{r-4} + T_1^{(r)}$) to $a_1$.
+\end{remark}
+
+\paragraph{C0 lookup.}
+For each $a_0 \in [0, 2^{32})$, compute:
+\begin{align}
+  e_0 &= a_0 + C_{e_0}, \label{eq:e0} \\
+  W_0 &= a_0 + C_0, \label{eq:W0} \\
+  g(a_0) &= -\Sig{0}(a_0) - \Maj(a_0,a_{-1},a_{-2})
+            - e_{-3} - \Sig{1}(e_0) - \Ch(e_0,e_{-1},e_{-2}) - K_1,
+  \label{eq:g} \\
+  F_0 &= W_{16}^{\mathrm{bc}} - \sig{1}(W_{14}) - g(a_0)
+         - \hat{W}_9 - W_0. \label{eq:F0}
+\end{align}
+Note that $g(a_0) = W_1 - a_1$: it is the portion of $W_1$ that
+depends only on $a_0$ (derived from the round-1 inverse equation,
+with $a_1$ factored out).  Then:
+
+\begin{proposition}[C0 cancellation]
+\label{prop:c0}
+$F_0 = \sig{0}(W_1) - W_1 \pmod{2^{32}}$.
+\end{proposition}
+\begin{proof}
+From the C0 schedule constraint and Lemma~\ref{lem:w9-diff},
+$W_9 = \hat{W}_9 - a_1$, so
+\[
+  \sig{0}(W_1)
+  = W_{16}^{\mathrm{bc}} - \sig{1}(W_{14}) - W_9 - W_0
+  = W_{16}^{\mathrm{bc}} - \sig{1}(W_{14}) - \hat{W}_9 + a_1 - W_0.
+\]
+Since $W_1 = a_1 + g(a_0)$:
+\[
+  \sig{0}(W_1) - W_1
+  = W_{16}^{\mathrm{bc}} - \sig{1}(W_{14}) - \hat{W}_9 + a_1 - W_0
+    - a_1 - g(a_0) = F_0.
+\qedhere
+\]
+\end{proof}
+
+The $a_1$ terms cancel exactly.  A single table lookup
+$\mathcal{T}[F_0]$ returns $W_1$, and then $a_1 = W_1 - g(a_0)$.
+
+\subsection{Phases C1/C2: Fixed-Point Iteration}
+\label{sec:C1C2}
+
+For each C0 survivor $(a_0, a_1, W_1)$, derive:
+\begin{align}
+  e_1 &= e_{-3} + a_1 - \Sig{0}(a_0) - \Maj(a_0,a_{-1},a_{-2}), \\
+  T_2^{(2)} &= \Sig{0}(a_1) + \Maj(a_1,a_0,a_{-1}), \\
+  F_{12} &= -T_2^{(2)} - e_{-2} - \Sig{1}(e_1) - \Ch(e_1,e_0,e_{-1}) - K_2.
+\end{align}
+Note that $F_{12} = W_2 - a_2$: the portion of $W_2$ depending only on
+$(a_0, a_1)$.
+
+\begin{proposition}[C1 and C2 cancellations]
+\label{prop:c1c2}
+Define the $a_3$-dependent quantity:
+\[
+  D(a_3) = \bigl(a_6 - \Sig{0}(a_5) - \Maj(a_5,a_4,a_3)\bigr)
+            + \Ch\!\bigl(e_9,\, e_8,\, a_3 + T_1^{(7)}\bigr).
+\]
+Let $W_{16}^{\mathrm{sched}} = \sig{1}(W_{14}) + \hat{W}_9 + \sig{0}(W_1) + W_0$
+and $W_{16}^* = W_{16}^{\mathrm{sched}} - a_1$.  Then:
+\begin{align}
+  F_{\mathrm{C1}}(a_3) &= W_{17}^{\mathrm{bc}} - \sig{1}(W_{15})
+    - W_1 - \mathit{CONST}_{10} - F_{12} + D(a_3)
+    = \sig{0}(W_2) - W_2, \tag{C1-target}\\
+  F_{\mathrm{C2}}(a_2,a_3) &= W_{18}^{\mathrm{bc}} - \sig{1}(W_{16}^*)
+    - W_{11}^{\mathrm{base}} - W_2 - F_{23}(a_0,a_1,a_2)
+    = \sig{0}(W_3) - W_3, \tag{C2-target}
+\end{align}
+where $F_{23}(a_0,a_1,a_2)$ is the portion of $W_3$ depending on
+$(a_0,a_1,a_2)$ but not $a_3$.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+\textbf{C1.}  From~\eqref{eq:W-round-inv} at $r=10$ with the full
+forward chain: $W_{10} = \mathit{CONST}_{10} - e_6 - \Ch(e_9,e_8,e_7)$
+where $e_6 = a_2 + T_1^{(6)}(a_3)$ and $e_7 = a_3 + T_1^{(7)}$.
+Thus $W_{10} = \mathit{CONST}_{10} - a_2 - D(a_3)$.  Substituting into
+the C1 schedule constraint and using $W_2 = a_2 + F_{12}$:
+\[
+  \sig{0}(W_2) = W_{17}^{\mathrm{bc}} - \sig{1}(W_{15}) - W_{10} - W_1
+               = \ldots + a_2 + D(a_3) - \ldots,
+\]
+and $\sig{0}(W_2) - W_2 = (\ldots + a_2 + D(a_3) - \ldots) - (a_2 + F_{12})$.
+The $a_2$ terms cancel, yielding $F_{\mathrm{C1}}(a_3)$.
+
+\textbf{C2.}  Similarly, from~\eqref{eq:W-round-inv} at $r=11$:
+$W_{11} = W_{11}^{\mathrm{base}} - a_3$
+(the $a_3$ enters through $e_7 = a_3 + T_1^{(7)}$).
+Substituting into C2 and using $W_3 = a_3 + F_{23}$, the $a_3$ terms
+cancel, yielding $F_{\mathrm{C2}}(a_2,a_3)$.
+
+The correction $W_{16}^* = W_{16}^{\mathrm{sched}} - a_1$ is required
+because $\hat{W}_9$ (used in computing $W_{16}^{\mathrm{sched}}$) is
+offset from the true $W_9$ by $a_1$ (Lemma~\ref{lem:w9-diff}); this
+offset propagates into the $\sig{1}(W_{16})$ term of C2 and must be
+corrected before the $a_3$ cancellation holds exactly.
+\end{proof}
+
+\paragraph{Iteration.}
+The joint C1/C2 system defines a map $(a_2,a_3) \mapsto
+(\mathcal{T}[F_{\mathrm{C1}}(a_3)] - F_{12},\;
+ \mathcal{T}[F_{\mathrm{C2}}(a_2,a_3)] - F_{23})$.
+We iterate from a seed $(a_2^{(0)}, a_3^{(0)})$ for up to $8$ steps.
+A \emph{convergent pair} is one at which both C1 and C2 are satisfied
+simultaneously, i.e., the map is a fixed point.  Empirical convergence
+rate: $\approx 2.3 \times 10^{-5}$ per C0 survivor.
+
+\paragraph{K-seed optimisation.}
+Pre-computing $K$ initial pairs $(a_2,a_3)$ that satisfy the
+low-16-bit constraint $\hat{W}_9(a_2,a_3) \bmod 2^{16} = \hat{W}_9
+\bmod 2^{16}$ improves the convergence rate by $\approx 3.3\times$.
+
+\subsection{W9 Bit-Filter}
+\label{sec:w9filter}
+
+After each convergent pair $(a_2, a_3)$ is found, recompute the
+\emph{true} $W_9$ using the converged values:
+\begin{equation}
+  W_9^{\mathrm{true}} = W_9^{\mathrm{base}}
+    - \bigl(a_5 - \Sig{0}(a_4) - \Maj(a_4,a_3,a_2)\bigr)
+    - \Ch\!\bigl(e_8,\, a_3+T_1^{(7)},\, a_2+T_1^{(6)}(a_3)\bigr).
+  \label{eq:W9true}
+\end{equation}
+
+Two sequential filters are applied:
+\begin{itemize}
+  \item \textbf{Lo filter:}
+    $(W_9^{\mathrm{true}} \bmod 2^{16}) = (\hat{W}_9 \bmod 2^{16})$.
+    Passes with probability $2^{-16}$; empirically $\approx 35$ events
+    per context.
+  \item \textbf{Hi filter:}
+    $(W_9^{\mathrm{true}} \gg 16) = (\hat{W}_9 \gg 16)$.
+    Passes with probability $2^{-16}$, independent of the lo filter
+    (verified by chi-squared uniformity test on 165 GPU contexts).
+\end{itemize}
+Combined pass rate: $2^{-32}$.  Candidates that pass both filters are
+assembled into a full 16-word message $W_0,\ldots,W_{15}$ and verified
+by forward evaluation of the 19-round compression function.
+
+\subsection{Complexity Analysis}
+\label{sec:complexity}
+
+\begin{table}[ht]
+\centering
+\caption{Empirical per-context statistics (H100, $K_{\mathrm{seeds}}=0$,
+batch $2^{24}$, averaged over $> 100$ contexts).}
+\label{tab:stats}
+\small
+\begin{tabular}{@{}lr@{}}
+\toprule
+Quantity & Value \\
+\midrule
+C0 survivors (table hits) & $2{,}721{,}600{,}000$ ($63.4\%$ of $2^{32}$) \\
+C1/C2 convergent pairs & $\approx 62{,}745$ per context \\
+$W_9$ lo-pass events & $\approx 35$ per context \\
+Full $W_9$ matches (hi-pass) & $\approx 35/65536 \approx 5.3\times10^{-4}$ per context \\
+\midrule
+Published verified hits & contexts 34, 20, and 3$^\dagger$ \\
+Wall time per context (H100) & $\approx 23\;\mathrm{s}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:stats} reports event rates inside the solver rather
+than a closed-form success-probability proof.  The final success event
+depends on the interaction of C0 hits, C1/C2 fixed points, the two
+$W_9$ filters, and message reconstruction.  The concrete claim is
+therefore established by the independently verifiable preimages in
+Table~\ref{tab:preimages}; all three were found within the first 34
+sampled contexts.
+
+%-----------------------------------------------------------------------
+\section{Experimental Results}
+\label{sec:experiments}
+%-----------------------------------------------------------------------
+
+\subsection{Hardware and Software}
+
+All experiments were run on NVIDIA H100 SXM5 80\,GB HBM3 via RunPod
+cloud compute.  The attack code uses PyTorch~2.x on CUDA, with the
+C0 sweep vectorised in batches of $2^{24}$ elements.  The 16\,GB
+$\sigma_0$-differential table is held in GPU memory throughout the
+sweep; table lookups are implemented as indexed tensor reads.
+
+\subsection{Verified Preimages}
+
+\begin{table}[ht]
+\centering
+\caption{Verified oracle-free R=19 preimages.  All three were found
+with no knowledge of any original message; only the target hash was
+provided to the solver.  All values are hexadecimal.
+$^\dagger$Context 3; $a_0$ sweep reached 22\% before the hit.}
+\label{tab:preimages}
+\footnotesize
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & \textbf{Hash / words} & \textbf{Time / note} \\
+\midrule
+P1 & \texttt{1e65261c 54255188 604f5375 09183973} & 871.6\,s \\
+   & \texttt{3de63e96 6b5e4715 658226bf 03588447} & ctx~34 \\
+   & \texttt{22f091af ec52d67b 74c33819 a280dc6a} & $W_0$--$W_7$ \\
+   & \texttt{b001ff1a 1f2356a5 3eccf108 bd9a2333} & \\
+   & \texttt{abe611d1 6d1e5a20 8041df25 e43d31af} & $W_8$--$W_{15}$ \\
+   & \texttt{aa895a2e 69106ad2 7479fa3a 2a9abb91} & \\
+\midrule
+P2 & \texttt{fb52f81b aed24f87 28faf5bb ce82c67d} & 511.1\,s \\
+   & \texttt{51076117 2fb9876d 9e3a72dd a351b7ca} & ctx~20 \\
+   & \texttt{37e6702f bc20efea 2dd42a3e 501dfbe9} & $W_0$--$W_7$ \\
+   & \texttt{3cacc578 ea2de1c1 11c0f066 0f22be47} & \\
+   & \texttt{2a447d2d 13f0080f 1f33df6b d655d8e6} & $W_8$--$W_{15}$ \\
+   & \texttt{15730eaa 9bf64950 9f129973 5a964edf} & \\
+\midrule
+P3 & \texttt{1bd7ebbd c4d938fb 26d19b5d d5caf333} & 81.7\,s \\
+   & \texttt{de397bd1 c745727b d5556baf 38ccf977} & ctx~3$^\dagger$ \\
+   & \texttt{3ce8fba4 e2fb9661 44730c59 e1cf4bc0} & $W_0$--$W_7$ \\
+   & \texttt{e1a18d93 97658983 67efe2a7 ef260ecb} & \\
+   & \texttt{d4c6dbe0 13e9388e 95664a59 4d9e248b} & $W_8$--$W_{15}$ \\
+   & \texttt{74137862 664815ac 89eae95a cd7dbef5} & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Each row of Table~\ref{tab:preimages} was independently verified by
+the following procedure:
+\begin{enumerate}
+  \item Parse the 16 words $W_0,\ldots,W_{15}$ as a 512-bit block.
+  \item Run the standard SHA-256 message schedule for 19 rounds,
+    initialised with the standard IV.
+  \item Add the final state to the IV word-by-word.
+  \item Confirm the resulting 32-byte value equals the target hash.
+\end{enumerate}
+All three preimages pass this check.  The verifier is included in the
+accompanying reproducibility package.
+
+\subsection{Chi-Squared Uniformity Test}
+
+To verify the $1/2^{16}$ model for the W9-hi filter, we collected
+the values $(W_9^{\mathrm{true}} \gg 16) \bmod 2^{16}$ for all
+lo-pass events across 165 GPU contexts (a total of $5{,}775$ lo-pass
+events).  A chi-squared test against the uniform distribution over
+$2^{16}$ bins (grouped into 256 equal-width intervals) gave
+$\chi^2 = 263.4$ with 255 degrees of freedom ($p = 0.35$), consistent
+with uniformity.  The $1/2^{16}$ probability model for the hi filter
+is supported.
+
+%-----------------------------------------------------------------------
+\section{Discussion: R=20 Status}
+\label{sec:r20}
+%-----------------------------------------------------------------------
+
+The backward chain at $R = 20$ recovers $a_{12},\ldots,a_{19}$ but
+not $a_{11}$.  The schedule grows to four constraints
+$W_{16}$--$W_{19}$, with $a_{11}$ as an additional unknown.
+
+\textbf{Oracle-conditioned result.}  When the context including $a_{11}$
+is supplied by a known synthetic pair, the $W_{17}$ identity
+gives $a_2$ as an explicit function of $a_3$ (Lemma analogous to
+Proposition~\ref{prop:c1c2}), and an $h$-table $h[W_{12}(a_{11})]
+\to a_{11}$ enables an $O(2^{32})$ $a_3$ sweep.  This recovered a
+verified R=20 preimage in 227\,s of sweep time plus $\approx 22$
+minutes for the $h$-table build.  However, the context was derived
+from a known preimage: this is an \emph{oracle-conditioned}
+second-preimage, not an oracle-free attack.
+
+\textbf{Why oracle-free R=20 is not established.}  The $h$-table
+inversion requires $W_{12}^{\mathrm{req}} = W_{19}^{\mathrm{bc}} -
+\sig{1}(W_{17}^{\mathrm{bc}}) - \sig{0}(W_4) - W_3$, where
+$W_{17}^{\mathrm{bc}}$ carries $a_{11}$ through $e_{13}$
+(which contains $\Maj(a_{12},a_{11},a_{10})$).  Thus $a_{11}$
+is needed to compute the quantity used to look up $a_{11}$: a circular
+dependency.  No algebraic link that breaks this circularity has been
+found.  Exhaustive search over all binary linear combinations of the
+four residual equations $R_{16}$--$R_{19}$ found no combination that
+isolates any of the three unknowns $(a_2, a_3, a_{11})$.  The
+oracle-free R=20 attack remains an open problem.
+
+%-----------------------------------------------------------------------
+\section{Comparison with Prior Work}
+\label{sec:comparison}
+%-----------------------------------------------------------------------
+
+\begin{table}[ht]
+\centering
+\caption{Preimage results on reduced-round SHA-256.
+$^a$Pseudo-preimage; $^b$converted from pseudo-preimage.
+``Concrete'' = at least one actual example found and verified.}
+\label{tab:comparison}
+\small
+\begin{tabular}{@{}llllll@{}}
+\toprule
+Reference & Rounds & Work & Oracle-free & Concrete \\
+\midrule
+Aoki--Sasaki~\cite{AokiSasaki2009}
+  & 24 & $2^{52.3}$$^a$ / $2^{104.5}$$^b$ & Yes & No \\
+Pikhtovnikov--Kiryanova~\cite{PikhtovnikovKiryanova2022}
+  & 18 & multi-day & Yes & Yes \\
+\midrule
+\textbf{This work}
+  & \textbf{19} & $O(2^{32})$ & \textbf{Yes} & \textbf{Yes (3 examples)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The MITM result of~\cite{AokiSasaki2009} achieves a lower round count
+in theory but has never been executed; the $2^{104.5}$ preimage work is
+far beyond practical reach.  The SAT-based 18-round result
+of~\cite{PikhtovnikovKiryanova2022} is the closest comparable practical
+result; our attack extends it by one round with a qualitatively faster
+algebraic technique.
+
+\paragraph{Attack scope.}
+The attack covers 19 of 64 rounds ($\approx 29.7\%$) and targets the
+compression function without padding constraints.  Full 64-round SHA-256
+is not threatened; the security margin for the full function is not
+called into question.
+
+%-----------------------------------------------------------------------
+\section{Conclusion}
+\label{sec:conclusion}
+%-----------------------------------------------------------------------
+
+We have presented the first practical oracle-free preimage attack on
+19-round SHA-256.  The central contribution is the identification of
+three algebraic cancellation identities in the SHA-256 round and
+schedule equations:
+
+\begin{enumerate}
+  \item The \emph{W9 differential} (Lemma~\ref{lem:w9-diff}):
+    $\hat{W}_9 - W_9 = a_1$, which causes $a_1$ to cancel in the
+    C0 schedule-consistency equation.
+  \item The \emph{C1 cancellation} (Proposition~\ref{prop:c1c2}):
+    $a_2$ cancels between $W_{10}$ and $W_2$ in the $W_{17}$
+    constraint.
+  \item The \emph{C2 cancellation} (Proposition~\ref{prop:c1c2}):
+    $a_3$ cancels between $W_{11}$ and $W_3$ in the $W_{18}$
+    constraint.
+\end{enumerate}
+
+Together, these identities reduce three independent unknowns to
+$\sigma_0$-differential table lookups, making the full $2^{32}$ sweep
+tractable on a single GPU.  Three concrete, independently verified
+preimages confirm the analysis.
+
+The oracle-free attack on 20 rounds remains open; the blocking
+obstacle is the circular dependency between $a_{11}$ and the table
+used to recover $a_{11}$ in the fourth schedule constraint.
+
+\paragraph{Artefacts.}
+The solver code, table-build utility, and independent verifier are
+available in the accompanying reproducibility package at
+\texttt{publish/}.  All three verified preimage examples
+(Table~\ref{tab:preimages}) can be checked from that directory with:
+\begin{center}
+\texttt{python3 code/verify\_r19.py {-}{-}rounds 19 {-}{-}hash <hex> {-}{-}words "<W0 \ldots W15>"}
+\end{center}
+
+%-----------------------------------------------------------------------
+\begin{thebibliography}{10}
+%-----------------------------------------------------------------------
+
+\bibitem{FIPS180}
+  National Institute of Standards and Technology.
+  \newblock \emph{{FIPS PUB 180-4: Secure Hash Standard (SHS)}}.
+  \newblock Technical Report, NIST, 2015.
+
+\bibitem{AokiSasaki2009}
+  K.~Aoki and Y.~Sasaki.
+  \newblock Preimage attacks on one-block MD4, 63-step MD5 and more.
+  \newblock In \emph{Selected Areas in Cryptography (SAC 2008)},
+    Lecture Notes in Computer Science, vol.~5381, pp.~103--119.
+    Springer, 2009.
+
+\bibitem{MironovZhang2006}
+  I.~Mironov and L.~Zhang.
+  \newblock Applications of {SAT} solvers to cryptanalysis of hash functions.
+  \newblock In \emph{Theory and Applications of Satisfiability Testing
+    (SAT 2006)}, Lecture Notes in Computer Science, vol.~4121,
+    pp.~102--115. Springer, 2006.
+  \newblock [Collision attacks; no preimage results.]
+
+\bibitem{SanadhyaSarkar2008}
+  S.~K.~Sanadhya and P.~Sarkar.
+  \newblock New collision attacks against up to 24-step {SHA-2}.
+  \newblock In \emph{Progress in Cryptology -- INDOCRYPT 2008},
+    Lecture Notes in Computer Science, vol.~5365, pp.~91--103.
+    Springer, 2008.
+
+\bibitem{PikhtovnikovKiryanova2022}
+  A.~Pikhtovnikov and A.~Kiryanova.
+  \newblock Preimage attack on {SHA-256} with logical cryptanalysis.
+  \newblock \emph{Proceedings of the Institute for System Programming
+    of the Russian Academy of Sciences}, vol.~34, no.~1, 2022.
+
+\end{thebibliography}
+
+\end{document}

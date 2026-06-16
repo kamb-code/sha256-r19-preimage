@@ -1,0 +1,54 @@
+VERIFIED ORACLE-FREE R=19 SHA-256 PREIMAGES
+============================================
+Convention: one-block reduced-round SHA-256 compression initialized with
+the standard SHA-256 IV. W[0..15] are arbitrary 32-bit words (no padding
+constraint). Verification: SHA256_compress_19(IV, W) + IV == target.
+
+All three preimages were independently verified with verify_r19.py.
+Verification command (any of the three):
+  python3 code/verify_r19.py --rounds 19 --hash <HASH> --words "<W0 .. W15>"
+
+
+--- P1 ---
+Target hash (19-round):
+  1e65261c54255188604f5375091839733de63e966b5e4715658226bf03588447
+
+Message words W[0..15]:
+  22f091af ec52d67b 74c33819 a280dc6a
+  b001ff1a 1f2356a5 3eccf108 bd9a2333
+  abe611d1 6d1e5a20 8041df25 e43d31af
+  aa895a2e 69106ad2 7479fa3a 2a9abb91
+
+Solver: h100_extended.py, context 34
+Time: 871.6 s (~14.5 min) on NVIDIA H100 SXM 80 GB
+Verified: OK
+
+
+--- P2 ---
+Target hash (19-round):
+  fb52f81baed24f8728faf5bbce82c67d510761172fb9876d9e3a72dda351b7ca
+
+Message words W[0..15]:
+  37e6702f bc20efea 2dd42a3e 501dfbe9
+  3cacc578 ea2de1c1 11c0f066 0f22be47
+  2a447d2d 13f0080f 1f33df6b d655d8e6
+  15730eaa 9bf64950 9f129973 5a964edf
+
+Solver: h100_extended.py, context 20
+Time: 511.1 s (~8.5 min) on NVIDIA H100 SXM 80 GB
+Verified: OK
+
+
+--- P3 ---
+Target hash (19-round):
+  1bd7ebbdc4d938fb26d19b5dd5caf333de397bd1c745727bd5556baf38ccf977
+
+Message words W[0..15]:
+  3ce8fba4 e2fb9661 44730c59 e1cf4bc0
+  e1a18d93 97658983 67efe2a7 ef260ecb
+  d4c6dbe0 13e9388e 95664a59 4d9e248b
+  74137862 664815ac 89eae95a cd7dbef5
+
+Solver: h100_extended.py, context 3 (a0 sweep reached ~22% before hit)
+Time: 81.7 s on NVIDIA H100 SXM 80 GB
+Verified: OK
