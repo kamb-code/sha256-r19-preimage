@@ -80,8 +80,8 @@ expectation $\approx 128$), and 8 distinct verified pairs are
 enumerated.  Extending to multi-block coordinate descent reduces this
 further: a two-block chain achieves $75/256$ (Nine-Step) or
 $\mathbf{74/256}$ with the partial-dead $(13,4)$ differential;
-a three-block chain reaches $\mathbf{72/256}$, a $71.9\%$ reduction
-from the all-different baseline.
+a three-block Nine-Step chain reaches $\mathbf{72/256}$, a $71.9\%$
+reduction from the all-different baseline.
 
 Full SHA-256 (64 rounds) is not threatened by either result.
 
@@ -1251,17 +1251,20 @@ message-schedule differentials confirms that the Nine-Step pair
 $(0,9)$ is the \emph{unique} two-position differential achieving a
 full 8-round algebraic dead zone; however, the partial-dead pair
 $(13,4)$ achieves $74/256$ Hamming weight in two blocks---one bit
-better than Nine-Step.  A three-block coordinate-descent chain
-further reduces this to $\mathbf{72/256}$, a total improvement of
-$184/256 = 71.9\%$ from the all-different baseline, with each
-additional block yielding diminishing but non-negligible gains.
+better than Nine-Step.  A three-block Nine-Step chain
+further reduces this to $\mathbf{72/256}$ ($95\to 75\to 72$), a total
+improvement of $184/256 = 71.9\%$ from the all-different baseline.
 Exhaustive single- and multi-word sensitivity analysis confirms
 that the $75/256$ two-block minimum is a $\geq\!4$-bit-deep local
 minimum: no perturbation of fewer than 4 of the 512 message bits
-improves the Hamming weight.  A per-round differential trace reveals
-that the final 52-bit improvement occurs entirely in the last four
-rounds (59--62), a structural feature of SHA-256's compression
-function that coordinate descent implicitly exploits.
+improves the Hamming weight, and coordinate descent on the block-1
+message (reducing $\|\Delta H_1\|$ from $95$ to $75/256$) still
+yields $75/256$ for block-2---confirming the minimum is a structural
+property of the nine-step chain, not an artifact of the block-1 choice.
+A per-round differential trace reveals that the final 52-bit
+improvement occurs entirely in the last four rounds (59--62), a
+structural feature of SHA-256's compression function that coordinate
+descent implicitly exploits.
 
 \paragraph{Artefacts.}
 The solver code, table-build utility, and independent verifier are
