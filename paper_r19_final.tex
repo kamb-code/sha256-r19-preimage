@@ -996,6 +996,25 @@ $(4,13)$ reversed   &  5/8          & 127/256 & 76/256 \\
 \end{tabular}
 \end{table}
 
+\noindent\textbf{Late-round suppression cascade.}
+Tracing the differential Hamming weight per compression round for the
+75/256 near-collision reveals a striking cascade in the final rounds.
+After the dead zone (rounds 16--23), the differential \emph{amplifies}
+to a peak of 145/256 at round 20, then fluctuates in $119$--$145/256$
+through rounds 21--58 before undergoing rapid suppression:
+\[
+  r=59{:}\ 127 \;\to\; r=60{:}\ 111 \;\to\; r=61{:}\ 97 \;\to\;
+  r=62{:}\ 86 \;\to\; r=63{:}\ \mathbf{75}
+\]
+(a drop of 52 bits in 4 rounds).  In contrast, using the unoptimised
+block-1 message as block-2 input, the differential amplifies
+monotonically to 152/256 at round 61 and ends at 134/256 with no
+suppression cascade.  The coordinate descent finds message words whose
+interaction with the $\text{Ch}/\text{Maj}$ logic and round constants
+$K_{59}$--$K_{62}$ produces partial self-cancellation in the final
+state registers---an exploitable structural feature of the compression
+function.
+
 \noindent\textbf{Depth of the local minimum.}
 To quantify how tightly the nine-step two-block result is trapped,
 we exhaustively tested every single-word substitution (all $16 \times
