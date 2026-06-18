@@ -1203,12 +1203,20 @@ better than Nine-Step.  A three-block coordinate-descent chain
 further reduces this to $\mathbf{72/256}$, a total improvement of
 $184/256 = 71.9\%$ from the all-different baseline, with each
 additional block yielding diminishing but non-negligible gains.
+Exhaustive single- and multi-word sensitivity analysis confirms
+that the $75/256$ two-block minimum is a $\geq\!4$-bit-deep local
+minimum: no perturbation of fewer than 4 of the 512 message bits
+improves the Hamming weight.  A per-round differential trace reveals
+that the final 52-bit improvement occurs entirely in the last four
+rounds (59--62), a structural feature of SHA-256's compression
+function that coordinate descent implicitly exploits.
 
 \paragraph{Artefacts.}
 The solver code, table-build utility, and independent verifier are
 available in the accompanying reproducibility package at
-\texttt{https://github.com/kamb-code/sha256-r19-preimage}.  All three verified preimage examples
-(Table~\ref{tab:preimages}) can be checked with:
+\url{https://github.com/kamb-code/sha256-r19-preimage}.
+All three verified preimage examples (Table~\ref{tab:preimages}) can
+be checked with:
 \begin{center}
 \texttt{python3 verify\_r19.py {-}{-}hash <hex> {-}{-}words "<W0 \ldots W15>"}
 \end{center}
