@@ -740,10 +740,30 @@ The claim $\Delta W_{25} = -\delta$ follows from $W_{r-16}|_{r=25} = W_9$,
 with $\Delta W_9 = -\delta$ and all other terms zero.
 \end{proof}
 
-The pair $(i,i+9)=(0,9)$ is \emph{unique}: for any $i\ge 1$ the
-$\sigma_0(W_i)$ term in the schedule hits $W_{i+15}\ge W_{16}$,
-an \emph{extended} word that receives the difference and contaminates
-the window.  Only $\sigma_0(W_0)$ lands at $W_{15}$, a message word.
+The pair $(i,i+9)=(0,9)$ is \emph{unique}.  The two necessary conditions
+for a full dead zone are:
+\begin{enumerate}
+\item \emph{$\sigma_0$ silence:} The $\sigma_0(W_j)$ term in round $r$
+  enters when $r-15=j$, i.e.\ at $r=j+15$.  For this to fall
+  \emph{outside} $[16,23]$ we need $j+15\ge 24$, i.e.\ $j\ge 9$.
+  With $j=9$ the $\sigma_0(W_9)$ term first appears at $r=24$, leaving
+  the window clean.
+\item \emph{Linear cancellation at $r=16$:} The $W_{r-7}$ and $W_{r-16}$
+  terms contribute $\Delta W_j=-\delta$ and $\Delta W_i=+\delta$
+  at the same round $r=i+16=j+7$.  For $j\ge 9$ this requires $i=j-9$;
+  with $j=9$ we get $i=0$ and $r=16$, placing the cancellation at the
+  first round of the window.
+\end{enumerate}
+Any $j<9$ fails condition 1 (the $\sigma_0(W_j)$ leakage enters before
+$r=24$, producing nonzero terms within the window).  Any $j>9$ with $j\le 15$
+satisfies condition 1 but requires $i=j-9\ge 1$, which shifts the
+cancellation out of the window (it lands at $r=i+16\ge 17$, but the
+$\sigma_0(W_j)$ leakage would need $j\ge 24$ to be clean---infeasible).
+Thus $(0,9)$ is the unique solution.
+
+For partial dead zones, pairs with $j\in\{3,4,7,8\}$ produce exactly
+$6$ or $5$ zeros in $[16,23]$ (first nonzero at $W_{j+15}$), which
+is the basis of the $(13,4)$ and $(7,8)$ results in Section~\ref{sec:nine-step}.
 
 \textbf{TC extension.} If additionally $W_9 - \delta \in \mathrm{TC}\text{-}\sigma_0(\delta)$,
 then $\sigma_0(W_9) - \sigma_0(W_9-\delta) = \delta$ exactly, giving
