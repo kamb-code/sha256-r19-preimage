@@ -75,7 +75,11 @@ seconds on an RTX 4060) locates message pairs $(M, M')$ where one
 \]
 The total differential Hamming weight is 95/256 bits (random
 expectation $\approx 128$), and 8 distinct verified pairs are
-enumerated.
+enumerated.  Extending to multi-block coordinate descent reduces this
+further: a two-block chain achieves $75/256$ (Nine-Step) or
+$\mathbf{74/256}$ with the partial-dead $(13,4)$ differential;
+a three-block chain reaches $\mathbf{72/256}$, a $71.9\%$ reduction
+from the all-different baseline.
 
 Full SHA-256 (64 rounds) is not threatened by either result.
 
@@ -1107,8 +1111,8 @@ $(0,9)$ is the \emph{unique} two-position differential achieving a
 full 8-round algebraic dead zone; however, the partial-dead pair
 $(13,4)$ achieves $74/256$ Hamming weight in two blocks---one bit
 better than Nine-Step.  A three-block coordinate-descent chain
-further reduces this to $73/256$, a total improvement of
-$183/256 \approx 71.5\%$ from the all-different baseline, with each
+further reduces this to $\mathbf{72/256}$, a total improvement of
+$184/256 = 71.9\%$ from the all-different baseline, with each
 additional block yielding diminishing but non-negligible gains.
 
 \paragraph{Artefacts.}
