@@ -45,39 +45,44 @@
 %-----------------------------------------------------------------------
 \begin{abstract}
 %-----------------------------------------------------------------------
-We present the first practical oracle-free preimage attack on 19-round
+We present two related contributions to the cryptanalysis of
+reduced-round SHA-256.
+
+\textbf{(1) Preimage attack.}
+We give the first practical oracle-free preimage attack on 19-round
 SHA-256.  Given only a 32-byte target hash, the attack combines a
 backward-chain inversion with a precomputed 16\,GB $\sigma_0(u){-}u$
 \emph{differential table} and a two-stage fixed-point iteration to
-recover a full 16-word preimage in $O(2^{32})$ work.
+recover a full 16-word preimage in $O(2^{32})$ work.  Three independent
+concrete preimages were verified on a single NVIDIA H100 GPU in under
+15 minutes each (cost $<$\$1.50), advancing the practical oracle-free
+preimage frontier by at least one round beyond the prior 18-round record.
 
-The central algebraic insight is a cancellation identity we call the
-\emph{W9 differential}: when the message word $W_9$ is initialised
-with $a_2 = a_3 = 0$ (producing an approximation $\hat{W}_9$), the
-resulting error satisfies $\hat{W}_9 - W_9 = a_1$ exactly.  This
-identity causes $a_1$ to cancel in the $W_{16}$ schedule-consistency
-equation, reducing the C0 filter to a single table lookup per $a_0$
-candidate.  Analogous cancellations in the $W_{17}$ and $W_{18}$
-constraints eliminate $a_2$ and $a_3$ from the respective lookup
-targets, enabling a fixed-point iteration that converges with
-empirical probability $\approx 2.3 \times 10^{-5}$ per C0 survivor.
-A final $W_9$ bit-filter with probability $2^{-32}$ gates forward
-verification.
+\textbf{(2) Nine-Step Cancellation Lemma and partial collision.}
+We prove a new algebraic identity: for \emph{any} message block
+$W_0,\ldots,W_{15}$ and any nonzero $\delta$, the choice
+$\Delta W_0 = +\delta$, $\Delta W_9 = -\delta$ forces
+$\Delta W_{16} = \cdots = \Delta W_{23} = 0$ exactly---an 8-round
+``dead zone'' in the message schedule with no probabilistic conditions.
+Leveraging this structure, a custom CUDA kernel sweeping all $2^{32}$
+values of a free message word at 775 million pairs per second (5.5
+seconds on an RTX 4060) locates message pairs $(M, M')$ where one
+32-bit output word of the SHA-256 compression function is identical:
+\[
+  \mathrm{SHA\text{-}256\_compress}(\mathrm{IV},M)[5]
+  = \mathrm{SHA\text{-}256\_compress}(\mathrm{IV},M')[5]
+  = \texttt{0x9fd76a44}.
+\]
+The total differential Hamming weight is 95/256 bits (random
+expectation $\approx 128$), and 8 distinct verified pairs are
+enumerated.
 
-Three independent concrete preimages were found and verified on a
-single NVIDIA H100 GPU, with observed times of 14.5 minutes, 8.5
-minutes, and 1.4 minutes at a total GPU cost under \$1.50.  This
-advances the practical oracle-free preimage frontier by at least one
-round beyond the prior 18-round record.
-
-Full SHA-256 (64 rounds) is not threatened; the result is relevant as
-evidence of how algebraic structure in the message schedule permits
-systematic cancellation of unknowns.
+Full SHA-256 (64 rounds) is not threatened by either result.
 
 \medskip
-\noindent\textbf{Keywords:} SHA-256, preimage, oracle-free
-cryptanalysis, reduced-round attack, schedule-differential table,
-message-schedule inversion.
+\noindent\textbf{Keywords:} SHA-256, preimage attack, oracle-free
+cryptanalysis, reduced-round, schedule-differential, Nine-Step
+Cancellation Lemma, partial collision, birthday sweep, CUDA.
 \end{abstract}
 
 %-----------------------------------------------------------------------
@@ -118,24 +123,32 @@ oracle-free preimage attack at 19 or more rounds has been previously
 reported.
 
 \paragraph{This work.}
-We present a practical oracle-free preimage attack on $R = 19$
-rounds.  The key contributions are:
+We make two independent contributions, each exploiting algebraic
+structure in the SHA-256 message schedule.
 
+\smallskip\noindent\emph{Contribution 1 (Preimage, Sections
+\ref{sec:prelim}--\ref{sec:experiments}):}
+A practical oracle-free preimage attack on $R=19$ rounds, with three
+concrete verified examples.  Key lemmas:
 \begin{enumerate}
   \item The \emph{W9 differential identity} (Lemma~\ref{lem:w9-diff}):
-    a structural property of the SHA-256 round equations that causes
-    $a_1$ to cancel algebraically in the C0 schedule constraint,
-    enabling a table-based lookup over the full $2^{32}$ space of
-    $a_0$ values.
-
+    $a_1$ cancels algebraically in the C0 schedule constraint,
+    enabling a table-based lookup over the full $2^{32}$ space of $a_0$.
   \item Analogous \emph{unknown-cancellation identities} for $a_2$
-    (via the $W_{17}$ constraint) and $a_3$ (via the $W_{18}$
-    constraint), together forming a fixed-point iteration
+    and $a_3$ forming a fixed-point iteration
     (Proposition~\ref{prop:c1c2}).
-
   \item Three independently verified concrete 19-round preimages,
     found on an NVIDIA H100 in under 15 minutes each.
 \end{enumerate}
+
+\smallskip\noindent\emph{Contribution 2 (Collision structure, Section
+\ref{sec:nine-step}):}
+The \emph{Nine-Step Cancellation Lemma}: for any $\delta$ and any
+message block, $\Delta W_0=+\delta$, $\Delta W_9=-\delta$ implies
+$\Delta W_{16..23}=0$ algebraically.  Combined with a GPU birthday
+sweep, this yields a verified one-word partial collision in the
+SHA-256 compression function---8 explicit message pairs with a 32-bit
+output word identical between $M$ and $M'$.
 
 %-----------------------------------------------------------------------
 \section{SHA-256 Preliminaries}
@@ -735,6 +748,7 @@ $\Delta\mathbf{S}[r]$ could be driven to zero within the window,
 the two computations would re-synchronise.  We show this is impossible.
 
 \begin{proposition}[State-Differential Trap]
+\label{prop:trap}
 Let $\Delta W_r = 0$ for all $r$ in some range.  Then
 $\Delta\mathbf{S}[r+1] = \mathbf{0}$ if and only if $\Delta\mathbf{S}[r] = \mathbf{0}$.
 \end{proposition}
@@ -894,36 +908,38 @@ called into question.
 \label{sec:conclusion}
 %-----------------------------------------------------------------------
 
-We have presented the first practical oracle-free preimage attack on
-19-round SHA-256.  The central contribution is the identification of
-three algebraic cancellation identities in the SHA-256 round and
-schedule equations:
+We have presented two contributions to the algebraic cryptanalysis of
+reduced-round SHA-256.
 
-\begin{enumerate}
-  \item The \emph{W9 differential} (Lemma~\ref{lem:w9-diff}):
-    $\hat{W}_9 - W_9 = a_1$, which causes $a_1$ to cancel in the
-    C0 schedule-consistency equation.
-  \item The \emph{C1 cancellation} (Proposition~\ref{prop:c1c2}):
-    $a_2$ cancels between $W_{10}$ and $W_2$ in the $W_{17}$
-    constraint.
-  \item The \emph{C2 cancellation} (Proposition~\ref{prop:c1c2}):
-    $a_3$ cancels between $W_{11}$ and $W_3$ in the $W_{18}$
-    constraint.
-\end{enumerate}
-
-Together, these identities reduce three independent unknowns to
-$\sigma_0$-differential table lookups, making the full $2^{32}$ sweep
-tractable on a single GPU.  Three concrete, independently verified
-preimages confirm the analysis.
-
+\paragraph{Preimage (19 rounds).}
+Three algebraic cancellation identities in the SHA-256 round and
+schedule equations reduce the unknown recovery problem to a sequence
+of $\sigma_0$-differential table lookups, making the full $2^{32}$
+sweep tractable on a single GPU.  Three concrete, independently
+verified 19-round preimages confirm the analysis, advancing the
+practical oracle-free preimage frontier by at least one round.
 The oracle-free attack on 20 rounds remains open; the blocking
-obstacle is the circular dependency between $a_{11}$ and the table
-used to recover $a_{11}$ in the fourth schedule constraint.
+obstacle is the circular dependency on $a_{11}$ in the fourth
+schedule constraint.
+
+\paragraph{Nine-Step structure (collision direction).}
+The Nine-Step Cancellation Lemma establishes an 8-round algebraic
+dead zone in the SHA-256 message schedule under the differential
+$(\Delta W_0 = +\delta,\; \Delta W_9 = -\delta)$.  This structure
+enables a GPU birthday sweep that locates, in 5.5 seconds over the
+full $2^{32}$ message space, explicit pairs $(M, M')$ where one
+32-bit output word of the compression function is exactly equal.
+Eight such pairs are enumerated and verified.  The State-Differential
+Trap (Proposition~\ref{prop:trap}) establishes that further reduction
+to a full collision within this one-block framework requires
+$O(2^{64})$ work; the natural extension is a two-block near-collision
+or a MILP-guided boomerang construction using the dead zone as the
+$E_{\mathrm{mid}}$ connector.
 
 \paragraph{Artefacts.}
 The solver code, table-build utility, and independent verifier are
 available in the accompanying reproducibility package at
-\texttt{[REPOSITORY URL]}.  All three verified preimage examples
+\texttt{https://github.com/kamb-code/sha256-r19-preimage}.  All three verified preimage examples
 (Table~\ref{tab:preimages}) can be checked with:
 \begin{center}
 \texttt{python3 verify\_r19.py {-}{-}hash <hex> {-}{-}words "<W0 \ldots W15>"}
