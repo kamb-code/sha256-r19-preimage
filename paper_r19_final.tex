@@ -1128,6 +1128,18 @@ The 75/256 optimum is therefore a \emph{$\geq\!4$-bit-deep} local
 minimum: no perturbation of fewer than 4 of the $512$ message bits
 yields a strictly better near-collision.
 
+\noindent\textbf{Block-1 independence.}
+To verify that the 75/256 two-block result is not an artifact of the
+particular block-1 message $W_{B1}$, we additionally ran coordinate
+descent on the \emph{block-1} words, minimising $\|\Delta H_1\|_H$
+directly.  Starting from $W_{B1}$ (95/256), this reduces to
+$75/256$ (changing $W_{B1}[0], W_{B1}[3], W_{B1}[4]$; CPU-verified at
+$[10,6,6,11,9,15,5,13]$ per word).  Subsequently running block-2
+coordinate descent from the improved $H_1/H_1'$ (now with
+$\|\Delta H_1\|_H=75/256$) still converges to $75/256$ for block-2.
+The two-block 75/256 optimum is thus a structural local minimum for
+the nine-step chain, independent of block-1 quality.
+
 \noindent\textbf{Three-block near-collision chain.}
 Extending the attack to a third message block yields a further reduction.
 Given the block-2 output pair $(H_2, H_2')$ with $\|\Delta H_2\|_H = 75/256$
