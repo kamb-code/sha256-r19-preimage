@@ -996,6 +996,19 @@ $(4,13)$ reversed   &  5/8          & 127/256 & 76/256 \\
 \end{tabular}
 \end{table}
 
+\noindent\textbf{Depth of the local minimum.}
+To quantify how tightly the nine-step two-block result is trapped,
+we exhaustively tested every single-word substitution (all $16 \times
+2^{32}$ candidates) and every two-word simultaneous substitution
+($16 \times 15 \times 2^{32}$ pairs) starting from the 75/256 state.
+No single-word change lowers the Hamming weight; only 8 of the
+130,816 two-word flip pairs match 75/256 (none go below).  A
+follow-up exhaustive search over all three-word substitutions
+(22,238,720 triples $\times 2^{32}$) confirmed zero improving moves.
+The 75/256 optimum is therefore a \emph{$\geq\!4$-bit-deep} local
+minimum: no substitution touching fewer than 4 of the $16 \times 32 =
+512$ message bits yields a strictly better near-collision.
+
 \noindent\textbf{Three-block near-collision chain.}
 Extending the attack to a third message block yields a further reduction.
 Given the block-2 output pair $(H_2, H_2')$ with $\|\Delta H_2\|_H = 75/256$
