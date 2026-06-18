@@ -12,6 +12,8 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{geometry}
 \geometry{margin=1in}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}{Definition}
@@ -1015,7 +1017,63 @@ suppression cascade.  The coordinate descent finds message words whose
 interaction with the $\text{Ch}/\text{Maj}$ logic and round constants
 $K_{59}$--$K_{62}$ produces partial self-cancellation in the final
 state registers---an exploitable structural feature of the compression
-function.
+function.  Figure~\ref{fig:trace} plots both traces.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\linewidth, height=5.5cm,
+  xlabel={Compression round $r$}, ylabel={State diff.\ HW (bits/256)},
+  xmin=0, xmax=63, ymin=60, ymax=165,
+  xtick={0,8,16,24,32,40,48,56,63},
+  ytick={64,80,96,112,128,144,160},
+  legend pos=north west, legend style={font=\small},
+  grid=major, grid style={gray!30},
+]
+% Random expectation
+\addplot[dashed, gray, thick] coordinates {(0,128)(63,128)};
+\addlegendentry{Random exp.\ ($128/256$)}
+% Dead zone shading (schedule diff = 0 in rounds 16-23)
+\addplot[fill=blue!8, draw=none, area legend] coordinates
+  {(16,60)(16,165)(23,165)(23,60)} \closedcycle;
+\addlegendentry{Schedule dead zone}
+% Baseline trace (W_B1, 134/256)
+\addplot[orange, thick, mark=none] coordinates {
+(0,102)(1,107)(2,124)(3,130)(4,130)(5,128)(6,127)(7,127)
+(8,134)(9,136)(10,141)(11,142)(12,131)(13,136)(14,138)(15,134)
+(16,134)(17,131)(18,119)(19,115)(20,114)(21,114)(22,123)(23,124)
+(24,120)(25,117)(26,123)(27,129)(28,137)(29,131)(30,122)(31,119)
+(32,114)(33,113)(34,120)(35,114)(36,121)(37,126)(38,124)(39,124)
+(40,128)(41,129)(42,125)(43,134)(44,120)(45,116)(46,124)(47,123)
+(48,130)(49,137)(50,126)(51,131)(52,122)(53,116)(54,117)(55,110)
+(56,117)(57,124)(58,136)(59,142)(60,149)(61,152)(62,150)(63,134)
+};
+\addlegendentry{Baseline ($134/256$)}
+% Coord descent trace (N_BEST, 75/256)
+\addplot[blue, thick, mark=none] coordinates {
+(0,102)(1,112)(2,132)(3,139)(4,137)(5,132)(6,135)(7,130)
+(8,134)(9,134)(10,127)(11,129)(12,122)(13,127)(14,127)(15,123)
+(16,129)(17,124)(18,132)(19,144)(20,145)(21,144)(22,139)(23,130)
+(24,131)(25,138)(26,135)(27,133)(28,131)(29,126)(30,126)(31,126)
+(32,129)(33,123)(34,128)(35,128)(36,123)(37,123)(38,125)(39,130)
+(40,130)(41,133)(42,133)(43,133)(44,136)(45,139)(46,136)(47,135)
+(48,127)(49,126)(50,121)(51,120)(52,119)(53,117)(54,122)(55,125)
+(56,128)(57,129)(58,130)(59,127)(60,111)(61,97)(62,86)(63,75)
+};
+\addlegendentry{Coord descent ($75/256$)}
+% Annotation for cascade
+\node[font=\scriptsize, blue] at (axis cs:60,82) {cascade};
+\draw[->, blue, thin] (axis cs:61,84) -- (axis cs:61.5,91);
+\end{axis}
+\end{tikzpicture}
+\caption{Round-by-round state differential HW for two block-2 messages
+sharing the Nine-Step IV $(H_1, H_1')$.  The shaded band marks the
+algebraic dead zone (schedule difference $= 0$, rounds 16--23).
+The coord-descent message exploits a suppression cascade in rounds
+59--62, dropping from 127 to 75 bits.}
+\label{fig:trace}
+\end{figure}
 
 \noindent\textbf{Depth of the local minimum.}
 To quantify how tightly the nine-step two-block result is trapped,
