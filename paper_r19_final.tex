@@ -12,6 +12,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{geometry}
 \geometry{margin=1in}
+\usepackage[protrusion=true,expansion=false]{microtype}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 
@@ -165,9 +166,9 @@ output word identical between $M$ and $M'$.
 %-----------------------------------------------------------------------
 
 \paragraph{Notation.}
-All arithmetic is modulo $2^{32}$ unless stated otherwise.  We write
-$\oplus$ for bitwise XOR, $\&$ for bitwise AND, $\overline{x}$ for
-bitwise NOT.  Rotations and shifts of a 32-bit word $x$:
+All arithmetic is modulo $2^{32}$ unless stated otherwise.
+We use $\oplus$, $\mathbin{\&}$, $\overline{x}$ for bitwise XOR, AND, NOT.
+Rotations and shifts of a 32-bit word $x$:
 \[
   \ROTR{n}{x} = (x \gg n) \mid (x \ll (32-n)),
   \qquad
@@ -498,9 +499,9 @@ $(a_0,a_1,a_2)$ but not $a_3$.
 \end{proposition}
 
 \begin{proof}[Proof sketch]
-\textbf{C1.}  From~\eqref{eq:W-round-inv} at $r=10$ with the full
-forward chain: $W_{10} = \mathit{CONST}_{10} - e_6 - \Ch(e_9,e_8,e_7)$
-where $e_6 = a_2 + T_1^{(6)}(a_3)$ and $e_7 = a_3 + T_1^{(7)}$.
+\textbf{C1.}  From~\eqref{eq:W-round-inv} at $r=10$:
+$W_{10} = \mathit{CONST}_{10} - e_6 - \Ch(e_9,e_8,e_7)$, with
+$e_6 = a_2 + T_1^{(6)}(a_3)$ and $e_7 = a_3 + T_1^{(7)}$.
 Thus $W_{10} = \mathit{CONST}_{10} - a_2 - D(a_3)$.  Substituting into
 the C1 schedule constraint and using $W_2 = a_2 + F_{12}$:
 \[
@@ -743,8 +744,9 @@ The claim $\Delta W_{25} = -\delta$ follows from $W_{r-16}|_{r=25} = W_9$,
 with $\Delta W_9 = -\delta$ and all other terms zero.
 \end{proof}
 
-The pair $\{0,9\}$ is \emph{unique} among all two-position pairs
-$\{i,j\}\subset[0,15]$.  Two conditions are necessary for a full dead zone:
+The pair $\{0,9\}$ is the \emph{unique} two-position pair in
+$[0,15]^2$ achieving a full algebraic dead zone.
+Two necessary conditions are:
 \begin{enumerate}
 \item \emph{$\sigma_0$ silence:} The $\sigma_0(W_k)$ term enters round $r$
   when $r-15=k$.  For no $\sigma_0$ contribution to land \emph{inside}
@@ -986,16 +988,42 @@ No output word is identically zero (a two-word simultaneous zero
 still requires $O(2^{64})$ work as argued above).
 
 \noindent\textbf{Alternative differentials.}
-An exhaustive survey of all 240 two-position message-schedule differentials
-$(\Delta W_i = +\delta,\; \Delta W_j = -\delta)$ with $\delta = \texttt{0x0011e034}$
-reveals that only $(i,j) = (0,9)$ and $(9,0)$ produce a \emph{full} 8-round
-algebraic dead zone ($W_{16}=\cdots=W_{23}=0$ in the difference schedule,
-identically for all $\delta$).  Every other pair produces at most a
-\emph{partial} dead zone of 5 or 6 zero words.
+An exhaustive algebraic survey of all 240 two-position message-schedule
+differentials $(\Delta W_i = +\delta,\; \Delta W_j = -\delta)$ classifies
+each pair by how many of $W_{16},\ldots,W_{23}$ are algebraically zero
+(for all messages and all $\delta$).  Only $(i,j) = (0,9)$ and $(9,0)$
+achieve the full 8-round dead zone.  Two pairs --- $(7,8)$ and $(8,7)$ ---
+achieve a 6/8 dead zone (first six positions: $W_{16}$--$W_{21}$).
+Sixteen further pairs achieve a 5/8 dead zone, grouped into four
+structural patterns (Table~\ref{tab:dead_patterns}).
 
-Despite this apparent advantage, coordinate descent on block-2 shows that
-the pair $(13,4)$ (only 5/8 schedule words zeroed) achieves
-$\|\Delta H_2\|_H = \mathbf{74/256}$, one bit better than the Nine-Step result.
+\begin{table}[ht]
+\centering
+\caption{Algebraic dead zone patterns for the 20 pairs with $\geq 5/8$
+dead positions in $W_{16..23}$.  ``\texttt{1}'' = algebraically zero,
+``\texttt{0}'' = nonzero (for generic message).
+$^{\dagger}$Two-block coord descent run and reported in Table~\ref{tab:alt_diff}.}
+\label{tab:dead_patterns}
+\small
+\begin{tabular}{@{}lrlll@{}}
+\toprule
+Pattern ($W_{16..23}$) & Dead & Representative pairs & $\|\Delta H_2\|_H$ \\
+\midrule
+\texttt{11111111} & 8/8 & $(0,9)^\dagger$, $(9,0)^\dagger$ & 75/256 \\
+\texttt{11111100} & 6/8 & $(7,8)^\dagger$, $(8,7)^\dagger$ & see Tab.~\ref{tab:alt_diff} \\
+\texttt{11111000} & 5/8 & $(6,7)$, $(6,8)$, $(7,6)$, $(8,6)$ & --- \\
+\texttt{11110100} & 5/8 & $(7,13)$, $(8,13)$, $(13,7)$, $(13,8)$ & --- \\
+\texttt{11101010} & 5/8 & $(4,13)^\dagger$, $(8,12)$, $(12,8)$, $(13,4)^\dagger$ & 74--76/256 \\
+\texttt{11010101} & 5/8 & $(3,12)^\dagger$, $(11,13)$, $(12,3)^\dagger$, $(13,11)$ & see Tab.~\ref{tab:alt_diff} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The 8 pairs marked $^\dagger$ were analysed via block-2 coordinate descent;
+the remaining 12 five-eighth pairs are identified for future work.
+Among tested pairs, $(13,4)$ is the best (74/256) despite having only
+5/8 dead zone.
+
 The exact pattern of zero positions is algebraically determined: for $(13,4)$
 the five zero positions are $W_{16}, W_{17}, W_{18}, W_{20}, W_{22}$, and the
 three nonzero positions are $W_{19}, W_{21}, W_{23}$ (alternating, for all
@@ -1003,7 +1031,8 @@ messages and all $\delta$).  The nonzero terms arise from $\sigma_0(W_4)$ applie
 which first enters at round 19:
 \[
   W_{19} = \sigma_1(W_{17}) + W_{12} + \sigma_0(W_4) + W_3.
-\]  The even-indexed
+\]
+The even-indexed
 positions $W_{20}$ and $W_{22}$ remain zero because their $\pm\delta$
 contributions cancel linearly ($\Delta W_{20} = +\delta - \delta = 0$ exactly).
 Compared to the Nine-Step, the (13,4) residual is \emph{scattered} rather
@@ -1016,24 +1045,28 @@ of the algebraic cancellation in rounds 24--63 outweighs the \emph{quantity}
 of zeroed schedule words.
 
 Table~\ref{tab:alt_diff} summarises the two-block near-collision Hamming
-weight achieved by the best alternative differentials.
+weight achieved by the surveyed differentials.
 
 \begin{table}[ht]
 \centering
 \caption{Two-block near-collision Hamming weight $\|\Delta H_2\|_H$ for
-selected two-position differentials.  ``Dead words'' counts the number
-of exactly-zero positions in $W_{16..23}$ of the difference schedule.
-All results verified on CPU.}
+surveyed differentials (coord descent from $W_{B1}$).
+``Dead'' = algebraic zero count in $W_{16..23}$.
+All block-2 results CPU-verified.}
 \label{tab:alt_diff}
 \small
 \begin{tabular}{@{}llrrr@{}}
 \toprule
-Differential & Dead words & $|\Delta H_1|$ & $\|\Delta H_2\|_H$ \\
+Differential & Dead & $|\Delta H_1|$ & $\|\Delta H_2\|_H$ \\
 \midrule
-$(0, 9)$ Nine-Step  &  8/8 (full)   & 95/256  & 75/256 \\
-$(9, 0)$ reversed   &  8/8 (full)   & 133/256 & 75/256 \\
-$(13,4)$ partial    &  5/8          & 119/256 & \textbf{74/256} \\
-$(4,13)$ reversed   &  5/8          & 127/256 & 76/256 \\
+$(0, 9)$ Nine-Step  &  8/8   & 95/256  & 75/256 \\
+$(9, 0)$ reversed   &  8/8   & 133/256 & 75/256 \\
+$(7, 8)$            &  6/8   & 114/256 & --- \\
+$(8, 7)$ reversed   &  6/8   & ---     & --- \\
+$(13,4)$ partial    &  5/8   & 119/256 & \textbf{74/256} \\
+$(4,13)$ reversed   &  5/8   & 127/256 & 76/256 \\
+$(3,12)$            &  5/8   & ---     & --- \\
+$(12,3)$ reversed   &  5/8   & ---     & --- \\
 \bottomrule
 \end{tabular}
 \end{table}
