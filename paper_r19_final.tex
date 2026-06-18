@@ -1001,21 +1001,36 @@ words (again with the Nine-Step differential applied to block-3) produces:
 \item \emph{From the block-1 message as starting point:} converges to
   $\|\Delta H_3\|_H = 74/256$ (changes $N_{2,0}, N_{2,1}, N_{2,2}, N_{2,3},
   N_{2,15}$; CPU-verified).
-\item \emph{From random starting points (12 independent trials):} the best
-  trial reaches $\|\Delta H_3\|_H = \mathbf{73/256}$, with only $N_{2,0}$
-  and $N_{2,15}$ changed from the random initialization.  CPU-verified:
+\item \emph{From random starting points (over 15 independent trials
+  across two experiment runs):} the best trial reaches
+  $\|\Delta H_3\|_H = \mathbf{72/256}$, CPU-verified, per-word
+  decomposition $[10,11,5,7,8,11,10,10]$.
+  The full 16-word block-3 message (words 0--3, 8--9 and 12--15 come
+  from the random initialization; words 4, 0, 9 were optimised by
+  coordinate descent in that order):
   \begin{align*}
-    N_{2,0}  &= \texttt{0xce9d0d07}, \quad
-    N_{2,15} = \texttt{0x5091c8d5}
+    N_{2,0}  &= \texttt{0x0686fff5}, &
+    N_{2,1}  &= \texttt{0xe0cb4940}, &
+    N_{2,2}  &= \texttt{0xba1d1a31}, &
+    N_{2,3}  &= \texttt{0x2f7ec2af}\\
+    N_{2,4}  &= \texttt{0x88630f64}, &
+    N_{2,5}  &= \texttt{0xebc021d8}, &
+    N_{2,6}  &= \texttt{0x643aebe2}, &
+    N_{2,7}  &= \texttt{0xf25223f4}\\
+    N_{2,8}  &= \texttt{0x4a1d02e8}, &
+    N_{2,9}  &= \texttt{0xa76e6485}, &
+    N_{2,10} &= \texttt{0x7631462d}, &
+    N_{2,11} &= \texttt{0x1da15155}\\
+    N_{2,12} &= \texttt{0x0f4c9da9}, &
+    N_{2,13} &= \texttt{0x319865f2}, &
+    N_{2,14} &= \texttt{0x2a3dcee8}, &
+    N_{2,15} &= \texttt{0x577c16c7}
   \end{align*}
-  (remaining 14 words are the random initialization values from seed 42,
-   trial 2 of the experiment).
 \end{itemize}
-The three-block chain thus achieves Hamming weight $73/256$, a total
-reduction of $183/256 \approx 71.5\%$ from the all-different baseline.
-This result suggests that the near-collision landscape admits progressively
-lower local minima as additional message blocks are added, though each step
-yields diminishing returns (95 $\to$ 75 $\to$ 73 bits).
+The three-block chain thus achieves $72/256$ bits, compared to the random
+expectation of $\approx 128/256$.  The three successive blocks reduce the
+near-collision weight as $95 \to 75 \to 72$, with diminishing but
+consistent gains at each stage.
 
 %-----------------------------------------------------------------------
 \section{Comparison with Prior Work}

@@ -180,30 +180,33 @@ print(f"SECTION 1: Block-3 extended random starts  (nine-step IV, {N_STARTS} sta
 print(f"  IV |ΔH2| = {hw_total(H2p_ns, H2_ns)}/256", flush=True)
 
 rng = np.random.default_rng(1337)
-best_global_b3 = 73  # known best from previous run
+best_global_b3 = 72  # known best: trial 1 found 72/256
 best_words_b3  = None
 
-# Warm start: exact 73/256 state from threeblock_coord random start 3
-# (start values reconstructed from seed=42, trial=2; w[0] and w[15] optimised)
+# Warm start: exact 72/256 state from trial 1 (seed=1337, start 0)
+# w[0], w[4], w[9] optimised; remaining 13 from random start
 known_best_b3 = [
-    0xce9d0d07, 0x8df944c3, 0xe34cbfaf, 0x105653e3,
-    0xdbb8fa6e, 0xd3dfa2f0, 0x46d9b92c, 0xa1b4c210,
-    0x2a4c73f5, 0xc21209c3, 0xb355791f, 0x5ac236be,
-    0x11633489, 0xf87faa6d, 0x7218933c, 0x5091c8d5,
+    0x0686fff5, 0xe0cb4940, 0xba1d1a31, 0x2f7ec2af,
+    0x88630f64, 0xebc021d8, 0x643aebe2, 0xf25223f4,
+    0x4a1d02e8, 0xa76e6485, 0x7631462d, 0x1da15155,
+    0x0f4c9da9, 0x319865f2, 0x2a3dcee8, 0x577c16c7,
 ]
 cpu_check = ref_hw_b3(known_best_b3, H2_ns, H2p_ns, DELTA)
-print(f"\n  Warm start (previous best 73/256) CPU verify: {cpu_check}/256", flush=True)
-if cpu_check == 73:
+print(f"\n  Warm start (previous best 72/256) CPU verify: {cpu_check}/256", flush=True)
+if cpu_check == 72:
     best_words_b3 = known_best_b3
-    print(f"  Confirmed 73/256, using as warm start", flush=True)
+    print(f"  Confirmed 72/256, using as warm start", flush=True)
 
-for trial in range(N_STARTS):
+# Advance RNG past trial 0 (already ran, found 72/256)
+_ = rng.integers(0, 2**32, size=16, dtype=np.uint64)
+
+for trial in range(1, N_STARTS):  # trials 2..12 (trial 1 already ran)
     start = [int(x) & M for x in rng.integers(0, 2**32, size=16, dtype=np.uint64)]
-    cw, ch = coord_descent(start, H2_ns, H2p_ns, 0, 9, f"=== B3-NS trial {trial+1}/{N_STARTS} ===")
-    if ch < best_global_b3:
-        best_global_b3 = ch
+    cw, hw = coord_descent(start, H2_ns, H2p_ns, 0, 9, f"=== B3-NS trial {trial+1}/{N_STARTS} ===" )
+    if hw < best_global_b3:
+        best_global_b3 = hw
         best_words_b3  = cw
-        print(f"  *** NEW GLOBAL BEST: {ch}/256 ***", flush=True)
+        print(f"  *** NEW GLOBAL BEST: {hw}/256 ***", flush=True)
     print(f"  Running best: {best_global_b3}/256", flush=True)
 
 print(f"\nSection 1 best (block-3 nine-step): {best_global_b3}/256", flush=True)
@@ -248,17 +251,17 @@ best_b3_1304 = 999
 best_words_b3_1304 = None
 
 # Also try W_B1 as starting point
-cw0, ch0 = coord_descent(W_B1, H2_1304, H2p_1304, 13, 4, "=== B3-1304 from W_B1 ===", max_passes=3)
-if ch0 < best_b3_1304:
-    best_b3_1304 = ch0; best_words_b3_1304 = cw0
-    print(f"  W_B1 start: {ch0}/256", flush=True)
+cw0, hw0 = coord_descent(W_B1, H2_1304, H2p_1304, 13, 4, "=== B3-1304 from W_B1 ===", max_passes=3)
+if hw0 < best_b3_1304:
+    best_b3_1304 = hw0; best_words_b3_1304 = cw0
+    print(f"  W_B1 start: {hw0}/256", flush=True)
 
 for trial in range(N_STARTS):
     start = [int(x) & M for x in rng.integers(0, 2**32, size=16, dtype=np.uint64)]
-    cw, ch = coord_descent(start, H2_1304, H2p_1304, 13, 4, f"=== B3-1304 trial {trial+1}/{N_STARTS} ===")
-    if ch < best_b3_1304:
-        best_b3_1304 = ch; best_words_b3_1304 = cw
-        print(f"  *** NEW BEST (13,4) B3: {ch}/256 ***", flush=True)
+    cw, hw = coord_descent(start, H2_1304, H2p_1304, 13, 4, f"=== B3-1304 trial {trial+1}/{N_STARTS} ===")
+    if hw < best_b3_1304:
+        best_b3_1304 = hw; best_words_b3_1304 = cw
+        print(f"  *** NEW BEST (13,4) B3: {hw}/256 ***", flush=True)
     print(f"  Running best: {best_b3_1304}/256", flush=True)
 
 print(f"\nSection 3 best (block-3 (13,4)): {best_b3_1304}/256", flush=True)
