@@ -186,9 +186,9 @@ bitwise NOT.  Rotations and shifts of a 32-bit word $x$:
 \end{align*}
 
 \paragraph{State labels.}
-We write the 8-word compression state as
-$(a_r,a_{r-1},a_{r-2},a_{r-3},e_r,e_{r-1},e_{r-2},e_{r-3})$
-after round $r$, with IV boundary values $a_{-4},\ldots,a_{-1}$
+We write the 8-word compression state after round $r$ as
+$(a_r,a_{r-1},a_{r-2},a_{r-3},\allowbreak e_r,e_{r-1},e_{r-2},e_{r-3})$,
+with IV boundary values $a_{-4},\ldots,a_{-1}$
 and $e_{-4},\ldots,e_{-1}$:
 \[
   a_{-1}{=}\mathrm{IV}[0],\; a_{-2}{=}\mathrm{IV}[1],\;
@@ -524,9 +524,12 @@ corrected before the $a_3$ cancellation holds exactly.
 \end{proof}
 
 \paragraph{Iteration.}
-The joint C1/C2 system defines a map $(a_2,a_3) \mapsto
-(\mathcal{T}[F_{\mathrm{C1}}(a_3)] - F_{12},\;
- \mathcal{T}[F_{\mathrm{C2}}(a_2,a_3)] - F_{23})$.
+The joint C1/C2 system defines a map
+\[
+  (a_2,a_3) \;\mapsto\;
+  \bigl(\mathcal{T}[F_{\mathrm{C1}}(a_3)] - F_{12},\;
+        \mathcal{T}[F_{\mathrm{C2}}(a_2,a_3)] - F_{23}\bigr).
+\]
 We iterate from a seed $(a_2^{(0)}, a_3^{(0)})$ for up to $8$ steps.
 A \emph{convergent pair} is one at which both C1 and C2 are satisfied
 simultaneously, i.e., the map is a fixed point.  Empirical convergence
@@ -826,8 +829,9 @@ The sweep found exactly 3 values of $W_{15}$ for which $\Delta\mathbf{S}[64][5]=
 The best-total-weight solution yields the following verified concrete result:
 
 \begin{theorem}[One-Word Partial Collision]
-Under the Nine-Step differential $(\Delta W_0{=}+\delta,\;\Delta W_9{=}-\delta)$
-with $\delta=\texttt{0x0011e034}$, the message pair
+Let $\delta = \texttt{0x0011e034}$.
+Under the Nine-Step differential $(\Delta W_0 = +\delta,\; \Delta W_9 = -\delta)$,
+the message pair
 \begin{align*}
 M  &= [\texttt{0x6ac550a3},\ldots,\texttt{0xa56abdfe},\texttt{0x82627b41}],\\
 M' &= [\texttt{0x6ad730d7},\ldots,\texttt{0xa56abdfe},\texttt{0x82627b41}]
@@ -990,14 +994,16 @@ identically for all $\delta$).  Every other pair produces at most a
 \emph{partial} dead zone of 5 or 6 zero words.
 
 Despite this apparent advantage, coordinate descent on block-2 shows that
-the pair $(13,4)$---with only 5/8 schedule words zeroed---achieves
+the pair $(13,4)$ (only 5/8 schedule words zeroed) achieves
 $\|\Delta H_2\|_H = \mathbf{74/256}$, one bit better than the Nine-Step result.
 The exact pattern of zero positions is algebraically determined: for $(13,4)$
 the five zero positions are $W_{16}, W_{17}, W_{18}, W_{20}, W_{22}$, and the
 three nonzero positions are $W_{19}, W_{21}, W_{23}$ (alternating, for all
-messages and all $\delta$).  The nonzero terms arise from the nonlinear
-$\sigma_0$ operator applied to the modified word $W_4$, which first enters at
-$W_{19} = \sigma_1(W_{17}) + W_{12} + \sigma_0(W_4) + W_3$.  The even-indexed
+messages and all $\delta$).  The nonzero terms arise from $\sigma_0(W_4)$ applied to the modified word,
+which first enters at round 19:
+\[
+  W_{19} = \sigma_1(W_{17}) + W_{12} + \sigma_0(W_4) + W_3.
+\]  The even-indexed
 positions $W_{20}$ and $W_{22}$ remain zero because their $\pm\delta$
 contributions cancel linearly ($\Delta W_{20} = +\delta - \delta = 0$ exactly).
 Compared to the Nine-Step, the (13,4) residual is \emph{scattered} rather
@@ -1055,7 +1061,8 @@ function.  Figure~\ref{fig:trace} plots both traces.
 \centering
 \begin{tikzpicture}
 \begin{axis}[
-  width=\linewidth, height=5.5cm,
+  width=0.97\linewidth, height=5.5cm,
+  clip=true,
   xlabel={Compression round $r$}, ylabel={State diff.\ HW (bits/256)},
   xmin=0, xmax=63, ymin=60, ymax=165,
   xtick={0,8,16,24,32,40,48,56,63},
@@ -1099,11 +1106,9 @@ function.  Figure~\ref{fig:trace} plots both traces.
 \draw[->, blue, thin] (axis cs:61,84) -- (axis cs:61.5,91);
 \end{axis}
 \end{tikzpicture}
-\caption{Round-by-round state differential HW for two block-2 messages
-sharing the Nine-Step IV $(H_1, H_1')$.  The shaded band marks the
-algebraic dead zone (schedule difference $= 0$, rounds 16--23).
-The coord-descent message exploits a suppression cascade in rounds
-59--62, dropping from 127 to 75 bits.}
+\caption{State differential Hamming weight per round for two block-2 messages
+with Nine-Step IV $(H_1, H_1')$. Shaded: schedule dead zone (rounds 16--23).
+Blue trace: coord-descent optimum; cascade in rounds 59--62 drops 127$\to$75.}
 \label{fig:trace}
 \end{figure}
 
@@ -1248,12 +1253,12 @@ function that coordinate descent implicitly exploits.
 
 \paragraph{Artefacts.}
 The solver code, table-build utility, and independent verifier are
-available in the accompanying reproducibility package at
+available in the accompanying reproducibility package at\\
 \url{https://github.com/kamb-code/sha256-r19-preimage}.
 All three verified preimage examples (Table~\ref{tab:preimages}) can
 be checked with:
 \begin{center}
-\texttt{python3 verify\_r19.py {-}{-}hash <hex> {-}{-}words "<W0 \ldots W15>"}
+\small\texttt{python3 verify\_r19.py {-}{-}hash <hex> {-}{-}words "<W0 \ldots W15>"}
 \end{center}
 
 %-----------------------------------------------------------------------
