@@ -740,30 +740,32 @@ The claim $\Delta W_{25} = -\delta$ follows from $W_{r-16}|_{r=25} = W_9$,
 with $\Delta W_9 = -\delta$ and all other terms zero.
 \end{proof}
 
-The pair $(i,i+9)=(0,9)$ is \emph{unique}.  The two necessary conditions
-for a full dead zone are:
+The pair $\{0,9\}$ is \emph{unique} among all two-position pairs
+$\{i,j\}\subset[0,15]$.  Two conditions are necessary for a full dead zone:
 \begin{enumerate}
-\item \emph{$\sigma_0$ silence:} The $\sigma_0(W_j)$ term in round $r$
-  enters when $r-15=j$, i.e.\ at $r=j+15$.  For this to fall
-  \emph{outside} $[16,23]$ we need $j+15\ge 24$, i.e.\ $j\ge 9$.
-  With $j=9$ the $\sigma_0(W_9)$ term first appears at $r=24$, leaving
-  the window clean.
-\item \emph{Linear cancellation at $r=16$:} The $W_{r-7}$ and $W_{r-16}$
-  terms contribute $\Delta W_j=-\delta$ and $\Delta W_i=+\delta$
-  at the same round $r=i+16=j+7$.  For $j\ge 9$ this requires $i=j-9$;
-  with $j=9$ we get $i=0$ and $r=16$, placing the cancellation at the
-  first round of the window.
+\item \emph{$\sigma_0$ silence:} The $\sigma_0(W_k)$ term enters round $r$
+  when $r-15=k$.  For no $\sigma_0$ contribution to land \emph{inside}
+  $[16,23]$, both $i$ and $j$ must satisfy $k+15\le 15$ (i.e.\ $k=0$, landing
+  at $r=15$, \emph{before} the window) or $k+15\ge 24$ (i.e.\ $k\ge 9$,
+  \emph{after} the window).  Among $[0,15]$ the valid positions are $0$ and
+  $\{9,10,\ldots,15\}$.  A pair must draw both positions from this set.
+\item \emph{Linear cancellation at $r=16$:} $W_{16}$ has linear terms
+  $W_9$ and $W_0$.  Any nonzero $\Delta W_k$ with $k\in\{0,9\}$ must
+  cancel: $\Delta W_0 + \Delta W_9 = 0$ at $r=16$.
 \end{enumerate}
-Any $j<9$ fails condition 1 (the $\sigma_0(W_j)$ leakage enters before
-$r=24$, producing nonzero terms within the window).  Any $j>9$ with $j\le 15$
-satisfies condition 1 but requires $i=j-9\ge 1$, which shifts the
-cancellation out of the window (it lands at $r=i+16\ge 17$, but the
-$\sigma_0(W_j)$ leakage would need $j\ge 24$ to be clean---infeasible).
-Thus $(0,9)$ is the unique solution.
+Condition 1 forces the pair into $\{0\}\cup[9,15]$.  Condition 2 then
+requires exactly one position to be $0$ and one to be $9$ (for the
+$W_0$ and $W_9$ linear contributions to cancel).  Any pair with both
+positions in $[9,15]$ leaves $\Delta W_{16}=\Delta W_j\ne 0$ uncancelled;
+any pair with both positions $= 0$ is degenerate.  Hence $(0,9)$ (and
+its sign-reversal $(9,0)$) are the unique solutions.
 
-For partial dead zones, pairs with $j\in\{3,4,7,8\}$ produce exactly
-$6$ or $5$ zeros in $[16,23]$ (first nonzero at $W_{j+15}$), which
-is the basis of the $(13,4)$ and $(7,8)$ results in Section~\ref{sec:nine-step}.
+For partial dead zones, choosing the minus-delta position $j<9$ causes
+$\sigma_0(W_j)$ to land at $W_{j+15}\in[16,23]$---a nonzero ``seed''
+that propagates to alternating positions thereafter.  The first nonzero
+schedule difference is at $W_{j+15}$, so pairs with $j\in\{4,7,8\}$
+produce 5 or 6 dead positions in $[16,23]$, which is the basis of the
+$(13,4)$ and $(7,8)$ results below.
 
 \textbf{TC extension.} If additionally $W_9 - \delta \in \mathrm{TC}\text{-}\sigma_0(\delta)$,
 then $\sigma_0(W_9) - \sigma_0(W_9-\delta) = \delta$ exactly, giving
