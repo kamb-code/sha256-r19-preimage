@@ -970,10 +970,17 @@ identically for all $\delta$).  Every other pair produces at most a
 Despite this apparent advantage, coordinate descent on block-2 shows that
 the pair $(13,4)$---with only 5/8 schedule words zeroed---achieves
 $\|\Delta H_2\|_H = \mathbf{74/256}$, one bit better than the Nine-Step result.
-The mechanism is that the three surviving non-zero difference words in
-$W_{16..23}$ are smaller in magnitude for $(13,4)$ than the analogous
-leakage from the Nine-Step dead-zone boundary at $W_{24}$ onward, so the
-compression function suppresses the residual difference more efficiently.
+The exact pattern of zero positions is algebraically determined: for $(13,4)$
+the five zero positions are $W_{16}, W_{17}, W_{18}, W_{20}, W_{22}$, and the
+three nonzero positions are $W_{19}, W_{21}, W_{23}$ (alternating, for all
+messages and all $\delta$).  The nonzero terms arise from the nonlinear
+$\sigma_0$ operator applied to the modified word $W_4$, which first enters at
+$W_{19} = \sigma_1(W_{17}) + W_{12} + \sigma_0(W_4) + W_3$.  The even-indexed
+positions $W_{20}$ and $W_{22}$ remain zero because their $\pm\delta$
+contributions cancel linearly ($\Delta W_{20} = +\delta - \delta = 0$ exactly).
+Compared to the Nine-Step, the (13,4) residual is \emph{scattered} rather
+than a single ``wall'' appearing at $W_{24}$, allowing the compression
+function to suppress the residual difference more efficiently.
 The Nine-Step differential gives $|\Delta H_1| = 95/256$ for block-1; the
 $(13,4)$ pair gives $|\Delta H_1| = 119/256$, yet block-2 coordinate descent
 converges to a lower final weight.  This result shows that the \emph{quality}
