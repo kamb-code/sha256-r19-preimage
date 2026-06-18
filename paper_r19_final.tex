@@ -1108,17 +1108,20 @@ The coord-descent message exploits a suppression cascade in rounds
 \end{figure}
 
 \noindent\textbf{Depth of the local minimum.}
-To quantify how tightly the nine-step two-block result is trapped,
-we exhaustively tested every single-word substitution (all $16 \times
-2^{32}$ candidates) and every two-word simultaneous substitution
-($16 \times 15 \times 2^{32}$ pairs) starting from the 75/256 state.
-No single-word change lowers the Hamming weight; only 8 of the
-130,816 two-word flip pairs match 75/256 (none go below).  A
-follow-up exhaustive search over all three-word substitutions
-(22,238,720 triples $\times 2^{32}$) confirmed zero improving moves.
+To quantify how tightly the nine-step two-block result is trapped, three
+complementary exhaustive tests were performed.
+\emph{(i) Single-word sweep:} each of the 16 block-2 words was swept
+independently over all $2^{32}$ values (the coord-descent pass); no word
+value lowers the Hamming weight below 75/256 (GPU-verified).
+\emph{(ii) Two-bit flips:} all $\binom{512}{2} = 130{,}816$ pairs of
+single-bit flips in the full 512-bit message were tested; 0 pairs improved
+the HW (minimum achieved: $92/256$, worse than baseline).
+\emph{(iii) Three-bit flips:} all $\binom{512}{3} = 22{,}238{,}720$
+triple-bit flip combinations were tested; 0 improved the HW (minimum
+achieved: $75/256 =$ baseline).
 The 75/256 optimum is therefore a \emph{$\geq\!4$-bit-deep} local
-minimum: no substitution touching fewer than 4 of the $16 \times 32 =
-512$ message bits yields a strictly better near-collision.
+minimum: no perturbation of fewer than 4 of the $512$ message bits
+yields a strictly better near-collision.
 
 \noindent\textbf{Three-block near-collision chain.}
 Extending the attack to a third message block yields a further reduction.
