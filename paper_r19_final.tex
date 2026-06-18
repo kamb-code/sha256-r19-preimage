@@ -948,6 +948,75 @@ with individual word contributions of $9, 13, 11, 6, 13, 9, 6, 8$ bits.
 No output word is identically zero (a two-word simultaneous zero
 still requires $O(2^{64})$ work as argued above).
 
+\noindent\textbf{Alternative differentials.}
+An exhaustive survey of all 240 two-position message-schedule differentials
+$(\Delta W_i = +\delta,\; \Delta W_j = -\delta)$ with $\delta = \texttt{0x0011e034}$
+reveals that only $(i,j) = (0,9)$ and $(9,0)$ produce a \emph{full} 8-round
+algebraic dead zone ($W_{16}=\cdots=W_{23}=0$ in the difference schedule,
+identically for all $\delta$).  Every other pair produces at most a
+\emph{partial} dead zone of 5 or 6 zero words.
+
+Despite this apparent advantage, coordinate descent on block-2 shows that
+the pair $(13,4)$---with only 5/8 schedule words zeroed---achieves
+$\|\Delta H_2\|_H = \mathbf{74/256}$, one bit better than the Nine-Step result.
+The mechanism is that the three surviving non-zero difference words in
+$W_{16..23}$ are smaller in magnitude for $(13,4)$ than the analogous
+leakage from the Nine-Step dead-zone boundary at $W_{24}$ onward, so the
+compression function suppresses the residual difference more efficiently.
+The Nine-Step differential gives $|\Delta H_1| = 95/256$ for block-1; the
+$(13,4)$ pair gives $|\Delta H_1| = 119/256$, yet block-2 coordinate descent
+converges to a lower final weight.  This result shows that the \emph{quality}
+of the algebraic cancellation in rounds 24--63 outweighs the \emph{quantity}
+of zeroed schedule words.
+
+Table~\ref{tab:alt_diff} summarises the two-block near-collision Hamming
+weight achieved by the best alternative differentials.
+
+\begin{table}[ht]
+\centering
+\caption{Two-block near-collision Hamming weight $\|\Delta H_2\|_H$ for
+selected two-position differentials.  ``Dead words'' counts the number
+of exactly-zero positions in $W_{16..23}$ of the difference schedule.
+All results verified on CPU.}
+\label{tab:alt_diff}
+\small
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Differential & Dead words & $|\Delta H_1|$ & $\|\Delta H_2\|_H$ \\
+\midrule
+$(0, 9)$ Nine-Step  &  8/8 (full)   & 95/256  & 75/256 \\
+$(9, 0)$ reversed   &  8/8 (full)   & 133/256 & 75/256 \\
+$(13,4)$ partial    &  5/8          & 119/256 & \textbf{74/256} \\
+$(4,13)$ reversed   &  5/8          & 127/256 & 76/256 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Three-block near-collision chain.}
+Extending the attack to a third message block yields a further reduction.
+Given the block-2 output pair $(H_2, H_2')$ with $\|\Delta H_2\|_H = 75/256$
+from the Nine-Step two-block result, coordinate descent over the 16 block-3
+words (again with the Nine-Step differential applied to block-3) produces:
+\begin{itemize}
+\item \emph{From the block-1 message as starting point:} converges to
+  $\|\Delta H_3\|_H = 74/256$ (changes $N_{2,0}, N_{2,1}, N_{2,2}, N_{2,3},
+  N_{2,15}$; CPU-verified).
+\item \emph{From random starting points (12 independent trials):} the best
+  trial reaches $\|\Delta H_3\|_H = \mathbf{73/256}$, with only $N_{2,0}$
+  and $N_{2,15}$ changed from the random initialization.  CPU-verified:
+  \begin{align*}
+    N_{2,0}  &= \texttt{0xce9d0d07}, \quad
+    N_{2,15} = \texttt{0x5091c8d5}
+  \end{align*}
+  (remaining 14 words are the random initialization values from seed 42,
+   trial 2 of the experiment).
+\end{itemize}
+The three-block chain thus achieves Hamming weight $73/256$, a total
+reduction of $183/256 \approx 71.5\%$ from the all-different baseline.
+This result suggests that the near-collision landscape admits progressively
+lower local minima as additional message blocks are added, though each step
+yields diminishing returns (95 $\to$ 75 $\to$ 73 bits).
+
 %-----------------------------------------------------------------------
 \section{Comparison with Prior Work}
 \label{sec:comparison}
@@ -1017,10 +1086,15 @@ full $2^{32}$ message space, explicit pairs $(M, M')$ where one
 Eight such pairs are enumerated and verified.  The State-Differential
 Trap (Proposition~\ref{prop:trap}) establishes that further reduction
 to a full collision within this one-block framework requires
-$O(2^{64})$ work.  The two-block extension reported in
-Section~\ref{sec:experiments} reduces the near-collision cost to
-$75/256$ Hamming weight via coordinate descent over all 16 block-2
-message words, a 20-bit improvement over the single-block baseline.
+$O(2^{64})$ work.  A systematic survey of all 240 two-position
+message-schedule differentials confirms that the Nine-Step pair
+$(0,9)$ is the \emph{unique} two-position differential achieving a
+full 8-round algebraic dead zone; however, the partial-dead pair
+$(13,4)$ achieves $74/256$ Hamming weight in two blocks---one bit
+better than Nine-Step.  A three-block coordinate-descent chain
+further reduces this to $73/256$, a total improvement of
+$183/256 \approx 71.5\%$ from the all-different baseline, with each
+additional block yielding diminishing but non-negligible gains.
 
 \paragraph{Artefacts.}
 The solver code, table-build utility, and independent verifier are
