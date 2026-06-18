@@ -119,8 +119,11 @@ Theoretical preimage attacks on reduced SHA-256 include the
 meet-in-the-middle attack of Aoki and
 Sasaki~\cite{AokiSasaki2009}, which achieves $2^{52.3}$ for a
 pseudo-preimage and $2^{104.5}$ for a preimage at 24 rounds, but has
-never been executed concretely.  Collision attacks have been pushed to
-24 steps~\cite{SanadhyaSarkar2008}, but these do not yield preimages.
+never been executed concretely.  Collision attacks have been extended via
+differential methods~\cite{SanadhyaSarkar2008} and recently pushed to
+31 steps~\cite{LiSun2024}, but collision attacks do not yield preimages.
+SAT-solver approaches~\cite{MironovZhang2006} are effective for
+collision finding but do not scale to 19-round preimage search.
 The most relevant prior \emph{practical} result is the SAT-based
 preimage attack of Pikhtovnikov and
 Kiryanova~\cite{PikhtovnikovKiryanova2022}, which found concrete
