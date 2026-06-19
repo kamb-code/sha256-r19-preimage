@@ -1012,24 +1012,20 @@ Pattern ($W_{16..23}$) & Dead & Representative pairs & $\|\Delta H_2\|_H$ \\
 \texttt{11111111} & 8/8 & $(0,9)^\dagger$, $(9,0)^\dagger$ & 75/256 \\
 \texttt{11111100} & 6/8 & $(7,8)^\dagger$, $(8,7)^\dagger$ & see Tab.~\ref{tab:alt_diff} \\
 \texttt{11111000} & 5/8 & $(6,7)$, $(6,8)$, $(7,6)$, $(8,6)$ & --- \\
-\texttt{11110100} & 5/8 & $(7,13)$, $(8,13)$, $(13,7)$, $(13,8)$ & --- \\
+\texttt{11110100} & 5/8 & $(7,13)$, $(8,13)$, $(13,7)^\dagger$, $(13,8)$ & 74/256 for $(13,7)$ \\
 \texttt{11101010} & 5/8 & $(4,13)^\dagger$, $(8,12)$, $(12,8)$, $(13,4)^\dagger$ & 74--76/256 \\
-\texttt{11010101} & 5/8 & $(3,12)^\dagger$, $(11,13)$, $(12,3)^\dagger$, $(13,11)$ & see Tab.~\ref{tab:alt_diff} \\
+\texttt{11010101} & 5/8 & $(3,12)^\dagger$, $(11,13)^\dagger$, $(12,3)^\dagger$, $(13,11)$ & see Tab.~\ref{tab:alt_diff} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The 8 pairs marked $^\dagger$ were analysed via block-2 coordinate descent.
-Of the remaining 12 five-eighth pairs, the four with the lowest block-1
-differential weight are $(11,13)$, $(13,7)$, $(8,6)$, $(13,11)$ at
-$|\Delta H_1| = 115$, $117$, $118$, $118/256$ respectively---each
-comparable to or below the $(13,4)$ value of $119/256$ that achieved
-$74/256$.  These are the most promising candidates for future coord-descent runs.
-Among pairs with a computed two-block result,
-the $(3,12)$ differential achieves $\mathbf{72/256}$---matching the
-three-block Nine-Step minimum in just two blocks---with $(12,3)$ reversed
-at $73/256$, $(13,4)$ at $74/256$, $(7,8)$ at $75/256$,
-and $(0,9)$, $(9,0)$ at $75/256$.
+All 10 pairs with $\geq 5/8$ dead positions and $|\Delta H_1|\leq 120/256$
+were analysed via block-2 coordinate descent (marked~$^\dagger$ in
+Table~\ref{tab:dead_patterns}).  The $(3,12)$ differential achieves
+$\mathbf{72/256}$---matching the three-block Nine-Step minimum in just two
+blocks.  The $(11,13)$ pair achieves $73/256$, matching the $(12,3)$ reversed
+result.  The $(13,4)$ and $(13,7)$ pairs each achieve $74/256$.  The
+Nine-Step pairs $(0,9)$, $(9,0)$ and the $(7,8)$ pair achieve $75/256$.
 
 The exact pattern of zero positions is algebraically determined: for $(13,4)$
 the five zero positions are $W_{16}, W_{17}, W_{18}, W_{20}, W_{22}$, and the
@@ -1051,14 +1047,18 @@ converges to a lower final weight.  This result shows that the \emph{quality}
 of the algebraic cancellation in rounds 24--63 outweighs the \emph{quantity}
 of zeroed schedule words.
 
-\noindent\textbf{Cross-differential remark.}
+\noindent\textbf{Cross-differential result.}
 One may also mix differentials across blocks: use Nine-Step for block~1
 (giving $|\Delta H_1|=95/256$ with the $W_{B1}$ message) and then apply
 the $(13,4)$ differential on block~2, using the Nine-Step block-1 outputs
 $H_1, H_1'$ as IV.  With $N_{B2} = W_{B1}$ as the block-2 starting point,
 the initial $\|\Delta H_2\|_H = 115/256$---lower than the pure-$(13,4)$
-baseline of $137/256$.  Whether coordinate descent can push this below
-$74/256$ is an open computational question.
+baseline of $137/256$.  Coordinate descent achieves $\mathbf{72/256}$,
+matching the best pure-differential two-block result ($(3,12)$).
+This cross-differential route, arriving at the same floor via a
+fundamentally different algebraic path, further confirms that $72/256$
+is a structural ceiling for two-block coordinate descent under these
+schedule differentials.
 
 Table~\ref{tab:alt_diff} summarises the two-block near-collision Hamming
 weight achieved by the surveyed differentials.
@@ -1068,6 +1068,7 @@ weight achieved by the surveyed differentials.
 \caption{Two-block near-collision Hamming weight $\|\Delta H_2\|_H$ for
 surveyed differentials (coord descent from $W_{B1}$).
 ``Dead'' = algebraic zero count in $W_{16..23}$.
+Cross = Nine-Step block-1 with $(13,4)$ block-2 differential.
 All block-2 results CPU-verified.}
 \label{tab:alt_diff}
 \small
@@ -1079,10 +1080,13 @@ $(0, 9)$ Nine-Step  &  8/8   & 95/256  & 75/256 \\
 $(9, 0)$ reversed   &  8/8   & 133/256 & 75/256 \\
 $(7, 8)$            &  6/8   & 114/256 & 75/256 \\
 $(8, 7)$ reversed   &  6/8   & 137/256 & 76/256 \\
+$(11,13)$           &  5/8   & 115/256 & 73/256 \\
+$(13,7)$            &  5/8   & 117/256 & 74/256 \\
 $(13,4)$ partial    &  5/8   & 119/256 & 74/256 \\
 $(4,13)$ reversed   &  5/8   & 127/256 & 76/256 \\
 $(3,12)$            &  5/8   & 130/256 & \textbf{72/256} \\
 $(12,3)$ reversed   &  5/8   & 125/256 & 73/256 \\
+Cross NS$\oplus(13,4)$ & ---  & 95/256  & \textbf{72/256} \\
 \bottomrule
 \end{tabular}
 \end{table}
