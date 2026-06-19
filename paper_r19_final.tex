@@ -1048,6 +1048,15 @@ converges to a lower final weight.  This result shows that the \emph{quality}
 of the algebraic cancellation in rounds 24--63 outweighs the \emph{quantity}
 of zeroed schedule words.
 
+\noindent\textbf{Cross-differential remark.}
+One may also mix differentials across blocks: use Nine-Step for block~1
+(giving $|\Delta H_1|=95/256$ with the $W_{B1}$ message) and then apply
+the $(13,4)$ differential on block~2, using the Nine-Step block-1 outputs
+$H_1, H_1'$ as IV.  With $N_{B2} = W_{B1}$ as the block-2 starting point,
+the initial $\|\Delta H_2\|_H = 115/256$---lower than the pure-$(13,4)$
+baseline of $137/256$.  Whether coordinate descent can push this below
+$74/256$ is an open computational question.
+
 Table~\ref{tab:alt_diff} summarises the two-block near-collision Hamming
 weight achieved by the surveyed differentials.
 
