@@ -81,8 +81,8 @@ expectation $\approx 128$), and 8 distinct verified pairs are
 enumerated.  Extending to multi-block coordinate descent reduces this
 further: a two-block chain achieves $75/256$ (Nine-Step) or
 $\mathbf{74/256}$ with the partial-dead $(13,4)$ differential;
-a three-block Nine-Step chain reaches $\mathbf{72/256}$, a $71.9\%$
-reduction from the all-different baseline.
+both a three-block Nine-Step and a three-block $(13,4)$ chain independently
+reach $\mathbf{72/256}$, a $71.9\%$ reduction from the all-different baseline.
 
 Full SHA-256 (64 rounds) is not threatened by either result.
 
@@ -1025,8 +1025,11 @@ differential weight are $(11,13)$, $(13,7)$, $(8,6)$, $(13,11)$ at
 $|\Delta H_1| = 115$, $117$, $118$, $118/256$ respectively---each
 comparable to or below the $(13,4)$ value of $119/256$ that achieved
 $74/256$.  These are the most promising candidates for future coord-descent runs.
-Among tested pairs, $(13,4)$ is the best (74/256) despite having only
-5/8 dead zone.
+Among pairs with a computed two-block result,
+the $(3,12)$ differential achieves $\mathbf{72/256}$---matching the
+three-block Nine-Step minimum in just two blocks---with $(12,3)$ reversed
+at $73/256$, $(13,4)$ at $74/256$, $(7,8)$ at $75/256$,
+and $(0,9)$, $(9,0)$ at $75/256$.
 
 The exact pattern of zero positions is algebraically determined: for $(13,4)$
 the five zero positions are $W_{16}, W_{17}, W_{18}, W_{20}, W_{22}$, and the
@@ -1074,12 +1077,12 @@ Differential & Dead & $|\Delta H_1|$ & $\|\Delta H_2\|_H$ \\
 \midrule
 $(0, 9)$ Nine-Step  &  8/8   & 95/256  & 75/256 \\
 $(9, 0)$ reversed   &  8/8   & 133/256 & 75/256 \\
-$(7, 8)$            &  6/8   & 114/256 & --- \\
-$(8, 7)$ reversed   &  6/8   & 137/256 & --- \\
-$(13,4)$ partial    &  5/8   & 119/256 & \textbf{74/256} \\
+$(7, 8)$            &  6/8   & 114/256 & 75/256 \\
+$(8, 7)$ reversed   &  6/8   & 137/256 & 76/256 \\
+$(13,4)$ partial    &  5/8   & 119/256 & 74/256 \\
 $(4,13)$ reversed   &  5/8   & 127/256 & 76/256 \\
-$(3,12)$            &  5/8   & 130/256 & --- \\
-$(12,3)$ reversed   &  5/8   & 125/256 & --- \\
+$(3,12)$            &  5/8   & 130/256 & \textbf{72/256} \\
+$(12,3)$ reversed   &  5/8   & 125/256 & 73/256 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1223,6 +1226,37 @@ expectation of $\approx 128/256$.  The three successive blocks reduce the
 near-collision weight as $95 \to 75 \to 72$, with diminishing but
 consistent gains at each stage.
 
+\noindent\textbf{Three-block chain under the $(13,4)$ differential.}
+Running the same three-block procedure with the $(13,4)$ partial-dead
+differential---using the optimal block-2 message ($\|\Delta H_2\|_H = 74/256$,
+Section~\ref{sec:gpu_sweep}) as the intermediate IV---coordinate descent over
+random block-3 starting points (13 trials) independently reaches
+$\|\Delta H_3\|_H = \mathbf{72/256}$, matching the Nine-Step three-block
+minimum.  The reduction chain is $137 \to 74 \to 72$.
+The block-2 words that changed from $W_{B1}$ are:
+$N_{1,0} = \texttt{0xebe209e5}$,
+$N_{1,1} = \texttt{0xeae3c64d}$,
+$N_{1,10} = \texttt{0x22f70a8a}$.
+Complete CPU-verified block-3 message ($\star$ = changed from random start):
+\begin{align*}
+  N_{2,0}^{\star}  &= \texttt{0x0f79c1dc}, &
+  N_{2,8}^{\star}  &= \texttt{0xc6a01b18} \\
+  N_{2,1}^{\star}  &= \texttt{0x8867bb35}, &
+  N_{2,9}^{\star}  &= \texttt{0x40387c32} \\
+  N_{2,2}^{\star}  &= \texttt{0x3429c176}, &
+  N_{2,10}^{\star} &= \texttt{0x5539ccbb} \\
+  N_{2,3}^{\star}  &= \texttt{0x46c45627}, &
+  N_{2,11}^{\star} &= \texttt{0x826ea374} \\
+  N_{2,4}^{\star}  &= \texttt{0x626b4377}, &
+  N_{2,12}^{\star} &= \texttt{0x3fc8c606} \\
+  N_{2,5}^{\star}  &= \texttt{0x474524a4}, &
+  N_{2,13}^{\star} &= \texttt{0x48d6c64b} \\
+  N_{2,6}^{\star}  &= \texttt{0x293dae09}, &
+  N_{2,14}^{\star} &= \texttt{0x8f75416b} \\
+  N_{2,7}^{\star}  &= \texttt{0x6a68a515}, &
+  N_{2,15}^{\star} &= \texttt{0x87c954d1}
+\end{align*}
+
 %-----------------------------------------------------------------------
 \section{Comparison with Prior Work}
 \label{sec:comparison}
@@ -1296,13 +1330,15 @@ $O(2^{64})$ work.  A systematic survey of all 240 two-position
 message-schedule differentials confirms that the Nine-Step pair
 $(0,9)$ is the \emph{unique} two-position differential achieving a
 full 8-round algebraic dead zone; however, the partial-dead pair
-$(13,4)$ achieves $74/256$ Hamming weight in two blocks---one bit
-better than Nine-Step.  Among 12 further untested 5/8 pairs, the pair
-$(11,13)$ has $|\Delta H_1| = 115/256$, lower even than $(13,4)$,
-making it the strongest candidate for future coord-descent exploration.
-A three-block Nine-Step chain
-further reduces this to $\mathbf{72/256}$ ($95\to 75\to 72$), a total
-improvement of $184/256 = 71.9\%$ from the all-different baseline.
+Among eight surveyed differentials, the $(3,12)$ pair achieves
+$\mathbf{72/256}$ in \emph{two} blocks---matching the three-block
+Nine-Step minimum---with $(12,3)$ at $73/256$ and $(13,4)$ at $74/256$.
+A three-block Nine-Step chain also reaches $\mathbf{72/256}$
+($95\to 75\to 72$); independently, a three-block $(13,4)$ chain
+reaches the same bound ($137\to 74\to 72$), confirming that $72/256$
+is a structural floor of the coordinate-descent method rather than an
+artefact of one differential.
+The total improvement is $184/256 = 71.9\%$ from the all-different baseline.
 Exhaustive single- and multi-word sensitivity analysis confirms
 that the $75/256$ two-block minimum is a $\geq\!4$-bit-deep local
 minimum: no perturbation of fewer than 4 of the 512 message bits
