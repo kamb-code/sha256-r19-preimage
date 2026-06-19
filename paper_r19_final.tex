@@ -1343,9 +1343,10 @@ of $\sigma_0$-differential table lookups, making the full $2^{32}$
 sweep tractable on a single GPU.  Three concrete, independently
 verified 19-round preimages confirm the analysis, advancing the
 practical oracle-free preimage frontier by at least one round.
-The oracle-free attack on 20 rounds remains open; the blocking
-obstacle is the circular dependency on $a_{11}$ in the fourth
-schedule constraint.
+The oracle-free attack on 20 rounds remains open; the
+fourth schedule constraint (C3) introduces an independent $2^{-32}$
+filter that raises the expected work per context from $O(2^{-32})$
+to $O(2^{-64})$, a $2^{32}$ barrier without a known bypass.
 
 \paragraph{Nine-Step structure (collision direction).}
 The Nine-Step Cancellation Lemma establishes an 8-round algebraic
@@ -1360,7 +1361,8 @@ to a full collision within this one-block framework requires
 $O(2^{64})$ work.  A systematic survey of all 240 two-position
 message-schedule differentials confirms that the Nine-Step pair
 $(0,9)$ is the \emph{unique} two-position differential achieving a
-full 8-round algebraic dead zone; however, the partial-dead pair
+full 8-round algebraic dead zone; however, partial-dead differentials
+achieve competitive improvements in the multi-block setting.
 Among eight surveyed differentials, the $(3,12)$ pair achieves
 $\mathbf{72/256}$ in \emph{two} blocks---matching the three-block
 Nine-Step minimum---with $(12,3)$ at $73/256$ and $(13,4)$ at $74/256$.
