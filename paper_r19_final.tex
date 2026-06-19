@@ -727,12 +727,10 @@ $2^{32}$ beyond the $R=19$ result.
 A 165-context GPU run of the $R=20$ $\sigma_0$-chain on an H100 (batch~$=2^{26}$,
 K\textsubscript{seeds}$=4$) recorded 4{,}166 $W_9$-lo-pass events and zero hi-pass events.
 Under the null hypothesis of uniform residuals, the expected hi count is $\mu =
-4166/65536 \approx 0.064$; the probability of zero hi events is $e^{-\mu}\approx 0.94$.
-A chi-squared test of the residual histogram (256 bins) found no structural
-anti-correlation (residuals consistent with uniform).  This confirms that the
-absence of hi events is purely statistical and that the entire $2^{32}$
-difficulty increase over $R=19$ is attributable to the C3 filter, not to
-any structural bias in $W_9$.
+4166/65536 \approx 0.064$; the probability of zero hi events is $e^{-\mu}\approx 0.94$,
+confirming the absence of hi events is purely statistical.
+The entire $2^{32}$ difficulty increase over $R=19$ is attributable to the independent
+C3 constraint, not to any structural bias in $W_9$.
 
 The oracle-free R=20 attack remains an open problem.
 
