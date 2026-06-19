@@ -735,6 +735,16 @@ $2W_{r-16}$ ensures that \emph{any} perturbation $\Delta W_1 = \varepsilon$ woul
 introduce $\sig{0}(\varepsilon)$ into $\Delta W_{16}$ (breaking cancellation), which is
 why the pair $(0,9)$ is the unique minimal solution.
 
+\textbf{Orbit structure of $\boldsymbol{\sigma_0}$.}
+Viewed as a $\mathbb{F}_2$-linear bijection on $(\mathbb{Z}/2\mathbb{Z})^{32}$, the map $\sigma_0$
+has order $49{,}146 = 2\cdot 3\cdot 8191$ where $8191 = 2^{13}-1$ is a Mersenne prime.
+Its only short orbits are the two fixed points $\{0,\,\texttt{0x27f42515}\}$
+and the unique $2$-cycle $\{\texttt{0x0b3b7ef9} \leftrightarrow \texttt{0x2ccf5bec}\}$;
+in particular, no period-3 or period-4 elements exist.
+Consequently any $\sigma_0$-chain of length four ($W_0,\ldots,W_4$) lies in an orbit of
+length $49{,}146$ unless $W_4$ is one of the four exceptional values above, so
+no ``chain-wrap'' shortcut of the form $W_0 = W_4$ arises generically.
+
 Combined with the $W_9$ lo/hi filter (also $\approx 2^{-32}$), the expected preimage rate per
 context drops from $O(2^{-32})$ at $R=19$ to $O(2^{-64})$ at $R=20$---a factor of
 $2^{32}$ beyond the $R=19$ result.
