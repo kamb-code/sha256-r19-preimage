@@ -719,6 +719,22 @@ where $W_4^{\mathrm{round}}$ is fully determined by $a_0,\ldots,a_3$ once C0--C2
 $W_{12}^{\mathrm{base}}$ is determined by context.
 Because $\sig{0}$ is a bijection, $W_4^{\mathrm{round}}$ must equal the unique $\sig{0}^{-1}(C3_{\mathrm{tgt}})$;
 this is an independent 32-bit check that passes with probability $\approx 2^{-32}$.
+
+\textbf{Schedule identity.}
+For messages satisfying the $\sigma_0$-chain $W_k = \sig{0}(W_{k+1})$, $k=0,\ldots,3$,
+the substitution $\sig{0}(W_{r-15}) = W_{r-16}$ reduces the schedule recurrence for $r\in\{16,\ldots,19\}$ to
+\[
+  W_r = \sig{1}(W_{r-2}) + W_{r-7} + 2\,W_{r-16}.
+\]
+From this identity and $W_3 = \sig{0}(W_4)$ one computes directly
+$C3_{\mathrm{tgt}} = W_{19} - \sig{1}(W_{17}) - W_{12} - W_3 = \sig{0}(W_4) = W_3$,
+confirming that the C3 check reduces to $W_4^{\mathrm{round}} = W_4^{\mathrm{chain}}$ (verified numerically).
+The same identity provides a concise derivation of the Nine-Step Lemma: at $r=16$,
+$\Delta W_{16} = \Delta W_{9} + \Delta W_0 = -\delta + \delta = 0$, and the doubled term
+$2W_{r-16}$ ensures that \emph{any} perturbation $\Delta W_1 = \varepsilon$ would
+introduce $\sig{0}(\varepsilon)$ into $\Delta W_{16}$ (breaking cancellation), which is
+why the pair $(0,9)$ is the unique minimal solution.
+
 Combined with the $W_9$ lo/hi filter (also $\approx 2^{-32}$), the expected preimage rate per
 context drops from $O(2^{-32})$ at $R=19$ to $O(2^{-64})$ at $R=20$---a factor of
 $2^{32}$ beyond the $R=19$ result.
