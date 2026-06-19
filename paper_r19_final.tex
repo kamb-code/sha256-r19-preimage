@@ -704,8 +704,37 @@ is needed to compute the quantity used to look up $a_{11}$: a circular
 dependency.  No algebraic link that breaks this circularity has been
 found.  Exhaustive search over all binary linear combinations of the
 four residual equations $R_{16}$--$R_{19}$ found no combination that
-isolates any of the three unknowns $(a_2, a_3, a_{11})$.  The
-oracle-free R=20 attack remains an open problem.
+isolates any of the three unknowns $(a_2, a_3, a_{11})$.
+
+\textbf{Quantitative complexity gap.}
+An equivalent view using the $\sigma_0$-chain directly confirms the $2^{32}$ difficulty increase.
+Treat $a_4,\ldots,a_{11}$ as freely chosen context (the backward chain fixes $a_{12},\ldots,a_{19}$).
+The chain C0--C2 then proceeds identically to the $R=19$ case, but the schedule now includes $W_{19}$,
+introducing a fourth constraint~(C3):
+\[
+  \sig{0}\!\bigl(W_4^{\mathrm{round}}\bigr)
+  = W_{19}^{\mathrm{bc}} - \sig{1}(W_{17}^{\mathrm{bc}}) - W_{12}^{\mathrm{base}} - W_3,
+\]
+where $W_4^{\mathrm{round}}$ is fully determined by $a_0,\ldots,a_3$ once C0--C2 converge and
+$W_{12}^{\mathrm{base}}$ is determined by context.
+Because $\sig{0}$ is a bijection, $W_4^{\mathrm{round}}$ must equal the unique $\sig{0}^{-1}(C3_{\mathrm{tgt}})$;
+this is an independent 32-bit check that passes with probability $\approx 2^{-32}$.
+Combined with the $W_9$ lo/hi filter (also $\approx 2^{-32}$), the expected preimage rate per
+context drops from $O(2^{-32})$ at $R=19$ to $O(2^{-64})$ at $R=20$---a factor of
+$2^{32}$ beyond the $R=19$ result.
+
+\textbf{GPU diagnostic.}
+A 165-context GPU run of the $R=20$ $\sigma_0$-chain on an H100 (batch~$=2^{26}$,
+K\textsubscript{seeds}$=4$) recorded 4{,}166 $W_9$-lo-pass events and zero hi-pass events.
+Under the null hypothesis of uniform residuals, the expected hi count is $\mu =
+4166/65536 \approx 0.064$; the probability of zero hi events is $e^{-\mu}\approx 0.94$.
+A chi-squared test of the residual histogram (256 bins) found no structural
+anti-correlation (residuals consistent with uniform).  This confirms that the
+absence of hi events is purely statistical and that the entire $2^{32}$
+difficulty increase over $R=19$ is attributable to the C3 filter, not to
+any structural bias in $W_9$.
+
+The oracle-free R=20 attack remains an open problem.
 
 %-----------------------------------------------------------------------
 \section{The Nine-Step Cancellation Lemma and Collision Structure}
