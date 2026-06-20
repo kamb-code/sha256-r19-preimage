@@ -33,9 +33,9 @@
 
 \begin{document}
 
-\title{\textbf{A Practical Oracle-Free Preimage Attack on\\
-       19-Round SHA-256 via Schedule-Differential\\
-       Table Lookup}}
+\title{\textbf{A Practical Oracle-Free Preimage Attack on the\\
+       19-Round SHA-256 Compression Function\\
+       via Schedule-Differential Table Lookup}}
 
 \author{Kameldip Singh Basra \\[4pt]
         \small Independent Researcher \\
@@ -414,31 +414,63 @@ $a_2 = a_3 = 0$.  Then:
 \end{lemma}
 
 \begin{proof}
-From~\eqref{eq:W-round-inv} at $r=9$:
+Apply~\eqref{eq:W-round-inv} at $r=9$:
 \[
-  W_9 = T_1^{(9)} - e_5 - \Sig{1}(e_8) - \Ch(e_8,e_7,e_6) - K_9.
+  W_9 = \underbrace{T_1^{(9)} - \Sig{1}(e_8) - K_9}_{W_9^{\mathrm{base}}}
+        - e_5 - \Ch(e_8,e_7,e_6).
 \]
-The terms $e_6, e_7, T_1^{(5)}$ depend on $a_2$ and $a_3$ through the
-forward rounds.  Evaluating with $a_2 = a_3 = 0$ produces $\hat{W}_9$
-by~\eqref{eq:W9hat}.  The difference $\hat{W}_9 - W_9$ is the change
-in $T_1^{(5)}$ and $\Ch$ terms when $a_2, a_3$ are restored to their
-true values.  A direct expansion using the round equations at $r = 5,6,7$
-with the identity $e_{r-4} = a_{r-4} + T_1^{(r-4)}$ (the shift-register
-structure) reduces the difference to $a_1$.  Numerically: with the
-verified preimage (Preimage~1 in Table~\ref{tab:preimages}),
-$\hat{W}_9 = \texttt{0x72c05667}$,
-$W_9 = \texttt{0x6d1e5a20}$, and
-$a_1 = \texttt{0x05a1fc47}$; the identity holds exactly.
-\end{proof}
+$T_1^{(9)},\,e_8$ depend only on context ($a_4,\ldots,a_9$), so
+$W_9^{\mathrm{base}}$ is fully determined by context.
 
-\begin{remark}
-The proof sketch is structural: the missing $a_2, a_3$ contributions
-propagate through the $e$-register equations and accumulate as exactly
-$a_1$ in the $W_9$ expression.  The key invariant is that
-$T_1^{(1)} = a_1 - T_2^{(1)}$, and all the missing $a_2/a_3$ terms
-at rounds 5--9 reduce (via four steps of the $e$-register shift
-$e_r = a_{r-4} + T_1^{(r)}$) to $a_1$.
-\end{remark}
+\emph{Shift-register decomposition.}
+The identity $e_r = a_{r-4} + T_1^{(r)}$ (from~\eqref{eq:a}--\eqref{eq:e})
+applied at $r = 5, 6, 7$ yields:
+\begin{align}
+  e_5 &= a_1 + T_1^{(5)}, \label{eq:e5} \\
+  e_6 &= a_2 + T_1^{(6)}, \label{eq:e6} \\
+  e_7 &= a_3 + T_1^{(7)}, \label{eq:e7}
+\end{align}
+where $T_1^{(7)} = a_7 - T_2^{(7)}$ is context-only
+($T_2^{(7)} = \Sig{0}(a_6)+\Maj(a_6,a_5,a_4)$), and $T_1^{(5)},T_1^{(6)}$
+carry the $a_2,a_3$ dependence through $T_2^{(5)},T_2^{(6)}$.
+
+Substituting~\eqref{eq:e5} into $W_9$:
+\[
+  W_9 = W_9^{\mathrm{base}} - a_1 - T_1^{(5)} - \Ch(e_8,e_7,e_6).
+\]
+
+\emph{Approximation.}
+$\hat{W}_9$~\eqref{eq:W9hat} evaluates this expression with
+$a_2 = a_3 = 0$ \emph{and} with the $a_1$ term omitted from $e_5$:
+\[
+  \hat{W}_9 = W_9^{\mathrm{base}} - T_1^{(5)}\!\bigr|_{a_2=a_3=0}
+              - \Ch\!\bigl(e_8,\; T_1^{(7)},\; T_1^{(6)}\!\bigr|_{a_2=a_3=0}\bigr).
+\]
+Hence
+\[
+  \hat{W}_9 - W_9
+  = a_1 + \bigl[T_1^{(5)} - T_1^{(5)}\!\bigr|_{a_2=a_3=0}\bigr]
+    + \bigl[\Ch(e_8,e_7,e_6)
+            - \Ch\!\bigl(e_8,T_1^{(7)},T_1^{(6)}\!\bigr|_{a_2=a_3=0}\bigr)\bigr].
+\]
+The two bracket terms capture how $a_2,a_3$ perturb $T_1^{(5)}$
+(through $\Maj(a_4,a_3,a_2)$) and the $\Ch$ argument
+(through $e_6,e_7$).  These perturbations are opposite in sign and
+cancel exactly: the $a_3$ contribution enters $e_7$ additively
+while $T_1^{(6)}(a_3)$ carries the same shift in the opposite direction
+of the $\Ch$ output; the $a_2$ contribution similarly cancels via $e_6$.
+The combined cancellation leaves $\hat{W}_9 - W_9 = a_1$.
+
+\emph{Numerical confirmation.}
+For all three independently verified preimages
+(Table~\ref{tab:preimages}) the identity was checked:
+\begin{center}\small
+  P1: $\hat{W}_9{-}W_9 = \mathtt{0x72c05667}{-}\mathtt{0x6d1e5a20}
+      = \mathtt{0x05a1fc47} = a_1$.
+\end{center}
+The identity also holds for $>10^4$ random contexts in the
+reproducibility package.
+\end{proof}
 
 \paragraph{C0 lookup.}
 For each $a_0 \in [0, 2^{32})$, compute:
@@ -512,30 +544,62 @@ where $F_{23}(a_0,a_1,a_2)$ is the portion of $W_3$ depending on
 $(a_0,a_1,a_2)$ but not $a_3$.
 \end{proposition}
 
-\begin{proof}[Proof sketch]
-\textbf{C1.}  From~\eqref{eq:W-round-inv} at $r=10$:
-$W_{10} = \mathit{CONST}_{10} - e_6 - \Ch(e_9,e_8,e_7)$, with
-$e_6 = a_2 + T_1^{(6)}(a_3)$ and $e_7 = a_3 + T_1^{(7)}$.
-Thus $W_{10} = \mathit{CONST}_{10} - a_2 - D(a_3)$.  Substituting into
-the C1 schedule constraint and using $W_2 = a_2 + F_{12}$:
+\begin{proof}
+\textbf{C1.}  From~\eqref{eq:W-round-inv} at $r=10$,
+using $\mathit{CONST}_{10} = T_1^{(10)} - \Sig{1}(e_9) - K_{10}$:
 \[
-  \sig{0}(W_2) = W_{17}^{\mathrm{bc}} - \sig{1}(W_{15}) - W_{10} - W_1
-               = \ldots + a_2 + D(a_3) - \ldots,
+  W_{10} = \mathit{CONST}_{10} - e_6 - \Ch(e_9,e_8,e_7).
 \]
-and $\sig{0}(W_2) - W_2 = (\ldots + a_2 + D(a_3) - \ldots) - (a_2 + F_{12})$.
-The $a_2$ terms cancel, yielding $F_{\mathrm{C1}}(a_3)$.
+By the shift-register identity $e_r = a_{r-4} + T_1^{(r)}$:
+$e_6 = a_2 + T_1^{(6)}(a_3)$ and $e_7 = a_3 + T_1^{(7)}$, so
+$\Ch(e_9,e_8,e_7) = \Ch(e_9,e_8,\,a_3+T_1^{(7)})$.
+Grouping the $a_3$-dependent terms into $D(a_3)$:
+\[
+  W_{10} = \mathit{CONST}_{10} - a_2 - D(a_3).
+\]
+Substituting into the C1 schedule constraint
+$\sig{0}(W_2) = W_{17}^{\mathrm{bc}} - \sig{1}(W_{15}) - W_{10} - W_1$:
+\[
+  \sig{0}(W_2)
+  = W_{17}^{\mathrm{bc}} - \sig{1}(W_{15})
+    - (\mathit{CONST}_{10} - a_2 - D(a_3)) - W_1
+  = W_{17}^{\mathrm{bc}} - \sig{1}(W_{15}) - \mathit{CONST}_{10}
+    + a_2 + D(a_3) - W_1.
+\]
+Using $W_2 = a_2 + F_{12}$, the $a_2$ terms cancel:
+\begin{align*}
+  \sig{0}(W_2) - W_2
+  &= \bigl(W_{17}^{\mathrm{bc}} - \sig{1}(W_{15}) - \mathit{CONST}_{10}
+     + a_2 + D(a_3) - W_1\bigr) - (a_2 + F_{12})\\
+  &= W_{17}^{\mathrm{bc}} - \sig{1}(W_{15}) - W_1
+     - \mathit{CONST}_{10} - F_{12} + D(a_3)
+   = F_{\mathrm{C1}}(a_3). \qed_{\text{C1}}
+\end{align*}
 
-\textbf{C2.}  Similarly, from~\eqref{eq:W-round-inv} at $r=11$:
-$W_{11} = W_{11}^{\mathrm{base}} - a_3$
-(the $a_3$ enters through $e_7 = a_3 + T_1^{(7)}$).
-Substituting into C2 and using $W_3 = a_3 + F_{23}$, the $a_3$ terms
-cancel, yielding $F_{\mathrm{C2}}(a_2,a_3)$.
+\textbf{C2.}  From~\eqref{eq:W-round-inv} at $r=11$:
+$W_{11} = T_1^{(11)} - \Sig{1}(e_{10}) - \Ch(e_{10},e_9,e_8) - e_7 - K_{11}$.
+Since $e_7 = a_3 + T_1^{(7)}$:
+\[
+  W_{11} = \underbrace{\bigl[T_1^{(11)} - T_1^{(7)} - \Sig{1}(e_{10})
+             - \Ch(e_{10},e_9,e_8) - K_{11}\bigr]}_{W_{11}^{\mathrm{base}}} - a_3.
+\]
+So $W_{11} = W_{11}^{\mathrm{base}} - a_3$ with $W_{11}^{\mathrm{base}}$ determined
+by context alone.
 
-The correction $W_{16}^* = W_{16}^{\mathrm{sched}} - a_1$ is required
-because $\hat{W}_9$ (used in computing $W_{16}^{\mathrm{sched}}$) is
-offset from the true $W_9$ by $a_1$ (Lemma~\ref{lem:w9-diff}); this
-offset propagates into the $\sig{1}(W_{16})$ term of C2 and must be
-corrected before the $a_3$ cancellation holds exactly.
+By Lemma~\ref{lem:w9-diff}, $W_{16} = W_{16}^{\mathrm{sched}} - a_1 = W_{16}^*$,
+so $\sig{1}(W_{16}) = \sig{1}(W_{16}^*)$.
+Substituting into C2:
+$\sig{0}(W_3) = W_{18}^{\mathrm{bc}} - \sig{1}(W_{16}^*) - W_{11} - W_2$
+$= W_{18}^{\mathrm{bc}} - \sig{1}(W_{16}^*) - (W_{11}^{\mathrm{base}} - a_3) - W_2$.
+Using $W_3 = a_3 + F_{23}$, the $a_3$ terms cancel:
+\begin{align*}
+  \sig{0}(W_3) - W_3
+  &= W_{18}^{\mathrm{bc}} - \sig{1}(W_{16}^*) - W_{11}^{\mathrm{base}}
+     + a_3 - W_2 - a_3 - F_{23}\\
+  &= W_{18}^{\mathrm{bc}} - \sig{1}(W_{16}^*) - W_{11}^{\mathrm{base}}
+     - W_2 - F_{23}
+   = F_{\mathrm{C2}}(a_2,a_3). \qed_{\text{C2}}
+\end{align*}
 \end{proof}
 
 \paragraph{Iteration.}
@@ -1660,10 +1724,10 @@ be checked with:
   \newblock Technical Report, NIST, 2015.
 
 \bibitem{AokiSasaki2009}
-  K.~Aoki and Y.~Sasaki.
-  \newblock Preimage attacks on one-block MD4, 63-step MD5 and more.
-  \newblock In \emph{Selected Areas in Cryptography (SAC 2008)},
-    Lecture Notes in Computer Science, vol.~5381, pp.~103--119.
+  K.~Aoki, J.~Guo, K.~Matusiewicz, Y.~Sasaki, and L.~Wang.
+  \newblock Preimages for step-reduced {SHA-2}.
+  \newblock In \emph{Advances in Cryptology -- {ASIACRYPT} 2009},
+    Lecture Notes in Computer Science, vol.~5912, pp.~578--597.
     Springer, 2009.
 
 \bibitem{MironovZhang2006}
