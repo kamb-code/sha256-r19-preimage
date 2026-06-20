@@ -164,6 +164,14 @@ $\Delta W_{16..23}=0$ algebraically.  Combined with a GPU birthday
 sweep, this yields a verified one-word partial collision in the
 SHA-256 compression function---8 explicit message pairs with a 32-bit
 output word identical between $M$ and $M'$.
+Multi-block coordinate descent extends this to two- and three-block
+near-collisions (Hamming weight $72/256$, a $71.9\%$ reduction).
+The \emph{$\sigma_1$-Chain Lemma} proves that post-dead-zone schedule
+differences for any $|p{-}q|{=}9$ differential form an iterated
+$\sigma_1$-chain with period-7 resonance; a corollary shows the full-dead-zone
+$(0,9)$ pair carries a \emph{double} $\sigma_1$-chain with doubled
+schedule density---the algebraic reason partial-dead-zone differentials
+outperform Nine-Step in the multi-block setting.
 
 %-----------------------------------------------------------------------
 \section{SHA-256 Preliminaries}
