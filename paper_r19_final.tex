@@ -1162,35 +1162,60 @@ block-1 message as block-2 input, the differential amplifies
 monotonically to 152/256 at round 61 and ends at 134/256 with no
 suppression cascade.
 
-\textbf{Algebraic explanation (carry-wrap cancellation).}
-A round-by-round decomposition of the 75/256 near-collision identifies
-round~60 as the primary event.  At that round the two intermediate
-values satisfy
+\textbf{Algebraic explanation (carry-wrap cascade).}
+A round-by-round decomposition of the near-collisions reveals
+a \emph{four-round carry-wrap cascade} spanning rounds 60--63 (0-indexed)
+in both the block-2 and block-3 optimised messages.
+
+\medskip
+\noindent\textit{Block-2 cascade (75/256).}
+Round~60 is the primary event.  The two intermediate values satisfy
 \[
   \Delta T_1^{(60)} = \texttt{0x8848ec57}, \quad
   \Delta T_2^{(60)} = \texttt{0x7fd313cd},
 \]
-with individual Hamming weights 14 and 20 respectively.  Their modular
-sum is
+with individual Hamming weights 14 and 20.  Since $\Delta T_1^{(60)} >
+2^{31}$ and $\Delta T_1^{(60)}+\Delta T_2^{(60)} > 2^{32}$, the modular
+sum discards the carry, leaving
 \[
   \Delta T_1^{(60)} + \Delta T_2^{(60)}
   \;\equiv\; \texttt{0x081c0024} \pmod{2^{32}},
   \quad \|\cdot\|_H = 6.
 \]
-This is a \emph{carry-wrap cancellation}: $\Delta T_1$ has bit~31 set
-(value $\approx 2^{31}+\alpha$) and $\Delta T_2\approx 2^{31}+\beta$;
-their sum overflows $2^{32}$, leaving residue $\alpha+\beta$ of low
-Hamming weight.  The resulting $\|\Delta a_{60}\|_H = 6$ then propagates
-unchanged as the $b\to c\to d$ registers in rounds 61--63, directly
-producing the three low-weight words
-$\texttt{0x081c0024}$ (HW~6), $\texttt{0xa4433504}$ (HW~11),
-$\texttt{0xa15a1b48}$ (HW~13) in output positions 3, 2, 1 of $\Delta H_2$.
-Rounds 61--63 inherit rather than create the suppression.
-The coordinate descent is therefore searching for block-2 messages
-whose schedule words drive the round-60 state into the carry-wrap
+This \emph{carry-wrap cancellation} sets $\|\Delta a_{60}\|_H = 6$, which
+directly becomes $\Delta\mathit{output}[3]$ (register $d$).
+Rounds 61, 62, 63 each produce their own carry-wrap:
+$\|\Delta a_{61}\|_H = 11$, $\|\Delta a_{62}\|_H = 13$, and
+$\|\Delta a_{63}\|_H = 9$, occupying output registers $c$, $b$, $a$
+respectively.  Crucially, each $\Delta a_r = (\Delta T_1^{(r)} +
+\Delta T_2^{(r)})\bmod 2^{32}$ is an \emph{independent} carry-wrap
+product, not a propagation of $\Delta a_{60}$.
+
+\medskip
+\noindent\textit{Block-3 cascade (72/256).}
+The optimised block-3 message $N_2$ exhibits the same cascade structure
+but with the primary event \emph{shifted} to round~61:
+\[
+  \Delta T_1^{(61)} = \texttt{0xf9e51e94}, \quad
+  \Delta T_2^{(61)} = \texttt{0x281ce190},
+  \quad \|\cdot\|_H = 18,\,11,
+\]
+\[
+  \Delta T_1^{(61)} + \Delta T_2^{(61)}
+  \;\equiv\; \texttt{0x22020024} \pmod{2^{32}},
+  \quad \|\cdot\|_H = 5.
+\]
+Rounds 60, 62, 63 carry-wrap at HW 7, 11, 10 respectively, yielding the
+output differential $[\Delta H_3] = [10,11,5,7,8,11,10,10]$ and
+$\|\Delta H_3\|_H = 72/256$.  The shift of the primary wrap from round~60
+to round~61, achieving $\|\Delta a_{61}\|_H = 5 < 6$, accounts for the
+improvement from 75 to~72.
+
+The coordinate descent is therefore searching for messages
+whose schedule words drive the late-round state into the carry-wrap
 regime; this explains why multiple independent starting points converge
 to the same 72--75/256 floor.
-Figure~\ref{fig:trace} plots both traces.
+Figure~\ref{fig:trace} plots all three traces.
 
 \begin{figure}[h]
 \centering
@@ -1212,7 +1237,7 @@ Figure~\ref{fig:trace} plots both traces.
 \addplot[fill=blue!8, draw=none, area legend] coordinates
   {(16,60)(16,165)(23,165)(23,60)} \closedcycle;
 \addlegendentry{Schedule dead zone}
-% Baseline trace (W_B1, 134/256)
+% Baseline trace (W_B1 as block-2, 134/256)
 \addplot[orange, thick, mark=none] coordinates {
 (0,102)(1,107)(2,124)(3,130)(4,130)(5,128)(6,127)(7,127)
 (8,134)(9,136)(10,141)(11,142)(12,131)(13,136)(14,138)(15,134)
@@ -1223,8 +1248,8 @@ Figure~\ref{fig:trace} plots both traces.
 (48,130)(49,137)(50,126)(51,131)(52,122)(53,116)(54,117)(55,110)
 (56,117)(57,124)(58,136)(59,142)(60,149)(61,152)(62,150)(63,134)
 };
-\addlegendentry{Baseline ($134/256$)}
-% Coord descent trace (N_BEST, 75/256)
+\addlegendentry{Block-2 baseline ($134/256$)}
+% Coord descent trace for block-2 (N1, 75/256)
 \addplot[blue, thick, mark=none] coordinates {
 (0,102)(1,112)(2,132)(3,139)(4,137)(5,132)(6,135)(7,130)
 (8,134)(9,134)(10,127)(11,129)(12,122)(13,127)(14,127)(15,123)
@@ -1235,15 +1260,31 @@ Figure~\ref{fig:trace} plots both traces.
 (48,127)(49,126)(50,121)(51,120)(52,119)(53,117)(54,122)(55,125)
 (56,128)(57,129)(58,130)(59,127)(60,111)(61,97)(62,86)(63,75)
 };
-\addlegendentry{Coord descent ($75/256$)}
-% Annotation for cascade
-\node[font=\scriptsize, blue] at (axis cs:60,82) {cascade};
-\draw[->, blue, thin] (axis cs:61,84) -- (axis cs:61.5,91);
+\addlegendentry{Block-2 opt.\ ($N_1$, $75/256$)}
+% Block-3 coord-descent trace (N2, 72/256) -- IV is (H2,H2'), starts at 75/256 input diff
+\addplot[teal, thick, mark=none] coordinates {
+(0,96)(1,105)(2,115)(3,127)(4,124)(5,121)(6,125)(7,117)
+(8,123)(9,137)(10,131)(11,133)(12,123)(13,114)(14,115)(15,119)
+(16,126)(17,136)(18,139)(19,137)(20,130)(21,125)(22,118)(23,124)
+(24,124)(25,130)(26,132)(27,127)(28,132)(29,116)(30,119)(31,118)
+(32,113)(33,123)(34,119)(35,118)(36,122)(37,122)(38,128)(39,130)
+(40,126)(41,120)(42,116)(43,117)(44,129)(45,137)(46,138)(47,137)
+(48,134)(49,123)(50,124)(51,118)(52,108)(53,120)(54,118)(55,123)
+(56,126)(57,128)(58,131)(59,135)(60,122)(61,99)(62,88)(63,72)
+};
+\addlegendentry{Block-3 opt.\ ($N_2$, $72/256$)}
+% Annotation for cascades
+\node[font=\scriptsize, blue] at (axis cs:57,80) {B2 cascade};
+\draw[->, blue, thin] (axis cs:59,82) -- (axis cs:59.5,90);
+\node[font=\scriptsize, teal] at (axis cs:56,67) {B3 cascade};
+\draw[->, teal, thin] (axis cs:58,69) -- (axis cs:59,75);
 \end{axis}
 \end{tikzpicture}
-\caption{State differential Hamming weight per round for two block-2 messages
-with Nine-Step IV $(H_1, H_1')$. Shaded: schedule dead zone (rounds 16--23).
-Blue trace: coord-descent optimum; cascade in rounds 59--62 drops 127$\to$75.}
+\caption{State differential Hamming weight per round for block-2 (blue, IV=$(H_1,H_1')$)
+and block-3 (teal, IV=$(H_2,H_2')$) optimised messages, with an unoptimised block-2 baseline (orange).
+Shaded: schedule dead zone (rounds 16--23).
+Both optimised traces exhibit a four-round carry-wrap cascade (rounds 60--63) that
+drops the state HW by 52 bits (block-2, 127$\to$75) and 63 bits (block-3, 135$\to$72).}
 \label{fig:trace}
 \end{figure}
 
