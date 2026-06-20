@@ -1215,6 +1215,26 @@ The coordinate descent is therefore searching for messages
 whose schedule words drive the late-round state into the carry-wrap
 regime; this explains why multiple independent starting points converge
 to the same 72--75/256 floor.
+
+\noindent\textbf{Why the last four rounds and the $a$-chain.}
+The SHA-256 state shift register $b_r = a_{r-1}$, $c_r = a_{r-2}$,
+$d_r = a_{r-3}$ means that the output registers satisfy
+\[
+  \Delta\mathit{out}[3] = \Delta a_{60},\quad
+  \Delta\mathit{out}[2] = \Delta a_{61},\quad
+  \Delta\mathit{out}[1] = \Delta a_{62},\quad
+  \Delta\mathit{out}[0] = \Delta a_{63}.
+\]
+Each $\Delta a_r = (\Delta T_1^{(r)} + \Delta T_2^{(r)})\bmod 2^{32}$
+is the carry-wrap product of \emph{its own round}, with no subsequent
+mixing.  Thus rounds 60--63 are the \emph{only} rounds whose carry-wrap
+products appear unchanged in the output.  The $e$-chain output registers
+satisfy $\Delta\mathit{out}[4] = (\Delta a_{59} + \Delta T_1^{(63)})
+\bmod 2^{32}$, mixing the pre-cascade high-HW value $\Delta a_{59}$
+with the round-63 term; this prevents comparable HW reduction in
+$\Delta\mathit{out}[4\text{--}7]$ (observed HW: 8, 11, 10, 10 vs.\
+the $a$-chain's 10, 11, 5, 7).  Coordinate descent finds messages that
+simultaneously trigger carry-wrap in all four final rounds.
 Figure~\ref{fig:trace} plots all three traces.
 
 \begin{figure}[h]
