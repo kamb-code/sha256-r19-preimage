@@ -1160,11 +1160,37 @@ through rounds 21--58 before undergoing rapid suppression:
 (a drop of 52 bits in 4 rounds).  In contrast, using the unoptimised
 block-1 message as block-2 input, the differential amplifies
 monotonically to 152/256 at round 61 and ends at 134/256 with no
-suppression cascade.  The coordinate descent finds message words whose
-interaction with the $\text{Ch}/\text{Maj}$ logic and round constants
-$K_{59}$--$K_{62}$ produces partial self-cancellation in the final
-state registers---an exploitable structural feature of the compression
-function.  Figure~\ref{fig:trace} plots both traces.
+suppression cascade.
+
+\textbf{Algebraic explanation (carry-wrap cancellation).}
+A round-by-round decomposition of the 75/256 near-collision identifies
+round~60 as the primary event.  At that round the two intermediate
+values satisfy
+\[
+  \Delta T_1^{(60)} = \texttt{0x8848ec57}, \quad
+  \Delta T_2^{(60)} = \texttt{0x7fd313cd},
+\]
+with individual Hamming weights 14 and 20 respectively.  Their modular
+sum is
+\[
+  \Delta T_1^{(60)} + \Delta T_2^{(60)}
+  \;\equiv\; \texttt{0x081c0024} \pmod{2^{32}},
+  \quad \|\cdot\|_H = 6.
+\]
+This is a \emph{carry-wrap cancellation}: $\Delta T_1$ has bit~31 set
+(value $\approx 2^{31}+\alpha$) and $\Delta T_2\approx 2^{31}+\beta$;
+their sum overflows $2^{32}$, leaving residue $\alpha+\beta$ of low
+Hamming weight.  The resulting $\|\Delta a_{60}\|_H = 6$ then propagates
+unchanged as the $b\to c\to d$ registers in rounds 61--63, directly
+producing the three low-weight words
+$\texttt{0x081c0024}$ (HW~6), $\texttt{0xa4433504}$ (HW~11),
+$\texttt{0xa15a1b48}$ (HW~13) in output positions 3, 2, 1 of $\Delta H_2$.
+Rounds 61--63 inherit rather than create the suppression.
+The coordinate descent is therefore searching for block-2 messages
+whose schedule words drive the round-60 state into the carry-wrap
+regime; this explains why multiple independent starting points converge
+to the same 72--75/256 floor.
+Figure~\ref{fig:trace} plots both traces.
 
 \begin{figure}[h]
 \centering
