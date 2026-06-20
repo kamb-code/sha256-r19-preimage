@@ -81,9 +81,13 @@ The total differential Hamming weight is 95/256 bits (random
 expectation $\approx 128$), and 8 distinct verified pairs are
 enumerated.  Extending to multi-block coordinate descent reduces this
 further: a two-block chain achieves $75/256$ (Nine-Step) or
-$\mathbf{74/256}$ with the partial-dead $(13,4)$ differential;
-both a three-block Nine-Step and a three-block $(13,4)$ chain independently
+$\mathbf{72/256}$ with the partial-dead $(3,12)$ differential.
+Both a three-block Nine-Step and a three-block $(13,4)$ chain independently
 reach $\mathbf{72/256}$, a $71.9\%$ reduction from the all-different baseline.
+A new $\sigma_1$-Chain Lemma characterises the post-dead-zone schedule
+structure for all $|p{-}q|{=}9$ differentials and proves that partial-dead-zone
+pairs achieve lower floors because their chain-start position enters the
+compression function earlier than the Nine-Step's \emph{double chain} structure.
 
 Full SHA-256 (64 rounds) is not threatened by either result.
 
