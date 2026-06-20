@@ -17,6 +17,7 @@
 \pgfplotsset{compat=1.18}
 
 \newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
 \newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
@@ -1171,6 +1172,43 @@ The six-round gap between $(13,4)$ ($r_0=19$) and the Nine-Step $(0,9)$ ($r_0=24
 is precisely what allows $(13,4)$ to achieve a lower two-block floor despite
 its higher $|\Delta H_1|$: more compression rounds interact with the structured
 differential before the final output is computed.
+
+\begin{corollary}[Nine-Step Double Chain]
+\label{cor:double-chain}
+For the full-dead-zone differential $(0,9)$ ($\Delta W_0=+\delta$,
+$\Delta W_9=-\delta$), the post-dead-zone schedule carries \emph{two}
+interleaved $\sigma_1$-chains rather than one:
+\[
+  \Delta W_{24+2k} = \sigma_1^k\!\bigl(\sigma_0(-\delta)\bigr), \quad
+  \Delta W_{25+2k} = \sigma_1^k(-\delta), \quad k = 0,1,2.
+\]
+(The chains interact for $r\ge 31$ when $\Delta W_{24}=\sigma_0(-\delta)$ feeds
+back into the $r{-}7$ lag.)
+By contrast, for partial-dead-zone differentials the interleaved positions
+are identically zero (Lemma~\ref{lem:sigma1chain}, part 1).
+\end{corollary}
+
+\begin{proof}
+For $r=25$: $W_{r-16}=W_9$ contributes $-\delta$; all other terms are zero
+(dead zone or unperturbed original words).
+For $r=27$: $W_{r-16}=W_{11}$ is unperturbed, but
+$\sigma_1(\Delta W_{25})=\sigma_1(-\delta)$ is the only nonzero feed.
+By induction for $r\in\{25,27,29\}$: $\Delta W_{25+2k}=\sigma_1^k(-\delta)$.
+At $r=31$: the lag $W_{r-7}=W_{24}$ contributes $\Delta W_{24}=\sigma_0(-\delta)\ne 0$,
+breaking the pure second chain.
+\end{proof}
+
+The double chain has a concrete impact on compressibility.
+The second chain seed $-\delta = \mathtt{0xffee1fcc}$ has Hamming weight~23,
+compared to $\sigma_0(-\delta)=\mathtt{0x01f1203d}$ with weight~12.
+Every post-dead-zone schedule position $r\ge 24$ carries a nonzero difference
+in (0,9), whereas partial-dead-zone differentials leave half those
+positions zero (the interleaved positions from Lemma~\ref{lem:sigma1chain}).
+The full-dead-zone advantage (8 vs.\ 5 killed schedule positions in
+$W_{16..23}$) is therefore offset by a \emph{doubled schedule density}
+beyond round 24, explaining why the Nine-Step $(0,9)$ converges to
+$75/256$ while the partial-dead $(3,12)$ (with $r_0=18$, six earlier active
+rounds, and half-density interleaving) achieves $72/256$.
 
 \noindent\textbf{Cross-differential result.}
 One may also mix differentials across blocks: use Nine-Step for block~1
