@@ -84,17 +84,17 @@ further: a two-block chain achieves $75/256$ (Nine-Step) or
 $\mathbf{72/256}$ with the partial-dead $(3,12)$ differential.
 Both a three-block Nine-Step and a three-block $(13,4)$ chain independently
 reach $\mathbf{72/256}$, a $71.9\%$ reduction from the all-different baseline.
-A new $\sigma_1$-Chain Lemma characterises the post-dead-zone schedule
+A new Schedule Density Lemma characterises the post-dead-zone schedule
 structure for all $|p{-}q|{=}9$ differentials and proves that partial-dead-zone
-pairs achieve lower floors because their chain-start position enters the
-compression function earlier than the Nine-Step's \emph{double chain} structure.
+pairs achieve lower floors because their interleaved-zero positions enter the
+compression function earlier than the Nine-Step's post-dead-zone active rounds.
 
 Full SHA-256 (64 rounds) is not threatened by either result.
 
 \medskip
 \noindent\textbf{Keywords:} SHA-256, preimage attack, oracle-free
 cryptanalysis, reduced-round, schedule-differential, Nine-Step
-Cancellation Lemma, $\sigma_1$-Chain Lemma, partial collision, birthday sweep, CUDA.
+Cancellation Lemma, Schedule Density Lemma, partial collision, birthday sweep, CUDA.
 \end{abstract}
 
 %-----------------------------------------------------------------------
@@ -166,12 +166,13 @@ SHA-256 compression function---8 explicit message pairs with a 32-bit
 output word identical between $M$ and $M'$.
 Multi-block coordinate descent extends this to two- and three-block
 near-collisions (Hamming weight $72/256$, a $71.9\%$ reduction).
-The \emph{$\sigma_1$-Chain Lemma} proves that post-dead-zone schedule
-differences for any $|p{-}q|{=}9$ differential form an iterated
-$\sigma_1$-chain with period-7 resonance; a corollary shows the full-dead-zone
-$(0,9)$ pair carries a \emph{double} $\sigma_1$-chain with doubled
-schedule density---the algebraic reason partial-dead-zone differentials
-outperform Nine-Step in the multi-block setting.
+The \emph{Schedule Density Lemma} proves that for any $|p{-}q|{=}9$
+differential with $\min(p,q)<9$, three interleaved schedule positions
+$\Delta W_{r_0+1}=\Delta W_{r_0+3}=\Delta W_{r_0+5}=0$ exactly, with
+period-7 resonance $\Delta W_{r_0+7}=\Delta W_{r_0}$; a corollary shows the
+full-dead-zone $(0,9)$ pair carries nonzero differences at \emph{all}
+post-dead-zone positions---the algebraic reason partial-dead-zone
+differentials outperform Nine-Step in the multi-block setting.
 
 %-----------------------------------------------------------------------
 \section{SHA-256 Preliminaries}
@@ -1116,111 +1117,125 @@ converges to a lower final weight.  This result shows that the \emph{quality}
 of the algebraic cancellation in rounds 24--63 outweighs the \emph{quantity}
 of zeroed schedule words.
 
-\noindent\textbf{$\sigma_1$-Chain Lemma.}
+\noindent\textbf{Schedule Structure Lemma.}
 The alternating nonzero pattern of $(13,4)$ is an instance of a general
 algebraic structure that governs all $|p-q|=9$ differentials.
 
-\begin{lemma}[$\sigma_1$-Chain]
+\begin{lemma}[Schedule Density]
 \label{lem:sigma1chain}
 Let $(\Delta W_p = +\delta,\, \Delta W_q = -\delta)$ with $|p-q|=9$
-and $\min(p,q) < 9$, so that $r_0 = \min(p,q)+15 \in [16,23]$ is the
-first schedule round after the dead zone at which a $\sigma_0$ contribution
-enters.  Write $\varepsilon\,\delta$ for the perturbation at the
-$\min(p,q)$ word ($\varepsilon = -1$ if $\min(p,q)=q$, $\varepsilon=+1$
-if $\min(p,q)=p$).
+and $\min(p,q) < 9$, so that $r_0 = \min(p,q)+15 \in [16,23]$.
 For all messages and all $\delta\ne 0$:
 \begin{enumerate}
-\item \emph{Interleaved positions (zero):}
-  $\Delta W_{r_0+2k+1} = 0$ for $k = 0,1,2,\ldots$
-\item \emph{Chain positions ($\sigma_1$-iterated):}
-  $\Delta W_{r_0+2k} = \sigma_1^k\!\bigl(\sigma_0(\varepsilon\,\delta)\bigr)$
-  for $k = 0,1,2,\ldots$
-\item \emph{Period-7 resonance:}
-  $\Delta W_{r_0+7} = \Delta W_{r_0} = \sigma_0(\varepsilon\,\delta)$.
+\item \emph{Interleaved zeros (exact):}
+  $\Delta W_{r_0+1} = \Delta W_{r_0+3} = \Delta W_{r_0+5} = 0$.
+\item \emph{Period-7 resonance (exact):}
+  $\Delta W_{r_0+7} = \Delta W_{r_0}$ (equal, not necessarily zero).
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-\emph{Base case} ($r=r_0$): The only perturbed input is $\sigma_0(W_{\min(p,q)})$,
-contributing $\sigma_0(\varepsilon\,\delta)$.  All other schedule terms index
-dead-zone positions or unperturbed original words, so
-$\Delta W_{r_0} = \sigma_0(\varepsilon\,\delta)$.
+\emph{Interleaved zeros:} At $r = r_0+1$:
+$W_{r-7} = W_{\max(p,q)}$ contributes $-\varepsilon\,\delta$
+and $W_{r-16} = W_{\min(p,q)}$ contributes $+\varepsilon\,\delta$
+(where $\varepsilon\,\delta$ is the perturbation at $\min(p,q)$).
+These cancel: $\Delta W_{r_0+1} = -\varepsilon\,\delta + \varepsilon\,\delta = 0$.
+The $\sigma_1$ and $\sigma_0$ terms index dead-zone or unperturbed positions.
+For $r = r_0+3$: the $W_{r-7}$ and $W_{r-16}$ lags land outside $\{p,q\}$,
+and the $\sigma_1$ feed is $\Delta W_{r_0+1} = 0$.
+Hence $\Delta W_{r_0+3} = 0$; similarly $\Delta W_{r_0+5} = 0$.
 
-\emph{Interleaved positions:} At $r = r_0+1$:
-$W_{r-7} = W_{r_0-6} = W_{\min(p,q)+9} = W_{\max(p,q)}$ contributes $-\varepsilon\,\delta$,
-and $W_{r-16} = W_{\min(p,q)}$ contributes $+\varepsilon\,\delta$.  These cancel exactly:
-$\Delta W_{r_0+1} = -\varepsilon\,\delta + \varepsilon\,\delta = 0$.
-(The $\sigma_1$ and $\sigma_0$ terms index dead-zone or unperturbed positions.)
-For $r = r_0+2k+1$ with $k\ge 1$: the $W_{r-7}$ and $W_{r-16}$ lags land outside
-$\{p,q\}$ and the live chain; the $\sigma_1$ feed comes from $\Delta W_{r_0+2k-1}$,
-which is zero by induction.  Hence $\Delta W_{r_0+2k+1}=0$ for all $k\ge 0$.
-
-\emph{Chain positions:} At $r = r_0+2$: $\sigma_1(\Delta W_{r_0}) = \sigma_1(\sigma_0(\varepsilon\,\delta))$
-is the only nonzero term.
-By induction, $\Delta W_{r_0+2k} = \sigma_1^k(\sigma_0(\varepsilon\,\delta))$.
-
-\emph{Period-7:} At $r = r_0+7$: the lag $W_{r-7} = W_{r_0}$ contributes
-$\Delta W_{r_0} = \sigma_0(\varepsilon\,\delta)$; the $\sigma_1$ feed comes from
-$\Delta W_{r_0+5}$ (an interleaved position, zero by part 1); the remaining
-terms index unperturbed original words.  Hence $\Delta W_{r_0+7} = \sigma_0(\varepsilon\,\delta)$.
+\emph{Period-7:} At $r = r_0+7$:
+$W_{r-7} = W_{r_0}$ contributes $\Delta W_{r_0}$;
+the $\sigma_1$ feed is $\Delta W_{r_0+5} = 0$ (part 1);
+the $\sigma_0$ and $W_{r-16}$ terms index unperturbed original words
+(for the pairs satisfying $|p-q|=9$ and $\min(p,q)<9$).
+Hence $\Delta W_{r_0+7} = \Delta W_{r_0}$.
 \end{proof}
 
-Verified numerically for $(3,12)$ ($r_0=18$, $\varepsilon=+1$: chain at $W_{18,20,22}$
-$= \sigma_1^k(\sigma_0(+\delta))$), $(13,4)$ ($r_0=19$, $\varepsilon=-1$: chain at $W_{19,21,23}$
-$= \sigma_1^k(\sigma_0(-\delta))$), and $(0,9)$ ($r_0=24$: chain starts beyond the
-dead zone).
+\begin{remark}
+The schedule recurrence propagates the nonzero seed $\Delta W_{r_0}$
+to even-offset positions $r_0, r_0{+}2, r_0{+}4, \ldots$ via the
+$\sigma_1(W_{r-2})$ term.  In the GF$(2)$ linearisation---where $+$ is
+replaced by $\oplus$ and $\sigma_1$ is treated as a linear map---this
+gives an explicit $\sigma_1$-chain
+$\Delta^{\oplus}W_{r_0+2k} = \sigma_1^k(\sigma_0(\varepsilon\,\delta))$.
+Over $\mathbb{Z}_{2^{32}}$ the exact values at even-offset positions are
+message-dependent (the additive and XOR operators differ), but the
+pattern of \emph{which positions are identically zero} (odd offsets 1,3,5)
+is message-independent and governs the schedule density seen by the
+compression function.
+\end{remark}
 
 \noindent\textbf{Ranking consequence.}
-The lemma provides a unified algebraic explanation for the two-block floor
-ranking in Table~\ref{tab:alt_diff}.  The chain-start position $r_0$ determines
-how many compression rounds act on the structured $\sigma_1$-differential before
-the final output:
+The lemma provides a structural explanation for the two-block floor
+ranking in Table~\ref{tab:alt_diff}.  The chain-start position $r_0$ and
+the resulting even/odd zero pattern together determine how many schedule
+positions carry nonzero differences in the active rounds:
 \begin{align*}
 (3,12){:}\; r_0&=18 \;\;\to\;\; 72/256,\\
 (13,4){:}\; r_0&=19 \;\;\to\;\; 74/256,\\
 (0,9){:}\;\;\; r_0&=24 \;\;\to\;\; 75/256.
 \end{align*}
-The six-round gap between $(13,4)$ ($r_0=19$) and the Nine-Step $(0,9)$ ($r_0=24$)
-is precisely what allows $(13,4)$ to achieve a lower two-block floor despite
-its higher $|\Delta H_1|$: more compression rounds interact with the structured
-differential before the final output is computed.
+Earlier $r_0$ (lower dead zone boundary) means more rounds with
+zero schedule input---specifically the interleaved zero positions
+$W_{r_0+1},W_{r_0+3},W_{r_0+5}$---acting as compression-round
+``gaps'' that coordinate descent exploits to drive the final
+Hamming weight lower.
+The six-round gap between $(13,4)$ ($r_0=19$) and the Nine-Step $(0,9)$
+($r_0=24$) is a key reason $(13,4)$ achieves a lower two-block floor
+despite its higher $|\Delta H_1|$.
 
-\begin{corollary}[Nine-Step Double Chain]
+\begin{corollary}[Nine-Step Schedule Density]
 \label{cor:double-chain}
 For the full-dead-zone differential $(0,9)$ ($\Delta W_0=+\delta$,
-$\Delta W_9=-\delta$), the post-dead-zone schedule carries \emph{two}
-interleaved $\sigma_1$-chains rather than one:
-\[
-  \Delta W_{24+2k} = \sigma_1^k\!\bigl(\sigma_0(-\delta)\bigr), \quad
-  \Delta W_{25+2k} = \sigma_1^k(-\delta), \quad k = 0,1,2.
-\]
-(The chains interact for $r\ge 31$ when $\Delta W_{24}=\sigma_0(-\delta)$ feeds
-back into the $r{-}7$ lag.)
-By contrast, for partial-dead-zone differentials the interleaved positions
-are identically zero (Lemma~\ref{lem:sigma1chain}, part 1).
+$\Delta W_9=-\delta$):
+\begin{enumerate}
+\item \emph{One exact post-dead-zone seed (exact):} $\Delta W_{25} = -\delta$.
+\item \emph{No identically-zero positions:} No $r \ge 24$ satisfies
+  $\Delta W_r = 0$ for all messages; every post-dead-zone round receives a
+  nonzero difference for generic $W$.
+\end{enumerate}
+This contrasts with partial-dead-zone differentials, where three positions
+$\Delta W_{r_0+1}=\Delta W_{r_0+3}=\Delta W_{r_0+5}=0$ exactly
+(Lemma~\ref{lem:sigma1chain}, part~1).
 \end{corollary}
 
 \begin{proof}
-For $r=25$: $W_{r-16}=W_9$ contributes $-\delta$; all other terms are zero
-(dead zone or unperturbed original words).
-For $r=27$: $W_{r-16}=W_{11}$ is unperturbed, but
-$\sigma_1(\Delta W_{25})=\sigma_1(-\delta)$ is the only nonzero feed.
-By induction for $r\in\{25,27,29\}$: $\Delta W_{25+2k}=\sigma_1^k(-\delta)$.
-At $r=31$: the lag $W_{r-7}=W_{24}$ contributes $\Delta W_{24}=\sigma_0(-\delta)\ne 0$,
-breaking the pure second chain.
+Part~1: At $r=25$ the recurrence gives
+$\Delta W_{25} = s_1(\Delta W_{23})+\Delta W_{18}+s_0(\Delta W_{10})+\Delta W_9$.
+Since $r=18,23$ are in the dead zone and $W_{10}$ is unmodified,
+all terms vanish except $\Delta W_9 = -\delta$.
+
+Part~2: $\Delta W_{25}=-\delta\ne 0$ covers the odd seed.
+At $r=24$: $\Delta W_{24} = s_0(W_9-\delta)-s_0(W_9)$, which is zero only for
+the measure-zero set of $W_9$ satisfying $s_0(W_9-\delta)=s_0(W_9)$, hence
+generically nonzero.  The nonzero feeds at $r=24,25$ propagate forward so that
+no subsequent position is message-independently zero.
 \end{proof}
 
-The double chain has a concrete impact on compressibility.
-The second chain seed $-\delta = \mathtt{0xffee1fcc}$ has Hamming weight~23,
-compared to $\sigma_0(-\delta)=\mathtt{0x01f1203d}$ with weight~12.
+\begin{remark}
+In the GF$(2)$ linearisation, the post-dead-zone schedule produces two
+interleaved $\sigma_1$-chains:
+$\Delta^{\oplus}W_{24+2k}=\sigma_1^k\!\bigl(\sigma_0(-\delta)\bigr)$ and
+$\Delta^{\oplus}W_{25+2k}=\sigma_1^k(-\delta)$ for $k=0,1,2$
+(interacting for $r\ge 31$).
+Over $\mathbb{Z}_{2^{32}}$ only $\Delta W_{25}=-\delta$ (part~1) is exact;
+even-position values are message-dependent as in the remark after
+Lemma~\ref{lem:sigma1chain}.
+\end{remark}
+
+The contrast with partial-dead-zone differentials has a concrete impact on compressibility.
+The exact seed $-\delta = \mathtt{0xffee1fcc}$ has Hamming weight~23,
+and $\sigma_0(-\delta)=\mathtt{0x01f1203d}$ (weight~12) approximates $\Delta W_{24}$.
 Every post-dead-zone schedule position $r\ge 24$ carries a nonzero difference
-in (0,9), whereas partial-dead-zone differentials leave half those
-positions zero (the interleaved positions from Lemma~\ref{lem:sigma1chain}).
+in $(0,9)$, whereas partial-dead-zone differentials leave three of those
+positions exactly zero (Lemma~\ref{lem:sigma1chain}, part~1).
 The full-dead-zone advantage (8 vs.\ 5 killed schedule positions in
-$W_{16..23}$) is therefore offset by a \emph{doubled schedule density}
+$W_{16..23}$) is therefore offset by a \emph{full schedule density}
 beyond round 24, explaining why the Nine-Step $(0,9)$ converges to
 $75/256$ while the partial-dead $(3,12)$ (with $r_0=18$, six earlier active
-rounds, and half-density interleaving) achieves $72/256$.
+rounds, and three interleaved zero positions) achieves $72/256$.
 
 \noindent\textbf{Cross-differential result.}
 One may also mix differentials across blocks: use Nine-Step for block~1
