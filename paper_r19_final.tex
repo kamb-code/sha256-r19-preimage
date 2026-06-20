@@ -1556,6 +1556,12 @@ A three-block Nine-Step chain also reaches $\mathbf{72/256}$
 reaches the same bound ($137\to 74\to 72$), confirming that $72/256$
 is a structural floor of the coordinate-descent method rather than an
 artefact of one differential.
+A four-block birthday sweep (varying the entire block-4 message word $W_{15}$
+over $2^{32}$ values with the three-block chain fixed) yielded a single-word
+minimum of $78/256$; subsequent coordinate descent over all 16 block-4 words
+confirmed $78/256$ as a deep local minimum (20 independent restarts, no
+improvement).  Adding a fourth block thus does \emph{not} improve below
+the three-block $72/256$ floor, further supporting its structural character.
 The total improvement is $184/256 = 71.9\%$ from the all-different baseline.
 Exhaustive single- and multi-word sensitivity analysis confirms
 that the $75/256$ two-block minimum is a $\geq\!4$-bit-deep local
