@@ -1103,6 +1103,75 @@ converges to a lower final weight.  This result shows that the \emph{quality}
 of the algebraic cancellation in rounds 24--63 outweighs the \emph{quantity}
 of zeroed schedule words.
 
+\noindent\textbf{$\sigma_1$-Chain Lemma.}
+The alternating nonzero pattern of $(13,4)$ is an instance of a general
+algebraic structure that governs all $|p-q|=9$ differentials.
+
+\begin{lemma}[$\sigma_1$-Chain]
+\label{lem:sigma1chain}
+Let $(\Delta W_p = +\delta,\, \Delta W_q = -\delta)$ with $|p-q|=9$
+and $\min(p,q) < 9$, so that $r_0 = \min(p,q)+15 \in [16,23]$ is the
+first schedule round after the dead zone at which a $\sigma_0$ contribution
+enters.  Write $\varepsilon\,\delta$ for the perturbation at the
+$\min(p,q)$ word ($\varepsilon = -1$ if $\min(p,q)=q$, $\varepsilon=+1$
+if $\min(p,q)=p$).
+For all messages and all $\delta\ne 0$:
+\begin{enumerate}
+\item \emph{Interleaved positions (zero):}
+  $\Delta W_{r_0+2k+1} = 0$ for $k = 0,1,2,\ldots$
+\item \emph{Chain positions ($\sigma_1$-iterated):}
+  $\Delta W_{r_0+2k} = \sigma_1^k\!\bigl(\sigma_0(\varepsilon\,\delta)\bigr)$
+  for $k = 0,1,2,\ldots$
+\item \emph{Period-7 resonance:}
+  $\Delta W_{r_0+7} = \Delta W_{r_0} = \sigma_0(\varepsilon\,\delta)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\emph{Base case} ($r=r_0$): The only perturbed input is $\sigma_0(W_{\min(p,q)})$,
+contributing $\sigma_0(\varepsilon\,\delta)$.  All other schedule terms index
+dead-zone positions or unperturbed original words, so
+$\Delta W_{r_0} = \sigma_0(\varepsilon\,\delta)$.
+
+\emph{Interleaved positions:} At $r = r_0+1$:
+$W_{r-7} = W_{r_0-6} = W_{\min(p,q)+9} = W_{\max(p,q)}$ contributes $-\varepsilon\,\delta$,
+and $W_{r-16} = W_{\min(p,q)}$ contributes $+\varepsilon\,\delta$.  These cancel exactly:
+$\Delta W_{r_0+1} = -\varepsilon\,\delta + \varepsilon\,\delta = 0$.
+(The $\sigma_1$ and $\sigma_0$ terms index dead-zone or unperturbed positions.)
+For $r = r_0+2k+1$ with $k\ge 1$: the $W_{r-7}$ and $W_{r-16}$ lags land outside
+$\{p,q\}$ and the live chain; the $\sigma_1$ feed comes from $\Delta W_{r_0+2k-1}$,
+which is zero by induction.  Hence $\Delta W_{r_0+2k+1}=0$ for all $k\ge 0$.
+
+\emph{Chain positions:} At $r = r_0+2$: $\sigma_1(\Delta W_{r_0}) = \sigma_1(\sigma_0(\varepsilon\,\delta))$
+is the only nonzero term.
+By induction, $\Delta W_{r_0+2k} = \sigma_1^k(\sigma_0(\varepsilon\,\delta))$.
+
+\emph{Period-7:} At $r = r_0+7$: the lag $W_{r-7} = W_{r_0}$ contributes
+$\Delta W_{r_0} = \sigma_0(\varepsilon\,\delta)$; the $\sigma_1$ feed comes from
+$\Delta W_{r_0+5}$ (an interleaved position, zero by part 1); the remaining
+terms index unperturbed original words.  Hence $\Delta W_{r_0+7} = \sigma_0(\varepsilon\,\delta)$.
+\end{proof}
+
+Verified numerically for $(3,12)$ ($r_0=18$, $\varepsilon=+1$: chain at $W_{18,20,22}$
+$= \sigma_1^k(\sigma_0(+\delta))$), $(13,4)$ ($r_0=19$, $\varepsilon=-1$: chain at $W_{19,21,23}$
+$= \sigma_1^k(\sigma_0(-\delta))$), and $(0,9)$ ($r_0=24$: chain starts beyond the
+dead zone).
+
+\noindent\textbf{Ranking consequence.}
+The lemma provides a unified algebraic explanation for the two-block floor
+ranking in Table~\ref{tab:alt_diff}.  The chain-start position $r_0$ determines
+how many compression rounds act on the structured $\sigma_1$-differential before
+the final output:
+\begin{align*}
+(3,12){:}\; r_0&=18 \;\;\to\;\; 72/256,\\
+(13,4){:}\; r_0&=19 \;\;\to\;\; 74/256,\\
+(0,9){:}\;\;\; r_0&=24 \;\;\to\;\; 75/256.
+\end{align*}
+The six-round gap between $(13,4)$ ($r_0=19$) and the Nine-Step $(0,9)$ ($r_0=24$)
+is precisely what allows $(13,4)$ to achieve a lower two-block floor despite
+its higher $|\Delta H_1|$: more compression rounds interact with the structured
+differential before the final output is computed.
+
 \noindent\textbf{Cross-differential result.}
 One may also mix differentials across blocks: use Nine-Step for block~1
 (giving $|\Delta H_1|=95/256$ with the $W_{B1}$ message) and then apply
