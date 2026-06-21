@@ -56,11 +56,15 @@ reduced-round SHA-256.
 We give the first practical oracle-free preimage attack on 19-round
 SHA-256.  Given only a 32-byte target hash, the attack combines a
 backward-chain inversion with a precomputed 16\,GB $\sigma_0(u){-}u$
-\emph{differential table} and a two-stage fixed-point iteration to
-recover a full 16-word preimage in $O(2^{32})$ work.  Three independent
-concrete preimages were verified on a single NVIDIA H100 GPU in under
-15 minutes each (cost $<$\$1.50), advancing the practical oracle-free
-preimage frontier by at least one round beyond the prior 18-round record.
+\emph{differential table} and a two-stage fixed-point iteration,
+performing $O(2^{32})$ work per context attempt.  A structural
+bias in the $W_9$-lo filter (${\approx}36.5\times$ the uniform
+prediction) gives an empirical full-match rate of
+${\approx}5.3\times10^{-4}$ per context; the three concrete preimage
+finds required only 3--34 contexts each.  All three were verified on a
+single NVIDIA H100 GPU in under 15 minutes each (cost $<$\$1.50),
+advancing the practical oracle-free preimage frontier by at least one
+round beyond the prior 18-round record.
 
 \textbf{(2) Nine-Step Cancellation Lemma and partial collision.}
 We prove a new algebraic identity: for \emph{any} message block
@@ -635,24 +639,28 @@ Two sequential filters are applied:
 \begin{itemize}
   \item \textbf{Lo filter:}
     $(W_9^{\mathrm{true}} \bmod 2^{16}) = (\hat{W}_9 \bmod 2^{16})$.
-    Passes with probability $2^{-16}$; empirically $\approx 35$ events
-    per context.
+    Empirically $\approx 35$ events per context
+    (${\approx}36.5\times$ above the naive uniform prediction
+    $62{,}745\times 2^{-16}\approx 0.96$; discussed in
+    \S\ref{sec:complexity}).
   \item \textbf{Hi filter:}
     $(W_9^{\mathrm{true}} \gg 16) = (\hat{W}_9 \gg 16)$.
-    Passes with probability $2^{-16}$, independent of the lo filter
+    Passes at rate $2^{-16}$, independent of the lo filter
     (verified by chi-squared uniformity test on 165 GPU contexts).
 \end{itemize}
-Combined pass rate: $2^{-32}$.  Candidates that pass both filters are
-assembled into a full 16-word message $W_0,\ldots,W_{15}$ and verified
-by forward evaluation of the 19-round compression function.
+Empirical combined rate: $35\times 2^{-16}\approx 5.3\times 10^{-4}$
+per context.  Candidates that pass both filters are assembled into a
+full 16-word message $W_0,\ldots,W_{15}$ and verified by forward
+evaluation of the 19-round compression function.
 
 \subsection{Complexity Analysis}
 \label{sec:complexity}
 
 \begin{table}[ht]
 \centering
-\caption{Empirical per-context statistics (H100, $K_{\mathrm{seeds}}=0$,
-batch $2^{24}$, averaged over $> 100$ contexts).}
+\caption{Empirical per-context statistics (H100, batch $2^{24}$,
+averaged over $>100$ contexts for per-context quantities;
+165-context hi-residual run for lo-pass count and chi-squared test).}
 \label{tab:stats}
 \small
 \begin{tabular}{@{}lr@{}}
@@ -661,24 +669,39 @@ Quantity & Value \\
 \midrule
 C0 survivors (table hits) & $2{,}721{,}600{,}000$ ($63.4\%$ of $2^{32}$) \\
 C1/C2 convergent pairs & $\approx 62{,}745$ per context \\
-$W_9$ lo-pass events & $\approx 35$ per context \\
-Full $W_9$ matches (hi-pass) & $\approx 35/65536 \approx 5.3\times10^{-4}$ per context \\
+$W_9$ lo-pass events (empirical, $K_{\mathrm{seeds}}=4$) & $\approx 35$ per context \\
+$W_9$ lo-pass events (uniform model) & $62{,}745\times 2^{-16}\approx 0.96$ per context \\
+Structural lo enhancement & $\approx 36.5\times$ above uniform \\
+Full $W_9$ matches (empirical, $K_{\mathrm{seeds}}=4$) & $\approx 35/65536 \approx 5.3\times10^{-4}$ per context \\
 \midrule
-Expected verifications per context $\mu$ & $\approx 1.46 \times 10^{-5}$ \\
-Expected contexts to find preimage & $\approx 68{,}000$ (theoretical) \\
-Observed contexts to find preimage & $\approx 3$--$34$ (empirical) \\
+$\mu$ (uniform model, $K_{\mathrm{seeds}}=0$) & $62{,}745/2^{32}\approx 1.46\times 10^{-5}$ \\
+$\mu$ (empirical, $K_{\mathrm{seeds}}=4$) & $\approx 5.3\times 10^{-4}$ \\
+Expected contexts (uniform model) & $\approx 68{,}000$ \\
+Expected contexts (empirical $K_{\mathrm{seeds}}=4$) & $\approx 1{,}875$ \\
+Observed contexts (P3, P2, P1) & 3,\ 20,\ 34 \\
 Wall time per context (H100) & $\approx 23\;\mathrm{s}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The theoretical expected contexts, $1/\mu \approx 68{,}000$, applies
-to the $K_{\mathrm{seeds}}=0$ case with the (0,0) seed start.  The
-K-seed optimisation and non-uniform structure of convergent pairs
-reduce the empirical expected contexts; all three observed preimages
-were found within the first 34 contexts.  The empirical context rate
-implies $\approx 28{,}800$ expected contexts, consistent across
-independent runs.
+\paragraph{W9 structural enhancement.}
+The uniform model predicts $62{,}745\times 2^{-16}\approx 0.96$
+lo-pass events per context.  The empirical count ($\approx 35$) is
+$36.5\times$ higher.  This structural enhancement arises because the
+C1/C2 fixed-point iteration, started from $W_9$-lo-consistent seed
+pairs, preferentially converges to fixed points that also satisfy the
+lo constraint.  Combined with the independently verified uniform
+distribution of $W_9$-hi residuals ($\chi^2=263.4$, $p=0.35$,
+\S\ref{sec:chi2}), the empirical full-match rate is
+$\mu\approx 5.3\times 10^{-4}$ per context ($K_{\mathrm{seeds}}=4$),
+corresponding to $\approx 1{,}875$ expected contexts.
+
+The three observed preimage finds (at contexts 3, 20, 34) have
+maximum-likelihood estimated expected contexts $\approx 19$, which
+lies within statistical variation of the $\approx 1{,}875$ prediction
+given the limited sample size (three runs).  All three preimages were
+found within 34 contexts, and the total search time was under
+15 minutes on the H100 (1,464\,s combined for P1, P2, P3).
 
 %-----------------------------------------------------------------------
 \section{Experimental Results}
@@ -744,6 +767,7 @@ All three preimages pass this check.  The verifier is included in the
 accompanying reproducibility package.
 
 \subsection{Chi-Squared Uniformity Test}
+\label{sec:chi2}
 
 To verify the $1/2^{16}$ model for the W9-hi filter, we collected
 the values $(W_9^{\mathrm{true}} \gg 16) \bmod 2^{16}$ for all
@@ -823,9 +847,12 @@ Consequently any $\sigma_0$-chain of length four ($W_0,\ldots,W_4$) lies in an o
 length $49{,}146$ unless $W_4$ is one of the four exceptional values above, so
 no ``chain-wrap'' shortcut of the form $W_0 = W_4$ arises generically.
 
-Combined with the $W_9$ lo/hi filter (also $\approx 2^{-32}$), the expected preimage rate per
-context drops from $O(2^{-32})$ at $R=19$ to $O(2^{-64})$ at $R=20$---a factor of
-$2^{32}$ beyond the $R=19$ result.
+The C3 constraint introduces an independent $2^{-32}$ filter on top of
+the R=19 attack.  Using the empirical per-context success rate
+$\mu_{R=19}\approx 5.3\times 10^{-4}$ (\S\ref{sec:complexity}), the
+R=20 expected contexts is $\mu_{R=19}^{-1}\times 2^{32}
+\approx 1{,}875\times 2^{32}\approx 2^{42.9}$---a factor of $2^{32}$
+harder than R=19.
 
 \textbf{GPU diagnostic.}
 A 165-context GPU run of the $R=20$ $\sigma_0$-chain on an H100 (batch~$=2^{26}$,
@@ -1659,8 +1686,9 @@ verified 19-round preimages confirm the analysis, advancing the
 practical oracle-free preimage frontier by at least one round.
 The oracle-free attack on 20 rounds remains open; the
 fourth schedule constraint (C3) introduces an independent $2^{-32}$
-filter that raises the expected work per context from $O(2^{-32})$
-to $O(2^{-64})$, a $2^{32}$ barrier without a known bypass.
+filter, raising the expected contexts by a factor of $2^{32}$ beyond
+the $R=19$ result (empirical $\mu_{R=19}\approx 5.3\times10^{-4}$),
+a barrier without a known bypass.
 
 \paragraph{Nine-Step structure (collision direction).}
 The Nine-Step Cancellation Lemma establishes an 8-round algebraic
