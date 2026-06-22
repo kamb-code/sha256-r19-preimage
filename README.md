@@ -141,13 +141,36 @@ publish/
   paper_r19_final.tex        — LaTeX source
   verified_preimages.txt     — the three verified preimage examples
 
-  code/
+  code/                      — core reproducibility files:
     verify_r19.py            — standalone verifier (no dependencies beyond stdlib)
     h100_extended.py         — production GPU solver (PyTorch + CUDA)
     extended_solver.py       — backward chain + W recovery utilities
     sha256_core.py           — SHA-256 full-trace reference implementation
     utils.py                 — SHA-256 primitives (ROTR, Σ, σ, Ch, Maj, H0, K)
+
+                               auxiliary research scripts (not needed to reproduce):
+    absorption_analysis.py   — multi-block coordinate descent experiments
+    alt_differential.py      — alternate differential experiments
+    angle_analysis.py        — differential angle analysis
+    block1_coord.py          — single-block coordinate descent
+    block2_coord.py          — two-block coordinate descent
+    cuda_sweep.py            — CUDA birthday sweep for near-collisions
+    deep_search.py           — extended birthday search
+    differential_trace.py    — differential trace logging
+    final_results.py         — result aggregation
+    gpu_sa.py                — GPU simulated annealing (experimental)
+    near_collision_result.py — near-collision result logging
+    schedule_differential.py — schedule differential analysis
+    sensitivity_matrix.py    — sensitivity matrix computation
+    threeblock_coord.py      — three-block coordinate descent
+    twobit_search.py         — two-bit differential search
+    twoblock_sweep.py        — two-block birthday sweep
+    zero_window_lemma.py     — zero-window lemma verification
 ```
+
+Note: the auxiliary scripts import from `/home/administrator/sha/sha256` (the original
+development tree) and will not run on a fresh clone. They are included for
+transparency only — all results claimed in the paper use the five core files above.
 
 ---
 

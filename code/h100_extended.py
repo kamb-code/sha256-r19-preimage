@@ -212,9 +212,11 @@ def run_ctx(tbl, hash_bytes, known_a, R=19, max_iter=8, batch=2**24, K_seeds=4):
                                     print(f"  a0=0x{int(a0_v[ci]):08x} a1=0x{int(a1_v[ci]):08x}")
                                     print(f"  a2=0x{int(a2_v[ci]):08x} a3=0x{int(a3_v[ci]):08x}")
                                     print(f"  msg={[hex(w) for w in mw]}", flush=True)
-                                    with open('/workspace/sha256/PREIMAGE_FOUND.txt','w') as f:
+                                    out_path = os.path.join(os.getcwd(), 'PREIMAGE_FOUND.txt')
+                                    with open(out_path,'w') as f:
                                         f.write(f"hash={hash_bytes.hex()}\n")
                                         f.write(f"msg_words={[hex(w) for w in mw]}\n")
+                                    print(f"  saved → {out_path}", flush=True)
                                     return stats, residuals, found
 
                 a2c=torch.where(both&~conv,a2n,a2c)
@@ -319,7 +321,9 @@ def main():
     tt=time.time()-t0_total
     print(f"\nCompleted {n_ctx} contexts in {tt:.0f}s ({tt/3600:.2f}h)")
     print(f"Totals: {totals}")
-    np.save('/workspace/sha256/w9_hi_residuals_final.npy', np.array(all_residuals))
+    out_npy = os.path.join(os.getcwd(), 'w9_hi_residuals_final.npy')
+    np.save(out_npy, np.array(all_residuals))
+    print(f"Residuals saved → {out_npy}")
 
 if __name__=='__main__':
     main()
