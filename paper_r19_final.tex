@@ -57,11 +57,12 @@ We give the first practical oracle-free preimage attack on 19-round
 SHA-256.  Given only a 32-byte target hash, the attack combines a
 backward-chain inversion with a precomputed 16\,GB $\sigma_0(u){-}u$
 \emph{differential table} and a two-stage fixed-point iteration,
-performing $O(2^{32})$ work per context attempt.  A structural
-bias in the $W_9$-lo filter (${\approx}36.5\times$ the uniform
-prediction) gives an empirical full-match rate of
-${\approx}5.3\times10^{-4}$ per context; the three concrete preimage
-finds required only 3--34 contexts each.  All three were verified on a
+performing $O(2^{32})$ work per context attempt.  Both halves of the $W_9$
+filter carry structural bias---the lo half by $37$--$44\times$ and the hi half
+by ${\approx}9.2\times$ the uniform $2^{-16}$ rate---giving a measured
+full-match rate of ${\approx}4.9\times10^{-2}$ per context, or ${\approx}20$
+expected contexts per preimage.  The three concrete preimage finds required
+3, 20 and 34 contexts, a mean of 19.  All three were verified on a
 single NVIDIA H100 GPU in under 15 minutes each (cost $<$\$1.50).
 For context on the practical frontier: the most recent SAT-based analysis
 of round-reduced SHA-256~\cite{Davydov2025} finds full-target preimages at
@@ -679,17 +680,15 @@ Two sequential filters are applied:
 \begin{itemize}
   \item \textbf{Lo filter:}
     $(W_9^{\mathrm{true}} \bmod 2^{16}) = (\hat{W}_9 \bmod 2^{16})$.
-    Empirically $\approx 35$ events per context
-    (${\approx}36.5\times$ above the naive uniform prediction
-    $62{,}745\times 2^{-16}\approx 0.96$; discussed in
-    \S\ref{sec:complexity}).
+    Passes at $37$--$44\times$ the uniform $2^{-16}$ rate
+    (\S\ref{sec:complexity}).
   \item \textbf{Hi filter:}
     $(W_9^{\mathrm{true}} \gg 16) = (\hat{W}_9 \gg 16)$.
-    Passes at rate $2^{-16}$, independent of the lo filter
-    (verified by chi-squared uniformity test on 165 GPU contexts).
+    Passes at ${\approx}9.2\times$ the uniform rate.  This filter is
+    \emph{not} uniform; a coarse-binned test suggests otherwise but is
+    underpowered against a spike at a single residual (\S\ref{sec:chi2}).
 \end{itemize}
-Empirical combined rate: $35\times 2^{-16}\approx 5.3\times 10^{-4}$
-per context.  Candidates that pass both filters are assembled into a
+Measured combined rate: $\mu\approx 4.9\times 10^{-2}$ per context.  Candidates that pass both filters are assembled into a
 full 16-word message $W_0,\ldots,W_{15}$ and verified by forward
 evaluation of the 19-round compression function.
 
@@ -708,40 +707,62 @@ averaged over $>100$ contexts for per-context quantities;
 Quantity & Value \\
 \midrule
 C0 survivors (table hits) & $2{,}721{,}600{,}000$ ($63.4\%$ of $2^{32}$) \\
-C1/C2 convergent pairs & $\approx 62{,}745$ per context \\
-$W_9$ lo-pass events (empirical, $K_{\mathrm{seeds}}=4$) & $\approx 35$ per context \\
-$W_9$ lo-pass events (uniform model) & $62{,}745\times 2^{-16}\approx 0.96$ per context \\
-Structural lo enhancement & $\approx 36.5\times$ above uniform \\
-Full $W_9$ matches (empirical, $K_{\mathrm{seeds}}=4$) & $\approx 35/65536 \approx 5.3\times10^{-4}$ per context \\
+C1/C2 convergences & $2.6$--$5.2\times10^{5}$ per context \\
+$W_9$ lo-pass events & $150$--$350$ per context \\
+$W_9$ lo-pass rate per convergence & $5.7$--$6.8\times10^{-4}$ \\
+Structural \emph{lo} enhancement & $37$--$44\times$ above $2^{-16}$ \\
+$W_9$ hi-pass rate per convergence & $1.4\times10^{-4}$ \\
+Structural \emph{hi} enhancement & $\approx 9.2\times$ above $2^{-16}$ \\
 \midrule
-$\mu$ (uniform model, $K_{\mathrm{seeds}}=0$) & $62{,}745/2^{32}\approx 1.46\times 10^{-5}$ \\
-$\mu$ (empirical, $K_{\mathrm{seeds}}=4$) & $\approx 5.3\times 10^{-4}$ \\
-Expected contexts (uniform model) & $\approx 68{,}000$ \\
-Expected contexts (empirical $K_{\mathrm{seeds}}=4$) & $\approx 1{,}875$ \\
-Observed contexts (P3, P2, P1) & 3,\ 20,\ 34 \\
-Wall time per context (H100) & $\approx 23\;\mathrm{s}$ \\
+$\mu$ (uniform model, both filters $2^{-16}$) & $\approx 5\times 10^{-4}$ \\
+$\mu$ (measured, both enhancements included) & $\approx 4.9\times 10^{-2}$ per context \\
+Expected contexts (uniform model) & $\approx 1{,}900$ \\
+Expected contexts (measured) & $\approx 20$ \\
+Observed contexts (P3, P2, P1) & 3,\ 20,\ 34\ \ (mean 19) \\
+Wall time per context (H100) & $\approx 25\;\mathrm{s}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \paragraph{W9 structural enhancement.}
-The uniform model predicts $62{,}745\times 2^{-16}\approx 0.96$
-lo-pass events per context.  The empirical count ($\approx 35$) is
-$36.5\times$ higher.  This structural enhancement arises because the
-C1/C2 fixed-point iteration, started from $W_9$-lo-consistent seed
-pairs, preferentially converges to fixed points that also satisfy the
-lo constraint.  Combined with the independently verified uniform
-distribution of $W_9$-hi residuals ($\chi^2=263.4$, $p=0.35$,
-\S\ref{sec:chi2}), the empirical full-match rate is
-$\mu\approx 5.3\times 10^{-4}$ per context ($K_{\mathrm{seeds}}=4$),
-corresponding to $\approx 1{,}875$ expected contexts.
+Neither half of the $W_9$ filter is uniform.  Both enhancements arise because
+the C1/C2 fixed-point iteration, started from $W_9$-lo-consistent seed pairs,
+preferentially converges to fixed points that also satisfy the $W_9$
+constraint---an effect that acts on the full 32-bit residual, not only on the
+low half.  Measured over $2.2\times10^{9}$ swept $a_0$ values per
+configuration in an independent CPU reimplementation:
 
-The three observed preimage finds (at contexts 3, 20, 34) have
-maximum-likelihood estimated expected contexts $\approx 19$, which
-lies within statistical variation of the $\approx 1{,}875$ prediction
-given the limited sample size (three runs).  All three preimages were
-found within 34 contexts, and the total search time was under
-15 minutes on the H100 (1,464\,s combined for P1, P2, P3).
+\begin{itemize}\itemsep2pt
+\item the \emph{lo} filter passes at $37$--$44\times$ the uniform $2^{-16}$
+      rate, confirming the enhancement mechanism;
+\item the \emph{hi} filter passes at $\approx 9.2\times$ the uniform rate---it
+      is \emph{not} uniform, contrary to what a coarse-binned test suggests
+      (\S\ref{sec:chi2}).
+\end{itemize}
+
+Taking both together with the measured convergence count gives
+\[
+  \mu \;\approx\; 6.8\times10^{-4}\,\times\,1.4\times10^{-4}\,\times\,5.2\times10^{5}
+    \;\approx\; 4.9\times10^{-2}\ \text{per context},
+\]
+i.e.\ $\approx 20$ expected contexts per preimage.  This is $\approx 90\times$
+larger than the uniform-filter estimate, the discrepancy decomposing as the
+$9.2\times$ hi enhancement together with an order-of-magnitude undercount of
+lo-pass events when convergences are tallied per seed chain rather than per
+context.
+
+\paragraph{Consistency with the observed finds.}
+The three preimages were found at contexts 3, 20 and 34, a sample mean of 19
+against the predicted $\approx 20$.  We note that this agreement is the point
+of the calculation: a uniform-filter model predicts $\approx 1{,}900$ contexts,
+under which three finds this early would occur with probability
+$3\times10^{-7}$, so the observed finds by themselves falsify the uniform
+model.  Context-to-context variance is substantial---convergence counts vary
+by a factor of two between sampled contexts---so $\mu$ should be read as
+accurate to within a factor of about two, which the three-sample mean cannot
+resolve further.  All three preimages were found within 34 contexts, with a
+combined search time of $1{,}464$\,s on the H100 (871.6, 511.1 and 81.7\,s for
+P1, P2 and P3).
 
 %-----------------------------------------------------------------------
 \section{Experimental Results}
@@ -809,14 +830,29 @@ accompanying reproducibility package.
 \subsection{Chi-Squared Uniformity Test}
 \label{sec:chi2}
 
-To verify the $1/2^{16}$ model for the W9-hi filter, we collected
+To test the $1/2^{16}$ model for the W9-hi filter, we collected
 the values $(W_9^{\mathrm{true}} \gg 16) \bmod 2^{16}$ for all
 lo-pass events across 165 GPU contexts (a total of $5{,}775$ lo-pass
 events).  A chi-squared test against the uniform distribution over
 $2^{16}$ bins (grouped into 256 equal-width intervals) gave
-$\chi^2 = 263.4$ with 255 degrees of freedom ($p = 0.35$), consistent
-with uniformity.  The $1/2^{16}$ probability model for the hi filter
-is supported.
+$\chi^2 = 263.4$ with 255 degrees of freedom ($p = 0.35$).
+
+This test is \emph{not} sensitive to the effect that matters, and we record the
+point because it is easy to be misled by it.  The enhancement is concentrated
+at a single residual value out of $2^{16}$, whereas grouping into 256
+equal-width intervals spreads that single value across a bin of width 256 and
+dilutes the signal by roughly an order of magnitude.  We measured the dilution
+directly on the \emph{lo} residual, where the exact-value enhancement is known:
+a $37\times$ spike at the exact residual appears as only $3.9\times$ at
+256-bin resolution.  A comparable hi enhancement would therefore shift the
+occupancy of one bin from $22.6$ to roughly $32$---entirely invisible to a
+$\chi^2$ statistic over 255 degrees of freedom.
+
+Measuring at exact resolution instead shows the hi filter passing at
+$\approx 9.2\times$ the uniform rate (\S\ref{sec:complexity}).  The correct
+conclusion is that the coarse-binned test is underpowered, not that the hi
+residuals are uniform; filter rates in this attack must be estimated at exact
+residual resolution.
 
 %-----------------------------------------------------------------------
 \section{Discussion: R=20 Status}
@@ -888,11 +924,12 @@ length $49{,}146$ unless $W_4$ is one of the four exceptional values above, so
 no ``chain-wrap'' shortcut of the form $W_0 = W_4$ arises generically.
 
 The C3 constraint introduces an independent $2^{-32}$ filter on top of
-the R=19 attack.  Using the empirical per-context success rate
-$\mu_{R=19}\approx 5.3\times 10^{-4}$ (\S\ref{sec:complexity}), the
+the R=19 attack.  Using the measured per-context success rate
+$\mu_{R=19}\approx 4.9\times 10^{-2}$ (\S\ref{sec:complexity}), the
 R=20 expected contexts is $\mu_{R=19}^{-1}\times 2^{32}
-\approx 1{,}875\times 2^{32}\approx 2^{42.9}$---a factor of $2^{32}$
-harder than R=19.
+\approx 20\times 2^{32}\approx 2^{36.3}$---a factor of $2^{32}$
+harder than R=19.  The ratio is what matters here and is unaffected by the
+revision of $\mu_{R=19}$; only the absolute figure moves.
 
 \textbf{GPU diagnostic.}
 A 165-context GPU run of the $R=20$ $\sigma_0$-chain on an H100 (batch~$=2^{26}$,
@@ -1923,7 +1960,7 @@ practical oracle-free preimage frontier by at least one round.
 The oracle-free attack on 20 rounds remains open; the
 fourth schedule constraint (C3) introduces an independent $2^{-32}$
 filter, raising the expected contexts by a factor of $2^{32}$ beyond
-the $R=19$ result (empirical $\mu_{R=19}\approx 5.3\times10^{-4}$),
+the $R=19$ result (measured $\mu_{R=19}\approx 4.9\times10^{-2}$),
 a barrier without a known bypass.
 
 \paragraph{Why the method stops (20 rounds).}

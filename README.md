@@ -143,6 +143,12 @@ publish/
 
   code/                      — core reproducibility files:
     verify_r19.py            — standalone verifier (no dependencies beyond stdlib)
+    measure_w9_filters.py    — measures the W9 lo/hi filter pass rates that set
+                               the complexity constant mu. Reproduces the
+                               37-44x lo enhancement and the ~9.2x hi
+                               enhancement, and hence mu ~ 4.9e-2 per context
+                               (~20 expected contexts per preimage). Needs the
+                               16 GB sigma0(u)-u table and ~30 min on 14 cores.
     verify_sigma0_identities.py
                              — checks the sigma0 linear identities of §"Discussion:
                                R=20 Status": rank(sigma0 XOR I) = 31, the kernel
