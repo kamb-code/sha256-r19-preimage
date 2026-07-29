@@ -137,7 +137,7 @@ is not affected by this result.
 ```
 publish/
   README.md                  — this file
-  paper_r19_final.pdf        — compiled paper (23 pages)
+  paper_r19_final.pdf        — compiled paper (25 pages)
   paper_r19_final.tex        — LaTeX source
   verified_preimages.txt     — the three verified preimage examples
 
