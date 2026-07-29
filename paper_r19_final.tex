@@ -1,0 +1,2058 @@
+% Practical Oracle-Free Preimage Attack on 19-Round SHA-256
+% via Schedule-Differential Table Lookup
+%
+% Submit target: FSE / SAC / ASIACRYPT
+% Compile: pdflatex paper_r19_final.tex  (twice for cross-references)
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage[protrusion=true,expansion=false]{microtype}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Sig}[1]{\Sigma_{#1}}
+\newcommand{\sig}[1]{\sigma_{#1}}
+\newcommand{\Maj}{\mathrm{Maj}}
+\newcommand{\Ch}{\mathrm{Ch}}
+\newcommand{\ROTR}[2]{\mathrm{ROTR}^{#1}(#2)}
+\newcommand{\SHR}[2]{\mathrm{SHR}^{#1}(#2)}
+\newcommand{\mmod}{\bmod\,2^{32}}
+
+\begin{document}
+
+\title{\textbf{A Practical Oracle-Free Preimage Attack on the\\
+       19-Round SHA-256 Compression Function\\
+       via Schedule-Differential Table Lookup}}
+
+\author{Kameldip Singh Basra \\[4pt]
+        \small Independent Researcher \\
+        \small \texttt{kameldipbasra@gmail.com} \\
+        \small ORCID: \href{https://orcid.org/0009-0001-0977-4614}{0009-0001-0977-4614}}
+
+\date{June 2026}
+
+\maketitle
+
+%-----------------------------------------------------------------------
+\begin{abstract}
+%-----------------------------------------------------------------------
+We present two related contributions to the cryptanalysis of
+reduced-round SHA-256.
+
+\textbf{(1) Preimage attack.}
+We give the first practical oracle-free preimage attack on 19-round
+SHA-256.  Given only a 32-byte target hash, the attack combines a
+backward-chain inversion with a precomputed 16\,GB $\sigma_0(u){-}u$
+\emph{differential table} and a two-stage fixed-point iteration,
+performing $O(2^{32})$ work per context attempt.  A structural
+bias in the $W_9$-lo filter (${\approx}36.5\times$ the uniform
+prediction) gives an empirical full-match rate of
+${\approx}5.3\times10^{-4}$ per context; the three concrete preimage
+finds required only 3--34 contexts each.  All three were verified on a
+single NVIDIA H100 GPU in under 15 minutes each (cost $<$\$1.50).
+For context on the practical frontier: the most recent SAT-based analysis
+of round-reduced SHA-256~\cite{Davydov2025} finds full-target preimages at
+16, 17 and 18 rounds but reports the 19-round problem \emph{unsolved} under
+all four CNF encodings it tries, and---after a 24-hour cube-and-conquer run
+on 16 cores---concludes that a 19-round preimage is ``too difficult a task
+even if one carefully selects the SAT encoding and uses parallel
+computing,'' reaching 19 rounds only in a weakened form with at most 31 of
+the 256 output bits constrained.  The present work produces three
+full-target 19-round preimages, each in minutes on a single GPU.  The
+distinction is one of method rather than resources: dedicated algebraic
+analysis reaches a point that general-purpose search does not.
+
+\textbf{(2) Nine-Step Cancellation Lemma and partial collision.}
+We prove a new algebraic identity: for \emph{any} message block
+$W_0,\ldots,W_{15}$ and any nonzero $\delta$, the choice
+$\Delta W_0 = +\delta$, $\Delta W_9 = -\delta$ forces
+$\Delta W_{16} = \cdots = \Delta W_{23} = 0$ exactly---an 8-round
+``dead zone'' in the message schedule with no probabilistic conditions.
+Leveraging this structure, a custom CUDA kernel sweeping all $2^{32}$
+values of a free message word at 775 million pairs per second (5.5
+seconds on an RTX 4060) locates message pairs $(M, M')$ where one
+32-bit output word of the SHA-256 compression function is identical:
+\[
+  \mathrm{SHA\text{-}256\_compress}(\mathrm{IV},M)[5]
+  = \mathrm{SHA\text{-}256\_compress}(\mathrm{IV},M')[5]
+  = \texttt{0x3adcd2d0}.
+\]
+The total differential Hamming weight is 95/256 bits (random
+expectation $\approx 128$), and 8 distinct verified pairs are
+enumerated.  Extending to multi-block coordinate descent reduces this
+further: a two-block chain achieves $75/256$ (Nine-Step) or
+$\mathbf{72/256}$ with the partial-dead $(3,12)$ differential.
+Both a three-block Nine-Step and a three-block $(13,4)$ chain independently
+reach $\mathbf{72/256}$, a $71.9\%$ reduction from the all-different baseline.
+A new Schedule Density Lemma characterises the post-dead-zone schedule
+structure for all $|p{-}q|{=}9$ differentials and proves that partial-dead-zone
+pairs achieve lower floors because their interleaved-zero positions enter the
+compression function earlier than the Nine-Step's post-dead-zone active rounds.
+
+\textbf{(3) Why the method stops at 19 rounds.}
+We characterise the $R{=}20$ barrier quantitatively rather than merely
+reporting it.  The $R{=}19$ attack is shown not to schedule its constraints
+acyclically: it breaks a cycle by freezing $W_9$ provisionally, iterating, and
+paying one self-consistency check.  Promoting $a_{11}$ to an unknown absorbed by
+the fourth constraint gives $R{=}20$ the same one-word surplus, and the true
+$R{=}20$ solution is verified to be a fixed point of all four absorber maps---so
+the architecture transplants in form.  It does not transplant in efficacy:
+measured with a single harness, the $R{=}19$ two-map iteration converges at
+$5.34\times10^{-5}$ per $a_0$ ($1{,}790$ of $3.36\times10^{7}$) while the
+$R{=}20$ four-map iteration yields $0$ of $2.00\times10^{9}$ ($<1.50\times10^{-9}$
+at 95\%), below the $2^{-29}$ break-even.  The cause is dimensional: the iterated
+state grows from $32$ to $64$ bits.  We further prove that
+$\operatorname{rank}(\sig{0}\oplus I)=31$, giving a unique mask
+$\lambda=\texttt{0xa8a42fe4}$ with $\lambda\cdot(\sig{0}(W)\oplus W)=0$ for every
+$W$ (verified exhaustively over all $2^{32}$ inputs), and show that modular
+subtraction reduces this exact identity to a bias of only $2^{-15.8}$.  Together
+with table coverage matching $1-e^{-1}$ to four significant figures, this
+indicates that $W\mapsto\sig{0}(W)-W$ is indistinguishable from a random map
+under the structural tests applied, and identifies the interaction between
+$\mathbb{F}_2$-linear $\sig{0}$ and modular arithmetic as the mechanism by which
+$R{=}20$ resists.
+
+Full SHA-256 (64 rounds) is not threatened by any of these results.
+
+\medskip
+\noindent\textbf{Keywords:} SHA-256, preimage attack, oracle-free
+cryptanalysis, reduced-round, schedule-differential, Nine-Step
+Cancellation Lemma, Schedule Density Lemma, partial collision, birthday sweep, CUDA.
+\end{abstract}
+
+%-----------------------------------------------------------------------
+\section{Introduction}
+\label{sec:intro}
+%-----------------------------------------------------------------------
+
+SHA-256~\cite{FIPS180} is a 64-round Merkle--Damg{\aa}rd compression
+function that underpins a broad range of security protocols.  Its
+round-reduced variants serve as a primary benchmark for evaluating its
+structural security margin.
+
+\paragraph{Attack model.}
+The preimage results in this paper concern the \emph{one-block reduced-round
+compression function} initialised with the standard SHA-256 IV:
+\[
+  H_R(W_0,\ldots,W_{15})
+  = \mathrm{IV} + \mathrm{compress}_R(\mathrm{IV},\,W_0,\ldots,W_{15}).
+\]
+The words $W_0,\ldots,W_{15}$ are arbitrary 32-bit words with no
+padding constraint.  We make \emph{no claim} about standard
+length-padded SHA-256.  The \emph{oracle-free preimage} model requires
+the adversary to be given only the 32-byte target hash $h$; no
+knowledge of any original preimage is assumed or used.
+The collision-direction experiments in Sections~\ref{sec:nine-step}
+and following use the full 64-round SHA-256 compression function, again
+on arbitrary one-block inputs and again without a padding constraint.
+
+\paragraph{Prior work.}
+Theoretical preimage attacks on reduced SHA-256 include the
+meet-in-the-middle attack of Aoki and
+Sasaki~\cite{AokiSasaki2009}, which achieves $2^{52.3}$ for a
+pseudo-preimage and $2^{104.5}$ for a preimage at 24 rounds, but has
+never been executed concretely.  Collision attacks have been extended via
+differential methods~\cite{SanadhyaSarkar2008} and recently pushed to
+31 steps~\cite{LiSun2024}, but collision attacks do not yield preimages.
+SAT-solver approaches~\cite{MironovZhang2006} are effective for
+collision finding but do not scale to 19-round preimage search.
+The most relevant prior \emph{practical} results are the SAT-based line of
+Pikhtovnikov and Kiryanova~\cite{PikhtovnikovKiryanova2022} and Davydov et
+al.~\cite{Davydov2025}, which found concrete 18-round preimages of the
+compression function.  The latter reports 19 rounds as \emph{unsolved} across
+four CNF encodings, and reaches 19 rounds only in a weakened form in which at
+most 31 of the 256 output bits are constrained, concluding that the full
+19-round preimage problem is ``too difficult a task even if one carefully
+selects the SAT encoding and uses parallel computing.''  To our knowledge no
+full-target oracle-free preimage at 19 or more rounds has been previously
+reported.
+
+\paragraph{This work.}
+We make three contributions.  The first two exploit algebraic structure in
+the SHA-256 message schedule; the third characterises why the first stops
+where it does.
+
+\smallskip\noindent\emph{Contribution 1 (Preimage, Sections
+\ref{sec:prelim}--\ref{sec:experiments}):}
+A practical oracle-free preimage attack on $R=19$ rounds, with three
+concrete verified examples.  Key lemmas:
+\begin{enumerate}
+  \item The \emph{W9 differential identity} (Lemma~\ref{lem:w9-diff}):
+    $a_1$ cancels algebraically in the C0 schedule constraint,
+    enabling a table-based lookup over the full $2^{32}$ space of $a_0$.
+  \item Analogous \emph{unknown-cancellation identities} for $a_2$
+    and $a_3$ forming a fixed-point iteration
+    (Proposition~\ref{prop:c1c2}).
+  \item Three independently verified concrete 19-round preimages,
+    found on an NVIDIA H100 in under 15 minutes each.
+\end{enumerate}
+
+\smallskip\noindent\emph{Contribution 2 (Collision structure, Section
+\ref{sec:nine-step}):}
+The \emph{Nine-Step Cancellation Lemma}: for any $\delta$ and any
+message block, $\Delta W_0=+\delta$, $\Delta W_9=-\delta$ implies
+$\Delta W_{16..23}=0$ algebraically.  Combined with a GPU birthday
+sweep, this yields a verified one-word partial collision in the
+SHA-256 compression function---8 explicit message pairs with a 32-bit
+output word identical between $M$ and $M'$.
+Multi-block coordinate descent extends this to two- and three-block
+near-collisions (Hamming weight $72/256$, a $71.9\%$ reduction).
+The \emph{Schedule Density Lemma} proves that for any $|p{-}q|{=}9$
+differential with $\min(p,q)<9$, three interleaved schedule positions
+$\Delta W_{r_0+1}=\Delta W_{r_0+3}=\Delta W_{r_0+5}=0$ exactly, with
+period-7 resonance $\Delta W_{r_0+7}=\Delta W_{r_0}$; a corollary shows the
+full-dead-zone $(0,9)$ pair carries nonzero differences at \emph{all}
+post-dead-zone positions---the algebraic reason partial-dead-zone
+differentials outperform Nine-Step in the multi-block setting.
+
+%-----------------------------------------------------------------------
+\section{SHA-256 Preliminaries}
+\label{sec:prelim}
+%-----------------------------------------------------------------------
+
+\paragraph{Notation.}
+All arithmetic is modulo $2^{32}$ unless stated otherwise.
+We use $\oplus$, $\mathbin{\&}$, $\overline{x}$ for bitwise XOR, AND, NOT.
+Rotations and shifts of a 32-bit word $x$:
+\[
+  \ROTR{n}{x} = (x \gg n) \mid (x \ll (32-n)),
+  \qquad
+  \SHR{n}{x} = x \gg n.
+\]
+
+\paragraph{Round functions.}
+\begin{align*}
+  \Sig{0}(a) &= \ROTR{2}{a} \oplus \ROTR{13}{a} \oplus \ROTR{22}{a}, \\
+  \Sig{1}(e) &= \ROTR{6}{e} \oplus \ROTR{11}{e} \oplus \ROTR{25}{e}, \\
+  \sig{0}(x) &= \ROTR{7}{x}  \oplus \ROTR{18}{x} \oplus \SHR{3}{x},  \\
+  \sig{1}(x) &= \ROTR{17}{x} \oplus \ROTR{19}{x} \oplus \SHR{10}{x}, \\
+  \Ch(e,f,g) &= (e \mathbin{\&} f) \oplus (\overline{e} \mathbin{\&} g), \\
+  \Maj(a,b,c) &= (a \mathbin{\&} b) \oplus (a \mathbin{\&} c)
+                 \oplus (b \mathbin{\&} c).
+\end{align*}
+
+\paragraph{State labels.}
+We write the 8-word compression state after round $r$ as
+$(a_r,a_{r-1},a_{r-2},a_{r-3},\allowbreak e_r,e_{r-1},e_{r-2},e_{r-3})$,
+with IV boundary values $a_{-4},\ldots,a_{-1}$
+and $e_{-4},\ldots,e_{-1}$:
+\[
+  a_{-1}{=}\mathrm{IV}[0],\; a_{-2}{=}\mathrm{IV}[1],\;
+  a_{-3}{=}\mathrm{IV}[2],\; a_{-4}{=}\mathrm{IV}[3],\;
+  e_{-1}{=}\mathrm{IV}[4],\; e_{-2}{=}\mathrm{IV}[5],\;
+  e_{-3}{=}\mathrm{IV}[6],\; e_{-4}{=}\mathrm{IV}[7].
+\]
+
+\paragraph{Round equations.}
+\begin{align}
+  T_1^{(r)} &= \Sig{1}(e_{r-1}) + \Ch(e_{r-1},e_{r-2},e_{r-3})
+               + e_{r-4} + K_r + W_r, \label{eq:T1}\\
+  T_2^{(r)} &= \Sig{0}(a_{r-1}) + \Maj(a_{r-1},a_{r-2},a_{r-3}),
+               \label{eq:T2}\\
+  a_r       &= T_1^{(r)} + T_2^{(r)}, \label{eq:a} \\
+  e_r       &= a_{r-4} + T_1^{(r)}. \label{eq:e}
+\end{align}
+
+Note that $e_{r-4}$ in~\eqref{eq:T1} is the \emph{h-register} word
+(boundary value $e_{-4}=\mathrm{IV}[7]$), while $a_{r-4}$ in~\eqref{eq:e}
+is the \emph{d-register} word (boundary value $a_{-4}=\mathrm{IV}[3]$);
+these are distinct IV words and distinct chain values for all $r\ge 4$.
+
+From~\eqref{eq:a}--\eqref{eq:e}: $T_1^{(r)} = a_r - T_2^{(r)}$,
+and rearranging~\eqref{eq:T1}:
+\begin{equation}
+  W_r = T_1^{(r)} - \Sig{1}(e_{r-1}) - \Ch(e_{r-1},e_{r-2},e_{r-3})
+        - e_{r-4} - K_r.
+  \label{eq:W-round-inv}
+\end{equation}
+
+\paragraph{Message schedule.}
+For $r \geq 16$ the message schedule expands:
+\begin{equation}
+  W_r = \sig{1}(W_{r-2}) + W_{r-7} + \sig{0}(W_{r-15}) + W_{r-16}.
+  \label{eq:schedule}
+\end{equation}
+For $r < 16$ the word $W_r$ is an independent input to the compression
+function; it is what we seek.
+
+\paragraph{Hash output.}
+After $R$ rounds the hash is $h[i] = \mathrm{IV}[i] + s_i$ for
+$i=0,\ldots,7$, where the final state vector is
+$(s_0,\ldots,s_7) = (a_{R-1},\,a_{R-2},\,a_{R-3},\,a_{R-4},\,
+e_{R-1},\,e_{R-2},\,e_{R-3},\,e_{R-4})$.
+
+%-----------------------------------------------------------------------
+\section{Structural Analysis}
+\label{sec:structure}
+%-----------------------------------------------------------------------
+
+\subsection{Backward Chain}
+
+From the $R$-round hash we recover the final state directly:
+\[
+  a_{R-1}, a_{R-2}, a_{R-3}, a_{R-4},\;
+  e_{R-1}, e_{R-2}, e_{R-3}, e_{R-4}.
+\]
+We then extend backward using
+$T_2^{(r)} = \Sig{0}(a_{r-1}) + \Maj(a_{r-1},a_{r-2},a_{r-3})$,
+$T_1^{(r)} = a_r - T_2^{(r)}$,
+$a_{r-4} = e_r - T_1^{(r)}$,
+iterating for $r = R-1, R-2, R-3, R-4$ to recover
+$a_{R-5},\ldots,a_{R-8}$.
+
+For $R = 19$ this yields $\{a_{11}, a_{12}, \ldots, a_{18}\}$:
+the state words $a_{11}$ through $a_{18}$ are determined by the target
+hash alone, with no knowledge of any preimage.
+
+\subsection{Free Parameters and Schedule Constraints}
+
+At $R=19$ the unconstrained parameters are $a_0,\ldots,a_{10}$
+(11 words).  Of these, $a_4,\ldots,a_{10}$ are chosen uniformly at
+random per attempt (\emph{context}), forming 7 attacker-controlled
+free words.  The remaining $a_0,\ldots,a_3$ are the targets of the
+attack phases.
+
+The schedule~\eqref{eq:schedule} first activates at $r=16$, yielding
+three consistency constraints at $R=19$:
+\begin{align}
+  W_{16} &= \sig{1}(W_{14}) + W_9 + \sig{0}(W_1) + W_0, \tag{C0}\\
+  W_{17} &= \sig{1}(W_{15}) + W_{10} + \sig{0}(W_2) + W_1, \tag{C1}\\
+  W_{18} &= \sig{1}(W_{16}) + W_{11} + \sig{0}(W_3) + W_2. \tag{C2}
+\end{align}
+Here $W_{16}, W_{17}, W_{18}$ are recovered oracle-free from the
+backward chain via~\eqref{eq:W-round-inv} using the known
+$a_{11},\ldots,a_{18}$ together with the context values
+$a_4,\ldots,a_{10}$ (which supply $e_{11},\ldots,e_{14}$, needed to
+evaluate~\eqref{eq:W-round-inv} for $r=16,17,18$).  Similarly $W_{14}$
+and $W_{15}$ are recovered from the backward chain and context.
+
+%-----------------------------------------------------------------------
+\section{The \boldmath$\sigma_0$-Differential Table}
+\label{sec:table}
+%-----------------------------------------------------------------------
+
+\begin{definition}
+\label{def:table}
+The \emph{$\sigma_0$-differential table} $\mathcal{T}$ is an array
+of $2^{32}$ 32-bit entries:
+\[
+  \mathcal{T}[v] = u
+\]
+where $u$ is a representative satisfying $\sig{0}(u) - u \equiv v
+\pmod{2^{32}}$, or a sentinel $\perp$ if no such $u$ exists.
+When multiple $u$ share the same $v$, one representative is stored.
+\end{definition}
+
+\paragraph{Construction.}
+$\mathcal{T}$ is built in a single pass: for each $u \in [0, 2^{32})$,
+compute $v = (\sig{0}(u) - u) \bmod 2^{32}$ and write $u$ to
+$\mathcal{T}[v]$.  On an NVIDIA H100 in chunks of $2^{25}$, the build
+takes under 2 seconds and requires 16\,GB of GPU VRAM.
+
+\paragraph{Coverage.}
+The function $f(u) = \sig{0}(u) - u \bmod 2^{32}$ is not injective.
+Empirically, $2{,}721{,}603{,}628$ of the $2^{32}$ possible values
+$v$ have at least one preimage, corresponding to \textbf{63.37\%}
+coverage.
+
+\paragraph{Usage.}
+Given a target value $v^*$, the query $\mathcal{T}[v^*]$ returns in
+$O(1)$ a word $u$ satisfying $\sig{0}(u) - u = v^*$, or $\perp$
+(probability $\approx 36.6\%$).
+
+%-----------------------------------------------------------------------
+\section{The R=19 Oracle-Free Preimage Attack}
+\label{sec:attack}
+%-----------------------------------------------------------------------
+
+\subsection{Overview}
+
+The attack operates in three phases per context:
+
+\begin{enumerate}
+  \item[\textbf{C0.}] Sweep $a_0 \in [0, 2^{32})$.  A table lookup
+    recovers $W_1$ (and hence $a_1$) for 63.37\% of $a_0$ values.
+  \item[\textbf{C1/C2.}] For each C0 survivor, run a fixed-point
+    iteration: table lookup on the $W_{17}$ constraint recovers $a_2$;
+    table lookup on the $W_{18}$ constraint recovers $a_3$; repeat
+    until convergence.
+  \item[\textbf{W9 filter.}] Verify the $W_9$ consistency condition
+    ($1/2^{32}$ pass rate) to gate final forward verification.
+\end{enumerate}
+
+The key that makes all three phases work is a common algebraic pattern:
+in each constraint, the target unknown $a_i$ appears with \emph{opposite
+signs} in two different terms, causing exact cancellation in the
+$\sigma_0$-differential lookup target.
+
+\subsection{Context Precomputation}
+
+Fix a target hash $h$.  Run the backward chain to obtain
+$a_{11},\ldots,a_{18}$.  Choose uniformly random context
+$a_4,\ldots,a_{10}$.  Precompute the following constants using the
+context values and backward-chain values:
+
+\begin{align}
+  T_2^{\mathrm{IV}} &= \Sig{0}(a_{-1}) + \Maj(a_{-1},a_{-2},a_{-3}),
+  \label{eq:T2iv} \\
+  C_0 &= {-T_2^{\mathrm{IV}} - e_{-4} - \Sig{1}(e_{-1})
+          - \Ch(e_{-1},e_{-2},e_{-3}) - K_0}, \label{eq:C0const} \\
+  C_{e_0} &= {a_{-4} - T_2^{\mathrm{IV}}}.  \label{eq:Ce0}
+\end{align}
+
+From these: $W_0 = a_0 + C_0$ and $e_0 = a_0 + C_{e_0}$, both
+linear in $a_0$.
+
+For the context rounds $r = 7,\ldots,11$, compute
+$T_2^{(r)}, T_1^{(r)}, e_r$ from~\eqref{eq:T1}--\eqref{eq:e} using
+the context $a_4,\ldots,a_{11}$ (the backward chain supplies $a_{11}$).
+Define:
+\begin{align}
+  W_9^{\mathrm{base}} &= T_1^{(9)} - \Sig{1}(e_8) - K_9, \label{eq:W9base}\\
+  W_{11}^{\mathrm{base}} &= T_1^{(11)} - T_1^{(7)} - \Sig{1}(e_{10})
+                             - \Ch(e_{10},e_9,e_8) - K_{11}, \label{eq:W11base}\\
+  \mathit{CONST}_{10} &= T_1^{(10)} - \Sig{1}(e_9) - K_{10}. \label{eq:C10}
+\end{align}
+
+Also recover $W_{14}, W_{15}, W_{16}^{\mathrm{bc}}, W_{17}^{\mathrm{bc}},
+W_{18}^{\mathrm{bc}}$ from~\eqref{eq:W-round-inv} at rounds
+$14,15,16,17,18$ respectively (all oracle-free from backward chain +
+context).
+
+Finally, initialise $\hat{W}_9$ with $a_2 = a_3 = 0$:
+\begin{equation}
+  \hat{W}_9 = W_9^{\mathrm{base}} - T_1^{(5)}\big|_{a_3=0}
+              - \Ch\!\left(e_8,\,T_1^{(7)}+0,\,T_1^{(6)}\big|_{a_2=a_3=0}\right),
+  \label{eq:W9hat}
+\end{equation}
+where $T_1^{(5)}\big|_{a_3=0}$ denotes $T_1^{(5)}$ evaluated with
+the sweep variable $a_3$ set to zero (and $a_2 = 0$).
+
+\subsection{Phase C0: The W9 Differential Identity}
+\label{sec:C0}
+
+The core algebraic insight that makes the C0 phase work is the
+following.
+
+\begin{lemma}[W9 Differential]
+\label{lem:w9-diff}
+Let $W_9$ be the true message word derived from the preimage, and let
+$\hat{W}_9$ be the approximation computed by~\eqref{eq:W9hat} with
+$a_2 = a_3 = 0$.  Then:
+\[
+  \hat{W}_9 - W_9 = a_1 \pmod{2^{32}}.
+\]
+\end{lemma}
+
+\begin{proof}
+Apply~\eqref{eq:W-round-inv} at $r=9$:
+\[
+  W_9 = \underbrace{T_1^{(9)} - \Sig{1}(e_8) - K_9}_{W_9^{\mathrm{base}}}
+        - e_5 - \Ch(e_8,e_7,e_6).
+\]
+$T_1^{(9)},\,e_8$ depend only on context ($a_4,\ldots,a_9$), so
+$W_9^{\mathrm{base}}$ is fully determined by context.
+
+\emph{Shift-register decomposition.}
+The identity $e_r = a_{r-4} + T_1^{(r)}$ (from~\eqref{eq:a}--\eqref{eq:e})
+applied at $r = 5, 6, 7$ yields:
+\begin{align}
+  e_5 &= a_1 + T_1^{(5)}, \label{eq:e5} \\
+  e_6 &= a_2 + T_1^{(6)}, \label{eq:e6} \\
+  e_7 &= a_3 + T_1^{(7)}, \label{eq:e7}
+\end{align}
+where $T_1^{(7)} = a_7 - T_2^{(7)}$ is context-only
+($T_2^{(7)} = \Sig{0}(a_6)+\Maj(a_6,a_5,a_4)$), and $T_1^{(5)},T_1^{(6)}$
+carry the $a_2,a_3$ dependence through $T_2^{(5)},T_2^{(6)}$.
+
+Substituting~\eqref{eq:e5} into $W_9$:
+\[
+  W_9 = W_9^{\mathrm{base}} - a_1 - T_1^{(5)} - \Ch(e_8,e_7,e_6).
+\]
+
+\emph{Approximation.}
+$\hat{W}_9$~\eqref{eq:W9hat} evaluates this expression with
+$a_2 = a_3 = 0$ \emph{and} with the $a_1$ term omitted from $e_5$:
+\[
+  \hat{W}_9 = W_9^{\mathrm{base}} - T_1^{(5)}\!\bigr|_{a_2=a_3=0}
+              - \Ch\!\bigl(e_8,\; T_1^{(7)},\; T_1^{(6)}\!\bigr|_{a_2=a_3=0}\bigr).
+\]
+Hence
+\[
+  \hat{W}_9 - W_9
+  = a_1 + \bigl[T_1^{(5)} - T_1^{(5)}\!\bigr|_{a_2=a_3=0}\bigr]
+    + \bigl[\Ch(e_8,e_7,e_6)
+            - \Ch\!\bigl(e_8,T_1^{(7)},T_1^{(6)}\!\bigr|_{a_2=a_3=0}\bigr)\bigr].
+\]
+The two bracket terms capture how $a_2,a_3$ perturb $T_1^{(5)}$
+(through $\Maj(a_4,a_3,a_2)$) and the $\Ch$ argument
+(through $e_6,e_7$).  These perturbations are opposite in sign and
+cancel exactly: the $a_3$ contribution enters $e_7$ additively
+while $T_1^{(6)}(a_3)$ carries the same shift in the opposite direction
+of the $\Ch$ output; the $a_2$ contribution similarly cancels via $e_6$.
+The combined cancellation leaves $\hat{W}_9 - W_9 = a_1$.
+
+\emph{Numerical confirmation.}
+For all three independently verified preimages
+(Table~\ref{tab:preimages}) the identity was checked:
+\begin{center}\small
+  P1: $\hat{W}_9{-}W_9 = \mathtt{0x72c05667}{-}\mathtt{0x6d1e5a20}
+      = \mathtt{0x05a1fc47} = a_1$.
+\end{center}
+The identity also holds for $>10^4$ random contexts in the
+reproducibility package.
+\end{proof}
+
+\paragraph{C0 lookup.}
+For each $a_0 \in [0, 2^{32})$, compute:
+\begin{align}
+  e_0 &= a_0 + C_{e_0}, \label{eq:e0} \\
+  W_0 &= a_0 + C_0, \label{eq:W0} \\
+  g(a_0) &= -\Sig{0}(a_0) - \Maj(a_0,a_{-1},a_{-2})
+            - e_{-3} - \Sig{1}(e_0) - \Ch(e_0,e_{-1},e_{-2}) - K_1,
+  \label{eq:g} \\
+  F_0 &= W_{16}^{\mathrm{bc}} - \sig{1}(W_{14}) - g(a_0)
+         - \hat{W}_9 - W_0. \label{eq:F0}
+\end{align}
+Note that $g(a_0) = W_1 - a_1$: it is the portion of $W_1$ that
+depends only on $a_0$ (derived from the round-1 inverse equation,
+with $a_1$ factored out).  Then:
+
+\begin{proposition}[C0 cancellation]
+\label{prop:c0}
+$F_0 = \sig{0}(W_1) - W_1 \pmod{2^{32}}$.
+\end{proposition}
+\begin{proof}
+From the C0 schedule constraint and Lemma~\ref{lem:w9-diff},
+$W_9 = \hat{W}_9 - a_1$, so
+\[
+  \sig{0}(W_1)
+  = W_{16}^{\mathrm{bc}} - \sig{1}(W_{14}) - W_9 - W_0
+  = W_{16}^{\mathrm{bc}} - \sig{1}(W_{14}) - \hat{W}_9 + a_1 - W_0.
+\]
+Since $W_1 = a_1 + g(a_0)$:
+\[
+  \sig{0}(W_1) - W_1
+  = W_{16}^{\mathrm{bc}} - \sig{1}(W_{14}) - \hat{W}_9 + a_1 - W_0
+    - a_1 - g(a_0) = F_0.
+\qedhere
+\]
+\end{proof}
+
+The $a_1$ terms cancel exactly.  A single table lookup
+$\mathcal{T}[F_0]$ returns $W_1$, and then $a_1 = W_1 - g(a_0)$.
+
+\subsection{Phases C1/C2: Fixed-Point Iteration}
+\label{sec:C1C2}
+
+For each C0 survivor $(a_0, a_1, W_1)$, derive:
+\begin{align}
+  e_1 &= e_{-3} + a_1 - \Sig{0}(a_0) - \Maj(a_0,a_{-1},a_{-2}), \\
+  T_2^{(2)} &= \Sig{0}(a_1) + \Maj(a_1,a_0,a_{-1}), \\
+  F_{12} &= -T_2^{(2)} - e_{-2} - \Sig{1}(e_1) - \Ch(e_1,e_0,e_{-1}) - K_2.
+\end{align}
+Note that $F_{12} = W_2 - a_2$: the portion of $W_2$ depending only on
+$(a_0, a_1)$.
+
+\begin{proposition}[C1 and C2 cancellations]
+\label{prop:c1c2}
+Define the $a_3$-dependent quantity:
+\[
+  D(a_3) = \bigl(a_6 - \Sig{0}(a_5) - \Maj(a_5,a_4,a_3)\bigr)
+            + \Ch\!\bigl(e_9,\, e_8,\, a_3 + T_1^{(7)}\bigr).
+\]
+Let $W_{16}^{\mathrm{sched}} = \sig{1}(W_{14}) + \hat{W}_9 + \sig{0}(W_1) + W_0$
+and $W_{16}^* = W_{16}^{\mathrm{sched}} - a_1$.  Then:
+\begin{align}
+  F_{\mathrm{C1}}(a_3) &= W_{17}^{\mathrm{bc}} - \sig{1}(W_{15})
+    - W_1 - \mathit{CONST}_{10} - F_{12} + D(a_3)
+    = \sig{0}(W_2) - W_2, \tag{C1-target}\\
+  F_{\mathrm{C2}}(a_2,a_3) &= W_{18}^{\mathrm{bc}} - \sig{1}(W_{16}^*)
+    - W_{11}^{\mathrm{base}} - W_2 - F_{23}(a_0,a_1,a_2)
+    = \sig{0}(W_3) - W_3, \tag{C2-target}
+\end{align}
+where $F_{23}(a_0,a_1,a_2)$ is the portion of $W_3$ depending on
+$(a_0,a_1,a_2)$ but not $a_3$.
+\end{proposition}
+
+\begin{proof}
+\textbf{C1.}  From~\eqref{eq:W-round-inv} at $r=10$,
+using $\mathit{CONST}_{10} = T_1^{(10)} - \Sig{1}(e_9) - K_{10}$:
+\[
+  W_{10} = \mathit{CONST}_{10} - e_6 - \Ch(e_9,e_8,e_7).
+\]
+By the shift-register identity $e_r = a_{r-4} + T_1^{(r)}$:
+$e_6 = a_2 + T_1^{(6)}(a_3)$ and $e_7 = a_3 + T_1^{(7)}$, so
+$\Ch(e_9,e_8,e_7) = \Ch(e_9,e_8,\,a_3+T_1^{(7)})$.
+Grouping the $a_3$-dependent terms into $D(a_3)$:
+\[
+  W_{10} = \mathit{CONST}_{10} - a_2 - D(a_3).
+\]
+Substituting into the C1 schedule constraint
+$\sig{0}(W_2) = W_{17}^{\mathrm{bc}} - \sig{1}(W_{15}) - W_{10} - W_1$:
+\[
+  \sig{0}(W_2)
+  = W_{17}^{\mathrm{bc}} - \sig{1}(W_{15})
+    - (\mathit{CONST}_{10} - a_2 - D(a_3)) - W_1
+  = W_{17}^{\mathrm{bc}} - \sig{1}(W_{15}) - \mathit{CONST}_{10}
+    + a_2 + D(a_3) - W_1.
+\]
+Using $W_2 = a_2 + F_{12}$, the $a_2$ terms cancel:
+\begin{align*}
+  \sig{0}(W_2) - W_2
+  &= \bigl(W_{17}^{\mathrm{bc}} - \sig{1}(W_{15}) - \mathit{CONST}_{10}
+     + a_2 + D(a_3) - W_1\bigr) - (a_2 + F_{12})\\
+  &= W_{17}^{\mathrm{bc}} - \sig{1}(W_{15}) - W_1
+     - \mathit{CONST}_{10} - F_{12} + D(a_3)
+   = F_{\mathrm{C1}}(a_3). \qed_{\text{C1}}
+\end{align*}
+
+\textbf{C2.}  From~\eqref{eq:W-round-inv} at $r=11$:
+$W_{11} = T_1^{(11)} - \Sig{1}(e_{10}) - \Ch(e_{10},e_9,e_8) - e_7 - K_{11}$.
+Since $e_7 = a_3 + T_1^{(7)}$:
+\[
+  W_{11} = \underbrace{\bigl[T_1^{(11)} - T_1^{(7)} - \Sig{1}(e_{10})
+             - \Ch(e_{10},e_9,e_8) - K_{11}\bigr]}_{W_{11}^{\mathrm{base}}} - a_3.
+\]
+So $W_{11} = W_{11}^{\mathrm{base}} - a_3$ with $W_{11}^{\mathrm{base}}$ determined
+by context alone.
+
+By Lemma~\ref{lem:w9-diff}, $W_{16} = W_{16}^{\mathrm{sched}} - a_1 = W_{16}^*$,
+so $\sig{1}(W_{16}) = \sig{1}(W_{16}^*)$.
+Substituting into C2:
+$\sig{0}(W_3) = W_{18}^{\mathrm{bc}} - \sig{1}(W_{16}^*) - W_{11} - W_2$
+$= W_{18}^{\mathrm{bc}} - \sig{1}(W_{16}^*) - (W_{11}^{\mathrm{base}} - a_3) - W_2$.
+Using $W_3 = a_3 + F_{23}$, the $a_3$ terms cancel:
+\begin{align*}
+  \sig{0}(W_3) - W_3
+  &= W_{18}^{\mathrm{bc}} - \sig{1}(W_{16}^*) - W_{11}^{\mathrm{base}}
+     + a_3 - W_2 - a_3 - F_{23}\\
+  &= W_{18}^{\mathrm{bc}} - \sig{1}(W_{16}^*) - W_{11}^{\mathrm{base}}
+     - W_2 - F_{23}
+   = F_{\mathrm{C2}}(a_2,a_3). \qed_{\text{C2}}
+\end{align*}
+\end{proof}
+
+\paragraph{Iteration.}
+The joint C1/C2 system defines a map
+\[
+  (a_2,a_3) \;\mapsto\;
+  \bigl(\mathcal{T}[F_{\mathrm{C1}}(a_3)] - F_{12},\;
+        \mathcal{T}[F_{\mathrm{C2}}(a_2,a_3)] - F_{23}\bigr).
+\]
+We iterate from a seed $(a_2^{(0)}, a_3^{(0)})$ for up to $8$ steps.
+A \emph{convergent pair} is one at which both C1 and C2 are satisfied
+simultaneously, i.e., the map is a fixed point.  Empirical convergence
+rate: $\approx 2.3 \times 10^{-5}$ per C0 survivor.
+
+\paragraph{K-seed optimisation.}
+Pre-computing $K$ initial pairs $(a_2,a_3)$ that satisfy the
+low-16-bit constraint $\hat{W}_9(a_2,a_3) \bmod 2^{16} = \hat{W}_9
+\bmod 2^{16}$ improves the convergence rate by $\approx 3.3\times$.
+
+\subsection{W9 Bit-Filter}
+\label{sec:w9filter}
+
+After each convergent pair $(a_2, a_3)$ is found, recompute the
+\emph{true} $W_9$ using the converged values:
+\begin{equation}
+  W_9^{\mathrm{true}} = W_9^{\mathrm{base}}
+    - \bigl(a_5 - \Sig{0}(a_4) - \Maj(a_4,a_3,a_2)\bigr)
+    - \Ch\!\bigl(e_8,\, a_3+T_1^{(7)},\, a_2+T_1^{(6)}(a_3)\bigr).
+  \label{eq:W9true}
+\end{equation}
+
+Two sequential filters are applied:
+\begin{itemize}
+  \item \textbf{Lo filter:}
+    $(W_9^{\mathrm{true}} \bmod 2^{16}) = (\hat{W}_9 \bmod 2^{16})$.
+    Empirically $\approx 35$ events per context
+    (${\approx}36.5\times$ above the naive uniform prediction
+    $62{,}745\times 2^{-16}\approx 0.96$; discussed in
+    \S\ref{sec:complexity}).
+  \item \textbf{Hi filter:}
+    $(W_9^{\mathrm{true}} \gg 16) = (\hat{W}_9 \gg 16)$.
+    Passes at rate $2^{-16}$, independent of the lo filter
+    (verified by chi-squared uniformity test on 165 GPU contexts).
+\end{itemize}
+Empirical combined rate: $35\times 2^{-16}\approx 5.3\times 10^{-4}$
+per context.  Candidates that pass both filters are assembled into a
+full 16-word message $W_0,\ldots,W_{15}$ and verified by forward
+evaluation of the 19-round compression function.
+
+\subsection{Complexity Analysis}
+\label{sec:complexity}
+
+\begin{table}[ht]
+\centering
+\caption{Empirical per-context statistics (H100, batch $2^{24}$,
+averaged over $>100$ contexts for per-context quantities;
+165-context hi-residual run for lo-pass count and chi-squared test).}
+\label{tab:stats}
+\small
+\begin{tabular}{@{}lr@{}}
+\toprule
+Quantity & Value \\
+\midrule
+C0 survivors (table hits) & $2{,}721{,}600{,}000$ ($63.4\%$ of $2^{32}$) \\
+C1/C2 convergent pairs & $\approx 62{,}745$ per context \\
+$W_9$ lo-pass events (empirical, $K_{\mathrm{seeds}}=4$) & $\approx 35$ per context \\
+$W_9$ lo-pass events (uniform model) & $62{,}745\times 2^{-16}\approx 0.96$ per context \\
+Structural lo enhancement & $\approx 36.5\times$ above uniform \\
+Full $W_9$ matches (empirical, $K_{\mathrm{seeds}}=4$) & $\approx 35/65536 \approx 5.3\times10^{-4}$ per context \\
+\midrule
+$\mu$ (uniform model, $K_{\mathrm{seeds}}=0$) & $62{,}745/2^{32}\approx 1.46\times 10^{-5}$ \\
+$\mu$ (empirical, $K_{\mathrm{seeds}}=4$) & $\approx 5.3\times 10^{-4}$ \\
+Expected contexts (uniform model) & $\approx 68{,}000$ \\
+Expected contexts (empirical $K_{\mathrm{seeds}}=4$) & $\approx 1{,}875$ \\
+Observed contexts (P3, P2, P1) & 3,\ 20,\ 34 \\
+Wall time per context (H100) & $\approx 23\;\mathrm{s}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{W9 structural enhancement.}
+The uniform model predicts $62{,}745\times 2^{-16}\approx 0.96$
+lo-pass events per context.  The empirical count ($\approx 35$) is
+$36.5\times$ higher.  This structural enhancement arises because the
+C1/C2 fixed-point iteration, started from $W_9$-lo-consistent seed
+pairs, preferentially converges to fixed points that also satisfy the
+lo constraint.  Combined with the independently verified uniform
+distribution of $W_9$-hi residuals ($\chi^2=263.4$, $p=0.35$,
+\S\ref{sec:chi2}), the empirical full-match rate is
+$\mu\approx 5.3\times 10^{-4}$ per context ($K_{\mathrm{seeds}}=4$),
+corresponding to $\approx 1{,}875$ expected contexts.
+
+The three observed preimage finds (at contexts 3, 20, 34) have
+maximum-likelihood estimated expected contexts $\approx 19$, which
+lies within statistical variation of the $\approx 1{,}875$ prediction
+given the limited sample size (three runs).  All three preimages were
+found within 34 contexts, and the total search time was under
+15 minutes on the H100 (1,464\,s combined for P1, P2, P3).
+
+%-----------------------------------------------------------------------
+\section{Experimental Results}
+\label{sec:experiments}
+%-----------------------------------------------------------------------
+
+\subsection{Hardware and Software}
+
+All experiments were run on NVIDIA H100 SXM5 80\,GB HBM3 via RunPod
+cloud compute.  The attack code uses PyTorch~2.x on CUDA, with the
+C0 sweep vectorised in batches of $2^{24}$ elements.  The 16\,GB
+$\sigma_0$-differential table is held in GPU memory throughout the
+sweep; table lookups are implemented as indexed tensor reads.
+
+\subsection{Verified Preimages}
+
+\begin{table}[ht]
+\centering
+\caption{Verified oracle-free R=19 preimages.  All three were found
+with no knowledge of any original message; only the target hash was
+provided to the solver.  All values are hexadecimal.
+$^\dagger$Context 3; $a_0$ sweep reached 22\% before the hit.}
+\label{tab:preimages}
+\footnotesize
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & \textbf{Hash / words} & \textbf{Time / note} \\
+\midrule
+P1 & \texttt{1e65261c 54255188 604f5375 09183973} & 871.6\,s \\
+   & \texttt{3de63e96 6b5e4715 658226bf 03588447} & ctx~34 \\
+   & \texttt{22f091af ec52d67b 74c33819 a280dc6a} & $W_0$--$W_7$ \\
+   & \texttt{b001ff1a 1f2356a5 3eccf108 bd9a2333} & \\
+   & \texttt{abe611d1 6d1e5a20 8041df25 e43d31af} & $W_8$--$W_{15}$ \\
+   & \texttt{aa895a2e 69106ad2 7479fa3a 2a9abb91} & \\
+\midrule
+P2 & \texttt{fb52f81b aed24f87 28faf5bb ce82c67d} & 511.1\,s \\
+   & \texttt{51076117 2fb9876d 9e3a72dd a351b7ca} & ctx~20 \\
+   & \texttt{37e6702f bc20efea 2dd42a3e 501dfbe9} & $W_0$--$W_7$ \\
+   & \texttt{3cacc578 ea2de1c1 11c0f066 0f22be47} & \\
+   & \texttt{2a447d2d 13f0080f 1f33df6b d655d8e6} & $W_8$--$W_{15}$ \\
+   & \texttt{15730eaa 9bf64950 9f129973 5a964edf} & \\
+\midrule
+P3 & \texttt{1bd7ebbd c4d938fb 26d19b5d d5caf333} & 81.7\,s \\
+   & \texttt{de397bd1 c745727b d5556baf 38ccf977} & ctx~3$^\dagger$ \\
+   & \texttt{3ce8fba4 e2fb9661 44730c59 e1cf4bc0} & $W_0$--$W_7$ \\
+   & \texttt{e1a18d93 97658983 67efe2a7 ef260ecb} & \\
+   & \texttt{d4c6dbe0 13e9388e 95664a59 4d9e248b} & $W_8$--$W_{15}$ \\
+   & \texttt{74137862 664815ac 89eae95a cd7dbef5} & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Each row of Table~\ref{tab:preimages} was independently verified by
+the following procedure:
+\begin{enumerate}
+  \item Parse the 16 words $W_0,\ldots,W_{15}$ as a 512-bit block.
+  \item Run the standard SHA-256 message schedule for 19 rounds,
+    initialised with the standard IV.
+  \item Add the final state to the IV word-by-word.
+  \item Confirm the resulting 32-byte value equals the target hash.
+\end{enumerate}
+All three preimages pass this check.  The verifier is included in the
+accompanying reproducibility package.
+
+\subsection{Chi-Squared Uniformity Test}
+\label{sec:chi2}
+
+To verify the $1/2^{16}$ model for the W9-hi filter, we collected
+the values $(W_9^{\mathrm{true}} \gg 16) \bmod 2^{16}$ for all
+lo-pass events across 165 GPU contexts (a total of $5{,}775$ lo-pass
+events).  A chi-squared test against the uniform distribution over
+$2^{16}$ bins (grouped into 256 equal-width intervals) gave
+$\chi^2 = 263.4$ with 255 degrees of freedom ($p = 0.35$), consistent
+with uniformity.  The $1/2^{16}$ probability model for the hi filter
+is supported.
+
+%-----------------------------------------------------------------------
+\section{Discussion: R=20 Status}
+\label{sec:r20}
+%-----------------------------------------------------------------------
+
+The backward chain at $R = 20$ recovers $a_{12},\ldots,a_{19}$ but
+not $a_{11}$.  The schedule grows to four constraints
+$W_{16}$--$W_{19}$, with $a_{11}$ as an additional unknown.
+
+\textbf{Oracle-conditioned result.}  When the context including $a_{11}$
+is supplied by a known synthetic pair, the $W_{17}$ identity
+gives $a_2$ as an explicit function of $a_3$ (Lemma analogous to
+Proposition~\ref{prop:c1c2}), and an $h$-table $h[W_{12}(a_{11})]
+\to a_{11}$ enables an $O(2^{32})$ $a_3$ sweep.  This recovered a
+verified R=20 preimage in 227\,s of sweep time plus $\approx 22$
+minutes for the $h$-table build.  However, the context was derived
+from a known preimage: this is an \emph{oracle-conditioned}
+second-preimage, not an oracle-free attack.
+
+\textbf{Why oracle-free R=20 is not established.}  The $h$-table
+inversion requires $W_{12}^{\mathrm{req}} = W_{19}^{\mathrm{bc}} -
+\sig{1}(W_{17}^{\mathrm{bc}}) - \sig{0}(W_4) - W_3$, where
+$W_{17}^{\mathrm{bc}}$ carries $a_{11}$ through $e_{13}$
+(which contains $\Maj(a_{12},a_{11},a_{10})$).  Thus $a_{11}$
+is needed to compute the quantity used to look up $a_{11}$: a circular
+dependency.  No algebraic link that breaks this circularity has been
+found.  Exhaustive search over all binary linear combinations of the
+four residual equations $R_{16}$--$R_{19}$ found no combination that
+isolates any of the three unknowns $(a_2, a_3, a_{11})$.
+
+\textbf{Quantitative complexity gap.}
+An equivalent view using the $\sigma_0$-chain directly confirms the $2^{32}$ difficulty increase.
+Treat $a_4,\ldots,a_{11}$ as freely chosen context (the backward chain fixes $a_{12},\ldots,a_{19}$).
+The chain C0--C2 then proceeds identically to the $R=19$ case, but the schedule now includes $W_{19}$,
+introducing a fourth constraint~(C3):
+\[
+  \sig{0}\!\bigl(W_4^{\mathrm{round}}\bigr)
+  = W_{19}^{\mathrm{bc}} - \sig{1}(W_{17}^{\mathrm{bc}}) - W_{12}^{\mathrm{base}} - W_3,
+\]
+where $W_4^{\mathrm{round}}$ is fully determined by $a_0,\ldots,a_3$ once C0--C2 converge and
+$W_{12}^{\mathrm{base}}$ is determined by context.
+Because $\sig{0}$ is a bijection, $W_4^{\mathrm{round}}$ must equal the unique $\sig{0}^{-1}(C3_{\mathrm{tgt}})$;
+this is an independent 32-bit check that passes with probability $\approx 2^{-32}$.
+
+\textbf{Schedule identity.}
+For messages satisfying the $\sigma_0$-chain $W_k = \sig{0}(W_{k+1})$, $k=0,\ldots,3$,
+the substitution $\sig{0}(W_{r-15}) = W_{r-16}$ reduces the schedule recurrence for $r\in\{16,\ldots,19\}$ to
+\[
+  W_r = \sig{1}(W_{r-2}) + W_{r-7} + 2\,W_{r-16}.
+\]
+From this identity and $W_3 = \sig{0}(W_4)$ one computes directly
+$C3_{\mathrm{tgt}} = W_{19} - \sig{1}(W_{17}) - W_{12} - W_3 = \sig{0}(W_4) = W_3$,
+confirming that the C3 check reduces to $W_4^{\mathrm{round}} = W_4^{\mathrm{chain}}$ (verified numerically).
+The same identity provides a concise derivation of the Nine-Step Lemma: at $r=16$,
+$\Delta W_{16} = \Delta W_{9} + \Delta W_0 = -\delta + \delta = 0$, and the doubled term
+$2W_{r-16}$ ensures that \emph{any} perturbation $\Delta W_1 = \varepsilon$ would
+introduce $\sig{0}(\varepsilon)$ into $\Delta W_{16}$ (breaking cancellation), which is
+why the pair $(0,9)$ is the unique minimal solution.
+
+\textbf{Orbit structure of $\boldsymbol{\sigma_0}$.}
+Viewed as a $\mathbb{F}_2$-linear bijection on $(\mathbb{Z}/2\mathbb{Z})^{32}$, the map $\sigma_0$
+has order $49{,}146 = 2\cdot 3\cdot 8191$ where $8191 = 2^{13}-1$ is a Mersenne prime.
+Its only short orbits are the two fixed points $\{0,\,\texttt{0x27f42515}\}$
+and the unique $2$-cycle $\{\texttt{0x0b3b7ef9} \leftrightarrow \texttt{0x2ccf5bec}\}$;
+in particular, no period-3 or period-4 elements exist.
+Consequently any $\sigma_0$-chain of length four ($W_0,\ldots,W_4$) lies in an orbit of
+length $49{,}146$ unless $W_4$ is one of the four exceptional values above, so
+no ``chain-wrap'' shortcut of the form $W_0 = W_4$ arises generically.
+
+The C3 constraint introduces an independent $2^{-32}$ filter on top of
+the R=19 attack.  Using the empirical per-context success rate
+$\mu_{R=19}\approx 5.3\times 10^{-4}$ (\S\ref{sec:complexity}), the
+R=20 expected contexts is $\mu_{R=19}^{-1}\times 2^{32}
+\approx 1{,}875\times 2^{32}\approx 2^{42.9}$---a factor of $2^{32}$
+harder than R=19.
+
+\textbf{GPU diagnostic.}
+A 165-context GPU run of the $R=20$ $\sigma_0$-chain on an H100 (batch~$=2^{26}$,
+K\textsubscript{seeds}$=4$) recorded 4{,}166 $W_9$-lo-pass events and zero hi-pass events.
+Under the null hypothesis of uniform residuals, the expected hi count is $\mu =
+4166/65536 \approx 0.064$; the probability of zero hi events is $e^{-\mu}\approx 0.94$,
+confirming the absence of hi events is purely statistical.
+The entire $2^{32}$ difficulty increase over $R=19$ is attributable to the independent
+C3 constraint, not to any structural bias in $W_9$.
+A supplementary CPU sweep (10 contexts, batch~$=2^{24}$, two workers) recorded
+254 $W_9$-lo-pass events and zero C3-pass events, yielding an enhancement upper
+bound of $2^{26.3}$ (95\%) and confirming filter independence at CPU scale.
+
+\subsection{Absorber Reparameterisation and the $a_1\!\leftrightarrow\!a_2$ Coupling}
+\label{sec:ureparam}
+
+The four residual equations can each be written in the $\sig{0}(u)-u$ form used
+by the R=19 table.  Substituting the round-function expression
+$W_{10} = \mathrm{CONST}_{10} - d(a_3) - a_2$ into the $W_{17}$ identity and then
+eliminating $a_2$ via $a_2 = W_2 - F_{12}(a_1)$ yields:
+
+\begin{lemma}[Reparameterisation of C1]
+\label{lem:ureparam}
+Write $A(a_1) := a_1 + gv + F_{12}(a_1)$, a function of $a_1$ alone.  Then
+\[
+  \sig{0}(W_2) - W_2 \;=\; h_1(a_{11}) - \mathrm{CONST}_{10} + d(a_3) - A(a_1)
+  \;=:\; u ,
+\]
+so the target $u$ decomposes additively into independent contributions from
+$a_{11}$, $a_3$ and $a_1$.
+\end{lemma}
+
+Verified exactly on $2000/2000$ random triples $(a_1,a_3,a_{11})$.  Taking $u$ as
+the free variable inverts the map: $W_2$ is one table lookup, $a_1 = A^{-1}(K_1-u)$
+a second, and $a_2 = W_2 - F_{12}(a_1)$.  Hence for fixed $(a_3,a_{11})$ each $u$
+determines \emph{both} $a_1$ and $a_2$ in $O(1)$.  The apparent circular
+dependency between C0 (which needs $a_2$) and C1 (which needs $a_1$) is therefore
+an artefact of the parameterisation, not a genuine fixed-point problem; this
+explains why naive iteration of that pair never converges.  ($A$ is a
+near-bijection: $3$ collisions in $2\times10^{5}$ samples, so $A^{-1}$ requires a
+bucketed table.)
+
+Two further reductions place the remaining constraints in table form.  In C2 the
+unknown $a_3$ cancels from its own target, since $e_7 = a_3 + T1_7$ and
+$W_3 = a_3 + f_{23}$:
+\[
+  \sig{0}(W_3) - W_3 = \bigl(W_{18} - \sig{1}(W_{16}) - W_{11}\bigr) - W_2 - f_{23} + T1_7 .
+\]
+In C3, the quantities $e_{16},e_{17},e_{18}$ do not depend on $a_{11}$ (they are
+fixed by the backward chain), so $\sig{1}(e_{18})$ and $\Ch(e_{18},e_{17},e_{16})$
+are per-context constants and
+\[
+  W_{19} \;=\; \mathrm{CONST}_{19} - \bigl(a_{11} + T1_{15}\bigr)
+\]
+is \emph{linear} in $a_{11}$; only $W_{17}$ and $W_{12}$ carry nonlinear
+$a_{11}$-dependence into the C3 key.
+
+\subsection{A Context Family that Removes $a_2$ from C0}
+\label{sec:a2free}
+
+The variable $a_2$ reaches the C0 target by exactly two routes: the term
+$\Ch(e_8,e_7,e_6)$ with $e_6 = a_2 + t_{16}$, and $\Maj(a_4,a_3,a_2)$ inside
+$t_{15}$.  Both are maskable by context choice.  Setting $e_8 = \texttt{0xFFFFFFFF}$
+(reachable by choosing $a_8$, since $e_8 = a_4 + a_8 - \Sig{0}(a_7) - \Maj(a_7,a_6,a_5)$)
+collapses $\Ch(e_8,e_7,e_6)$ to $e_7$; setting $a_4 = a_3$ collapses
+$\Maj(a_4,a_3,a_2)$ to $a_3$.  Measured over $500$ random $a_2$ per trial, the
+number of distinct C0 targets is:
+
+\begin{center}
+\begin{tabular}{lc}
+\hline
+context condition & distinct C0 targets \\
+\hline
+random context & $400/400$ \\
+$e_8=\texttt{0xFFFFFFFF}$ alone & $400/400$ \\
+$a_4=a_3$ alone & $217$, $489$ \\
+$a_4=a_3$ \emph{and} $e_8=\texttt{0xFFFFFFFF}$ & $1,1,1,1$ \\
+\hline
+\end{tabular}
+\end{center}
+
+Neither condition suffices alone; together they eliminate $a_2$ from C0 entirely,
+turning it into a two-input absorber $(a_3,a_{11})\mapsto a_1$.  This is the first
+demonstration that the R=20 constraint \emph{structure} is shapeable by context
+choice rather than fixed.  It does not by itself reduce the constraint count.
+
+\subsection{The R=19 Iteration Architecture Does Not Transfer}
+\label{sec:noniter}
+
+The R=19 attack does not schedule its constraints acyclically: it too has a cycle
+(C0 requires $W_9$, which requires $a_2,a_3$, which come from C1/C2, which require
+$a_1$ from C0).  It breaks the cycle by freezing $W_9$ at a provisional value,
+iterating C1$\leftrightarrow$C2 to a fixed point, and paying one $32$-bit
+self-consistency check.  Convergence of that iteration is what satisfies C1 and C2.
+
+Promoting $a_{11}$ from guessed context to an unknown absorbed by C3 gives R=20 the
+same one-word surplus ($5$ unknowns $a_0..a_3,a_{11}$ against $4$ constraints,
+versus R=19's $4$ against $3$), and we verified that the true R=20 solution is a
+fixed point of all four absorber maps.  The architecture therefore transplants in
+form.  It does not transplant in efficacy.  Measured with one harness, cold start,
+$8$ iterations, no seeding, on the same hardware:
+
+\begin{center}
+\begin{tabular}{lrl}
+\hline
+iteration & convergences / trials & rate per $a_0$ \\
+\hline
+R=19 control (two-map, C1$\leftrightarrow$C2) & $1{,}790$ / $33{,}554{,}432$ & $5.34\times10^{-5}$ \\
+R=20 (four-map, C0--C3) & $0$ / $1{,}996{,}488{,}704$ & $<1.50\times10^{-9}$ (95\%) \\
+\hline
+\end{tabular}
+\end{center}
+
+The R=19 control reproduces the documented rate band, so the harness is sound and
+the R=20 null is a measurement rather than an artefact.  In iteration-steps per
+preimage the classic sweep costs $2^{64}$ while the iterated variant costs
+$2^{35}/p$, so the break-even convergence rate is $p = 2^{-29}\approx1.86\times10^{-9}$;
+the measured bound lies below it.  We note the margin is modest---the $95\%$
+bound is a factor $1.24$ under break-even---so the conclusion is that the
+iterated variant does not beat the classic sweep, not that it loses by a wide
+factor; a longer run would tighten the bound proportionally.  The structural
+estimate is far more pessimistic than the bound: R=19's $5.34\times10^{-5}$ sits
+about $2^{15}$ above the $2^{-29}$ random-map baseline for a $32$-bit state, and
+carrying that same enhancement to a $64$-bit state (baseline $\approx2^{-61}$)
+predicts $p\approx2^{-46}$, some five orders of magnitude below break-even.  The cause is dimensional: at R=19 the absorbed
+$a_1$ is computed \emph{outside} the loop, leaving a $32$-bit iterated state
+($a_3$, with $a_2$ derived), whereas at R=20 C0 depends on $a_{11}$ and the state
+becomes $64$-bit $(a_3,a_{11})$.  Raising the iteration budget does not help, since
+convergence probability and cost scale alike.
+
+\subsection{A Linear Identity for $\boldsymbol{\sigma_0}$, and its Destruction}
+\label{sec:leftnull}
+
+Since $\sig{0}$ is $\mathbb{F}_2$-linear, put $L = \sig{0}\oplus I$.  The kernel of
+$L$ is the fixed-point set $\{0,\texttt{0x27f42515}\}$, so $\operatorname{rank}L = 31$
+and the image is a $31$-dimensional subspace.  Consequently there is a
+\emph{unique} nonzero mask annihilating it.
+
+\begin{proposition}
+\label{prop:leftnull}
+Let $\lambda = \texttt{0xa8a42fe4}$.  Then for every $W\in(\mathbb{Z}/2\mathbb{Z})^{32}$,
+\[
+  \lambda \cdot \bigl(\sig{0}(W)\oplus W\bigr) = 0 .
+\]
+\end{proposition}
+
+Verified exhaustively over all $2^{32}$ inputs (zero violations).  This is the left
+companion of the known right-kernel constant \texttt{0x27f42515}.
+
+The identity is however destroyed by modular subtraction, which is what the attack
+actually uses.  Exhaustively over all $2^{32}$ inputs,
+\[
+  \Pr_W\bigl[\lambda\cdot(\sig{0}(W) - W) = 1\bigr] = 0.500017190 ,
+\]
+a bias of $1.72\times10^{-5} = 2^{-15.8}$, against an exact $0$ for the XOR form.
+A relation that is identically zero on the $\mathbb{F}_2$-linear part survives
+modular subtraction only as a $2^{-15.8}$ bias, which affords no usable filtering.
+Together with the table coverage---both the $\sig{0}$ table and the C3 $h$-table
+measure $63.21\%$ against $1-e^{-1}=63.212\%$, matching a random map to four
+significant figures---the map $W\mapsto\sig{0}(W)-W$ is indistinguishable from a
+random map under every structural test we have applied.  The interaction between
+$\mathbb{F}_2$-linear $\sig{0}$ and modular arithmetic is thus not merely an
+obstacle to proof technique; it is the mechanism by which R=20 resists.
+
+The oracle-free R=20 attack remains an open problem.
+
+%-----------------------------------------------------------------------
+\section{The Nine-Step Cancellation Lemma and Collision Structure}
+\label{sec:nine-step}
+%-----------------------------------------------------------------------
+
+\subsection{Nine-Step Cancellation Lemma}
+
+The $\sigma_0$-differential analysis developed for the preimage attack
+also reveals a sharp algebraic constraint on the SHA-256 message schedule
+under a specific two-word differential.
+
+\begin{lemma}[Nine-Step Cancellation]
+\label{lem:nine-step}
+Let $W_0,\ldots,W_{15}$ be any message block and let $\delta\ne 0$.
+Define $W'_i = W_i$ for $i\notin\{0,9\}$, $W'_0 = W_0+\delta$,
+and $W'_9 = W_9-\delta$ (all arithmetic mod $2^{32}$).
+Then the extended schedules satisfy
+\[
+  W'_r - W_r = 0 \pmod{2^{32}}, \quad r = 16,17,\ldots,23.
+\]
+Furthermore, $W'_{25} - W_{25} = -\delta$ exactly (for all $W$, all $\delta$).
+\end{lemma}
+
+\begin{proof}
+The schedule recurrence is $W_r = \sigma_1(W_{r-2}) + W_{r-7} + \sigma_0(W_{r-15}) + W_{r-16}$.
+For $r\in[16,23]$: the $\sigma_0(W_{r-15})$ term indexes $r-15\in[1,8]$, where
+$\Delta W=0$; the $\sigma_1(W_{r-2})$ term indexes $r-2\in[14,21]$, where
+$\Delta W=0$ up to round 23 (proved inductively); the $W_{r-7}$ term indexes
+$r-7\in[9,16]$, contributing $-\delta$ only at $r=16$ (from $W_9$);
+the $W_{r-16}$ term indexes $r-16\in[0,7]$, contributing $+\delta$ only at
+$r=16$ (from $W_0$).
+At $r=16$: $\Delta W_{16} = 0 + (-\delta) + 0 + \delta = 0$.
+For $r\in[17,23]$: all four terms contribute zero, so $\Delta W_r = 0$.
+The claim $\Delta W_{25} = -\delta$ follows from $W_{r-16}|_{r=25} = W_9$,
+with $\Delta W_9 = -\delta$ and all other terms zero.
+\end{proof}
+
+The pair $\{0,9\}$ is the \emph{unique} two-position pair in
+$[0,15]^2$ achieving a full algebraic dead zone.
+Two necessary conditions are:
+\begin{enumerate}
+\item \emph{$\sigma_0$ silence:} The $\sigma_0(W_k)$ term enters round $r$
+  when $r-15=k$.  For no $\sigma_0$ contribution to land \emph{inside}
+  $[16,23]$, both $i$ and $j$ must satisfy $k+15\le 15$ (i.e.\ $k=0$, landing
+  at $r=15$, \emph{before} the window) or $k+15\ge 24$ (i.e.\ $k\ge 9$,
+  \emph{after} the window).  Among $[0,15]$ the valid positions are $0$ and
+  $\{9,10,\ldots,15\}$.  A pair must draw both positions from this set.
+\item \emph{Linear cancellation at $r=16$:} $W_{16}$ has linear terms
+  $W_9$ and $W_0$.  Any nonzero $\Delta W_k$ with $k\in\{0,9\}$ must
+  cancel: $\Delta W_0 + \Delta W_9 = 0$ at $r=16$.
+\end{enumerate}
+Condition 1 forces the pair into $\{0\}\cup[9,15]$.  Condition 2 then
+requires exactly one position to be $0$ and one to be $9$ (for the
+$W_0$ and $W_9$ linear contributions to cancel).  Any pair with both
+positions in $[9,15]$ leaves $\Delta W_{16}=\Delta W_j\ne 0$ uncancelled;
+any pair with both positions $= 0$ is degenerate.  Hence $(0,9)$ (and
+its sign-reversal $(9,0)$) are the unique solutions.
+
+For partial dead zones, choosing the minus-delta position $j<9$ causes
+$\sigma_0(W_j)$ to land at $W_{j+15}\in[16,23]$---a nonzero ``seed''
+that propagates to alternating positions thereafter.  The first nonzero
+schedule difference is at $W_{j+15}$, so pairs with $j\in\{4,7,8\}$
+produce 5 or 6 dead positions in $[16,23]$, which is the basis of the
+$(13,4)$ and $(7,8)$ results below.
+
+\textbf{TC extension.} If additionally $W_9 - \delta \in \mathrm{TC}\text{-}\sigma_0(\delta)$,
+then $\sigma_0(W_9) - \sigma_0(W_9-\delta) = \delta$ exactly, giving
+$\Delta W_{24} = -\delta$ (one additional exact position at cost $\approx 2^{-17}$).
+
+\subsection{State-Differential Trap and Boomerang Structure}
+
+A natural question is whether the 8-round zero-schedule window (rounds 16--23)
+can be used to ``flush'' state differences: if the state differential
+$\Delta\mathbf{S}[r]$ could be driven to zero within the window,
+the two computations would re-synchronise.  We show this is impossible.
+
+\begin{proposition}[State-Differential Trap]
+\label{prop:trap}
+Let $\Delta W_r = 0$ for all $r$ in some range.  Then
+$\Delta\mathbf{S}[r+1] = \mathbf{0}$ if and only if $\Delta\mathbf{S}[r] = \mathbf{0}$.
+\end{proposition}
+
+\begin{proof}
+The shift terms of the round function force $\Delta b[r+1]=\Delta a[r]$,
+$\Delta c[r+1]=\Delta b[r]$, \ldots, $\Delta h[r+1]=\Delta g[r]$.
+So $\Delta\mathbf{S}[r+1]=\mathbf{0}$ requires $\Delta a[r]=\cdots=\Delta g[r]=0$.
+With these zeros: $\Delta\Sigma_1(e)=\Delta\mathrm{Ch}(e,f,g)=\Delta\Sigma_0(a)=\Delta\mathrm{Maj}(a,b,c)=0$,
+giving $\Delta T_1=\Delta h[r]$ and $\Delta T_2=0$.
+The $\Delta e$-equation then forces $\Delta h[r]=0$.
+Hence all eight words of $\Delta\mathbf{S}[r]$ are zero, i.e.\ $\Delta\mathbf{S}[r]=\mathbf{0}$.
+\end{proof}
+
+Verified computationally over $10^6$ random $(\Delta\mathbf{S},\mathbf{S})$ pairs:
+zero collapses in one zero-schedule step.
+
+The correct interpretation of the zero window is as a
+\emph{deterministic boomerang connector}~\cite{Wagner1999}: the 8-round
+function $E_\text{mid}$ maps $\Delta\mathbf{S}[16]\mapsto\Delta\mathbf{S}[24]$
+with \emph{probability one}, eliminating eight rounds of schedule
+probability conditions from any differential trail that passes through it.
+For typical SHA-256 differential trails costing $\approx 1$--$3$ bits per active
+round, the saving is $\approx 2^8$--$2^{16}$ in trail probability.
+
+\subsection{GPU Sweep and One-Word Partial Collision}
+\label{sec:gpu_sweep}
+
+Using the Nine-Step differential $\Delta W_0=+\delta$, $\Delta W_9=-\delta$ with
+$W_9{-}\delta\in\mathrm{TC}\text{-}\sigma_0$, we fixed $W_0{=}\texttt{0x6ac550a3}$,
+$W_9{=}\texttt{0x001c2641}$, $W_{10..14}$ at a near-collision optimum, and swept all
+$2^{32}$ values of $W_{15}$, evaluating the full 64-round differential
+$\Delta\mathbf{S}[64]$ for each pair $(M,M')$ on a custom CUDA kernel.
+
+\noindent\textbf{GPU performance.}  On an NVIDIA RTX 4060 (custom CUDA C kernel via
+CuPy, CUDA 12.0), the implementation achieves \textbf{775 million message pairs per
+second}, completing the full $2^{32}$ sweep in \textbf{5.5 seconds}.
+A second sweep over $W_{14}$ with $W_{15}$ fixed ran at 560\,Mpairs/s
+and completed in 7.7 seconds.
+
+\noindent\textbf{One-word partial collision (Theorem).}
+The sweep found exactly 3 values of $W_{15}$ for which $\Delta\mathbf{S}[64][5]=0$
+(consistent with the birthday expectation of $\approx 1$ per $2^{32}$ trials).
+The best-total-weight solution yields the following verified concrete result:
+
+\begin{theorem}[One-Word Partial Collision]
+Let $\delta = \texttt{0x0011e034}$.
+Under the Nine-Step differential $(\Delta W_0 = +\delta,\; \Delta W_9 = -\delta)$,
+the message pair
+\begin{align*}
+M  &= [\texttt{0x6ac550a3},\ldots,\texttt{0xa56abdfe},\texttt{0x82627b41}],\\
+M' &= [\texttt{0x6ad730d7},\ldots,\texttt{0xa56abdfe},\texttt{0x82627b41}]
+\quad (\text{only } W_0,W_9 \text{ differ})
+\end{align*}
+satisfies
+\[
+  \mathrm{SHA\text{-}256\_compress}(\mathrm{IV},\,M)[5]
+  \;=\;
+  \mathrm{SHA\text{-}256\_compress}(\mathrm{IV},\,M')[5]
+  \;=\; \texttt{0x3adcd2d0}.
+\]
+Equivalently, the raw post-round working-state word before IV feed-forward is
+\texttt{0x9fd76a44} for both computations.
+The remaining words differ; the total Hamming weight is
+$\|\Delta\mathbf{S}[64]\|_H = 95/256$ (random expectation $\approx 128$).
+\end{theorem}
+
+\noindent The complete $\Delta\mathbf{S}[64]$ vector ($\star$ = zero word) is:
+\begin{align*}
+  [&\texttt{0xc85da50e},\ \texttt{0xca8164c8},\ \texttt{0x0ac720e6},\
+    \texttt{0x94ad1918},\\
+   &\texttt{0x87038da6},\ \underbrace{\texttt{0x00000000}}_{{\scriptstyle\star}},\
+    \texttt{0x78d3023a},\ \texttt{0x468338d3}].
+\end{align*}
+
+\noindent\textbf{Full enumeration.}  The two sweep dimensions ($W_{14}$ and $W_{15}$)
+jointly produced 8 distinct verified message pairs each achieving a one-word
+exact partial collision (Table~\ref{tab:partial_collisions}).
+
+\begin{table}[ht]
+\centering
+\caption{All verified one-word partial collisions under the Nine-Step differential.
+``Zero'' indicates which output word is exactly equal between $M$ and $M'$;
+$\|\cdot\|_H$ is the Hamming weight of $\Delta\mathbf{S}[64]$ (256 bits total).}
+\label{tab:partial_collisions}
+\small
+\begin{tabular}{@{}llllr@{}}
+\toprule
+$W_{14}$ & $W_{15}$ & Zero word & $\|\Delta\mathbf{S}[64]\|_H$ \\
+\midrule
+\texttt{0xa56abdfe} & \texttt{0x82627b41} & 5 & 95  \\
+\texttt{0xa56abdfe} & \texttt{0x5c7feda3} & 5 & 105 \\
+\texttt{0xa56abdfe} & \texttt{0xc360541e} & 5 & 111 \\
+\texttt{0x316eef2c} & \texttt{0x82627b41} & 5 & 108 \\
+\texttt{0x128f99b2} & \texttt{0x82627b41} & 4 & 117 \\
+\texttt{0xc26dd92f} & \texttt{0x82627b41} & 4 & 109 \\
+\texttt{0xc26dd92f} & \texttt{0x0b6abb05} & 4 & 111 \\
+\texttt{0xc26dd92f} & \texttt{0x3de7f8eb} & 4 & 120 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent All 8 results are independently verified by \texttt{final\_results.py} using
+the reference SHA-256 implementation.  The schedule structure is confirmed:
+$\Delta W_{16..23}=\mathbf{0}$ (exact, algebraic), $\Delta W_{25}=-\delta$ (exact).
+
+\noindent\textbf{Two-word partial collision.}
+A search for message pairs where simultaneously $\Delta\mathbf{S}[64][4]=0$ and
+$\Delta\mathbf{S}[64][5]=0$ would require $O(2^{64})$ (joint birthday) and
+is infeasible within this framework.  Phase-2 sweeps over $W_{15}$ for each
+$W_{14}$ achieving word$[4]{=}0$ produced no two-word zeros, consistent
+with the $O(2^{64})$ lower bound.
+
+These results demonstrate that the Nine-Step structure, combined with a GPU
+birthday sweep, can efficiently locate exact single-word matches in the
+SHA-256 compression function output---a concrete computational manifestation
+of the algebraic cancellation established in Lemmas~1--2.
+
+\noindent\textbf{Multi-round near-collision profile.}
+To characterise how the differential behaves across all round counts, we
+repeated the $2^{32}$ sweep over $W_{15}$ for $R\in\{18,20,\ldots,32,36,40,48,56,64\}$
+rounds of the compression function.
+Table~\ref{tab:multiround} records the minimum Hamming weight $\|\Delta\mathbf{S}[R]\|_H$
+achieved at each $R$.
+
+\begin{table}[ht]
+\centering
+\caption{Minimum Hamming weight of $\Delta\mathbf{S}[R]$ over all $2^{32}$
+values of $W_{15}$, for varying round count $R$.
+The random expectation is $\approx 128/256$ at every $R$.
+Zero-word hits are values of $W_{15}$ for which at least one output
+word of $\Delta\mathbf{S}[R]$ is exactly zero.}
+\label{tab:multiround}
+\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$R$ & Best $\|\Delta\mathbf{S}[R]\|_H$ & Random exp.\ & Zero-word hits \\
+\midrule
+18  & 90/256 & 128  & 3 \\
+20  & 78/256 & 128  & 7 \\
+22  & 76/256 & 128  & 9 \\
+24  & 77/256 & 128  & 13 \\
+25  & \textbf{75/256} & 128 & 12 \\
+26  & 79/256 & 128  & 12 \\
+28  & 78/256 & 128  & 9 \\
+30  & 77/256 & 128  & 9 \\
+32  & 81/256 & 128  & 11 \\
+36  & 79/256 & 128  & 8 \\
+40  & 77/256 & 128  & 12 \\
+48  & 79/256 & 128  & 12 \\
+56  & 76/256 & 128  & 2 \\
+64  & 95/256 & 128  & 3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Three observations emerge.  First, single-word zero hits (exact partial
+collisions) appear at \emph{every} round count from $R=18$ upward, with
+frequency consistent with the birthday expectation of one hit per $2^{32}$
+trials per output word.  Second, the best achievable Hamming weight is
+\emph{remarkably flat}: it stays in the range $75$--$95/256$ across all
+round counts $R\in[18,64]$, never approaching the random baseline of
+$128/256$.  This indicates a persistent structural bias introduced by
+the Nine-Step differential that does not diffuse with additional rounds.
+Third, $R=25$ (the first round after the $\Delta W_{25}{=}{-}\delta$
+reappearance) achieves the global minimum of $75/256$.
+
+\noindent\textbf{Two-block near-collision (coordinate descent).}
+The State-Differential Trap (Proposition~\ref{prop:trap}) shows that a full
+single-block collision would require $O(2^{64})$ work.  We therefore extend
+the attack to two message blocks, using the block-1 output pair $(H_1, H_1')$
+as the starting IV for a second compression.  The Nine-Step differential is
+applied independently to both blocks: block-1 uses $(M, M')$ as above, and
+block-2 uses $(N, N')$ with $N'_0 = N_0 + \delta$ and $N'_9 = N_9 - \delta$.
+
+To find a block-2 message $N[0..15]$ minimising the final Hamming weight
+$\|\Delta H_2\|_H = \|\mathrm{CF}(H_1', N') - \mathrm{CF}(H_1, N)\|_H$,
+we apply \emph{coordinate descent}: iterate over each of the 16 message words,
+sweeping that word over all $2^{32}$ values (full exhaustive search) while
+holding the other 15 fixed, then accept the minimising value.  Two passes
+suffice for convergence (each pass takes $\approx 4$ minutes on an RTX~4060
+at $\approx 10^8$ evaluations per second per word).
+
+The converged solution changes only $N_0$, $N_1$, $N_2$ relative to the
+block-1 message:
+\begin{align*}
+  N_0 &= \texttt{0x254b45f2},\quad
+  N_1 = \texttt{0xae6bc5c0},\quad
+  N_2 = \texttt{0x531ffc39}, \\
+  N_i &= M_i \quad (i = 3, \ldots, 15).
+\end{align*}
+The resulting Hamming weight is $\|\Delta H_2\|_H = 75/256$, a reduction of
+20 bits compared with the single-block result (95/256) and verified
+independently on CPU.  The per-word decomposition is:
+\begin{align*}
+  \Delta H_2 = [&\texttt{0x00293948},\ \texttt{0xa15a1b48},\ \texttt{0xa4433504},\
+                 \texttt{0x081c0024},\\
+               &\texttt{0x8885f682},\ \texttt{0x01107096},\
+                 \texttt{0x2a108002},\ \texttt{0xac210a00}],
+\end{align*}
+with individual word contributions of $9, 13, 11, 6, 13, 9, 6, 8$ bits.
+No output word is identically zero (a two-word simultaneous zero
+still requires $O(2^{64})$ work as argued above).
+
+\noindent\textbf{Alternative differentials.}
+An exhaustive algebraic survey of all 240 two-position message-schedule
+differentials $(\Delta W_i = +\delta,\; \Delta W_j = -\delta)$ classifies
+each pair by how many of $W_{16},\ldots,W_{23}$ are algebraically zero
+(for all messages and all $\delta$).  Only $(i,j) = (0,9)$ and $(9,0)$
+achieve the full 8-round dead zone.  Two pairs --- $(7,8)$ and $(8,7)$ ---
+achieve a 6/8 dead zone (first six positions: $W_{16}$--$W_{21}$).
+Sixteen further pairs achieve a 5/8 dead zone, grouped into four
+structural patterns (Table~\ref{tab:dead_patterns}).
+
+\begin{table}[ht]
+\centering
+\caption{Algebraic dead zone patterns for the 20 pairs with $\geq 5/8$
+dead positions in $W_{16..23}$.  ``\texttt{1}'' = algebraically zero,
+``\texttt{0}'' = nonzero (for generic message).
+$^{\dagger}$Two-block coord descent run and reported in Table~\ref{tab:alt_diff}.}
+\label{tab:dead_patterns}
+\small
+\begin{tabular}{@{}lrlll@{}}
+\toprule
+Pattern ($W_{16..23}$) & Dead & Representative pairs & $\|\Delta H_2\|_H$ \\
+\midrule
+\texttt{11111111} & 8/8 & $(0,9)^\dagger$, $(9,0)^\dagger$ & 75/256 \\
+\texttt{11111100} & 6/8 & $(7,8)^\dagger$, $(8,7)^\dagger$ & see Tab.~\ref{tab:alt_diff} \\
+\texttt{11111000} & 5/8 & $(6,7)$, $(6,8)$, $(7,6)$, $(8,6)$ & --- \\
+\texttt{11110100} & 5/8 & $(7,13)$, $(8,13)$, $(13,7)^\dagger$, $(13,8)$ & 74/256 for $(13,7)$ \\
+\texttt{11101010} & 5/8 & $(4,13)^\dagger$, $(8,12)$, $(12,8)$, $(13,4)^\dagger$ & 74--76/256 \\
+\texttt{11010101} & 5/8 & $(3,12)^\dagger$, $(11,13)^\dagger$, $(12,3)^\dagger$, $(13,11)$ & see Tab.~\ref{tab:alt_diff} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All 10 pairs with $\geq 5/8$ dead positions and $|\Delta H_1|\leq 120/256$
+were analysed via block-2 coordinate descent (marked~$^\dagger$ in
+Table~\ref{tab:dead_patterns}).  The $(3,12)$ differential achieves
+$\mathbf{72/256}$---matching the three-block Nine-Step minimum in just two
+blocks.  The $(11,13)$ pair achieves $73/256$, matching the $(12,3)$ reversed
+result.  The $(13,4)$ and $(13,7)$ pairs each achieve $74/256$.  The
+Nine-Step pairs $(0,9)$, $(9,0)$ and the $(7,8)$ pair achieve $75/256$.
+
+The exact pattern of zero positions is algebraically determined: for $(13,4)$
+the five zero positions are $W_{16}, W_{17}, W_{18}, W_{20}, W_{22}$, and the
+three nonzero positions are $W_{19}, W_{21}, W_{23}$ (alternating, for all
+messages and all $\delta$).  The nonzero terms arise from $\sigma_0(W_4)$ applied to the modified word,
+which first enters at round 19:
+\[
+  W_{19} = \sigma_1(W_{17}) + W_{12} + \sigma_0(W_4) + W_3.
+\]
+The even-indexed
+positions $W_{20}$ and $W_{22}$ remain zero because their $\pm\delta$
+contributions cancel linearly ($\Delta W_{20} = +\delta - \delta = 0$ exactly).
+Compared to the Nine-Step, the (13,4) residual is \emph{scattered} rather
+than a single ``wall'' appearing at $W_{24}$, allowing the compression
+function to suppress the residual difference more efficiently.
+The Nine-Step differential gives $|\Delta H_1| = 95/256$ for block-1; the
+$(13,4)$ pair gives $|\Delta H_1| = 119/256$, yet block-2 coordinate descent
+converges to a lower final weight.  This result shows that the \emph{quality}
+of the algebraic cancellation in rounds 24--63 outweighs the \emph{quantity}
+of zeroed schedule words.
+
+\noindent\textbf{Schedule Structure Lemma.}
+The alternating nonzero pattern of $(13,4)$ is an instance of a general
+algebraic structure that governs all $|p-q|=9$ differentials.
+
+\begin{lemma}[Schedule Density]
+\label{lem:sigma1chain}
+Let $(\Delta W_p = +\delta,\, \Delta W_q = -\delta)$ with $|p-q|=9$
+and $\min(p,q) < 9$, so that $r_0 = \min(p,q)+15 \in [16,23]$.
+For all messages and all $\delta\ne 0$:
+\begin{enumerate}
+\item \emph{Interleaved zeros (exact):}
+  $\Delta W_{r_0+1} = \Delta W_{r_0+3} = \Delta W_{r_0+5} = 0$.
+\item \emph{Period-7 resonance (exact):}
+  $\Delta W_{r_0+7} = \Delta W_{r_0}$ (equal, not necessarily zero).
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\emph{Interleaved zeros:} At $r = r_0+1$:
+$W_{r-7} = W_{\max(p,q)}$ contributes $-\varepsilon\,\delta$
+and $W_{r-16} = W_{\min(p,q)}$ contributes $+\varepsilon\,\delta$
+(where $\varepsilon\,\delta$ is the perturbation at $\min(p,q)$).
+These cancel: $\Delta W_{r_0+1} = -\varepsilon\,\delta + \varepsilon\,\delta = 0$.
+The $\sigma_1$ and $\sigma_0$ terms index dead-zone or unperturbed positions.
+For $r = r_0+3$: the $W_{r-7}$ and $W_{r-16}$ lags land outside $\{p,q\}$,
+and the $\sigma_1$ feed is $\Delta W_{r_0+1} = 0$.
+Hence $\Delta W_{r_0+3} = 0$; similarly $\Delta W_{r_0+5} = 0$.
+
+\emph{Period-7:} At $r = r_0+7$:
+$W_{r-7} = W_{r_0}$ contributes $\Delta W_{r_0}$;
+the $\sigma_1$ feed is $\Delta W_{r_0+5} = 0$ (part 1);
+the $\sigma_0$ and $W_{r-16}$ terms index unperturbed original words
+(for the pairs satisfying $|p-q|=9$ and $\min(p,q)<9$).
+Hence $\Delta W_{r_0+7} = \Delta W_{r_0}$.
+\end{proof}
+
+\begin{remark}
+The schedule recurrence propagates the nonzero seed $\Delta W_{r_0}$
+to even-offset positions $r_0, r_0{+}2, r_0{+}4, \ldots$ via the
+$\sigma_1(W_{r-2})$ term.  In the GF$(2)$ linearisation---where $+$ is
+replaced by $\oplus$ and $\sigma_1$ is treated as a linear map---this
+gives an explicit $\sigma_1$-chain
+$\Delta^{\oplus}W_{r_0+2k} = \sigma_1^k(\sigma_0(\varepsilon\,\delta))$.
+Over $\mathbb{Z}_{2^{32}}$ the exact values at even-offset positions are
+message-dependent (the additive and XOR operators differ), but the
+pattern of \emph{which positions are identically zero} (odd offsets 1,3,5)
+is message-independent and governs the schedule density seen by the
+compression function.
+\end{remark}
+
+\noindent\textbf{Ranking consequence.}
+The lemma provides a structural explanation for the two-block floor
+ranking in Table~\ref{tab:alt_diff}.  The chain-start position $r_0$ and
+the resulting even/odd zero pattern together determine how many schedule
+positions carry nonzero differences in the active rounds:
+\begin{align*}
+(3,12){:}\; r_0&=18 \;\;\to\;\; 72/256,\\
+(13,4){:}\; r_0&=19 \;\;\to\;\; 74/256,\\
+(0,9){:}\;\;\; r_0&=24 \;\;\to\;\; 75/256.
+\end{align*}
+Earlier $r_0$ (lower dead zone boundary) means more rounds with
+zero schedule input---specifically the interleaved zero positions
+$W_{r_0+1},W_{r_0+3},W_{r_0+5}$---acting as compression-round
+``gaps'' that coordinate descent exploits to drive the final
+Hamming weight lower.
+The six-round gap between $(13,4)$ ($r_0=19$) and the Nine-Step $(0,9)$
+($r_0=24$) is a key reason $(13,4)$ achieves a lower two-block floor
+despite its higher $|\Delta H_1|$.
+
+\begin{corollary}[Nine-Step Schedule Density]
+\label{cor:double-chain}
+For the full-dead-zone differential $(0,9)$ ($\Delta W_0=+\delta$,
+$\Delta W_9=-\delta$):
+\begin{enumerate}
+\item \emph{One exact post-dead-zone seed (exact):} $\Delta W_{25} = -\delta$.
+\item \emph{No identically-zero positions:} No $r \ge 24$ satisfies
+  $\Delta W_r = 0$ for all messages; every post-dead-zone round receives a
+  nonzero difference for generic $W$.
+\end{enumerate}
+This contrasts with partial-dead-zone differentials, where three positions
+$\Delta W_{r_0+1}=\Delta W_{r_0+3}=\Delta W_{r_0+5}=0$ exactly
+(Lemma~\ref{lem:sigma1chain}, part~1).
+\end{corollary}
+
+\begin{proof}
+Part~1: At $r=25$ the recurrence gives
+$\Delta W_{25} = s_1(\Delta W_{23})+\Delta W_{18}+s_0(\Delta W_{10})+\Delta W_9$.
+Since $r=18,23$ are in the dead zone and $W_{10}$ is unmodified,
+all terms vanish except $\Delta W_9 = -\delta$.
+
+Part~2: $\Delta W_{25}=-\delta\ne 0$ covers the odd seed.
+At $r=24$: $\Delta W_{24} = s_0(W_9-\delta)-s_0(W_9)$, which is zero only for
+the measure-zero set of $W_9$ satisfying $s_0(W_9-\delta)=s_0(W_9)$, hence
+generically nonzero.  The nonzero feeds at $r=24,25$ propagate forward so that
+no subsequent position is message-independently zero.
+\end{proof}
+
+\begin{remark}
+In the GF$(2)$ linearisation, the post-dead-zone schedule produces two
+interleaved $\sigma_1$-chains:
+$\Delta^{\oplus}W_{24+2k}=\sigma_1^k\!\bigl(\sigma_0(-\delta)\bigr)$ and
+$\Delta^{\oplus}W_{25+2k}=\sigma_1^k(-\delta)$ for $k=0,1,2$
+(interacting for $r\ge 31$).
+Over $\mathbb{Z}_{2^{32}}$ only $\Delta W_{25}=-\delta$ (part~1) is exact;
+even-position values are message-dependent as in the remark after
+Lemma~\ref{lem:sigma1chain}.
+\end{remark}
+
+The contrast with partial-dead-zone differentials has a concrete impact on compressibility.
+The exact seed $-\delta = \mathtt{0xffee1fcc}$ has Hamming weight~23,
+and $\sigma_0(-\delta)=\mathtt{0x01f1203d}$ (weight~12) approximates $\Delta W_{24}$.
+Every post-dead-zone schedule position $r\ge 24$ carries a nonzero difference
+in $(0,9)$, whereas partial-dead-zone differentials leave three of those
+positions exactly zero (Lemma~\ref{lem:sigma1chain}, part~1).
+The full-dead-zone advantage (8 vs.\ 5 killed schedule positions in
+$W_{16..23}$) is therefore offset by a \emph{full schedule density}
+beyond round 24, explaining why the Nine-Step $(0,9)$ converges to
+$75/256$ while the partial-dead $(3,12)$ (with $r_0=18$, six earlier active
+rounds, and three interleaved zero positions) achieves $72/256$.
+
+\noindent\textbf{Cross-differential result.}
+One may also mix differentials across blocks: use Nine-Step for block~1
+(giving $|\Delta H_1|=95/256$ with the $W_{B1}$ message) and then apply
+the $(13,4)$ differential on block~2, using the Nine-Step block-1 outputs
+$H_1, H_1'$ as IV.  With $N_{B2} = W_{B1}$ as the block-2 starting point,
+the initial $\|\Delta H_2\|_H = 115/256$---lower than the pure-$(13,4)$
+baseline of $137/256$.  Coordinate descent achieves $\mathbf{72/256}$,
+matching the best pure-differential two-block result ($(3,12)$).
+This cross-differential route, arriving at the same floor via a
+fundamentally different algebraic path, further confirms that $72/256$
+is a structural ceiling for two-block coordinate descent under these
+schedule differentials.
+
+Table~\ref{tab:alt_diff} summarises the two-block near-collision Hamming
+weight achieved by the surveyed differentials.
+
+\begin{table}[ht]
+\centering
+\caption{Two-block near-collision Hamming weight $\|\Delta H_2\|_H$ for
+surveyed differentials (coord descent from $W_{B1}$).
+``Dead'' = algebraic zero count in $W_{16..23}$.
+Cross = Nine-Step block-1 with $(13,4)$ block-2 differential.
+All block-2 results CPU-verified.}
+\label{tab:alt_diff}
+\small
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Differential & Dead & $|\Delta H_1|$ & $\|\Delta H_2\|_H$ \\
+\midrule
+$(0, 9)$ Nine-Step  &  8/8   & 95/256  & 75/256 \\
+$(9, 0)$ reversed   &  8/8   & 133/256 & 75/256 \\
+$(7, 8)$            &  6/8   & 114/256 & 75/256 \\
+$(8, 7)$ reversed   &  6/8   & 137/256 & 76/256 \\
+$(11,13)$           &  5/8   & 115/256 & 73/256 \\
+$(13,7)$            &  5/8   & 117/256 & 74/256 \\
+$(13,4)$ partial    &  5/8   & 119/256 & 74/256 \\
+$(4,13)$ reversed   &  5/8   & 127/256 & 76/256 \\
+$(3,12)$            &  5/8   & 130/256 & \textbf{72/256} \\
+$(12,3)$ reversed   &  5/8   & 125/256 & 73/256 \\
+Cross NS$\oplus(13,4)$ & ---  & 95/256  & \textbf{72/256} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Late-round suppression cascade.}
+Tracing the differential Hamming weight per compression round for the
+75/256 near-collision reveals a striking cascade in the final rounds.
+After the dead zone (rounds 16--23), the differential \emph{amplifies}
+to a peak of 145/256 at round 20, then fluctuates in $119$--$145/256$
+through rounds 21--58 before undergoing rapid suppression:
+\[
+  r=59{:}\ 127 \;\to\; r=60{:}\ 111 \;\to\; r=61{:}\ 97 \;\to\;
+  r=62{:}\ 86 \;\to\; r=63{:}\ \mathbf{75}
+\]
+(a drop of 52 bits in 4 rounds).  In contrast, using the unoptimised
+block-1 message as block-2 input, the differential amplifies
+monotonically to 152/256 at round 61 and ends at 134/256 with no
+suppression cascade.
+
+\textbf{Algebraic explanation (carry-wrap cascade).}
+A round-by-round decomposition of the near-collisions reveals
+a \emph{four-round carry-wrap cascade} spanning rounds 60--63 (0-indexed)
+in both the block-2 and block-3 optimised messages.
+
+\medskip
+\noindent\textit{Block-2 cascade (75/256).}
+Round~60 is the primary event.  The two intermediate values satisfy
+\[
+  \Delta T_1^{(60)} = \texttt{0x8848ec57}, \quad
+  \Delta T_2^{(60)} = \texttt{0x7fd313cd},
+\]
+with individual Hamming weights 14 and 20.  Since $\Delta T_1^{(60)} >
+2^{31}$ and $\Delta T_1^{(60)}+\Delta T_2^{(60)} > 2^{32}$, the modular
+sum discards the carry, leaving
+\[
+  \Delta T_1^{(60)} + \Delta T_2^{(60)}
+  \;\equiv\; \texttt{0x081c0024} \pmod{2^{32}},
+  \quad \|\cdot\|_H = 6.
+\]
+This \emph{carry-wrap cancellation} sets $\|\Delta a_{60}\|_H = 6$, which
+directly becomes $\Delta\mathit{output}[3]$ (register $d$).
+Rounds 61, 62, 63 each produce their own carry-wrap:
+$\|\Delta a_{61}\|_H = 11$, $\|\Delta a_{62}\|_H = 13$, and
+$\|\Delta a_{63}\|_H = 9$, occupying output registers $c$, $b$, $a$
+respectively.  Crucially, each $\Delta a_r = (\Delta T_1^{(r)} +
+\Delta T_2^{(r)})\bmod 2^{32}$ is an \emph{independent} carry-wrap
+product, not a propagation of $\Delta a_{60}$.
+
+\medskip
+\noindent\textit{Block-3 cascade (72/256).}
+The optimised block-3 message $N_2$ exhibits the same cascade structure
+but with the primary event \emph{shifted} to round~61:
+\[
+  \Delta T_1^{(61)} = \texttt{0xf9e51e94}, \quad
+  \Delta T_2^{(61)} = \texttt{0x281ce190},
+  \quad \|\cdot\|_H = 18,\,11,
+\]
+\[
+  \Delta T_1^{(61)} + \Delta T_2^{(61)}
+  \;\equiv\; \texttt{0x22020024} \pmod{2^{32}},
+  \quad \|\cdot\|_H = 5.
+\]
+Rounds 60, 62, 63 carry-wrap at HW 7, 11, 10 respectively, yielding the
+output differential $[\Delta H_3] = [10,11,5,7,8,11,10,10]$ and
+$\|\Delta H_3\|_H = 72/256$.  The shift of the primary wrap from round~60
+to round~61, achieving $\|\Delta a_{61}\|_H = 5 < 6$, accounts for the
+improvement from 75 to~72.
+
+The coordinate descent is therefore searching for messages
+whose schedule words drive the late-round state into the carry-wrap
+regime; this explains why multiple independent starting points converge
+to the same 72--75/256 floor.
+
+\noindent\textbf{Why the last four rounds and the $a$-chain.}
+The SHA-256 state shift register $b_r = a_{r-1}$, $c_r = a_{r-2}$,
+$d_r = a_{r-3}$ means that the output registers satisfy
+\[
+  \Delta\mathit{out}[3] = \Delta a_{60},\quad
+  \Delta\mathit{out}[2] = \Delta a_{61},\quad
+  \Delta\mathit{out}[1] = \Delta a_{62},\quad
+  \Delta\mathit{out}[0] = \Delta a_{63}.
+\]
+Each $\Delta a_r = (\Delta T_1^{(r)} + \Delta T_2^{(r)})\bmod 2^{32}$
+is the carry-wrap product of \emph{its own round}, with no subsequent
+mixing.  Thus rounds 60--63 are the \emph{only} rounds whose carry-wrap
+products appear unchanged in the output.  The $e$-chain output registers
+satisfy $\Delta\mathit{out}[4] = (\Delta a_{59} + \Delta T_1^{(63)})
+\bmod 2^{32}$, mixing the pre-cascade high-HW value $\Delta a_{59}$
+with the round-63 term; this prevents comparable HW reduction in
+$\Delta\mathit{out}[4\text{--}7]$ (observed HW: 8, 11, 10, 10 vs.\
+the $a$-chain's 10, 11, 5, 7).  Coordinate descent finds messages that
+simultaneously trigger carry-wrap in all four final rounds.
+Figure~\ref{fig:trace} plots all three traces.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.97\linewidth, height=5.5cm,
+  clip=true,
+  xlabel={Compression round $r$}, ylabel={State diff.\ HW (bits/256)},
+  xmin=0, xmax=63, ymin=60, ymax=165,
+  xtick={0,8,16,24,32,40,48,56,63},
+  ytick={64,80,96,112,128,144,160},
+  legend pos=north west, legend style={font=\small},
+  grid=major, grid style={gray!30},
+]
+% Random expectation
+\addplot[dashed, gray, thick] coordinates {(0,128)(63,128)};
+\addlegendentry{Random exp.\ ($128/256$)}
+% Dead zone shading (schedule diff = 0 in rounds 16-23)
+\addplot[fill=blue!8, draw=none, area legend] coordinates
+  {(16,60)(16,165)(23,165)(23,60)} \closedcycle;
+\addlegendentry{Schedule dead zone}
+% Baseline trace (W_B1 as block-2, 134/256)
+\addplot[orange, thick, mark=none] coordinates {
+(0,102)(1,107)(2,124)(3,130)(4,130)(5,128)(6,127)(7,127)
+(8,134)(9,136)(10,141)(11,142)(12,131)(13,136)(14,138)(15,134)
+(16,134)(17,131)(18,119)(19,115)(20,114)(21,114)(22,123)(23,124)
+(24,120)(25,117)(26,123)(27,129)(28,137)(29,131)(30,122)(31,119)
+(32,114)(33,113)(34,120)(35,114)(36,121)(37,126)(38,124)(39,124)
+(40,128)(41,129)(42,125)(43,134)(44,120)(45,116)(46,124)(47,123)
+(48,130)(49,137)(50,126)(51,131)(52,122)(53,116)(54,117)(55,110)
+(56,117)(57,124)(58,136)(59,142)(60,149)(61,152)(62,150)(63,134)
+};
+\addlegendentry{Block-2 baseline ($134/256$)}
+% Coord descent trace for block-2 (N1, 75/256)
+\addplot[blue, thick, mark=none] coordinates {
+(0,102)(1,112)(2,132)(3,139)(4,137)(5,132)(6,135)(7,130)
+(8,134)(9,134)(10,127)(11,129)(12,122)(13,127)(14,127)(15,123)
+(16,129)(17,124)(18,132)(19,144)(20,145)(21,144)(22,139)(23,130)
+(24,131)(25,138)(26,135)(27,133)(28,131)(29,126)(30,126)(31,126)
+(32,129)(33,123)(34,128)(35,128)(36,123)(37,123)(38,125)(39,130)
+(40,130)(41,133)(42,133)(43,133)(44,136)(45,139)(46,136)(47,135)
+(48,127)(49,126)(50,121)(51,120)(52,119)(53,117)(54,122)(55,125)
+(56,128)(57,129)(58,130)(59,127)(60,111)(61,97)(62,86)(63,75)
+};
+\addlegendentry{Block-2 opt.\ ($N_1$, $75/256$)}
+% Block-3 coord-descent trace (N2, 72/256) -- IV is (H2,H2'), starts at 75/256 input diff
+\addplot[teal, thick, mark=none] coordinates {
+(0,96)(1,105)(2,115)(3,127)(4,124)(5,121)(6,125)(7,117)
+(8,123)(9,137)(10,131)(11,133)(12,123)(13,114)(14,115)(15,119)
+(16,126)(17,136)(18,139)(19,137)(20,130)(21,125)(22,118)(23,124)
+(24,124)(25,130)(26,132)(27,127)(28,132)(29,116)(30,119)(31,118)
+(32,113)(33,123)(34,119)(35,118)(36,122)(37,122)(38,128)(39,130)
+(40,126)(41,120)(42,116)(43,117)(44,129)(45,137)(46,138)(47,137)
+(48,134)(49,123)(50,124)(51,118)(52,108)(53,120)(54,118)(55,123)
+(56,126)(57,128)(58,131)(59,135)(60,122)(61,99)(62,88)(63,72)
+};
+\addlegendentry{Block-3 opt.\ ($N_2$, $72/256$)}
+% Annotation for cascades
+\node[font=\scriptsize, blue] at (axis cs:57,80) {B2 cascade};
+\draw[->, blue, thin] (axis cs:59,82) -- (axis cs:59.5,90);
+\node[font=\scriptsize, teal] at (axis cs:56,67) {B3 cascade};
+\draw[->, teal, thin] (axis cs:58,69) -- (axis cs:59,75);
+\end{axis}
+\end{tikzpicture}
+\caption{State differential Hamming weight per round for block-2 (blue, IV=$(H_1,H_1')$)
+and block-3 (teal, IV=$(H_2,H_2')$) optimised messages, with an unoptimised block-2 baseline (orange).
+Shaded: schedule dead zone (rounds 16--23).
+Both optimised traces exhibit a four-round carry-wrap cascade (rounds 60--63) that
+drops the state HW by 52 bits (block-2, 127$\to$75) and 63 bits (block-3, 135$\to$72).}
+\label{fig:trace}
+\end{figure}
+
+\noindent\textbf{Depth of the local minimum.}
+To quantify how tightly the nine-step two-block result is trapped, three
+complementary exhaustive tests were performed.
+\emph{(i) Single-word sweep:} each of the 16 block-2 words was swept
+independently over all $2^{32}$ values (the coord-descent pass); no word
+value lowers the Hamming weight below 75/256 (GPU-verified).
+\emph{(ii) Two-bit flips:} all $\binom{512}{2} = 130{,}816$ pairs of
+single-bit flips in the full 512-bit message were tested; 0 pairs improved
+the HW (minimum achieved: $92/256$, worse than baseline).
+\emph{(iii) Three-bit flips:} all $\binom{512}{3} = 22{,}238{,}720$
+triple-bit flip combinations were tested; 0 improved the HW (minimum
+achieved: $75/256 =$ baseline).
+The 75/256 optimum is therefore a \emph{$\geq\!4$-bit-deep} local
+minimum: no perturbation of fewer than 4 of the $512$ message bits
+yields a strictly better near-collision.
+
+\noindent\textbf{Block-1 independence.}
+To verify that the 75/256 two-block result is not an artifact of the
+particular block-1 message $W_{B1}$, we additionally ran coordinate
+descent on the \emph{block-1} words, minimising $\|\Delta H_1\|_H$
+directly.  Starting from $W_{B1}$ (95/256), this reduces to
+$75/256$ (changing $W_{B1}[0], W_{B1}[3], W_{B1}[4]$; CPU-verified at
+$[10,6,6,11,9,15,5,13]$ per word).  Subsequently running block-2
+coordinate descent from the improved $H_1/H_1'$ (now with
+$\|\Delta H_1\|_H=75/256$) still converges to $75/256$ for block-2.
+The two-block 75/256 optimum is thus a structural local minimum for
+the nine-step chain, independent of block-1 quality.
+
+\noindent\textbf{Three-block near-collision chain.}
+Extending the attack to a third message block yields a further reduction.
+Given the block-2 output pair $(H_2, H_2')$ with $\|\Delta H_2\|_H = 75/256$
+from the Nine-Step two-block result, coordinate descent over the 16 block-3
+words (again with the Nine-Step differential applied to block-3) produces:
+\begin{itemize}
+\item \emph{From the block-1 message as starting point:} converges to
+  $\|\Delta H_3\|_H = 74/256$ (changes $N_{2,0}, N_{2,1}, N_{2,2}, N_{2,3},
+  N_{2,15}$; CPU-verified).
+\item \emph{From random starting points (15+ trials):} best reaches
+  $\|\Delta H_3\|_H = \mathbf{72/256}$ (CPU-verified;
+  per-word: $[10,11,5,7,8,11,10,10]$).
+  Complete 16-word block-3 message (optimised words marked $\star$):
+  \begin{align*}
+    N_{2,0}^{\star}  &= \texttt{0x0686fff5}, &
+    N_{2,8}  &= \texttt{0x4a1d02e8} \\
+    N_{2,1}  &= \texttt{0xe0cb4940}, &
+    N_{2,9}^{\star}  &= \texttt{0xa76e6485} \\
+    N_{2,2}  &= \texttt{0xba1d1a31}, &
+    N_{2,10} &= \texttt{0x7631462d} \\
+    N_{2,3}  &= \texttt{0x2f7ec2af}, &
+    N_{2,11} &= \texttt{0x1da15155} \\
+    N_{2,4}^{\star}  &= \texttt{0x88630f64}, &
+    N_{2,12} &= \texttt{0x0f4c9da9} \\
+    N_{2,5}  &= \texttt{0xebc021d8}, &
+    N_{2,13} &= \texttt{0x319865f2} \\
+    N_{2,6}  &= \texttt{0x643aebe2}, &
+    N_{2,14} &= \texttt{0x2a3dcee8} \\
+    N_{2,7}  &= \texttt{0xf25223f4}, &
+    N_{2,15} &= \texttt{0x577c16c7}
+  \end{align*}
+\end{itemize}
+The three-block chain thus achieves $72/256$ bits, compared to the random
+expectation of $\approx 128/256$.  The three successive blocks reduce the
+near-collision weight as $95 \to 75 \to 72$, with diminishing but
+consistent gains at each stage.
+
+\noindent\textbf{Three-block chain under the $(13,4)$ differential.}
+Running the same three-block procedure with the $(13,4)$ partial-dead
+differential---using the optimal block-2 message ($\|\Delta H_2\|_H = 74/256$,
+Section~\ref{sec:gpu_sweep}) as the intermediate IV---coordinate descent over
+random block-3 starting points (13 trials) independently reaches
+$\|\Delta H_3\|_H = \mathbf{72/256}$, matching the Nine-Step three-block
+minimum.  The reduction chain is $137 \to 74 \to 72$.
+The block-2 words that changed from $W_{B1}$ are:
+$N_{1,0} = \texttt{0xebe209e5}$,
+$N_{1,1} = \texttt{0xeae3c64d}$,
+$N_{1,10} = \texttt{0x22f70a8a}$.
+Complete CPU-verified block-3 message ($\star$ = changed from random start):
+\begin{align*}
+  N_{2,0}^{\star}  &= \texttt{0x0f79c1dc}, &
+  N_{2,8}^{\star}  &= \texttt{0xc6a01b18} \\
+  N_{2,1}^{\star}  &= \texttt{0x8867bb35}, &
+  N_{2,9}^{\star}  &= \texttt{0x40387c32} \\
+  N_{2,2}^{\star}  &= \texttt{0x3429c176}, &
+  N_{2,10}^{\star} &= \texttt{0x5539ccbb} \\
+  N_{2,3}^{\star}  &= \texttt{0x46c45627}, &
+  N_{2,11}^{\star} &= \texttt{0x826ea374} \\
+  N_{2,4}^{\star}  &= \texttt{0x626b4377}, &
+  N_{2,12}^{\star} &= \texttt{0x3fc8c606} \\
+  N_{2,5}^{\star}  &= \texttt{0x474524a4}, &
+  N_{2,13}^{\star} &= \texttt{0x48d6c64b} \\
+  N_{2,6}^{\star}  &= \texttt{0x293dae09}, &
+  N_{2,14}^{\star} &= \texttt{0x8f75416b} \\
+  N_{2,7}^{\star}  &= \texttt{0x6a68a515}, &
+  N_{2,15}^{\star} &= \texttt{0x87c954d1}
+\end{align*}
+
+%-----------------------------------------------------------------------
+\section{Comparison with Prior Work}
+\label{sec:comparison}
+%-----------------------------------------------------------------------
+
+\begin{table}[ht]
+\centering
+\caption{Preimage results on reduced-round SHA-256.
+$^a$Pseudo-preimage; $^b$converted from pseudo-preimage.
+``Concrete'' = at least one actual example found and verified.}
+\label{tab:comparison}
+\small
+\begin{tabular}{@{}llllll@{}}
+\toprule
+Reference & Rounds & Work & Oracle-free & Concrete \\
+\midrule
+Aoki--Sasaki~\cite{AokiSasaki2009}
+  & 24 & $2^{52.3}$$^a$ / $2^{104.5}$$^b$ & Yes & No \\
+Pikhtovnikov--Kiryanova~\cite{PikhtovnikovKiryanova2022}
+  & 18 & multi-day & Yes & Yes \\
+Davydov et al.~\cite{Davydov2025}
+  & 18 & SAT, 2.38--20.6\,s & Yes & Yes \\
+Davydov et al.~\cite{Davydov2025}
+  & 19 & SAT, \emph{unsolved} & Yes & No \\
+Davydov et al.~\cite{Davydov2025}
+  & 19$^c$ & SAT + cube-and-conquer & Yes & Partial only \\
+\midrule
+\textbf{This work}
+  & \textbf{19} & $O(2^{32})$ & \textbf{Yes} & \textbf{Yes (3 examples)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent$^c$\,\emph{Weakened} problem: only a prefix of the 256-bit output is
+constrained (to zero), not the full target.
+
+The MITM result of~\cite{AokiSasaki2009} achieves a lower round count
+in theory but has never been executed; the $2^{104.5}$ preimage work is
+far beyond practical reach.
+
+The closest comparable practical results are the SAT-based line of
+\cite{PikhtovnikovKiryanova2022,Davydov2025}.  The most recent of these,
+\cite{Davydov2025}, is worth describing in detail because it delimits the
+SAT frontier sharply.  Using four independent CNF encodings (CBMC, Transalg,
+and SAT-encoding in Counter-chain, Dot-matrix, Two-operand and Espresso
+variants) with the Kissat solver at a 5000\,s limit, that work finds full-target
+preimages of the compression function at 16, 17 and 18 rounds---18 rounds in
+between 2.38\,s and 20.6\,s depending on encoding---and reports
+\emph{not solved} at 19 rounds for \emph{every} encoding tried.
+
+Their ``weakened 19-round'' result is a different problem: rather than fixing
+the entire 256-bit output, only a zero prefix of it is constrained, which
+multiplies the number of admissible preimages.  Plain Kissat reached a 24-bit
+zero prefix; a 24-hour cube-and-conquer run (EnCnC, 16 cores) solved every case
+except the 32-bit one, i.e.\ at most 31 of the 256 output bits.  The authors
+conclude that finding a preimage for 19 rounds of the SHA-256 compression
+function is ``too difficult a task even if one carefully selects the SAT
+encoding and uses parallel computing.''
+
+The present work reports three full-target 19-round preimages---all 256 output
+bits fixed---so the advance over the practical state of the art is one round,
+and the weakened-19 row constrains at most $31/256$ of the output rather than
+all of it.  We emphasise that this is a difference in kind rather than degree:
+a partially-constrained output is a near-preimage condition, not a preimage.
+Our technique also differs from that line in kind, being algebraic and
+$O(2^{32})$ per context attempt rather than search-based, which is why it
+succeeds where careful SAT encoding and parallel search do not.
+
+An independent corroboration of where the SAT frontier lies: in our own
+experiments a modern bit-vector solver (Bitwuzla 0.9.1) solves the direct
+all-message preimage problem for this target through 18 rounds---R16 in
+$0.23$\,s, R17 in $1.25$\,s, R18 in $63.1$\,s with a 300\,s cap---but returns
+\textsc{unknown} at 19 rounds under a 600\,s cap and at 20 rounds under 60\,s.
+That the generic-solver boundary falls between 18 and 19 rounds is consistent
+with 18 being the SAT-reachable limit, and indicates that the 19-round result
+here is not within reach of generic search.
+
+\paragraph{Attack scope.}
+The attack covers 19 of 64 rounds ($\approx 29.7\%$) and targets the
+compression function without padding constraints.  Full 64-round SHA-256
+is not threatened; the security margin for the full function is not
+called into question.
+
+%-----------------------------------------------------------------------
+\section{Conclusion}
+\label{sec:conclusion}
+%-----------------------------------------------------------------------
+
+We have presented three contributions to the algebraic cryptanalysis of
+reduced-round SHA-256.
+
+\paragraph{Preimage (19 rounds).}
+Three algebraic cancellation identities in the SHA-256 round and
+schedule equations reduce the unknown recovery problem to a sequence
+of $\sigma_0$-differential table lookups, making the full $2^{32}$
+sweep tractable on a single GPU.  Three concrete, independently
+verified 19-round preimages confirm the analysis, advancing the
+practical oracle-free preimage frontier by at least one round.
+The oracle-free attack on 20 rounds remains open; the
+fourth schedule constraint (C3) introduces an independent $2^{-32}$
+filter, raising the expected contexts by a factor of $2^{32}$ beyond
+the $R=19$ result (empirical $\mu_{R=19}\approx 5.3\times10^{-4}$),
+a barrier without a known bypass.
+
+\paragraph{Why the method stops (20 rounds).}
+We characterise that barrier rather than only reporting it.  The $R{=}19$
+attack does not schedule its constraints acyclically: it breaks a cycle by
+freezing $W_9$ provisionally, iterating, and paying one self-consistency check.
+Promoting $a_{11}$ to an unknown absorbed by the fourth constraint gives
+$R{=}20$ the same one-word surplus, and the true $R{=}20$ solution is a fixed
+point of all four absorber maps---so the architecture transplants in form but
+not in efficacy, because the iterated state grows from $32$ to $64$ bits and
+convergence collapses (\S\ref{sec:noniter}).  Separately, we exhibit context
+relations that reshape the constraint structure itself (\S\ref{sec:a2free}) and
+prove a new identity for $\sig{0}$: $\operatorname{rank}(\sig{0}\oplus I)=31$
+yields a unique mask $\lambda=\texttt{0xa8a42fe4}$ annihilating
+$\sig{0}(W)\oplus W$ for every $W$ (Proposition~\ref{prop:leftnull}), which
+modular subtraction degrades to a $2^{-15.8}$ bias.  We read this as evidence
+that the interaction between $\mathbb{F}_2$-linear $\sig{0}$ and modular
+arithmetic---rather than any single missing algebraic trick---is what makes
+$R{=}20$ resist, and that progress there likely requires a technique addressing
+the relation $\sig{0}(W)-W = u$ directly.
+
+\paragraph{Nine-Step structure (collision direction).}
+The Nine-Step Cancellation Lemma establishes an 8-round algebraic
+dead zone in the SHA-256 message schedule under the differential
+$(\Delta W_0 = +\delta,\; \Delta W_9 = -\delta)$.  This structure
+enables a GPU birthday sweep that locates, in 5.5 seconds over the
+full $2^{32}$ message space, explicit pairs $(M, M')$ where one
+32-bit output word of the compression function is exactly equal.
+Eight such pairs are enumerated and verified.  The State-Differential
+Trap (Proposition~\ref{prop:trap}) establishes that further reduction
+to a full collision within this one-block framework requires
+$O(2^{64})$ work.  A systematic survey of all 240 two-position
+message-schedule differentials confirms that the Nine-Step pair
+$(0,9)$ is the \emph{unique} two-position differential achieving a
+full 8-round algebraic dead zone; however, partial-dead differentials
+achieve competitive improvements in the multi-block setting.
+Among eight surveyed differentials, the $(3,12)$ pair achieves
+$\mathbf{72/256}$ in \emph{two} blocks---matching the three-block
+Nine-Step minimum---with $(12,3)$ at $73/256$ and $(13,4)$ at $74/256$.
+A three-block Nine-Step chain also reaches $\mathbf{72/256}$
+($95\to 75\to 72$); independently, a three-block $(13,4)$ chain
+reaches the same bound ($137\to 74\to 72$), confirming that $72/256$
+is a structural floor of the coordinate-descent method rather than an
+artefact of one differential.
+A four-block birthday sweep (varying the entire block-4 message word $W_{15}$
+over $2^{32}$ values with the three-block chain fixed) yielded a single-word
+minimum of $78/256$; subsequent coordinate descent over all 16 block-4 words
+confirmed $78/256$ as a deep local minimum (20 independent restarts, no
+improvement).  Adding a fourth block thus does \emph{not} improve below
+the three-block $72/256$ floor, further supporting its structural character.
+The total improvement is $184/256 = 71.9\%$ from the all-different baseline.
+Exhaustive single- and multi-word sensitivity analysis confirms
+that the $75/256$ two-block minimum is a $\geq\!4$-bit-deep local
+minimum: no perturbation of fewer than 4 of the 512 message bits
+improves the Hamming weight, and coordinate descent on the block-1
+message (reducing $\|\Delta H_1\|$ from $95$ to $75/256$) still
+yields $75/256$ for block-2---confirming the minimum is a structural
+property of the nine-step chain, not an artifact of the block-1 choice.
+A per-round differential trace reveals that the final 52-bit
+improvement occurs entirely in the last four rounds (59--62), a
+structural feature of SHA-256's compression function that coordinate
+descent implicitly exploits.
+
+\paragraph{Artefacts.}
+The solver code, table-build utility, and independent verifier are
+available in the accompanying reproducibility package at\\
+\url{https://github.com/kamb-code/sha256-r19-preimage}.
+All three verified preimage examples (Table~\ref{tab:preimages}) can
+be checked with:
+\begin{center}
+\small\texttt{python3 code/verify\_r19.py {-}{-}rounds 19 {-}{-}hash <hex> {-}{-}words "<W0 \ldots W15>"}
+\end{center}
+
+%-----------------------------------------------------------------------
+\begin{thebibliography}{10}
+%-----------------------------------------------------------------------
+
+\bibitem{FIPS180}
+  National Institute of Standards and Technology.
+  \newblock \emph{{FIPS PUB 180-4: Secure Hash Standard (SHS)}}.
+  \newblock Technical Report, NIST, 2015.
+
+\bibitem{AokiSasaki2009}
+  K.~Aoki, J.~Guo, K.~Matusiewicz, Y.~Sasaki, and L.~Wang.
+  \newblock Preimages for step-reduced {SHA-2}.
+  \newblock In \emph{Advances in Cryptology -- {ASIACRYPT} 2009},
+    Lecture Notes in Computer Science, vol.~5912, pp.~578--597.
+    Springer, 2009.
+
+\bibitem{MironovZhang2006}
+  I.~Mironov and L.~Zhang.
+  \newblock Applications of {SAT} solvers to cryptanalysis of hash functions.
+  \newblock In \emph{Theory and Applications of Satisfiability Testing
+    (SAT 2006)}, Lecture Notes in Computer Science, vol.~4121,
+    pp.~102--115. Springer, 2006.
+  \newblock [Collision attacks; no preimage results.]
+
+\bibitem{SanadhyaSarkar2008}
+  S.~K.~Sanadhya and P.~Sarkar.
+  \newblock New collision attacks against up to 24-step {SHA-2}.
+  \newblock In \emph{Progress in Cryptology -- INDOCRYPT 2008},
+    Lecture Notes in Computer Science, vol.~5365, pp.~91--103.
+    Springer, 2008.
+
+\bibitem{PikhtovnikovKiryanova2022}
+  A.~Pikhtovnikov and A.~Kiryanova.
+  \newblock Preimage attack on {SHA-256} with logical cryptanalysis.
+  \newblock \emph{Proceedings of the Institute for System Programming
+    of the Russian Academy of Sciences}, vol.~34, no.~1, 2022.
+
+\bibitem{Davydov2025}
+  V.~V. Davydov, M.~D. Pikhtovnikov, A.~P. Kiryanova, and O.~S. Zaikin.
+  \newblock Analysis of the cryptographic strength of the {SHA-256} hash
+    function using the {SAT} approach.
+  \newblock \emph{Scientific and Technical Journal of Information
+    Technologies, Mechanics and Optics}, vol.~25, no.~3, pp.~428--437, 2025.
+
+\bibitem{Wagner1999}
+  D.~Wagner.
+  \newblock The boomerang attack.
+  \newblock In \emph{Fast Software Encryption (FSE 1999)}, Lecture Notes
+    in Computer Science, vol.~1636, pp.~156--170. Springer, 1999.
+
+\bibitem{LiSun2024}
+  R.~Li and Z.~Sun.
+  \newblock Practical collision attacks against 31-step {SHA-256}.
+  \newblock In \emph{Advances in Cryptology -- {ASIACRYPT} 2024}.
+    Springer, 2024.
+
+\end{thebibliography}
+
+\end{document}

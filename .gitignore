@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.npy
+*.aux
+*.log
+*.out
+*.synctex.gz
+.DS_Store
+code/paper_r19_final.tex
