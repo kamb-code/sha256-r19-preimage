@@ -5,12 +5,23 @@ WHAT THIS MEASURES
 ------------------
 The R=19 attack accepts a candidate when the true W9 matches the provisional
 W9 used in the C0 step.  That 32-bit condition is applied as two 16-bit
-filters (lo then hi), so the per-context success rate is
+filters (lo then hi).  The per-context success rate is, unconditionally,
 
-    mu  =  P(lo pass) * P(hi pass) * (fixed points per context).
+    mu  =  N * P(lo AND hi)          N = unique fixed points per context
 
-This script measures all three factors directly, by sweeping a0 over random
-contexts and, for every C1/C2 fixed point, recording the residual
+which is NOT the same as
+
+    mu_ind = N * P(lo) * P(hi)       (valid only if the halves are independent)
+
+The distinction matters here: the iteration is deliberately seeded on
+lo-consistency, so independence is precisely what should not be assumed.  This
+script measures N, P(lo) and P(hi) directly and reports mu_ind as a clearly
+labelled PROJECTION.  It reports the unconditional mu only when full 32-bit
+matches are actually observed; at the sample sizes reachable so far that count
+is zero, and the script prints a Poisson upper bound instead of a value.
+
+It works by sweeping a0 over random contexts and, for every C1/C2 fixed point,
+recording the residual
 
     r = (W9_true - W9_provisional) mod 2^32
 
