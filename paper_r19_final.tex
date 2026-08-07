@@ -57,12 +57,15 @@ We give the first practical oracle-free preimage attack on 19-round
 SHA-256.  Given only a 32-byte target hash, the attack combines a
 backward-chain inversion with a precomputed 16\,GB $\sigma_0(u){-}u$
 \emph{differential table} and a two-stage fixed-point iteration,
-performing $O(2^{32})$ work per context attempt.  Both halves of the $W_9$
-filter carry structural bias---the lo half by $37$--$44\times$ and the hi half
-by ${\approx}9.2\times$ the uniform $2^{-16}$ rate---giving a measured
-full-match rate of ${\approx}4.9\times10^{-2}$ per context, or ${\approx}20$
-expected contexts per preimage.  The three concrete preimage finds required
-3, 20 and 34 contexts, a mean of 19.  All three were verified on a
+performing $O(2^{32})$ work per context attempt.  Deduplicated measurements show that both halves of the
+$W_9$ filter carry substantial structural bias, well above the uniform
+$2^{-16}$ rate.  No complete 32-bit residual match was observed in the
+measurement campaign, however, so the full-match rate is not yet directly
+estimated and we do not state one as a measured complexity claim; the
+marginal rates and their uncertainties are reported in
+\S\ref{sec:complexity}.  Three end-to-end attacks found verified preimages
+after 3, 20 and 34 contexts, which we present as demonstrations of
+feasibility rather than as a runtime estimator.  All three were verified on a
 single NVIDIA H100 GPU in under 15 minutes each (cost $<$\$1.50).
 For context on the practical frontier: the most recent SAT-based analysis
 of round-reduced SHA-256~\cite{Davydov2025} finds full-target preimages at
@@ -688,7 +691,9 @@ Two sequential filters are applied:
     \emph{not} uniform; a coarse-binned test suggests otherwise but is
     underpowered against a spike at a single residual (\S\ref{sec:chi2}).
 \end{itemize}
-Measured combined rate: $\mu\approx 4.9\times 10^{-2}$ per context.  Candidates that pass both filters are assembled into a
+The combined rate is not obtained by multiplying the two marginals: the
+iteration is seeded on lo-consistency, so independence of the two halves
+cannot be assumed and has not been established (\S\ref{sec:complexity}).  Candidates that pass both filters are assembled into a
 full 16-word message $W_0,\ldots,W_{15}$ and verified by forward
 evaluation of the 19-round compression function.
 
@@ -715,9 +720,8 @@ $W_9$ hi-pass rate per convergence & $1.4\times10^{-4}$ \\
 Structural \emph{hi} enhancement & $\approx 9.2\times$ above $2^{-16}$ \\
 \midrule
 $\mu$ (uniform model, both filters $2^{-16}$) & $\approx 5\times 10^{-4}$ \\
-$\mu$ (measured, both enhancements included) & $\approx 4.9\times 10^{-2}$ per context \\
-Expected contexts (uniform model) & $\approx 1{,}900$ \\
-Expected contexts (measured) & $\approx 20$ \\
+$\mu$ (directly measured) & not yet estimated ($N_{LH}=0$) \\
+$\mu$ (independence-derived projection) & $\approx 1.3\times 10^{-2}$ \\
 Observed contexts (P3, P2, P1) & 3,\ 20,\ 34\ \ (mean 19) \\
 Wall time per context (H100) & $\approx 25\;\mathrm{s}$ \\
 \bottomrule
@@ -740,29 +744,43 @@ configuration in an independent CPU reimplementation:
       (\S\ref{sec:chi2}).
 \end{itemize}
 
-Taking both together with the measured convergence count gives
-\[
-  \mu \;\approx\; 6.8\times10^{-4}\,\times\,1.4\times10^{-4}\,\times\,5.2\times10^{5}
-    \;\approx\; 4.9\times10^{-2}\ \text{per context},
-\]
-i.e.\ $\approx 20$ expected contexts per preimage.  This is $\approx 90\times$
-larger than the uniform-filter estimate, the discrepancy decomposing as the
-$9.2\times$ hi enhancement together with an order-of-magnitude undercount of
-lo-pass events when convergences are tallied per seed chain rather than per
-context.
+Multiplying the measured marginals by the deduplicated fixed-point count
+gives a \emph{projection} of $\mu \approx 1.3\times10^{-2}$ per context.  We
+label this a projection rather than a measurement for two reasons.  First, it
+assumes the two halves are independent; since the iteration is seeded on
+lo-consistency, that is exactly the assumption one should not make for free.
+Half-width diagnostics detect no material dependence up to 12 bits, but a
+sparse spike at the exact 16-bit value would remain invisible to them---the
+same limitation that makes the binned $\chi^2$ test uninformative
+(\S\ref{sec:chi2}).  Second, no complete 32-bit match was observed, so the
+direct estimator $\hat\mu = N_{LH}/C$ has no events to work with; over $C$
+context-equivalents with $N_{LH}=0$ the one-sided 95\% Poisson bound is
+$\mu < 2.996/C$.
 
-\paragraph{Consistency with the observed finds.}
-The three preimages were found at contexts 3, 20 and 34, a sample mean of 19
-against the predicted $\approx 20$.  We note that this agreement is the point
-of the calculation: a uniform-filter model predicts $\approx 1{,}900$ contexts,
-under which three finds this early would occur with probability
-$3\times10^{-7}$, so the observed finds by themselves falsify the uniform
-model.  Context-to-context variance is substantial---convergence counts vary
-by a factor of two between sampled contexts---so $\mu$ should be read as
-accurate to within a factor of about two, which the three-sample mean cannot
-resolve further.  All three preimages were found within 34 contexts, with a
-combined search time of $1{,}464$\,s on the H100 (871.6, 511.1 and 81.7\,s for
-P1, P2 and P3).
+Two earlier sources of error are worth recording, since both inflate
+$\mu$ if left uncorrected.  A converged lane remains at its fixed point for
+every subsequent iteration, so counting convergences per iteration overcounts
+each fixed point---measured at $5.89\times$ for eight iterations.  And
+convergences tallied per seed chain rather than per context understate the
+per-context count by the number of chains.  All figures above are globally
+deduplicated on the fixed-point identity $(a_0,a_1,a_2,a_3)$ within a context.
+
+\paragraph{What the three finds do and do not establish.}
+The three preimages were found after 3, 20 and 34 contexts: three successes
+over 57 attempted contexts, $\hat p = 0.053$ with an exact 95\% interval of
+$[0.011,\,0.146]$.  That interval is wide enough to be compatible with the
+$1.3\times10^{-2}$ projection, which sits near its lower edge---under
+$p=0.013$, observing three or more successes in 57 contexts has probability
+$0.038$.  It is not compatible with the uniform-filter model: at
+$p\approx5\times10^{-4}$ the same observation has probability $3\times10^{-7}$,
+so the finds do falsify the uniform model even though they cannot pin the true
+rate.  We therefore present them as demonstrations of feasibility, not as a
+runtime estimator.  Three observations cannot support an expected-value claim,
+and the per-context success probability $\Pr(N_{LH}\ge1)$---which governs time
+to first preimage---is not in general $\mu$ itself if successful fixed points
+cluster in favourable contexts.  A preregistered multi-target campaign
+reporting both quantities is in progress.  The combined search time for the
+three was $1{,}464$\,s on the H100 (871.6, 511.1 and 81.7\,s).
 
 %-----------------------------------------------------------------------
 \section{Experimental Results}
@@ -925,11 +943,12 @@ no ``chain-wrap'' shortcut of the form $W_0 = W_4$ arises generically.
 
 The C3 constraint introduces an independent $2^{-32}$ filter on top of
 the R=19 attack.  Using the measured per-context success rate
-$\mu_{R=19}\approx 4.9\times 10^{-2}$ (\S\ref{sec:complexity}), the
-R=20 expected contexts is $\mu_{R=19}^{-1}\times 2^{32}
-\approx 20\times 2^{32}\approx 2^{36.3}$---a factor of $2^{32}$
-harder than R=19.  The ratio is what matters here and is unaffected by the
-revision of $\mu_{R=19}$; only the absolute figure moves.
+the projected $\mu_{R=19}\approx 1.3\times 10^{-2}$
+(\S\ref{sec:complexity}), the R=20 expected contexts is
+$\mu_{R=19}^{-1}\times 2^{32}\approx 77\times 2^{32}\approx 2^{38.3}$---a
+factor of $2^{32}$ harder than R=19.  The ratio is what matters here and is
+independent of the value of $\mu_{R=19}$; only the absolute figure moves with
+it, and that figure inherits the projection's caveats.
 
 \textbf{GPU diagnostic.}
 A 165-context GPU run of the $R=20$ $\sigma_0$-chain on an H100 (batch~$=2^{26}$,
@@ -1960,7 +1979,7 @@ practical oracle-free preimage frontier by at least one round.
 The oracle-free attack on 20 rounds remains open; the
 fourth schedule constraint (C3) introduces an independent $2^{-32}$
 filter, raising the expected contexts by a factor of $2^{32}$ beyond
-the $R=19$ result (measured $\mu_{R=19}\approx 4.9\times10^{-2}$),
+the $R=19$ result (projected $\mu_{R=19}\approx 1.3\times10^{-2}$),
 a barrier without a known bypass.
 
 \paragraph{Why the method stops (20 rounds).}

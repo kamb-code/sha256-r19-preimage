@@ -182,14 +182,8 @@ def solve_preimage(hash_bytes, R, free_a_values=None):
 
 def verify_preimage(message_words, hash_bytes, R):
     """Verify a candidate pre-image by forward computation."""
-    # Build message bytes from words
-    msg_bytes = struct.pack('>16I', *message_words)
-
-    # Run R-round SHA-256 with this as a raw block
-    trace = sha256_full_trace(msg_bytes[:55], num_rounds=R)
-
-    # But we need to use the EXACT message_words, not padded.
-    # Re-run with direct block injection.
+    # The claim concerns a RAW 512-bit block: the 16 words are used exactly as
+    # given, with no SHA-256 padding applied. Inject the block directly.
     from sha256_core import sha256_message_schedule
     W = sha256_message_schedule(message_words)
 

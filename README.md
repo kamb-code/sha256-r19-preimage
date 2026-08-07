@@ -86,7 +86,10 @@ The solver:
 5. Prints any found preimage to stdout and saves it to a `.txt` file.
 
 No precomputed table file is required — the table is rebuilt from scratch each run.
-Expected time to first hit on H100: a few minutes to ~15 minutes (stochastic).
+Expected time to first hit on H100: not yet measured. The three recorded
+attacks succeeded after 3, 20 and 34 contexts (~25 s per context), but three
+observations cannot establish a distribution — the exact 95% interval on that
+success rate is [0.011, 0.146]. A larger multi-target campaign is in progress.
 
 **Generate your own target to attack:**
 Choose any 16 input words and run the verifier without `--hash`; it will print
@@ -144,11 +147,14 @@ publish/
   code/                      — core reproducibility files:
     verify_r19.py            — standalone verifier (no dependencies beyond stdlib)
     measure_w9_filters.py    — measures the W9 lo/hi filter pass rates that set
-                               the complexity constant mu. Reproduces the
-                               37-44x lo enhancement and the ~9.2x hi
-                               enhancement, and hence mu ~ 4.9e-2 per context
-                               (~20 expected contexts per preimage). Needs the
-                               16 GB sigma0(u)-u table and ~30 min on 14 cores.
+                               the complexity constant mu. Deduplicates fixed
+                               points globally, tests lo/hi independence at
+                               several half-widths, and reports the DIRECT
+                               estimator mu = N_LH / C (with a Poisson upper
+                               bound when no full match is observed, which is
+                               the current situation). Pass --table with the
+                               path to the 16 GB sigma0(u)-u table; ~1 h on
+                               14 cores for ~1.4 context-equivalents.
     verify_sigma0_identities.py
                              — checks the sigma0 linear identities of §"Discussion:
                                R=20 Status": rank(sigma0 XOR I) = 31, the kernel
