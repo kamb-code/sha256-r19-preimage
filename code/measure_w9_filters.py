@@ -117,12 +117,18 @@ _G = {}
 
 
 def make_context(rng):
-    """Random target hash + random free context words a[4..10]."""
-    hb = os.urandom(32)
+    """Random target hash + random free context words a[4..10].
+
+    Everything is drawn from the passed RNG, never os.urandom, so a run is
+    fully reproducible from --seed.  This is required for controlled A/B
+    comparisons (e.g. table representative policy), where both arms must see
+    identical targets and contexts.
+    """
+    hb = rng.integers(0, 256, size=32, dtype=np.uint8).tobytes()
     ka = dict(backward_chain(hb, 19)[0])
     for r in range(4, 19):
         if r not in ka:
-            ka[r] = int.from_bytes(os.urandom(4), "big")
+            ka[r] = int(rng.integers(0, 1 << 32, dtype=np.uint64))
     a4, a5, a6, a7, a8, a9, a10, a11 = (u32(ka[i]) for i in range(4, 12))
     T1_7 = a7 - (S0(a6) + maj(a6, a5, a4))
     T1_8 = a8 - (S0(a7) + maj(a7, a6, a5)); e8 = a4 + T1_8
