@@ -53,7 +53,7 @@ We present two related contributions to the cryptanalysis of
 reduced-round SHA-256.
 
 \textbf{(1) Preimage attack.}
-We give the first practical oracle-free preimage attack on 19-round
+We give a practical oracle-free preimage attack on 19-round
 SHA-256.  Given only a 32-byte target hash, the attack combines a
 backward-chain inversion with a precomputed 16\,GB $\sigma_0(u){-}u$
 \emph{differential table} and a two-stage fixed-point iteration,
@@ -180,9 +180,15 @@ compression function.  The latter reports 19 rounds as \emph{unsolved} across
 four CNF encodings, and reaches 19 rounds only in a weakened form in which at
 most 31 of the 256 output bits are constrained, concluding that the full
 19-round preimage problem is ``too difficult a task even if one carefully
-selects the SAT encoding and uses parallel computing.''  To our knowledge no
-full-target oracle-free preimage at 19 or more rounds has been previously
-reported.
+selects the SAT encoding and uses parallel computing.''  Concurrently, Zaikin~\cite{Zaikin2026} reports that a parameterized
+Cube-and-Conquer solver, tuned on a family of intermediate inverse problems,
+inverted the 29-step MD5, 24-round SHA-1 and 19-round SHA-256 compression
+functions.  That work reaches the same round count for SHA-256 by an entirely
+different route.  We have not been able to obtain its full text, so we do not
+claim priority at 19 rounds; a precise comparison of the two attack models---in
+particular the form of the inverted target and the compute expended---is
+deferred until the published version can be examined.  The contribution
+claimed here is the algebraic method and its cost profile, not primacy.
 
 \paragraph{This work.}
 We make three contributions.  The first two exploit algebraic structure in
@@ -974,12 +980,18 @@ A 165-context GPU run of the $R=20$ $\sigma_0$-chain on an H100 (batch~$=2^{26}$
 K\textsubscript{seeds}$=4$) recorded 4{,}166 $W_9$-lo-pass events and zero hi-pass events.
 Under the null hypothesis of uniform residuals, the expected hi count is $\mu =
 4166/65536 \approx 0.064$; the probability of zero hi events is $e^{-\mu}\approx 0.94$,
-confirming the absence of hi events is purely statistical.
+so the absence of hi events is unsurprising.  With an expectation
+below $0.1$, however, observing zero carries almost no information: the result
+is \emph{consistent with} a uniform $2^{-32}$ filter but does not test it.
 The entire $2^{32}$ difficulty increase over $R=19$ is attributable to the independent
 C3 constraint, not to any structural bias in $W_9$.
 A supplementary CPU sweep (10 contexts, batch~$=2^{24}$, two workers) recorded
 254 $W_9$-lo-pass events and zero C3-pass events, yielding an enhancement upper
-bound of $2^{26.3}$ (95\%) and confirming filter independence at CPU scale.
+bound of $2^{26.3}$ (95\%).  This too is consistent with a uniform
+filter and far too small a sample to test independence or estimate its
+probability.  The structural claim---that C3 imposes an additional 32-bit
+equality---rests on the algebra, not on these counts; the probabilistic claim
+should be read as untested.
 
 \subsection{Absorber Reparameterisation and the $a_1\!\leftrightarrow\!a_2$ Coupling}
 \label{sec:ureparam}
@@ -1923,6 +1935,8 @@ Davydov et al.~\cite{Davydov2025}
   & 19 & SAT, \emph{unsolved} & Yes & No \\
 Davydov et al.~\cite{Davydov2025}
   & 19$^c$ & SAT + cube-and-conquer & Yes & Partial only \\
+Zaikin~\cite{Zaikin2026}
+  & 19 & param.\ SAT + cube-and-conquer & Yes & Yes \\
 \midrule
 \textbf{This work}
   & \textbf{19} & $O(2^{32})$ & \textbf{Yes} & \textbf{Yes (3 examples)} \\
@@ -1956,10 +1970,15 @@ conclude that finding a preimage for 19 rounds of the SHA-256 compression
 function is ``too difficult a task even if one carefully selects the SAT
 encoding and uses parallel computing.''
 
-The present work reports three full-target 19-round preimages---all 256 output
-bits fixed---so the advance over the practical state of the art is one round,
-and the weakened-19 row constrains at most $31/256$ of the output rather than
-all of it.  We emphasise that this is a difference in kind rather than degree:
+The present work reports three full-target 19-round preimages, all 256
+output bits fixed, whereas the weakened-19 row of~\cite{Davydov2025}
+constrains at most $31/256$ of the output.  Zaikin~\cite{Zaikin2026} reports
+inverting the 19-round compression function by a parameterized Cube-and-Conquer
+solver; at the time of writing we have not obtained that paper's full text and
+therefore make no priority claim at 19 rounds.  What distinguishes the present
+work is the method---an algebraic reduction to table lookups with an
+$O(2^{32})$ per-context inner loop on a single GPU---rather than being first to
+the round count.  We emphasise that this is a difference in kind rather than degree:
 a partially-constrained output is a near-preimage condition, not a preimage.
 Our technique also differs from that line in kind, being algebraic and
 $O(2^{32})$ per context attempt rather than search-based, which is why it
@@ -2108,6 +2127,12 @@ be checked with:
   \newblock Preimage attack on {SHA-256} with logical cryptanalysis.
   \newblock \emph{Proceedings of the Institute for System Programming
     of the Russian Academy of Sciences}, vol.~34, no.~1, 2022.
+
+\bibitem{Zaikin2026}
+  O.~S. Zaikin.
+  \newblock Preimage attacks on round-reduced {MD5}, {SHA-1} and {SHA-256}
+    using a parameterized {SAT} solver.
+  \newblock \emph{Constraints}, January 2026.
 
 \bibitem{Davydov2025}
   V.~V. Davydov, M.~D. Pikhtovnikov, A.~P. Kiryanova, and O.~S. Zaikin.
