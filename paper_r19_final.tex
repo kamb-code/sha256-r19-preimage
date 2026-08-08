@@ -751,10 +751,20 @@ configuration in an independent CPU reimplementation:
 \begin{itemize}\itemsep2pt
 \item the \emph{lo} filter passes at $37$--$44\times$ the uniform $2^{-16}$
       rate, confirming the enhancement mechanism;
-\item the \emph{hi} filter passes at $\approx 9.2\times$ the uniform rate---it
+\item the \emph{hi} filter passes at $7$--$11\times$ the uniform rate---it
       is \emph{not} uniform, contrary to what a coarse-binned test suggests
       (\S\ref{sec:chi2}).
 \end{itemize}
+
+These rates are not artefacts of the lookup table's representative policy.
+Repeating the measurement on byte-identical contexts with a table built to keep
+the \emph{smallest} rather than the \emph{largest} preimage of each target gives
+lo enhancement $30.0\times$ against $28.5\times$, and hi $11.1\times$ against
+$6.9\times$, agreeing within Poisson error on the $8$ and $13$ hi events
+observed.  Direct tests of lo/hi independence at reduced filter widths give
+$D = P(\text{both})/[P(\text{lo})P(\text{hi})] = 1.00\pm0.03$ at $4$ bits and
+$1.06\pm0.10$ at $6$ bits, consistent with independence at the widths where
+joint events can be counted.
 
 Multiplying the measured marginals by the deduplicated fixed-point count
 gives a \emph{projection} of $\mu \approx 6\times10^{-3}$ per context.  Once

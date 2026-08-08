@@ -155,6 +155,11 @@ publish/
                                the current situation). Pass --table with the
                                path to the 16 GB sigma0(u)-u table; ~1 h on
                                14 cores for ~1.4 context-equivalents.
+    context_screening.py     — measures per-context productivity and its
+                               predictiveness. Contexts are ~1500x overdispersed
+                               and a cheap 2^20 screening pass predicts yield
+                               with Spearman 0.91, giving ~12.7x net speedup
+                               when the best 1% are kept.
     verify_sigma0_identities.py
                              — checks the sigma0 linear identities of §"Discussion:
                                R=20 Status": rank(sigma0 XOR I) = 31, the kernel
