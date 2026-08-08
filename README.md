@@ -160,6 +160,12 @@ publish/
                                and a cheap 2^20 screening pass predicts yield
                                with Spearman 0.91, giving ~12.7x net speedup
                                when the best 1% are kept.
+    verify_a0_absorber.py    — verifies Proposition (a0 absorber):
+                               Gamma(a0) = a0 + gv(a0) = R + W1 - sigma0(W1)
+                               is equivalent to the C0 schedule constraint.
+                               gv depends only on a0 and the IV, so Gamma^-1 is
+                               a GLOBAL table (63.214% coverage). Checked on all
+                               three preimages; --full adds the 2^32 scan.
     verify_sigma0_identities.py
                              — checks the sigma0 linear identities of §"Discussion:
                                R=20 Status": rank(sigma0 XOR I) = 31, the kernel

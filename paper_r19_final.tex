@@ -1130,6 +1130,49 @@ $a_1$ is computed \emph{outside} the loop, leaving a $32$-bit iterated state
 becomes $64$-bit $(a_3,a_{11})$.  Raising the iteration budget does not help, since
 convergence probability and cost scale alike.
 
+\subsection{A Second Global Table: the $a_0$ Absorber}
+\label{sec:a0absorber}
+
+The attack sweeps $a_0$ and uses C0 to absorb $a_1$ through the global
+$\sig{0}(u)-u$ table.  The two roles can be exchanged.  Writing $gv$ for the
+round-1 constant and using
+\[
+  W_1 = a_1 + gv(a_0), \qquad W_0 = a_0 + \mathrm{C0_{CONST}}, \qquad
+  W_9(a_1) = W_9^{(0)} - a_1,
+\]
+where $W_9^{(0)}$ is $W_9$ evaluated at $a_1=0$, the constraint
+$W_{16} = \sig{1}(W_{14}) + W_9 + \sig{0}(W_1) + W_0$ rearranges to give:
+
+\begin{proposition}
+\label{prop:a0absorber}
+Let $\Gamma(a_0) := a_0 + gv(a_0)$ and
+$R := W_{16} - \sig{1}(W_{14}) - W_9^{(0)} - \mathrm{C0_{CONST}}$.  Then C0 is
+equivalent to
+\[
+  \Gamma(a_0) \;=\; R + W_1 - \sig{0}(W_1).
+\]
+\end{proposition}
+
+The point is that $gv$ depends only on $a_0$ and the SHA-256 IV---no context
+word and no target enters it---so $\Gamma$ is a fixed function and $\Gamma^{-1}$
+is a \emph{global} table, built once and valid for every target and context,
+exactly like $\sig{0}(u)-u$.  Measured over all $2^{32}$ inputs, $\Gamma$ covers
+$63.214\%$ of the range against $1-e^{-1}=63.212\%$ for a random map, so the
+table behaves like the one already in use.  Proposition~\ref{prop:a0absorber} is
+verified on all three published preimages by
+\texttt{code/verify\_a0\_absorber.py}, which also confirms it is not a tautology:
+perturbing $W_{16}$ by $1,\ldots,64$ breaks it in every case.
+
+This does not reduce the attack's cost, and the reason is worth stating because
+it sharpens the $R=20$ barrier.  C0 can absorb $a_0$ \emph{or} $a_1$, but not
+both.  With five unknowns $(a_0,a_1,a_2,a_3,a_{11})$ and four constraints, and
+with $a_2$ absorbable only by C1, $a_3$ only by C2 and $a_{11}$ only by C3, the
+two variables $a_0$ and $a_1$ compete for the single constraint C0.  One of them
+must therefore be swept, and whichever four remain form a cycle in which every
+absorber requires three of the others.  That competition, rather than any
+property of a particular variable ordering, is what forces two guessed words at
+$R=20$.
+
 \subsection{A Linear Identity for $\boldsymbol{\sigma_0}$, and its Destruction}
 \label{sec:leftnull}
 
