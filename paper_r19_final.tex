@@ -106,7 +106,7 @@ structure for all $|p{-}q|{=}9$ differentials and proves that partial-dead-zone
 pairs achieve lower floors because their interleaved-zero positions enter the
 compression function earlier than the Nine-Step's post-dead-zone active rounds.
 
-\textbf{(3) Why the method stops at 19 rounds.}
+\textbf{(3) The 20-round barrier for the present parameterisation.}
 We characterise the $R{=}20$ barrier quantitatively rather than merely
 reporting it.  The $R{=}19$ attack is shown not to schedule its constraints
 acyclically: it breaks a cycle by freezing $W_9$ provisionally, iterating, and
@@ -966,8 +966,18 @@ Consequently any $\sigma_0$-chain of length four ($W_0,\ldots,W_4$) lies in an o
 length $49{,}146$ unless $W_4$ is one of the four exceptional values above, so
 no ``chain-wrap'' shortcut of the form $W_0 = W_4$ arises generically.
 
-The C3 constraint introduces an independent $2^{-32}$ filter on top of
-the R=19 attack.  Using the measured per-context success rate
+Under the variable ordering and single-representative lookup construction used
+here, C3 remains an additional 32-bit consistency condition applied after
+C0--C2 have been solved.  We emphasise what is and is not established.  The
+algebra shows C3 imposes a further 32-bit equality; it does not show that every
+algebraic arrangement must pay $2^{32}$ for it.  No absorption of C3 into the
+construction, and no lower-width decomposition of it, is currently known---but
+the negative results below are properties of the parameterisations we tried,
+not proofs of impossibility.  Indeed one apparent obstruction at R=20, the
+$a_1\!\leftrightarrow\!a_2$ cycle, dissolved entirely under a change of
+variable (\S\ref{sec:ureparam}), which is direct evidence that such
+obstructions can be artefacts of representation.  Treating C3 as an independent
+filter, the cost is:  Using the measured per-context success rate
 the projected $\mu_{R=19}\approx 6\times 10^{-3}$
 (\S\ref{sec:complexity}), the R=20 expected contexts is
 $\mu_{R=19}^{-1}\times 2^{32}\approx 170\times 2^{32}\approx 2^{39.4}$---a
@@ -1066,7 +1076,7 @@ turning it into a two-input absorber $(a_3,a_{11})\mapsto a_1$.  This is the fir
 demonstration that the R=20 constraint \emph{structure} is shapeable by context
 choice rather than fixed.  It does not by itself reduce the constraint count.
 
-\subsection{The R=19 Iteration Architecture Does Not Transfer}
+\subsection{The R=19 Iteration Architecture Does Not Transfer Directly}
 \label{sec:noniter}
 
 The R=19 attack does not schedule its constraints acyclically: it too has a cycle
@@ -2018,9 +2028,12 @@ The oracle-free attack on 20 rounds remains open; the
 fourth schedule constraint (C3) introduces an independent $2^{-32}$
 filter, raising the expected contexts by a factor of $2^{32}$ beyond
 the $R=19$ result (projected $\mu_{R=19}\approx 6\times10^{-3}$),
-a barrier without a known bypass.
+a barrier for which no bypass is currently known.  We do not claim it is
+fundamental: the decisive open question is whether the C0--C3 constraint graph
+admits an elimination order whose largest unresolved separator stays near 32
+bits, rather than whether an additional round adds an additional equation.
 
-\paragraph{Why the method stops (20 rounds).}
+\paragraph{The 20-round barrier for the present parameterisation.}
 We characterise that barrier rather than only reporting it.  The $R{=}19$
 attack does not schedule its constraints acyclically: it breaks a cycle by
 freezing $W_9$ provisionally, iterating, and paying one self-consistency check.
