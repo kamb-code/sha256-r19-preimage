@@ -158,7 +158,15 @@ publish/
     context_screening.py     — measures per-context productivity and its
                                predictiveness. Contexts are ~1500x overdispersed
                                and a cheap 2^20 screening pass predicts yield
-                               with Spearman 0.91, giving ~12.7x net speedup
+                               with Spearman 0.91, giving ~12.7x higher
+                               out-of-sample C1/C2 FIXED-POINT yield per
+                               attacked context. This is NOT yet a measured
+                               preimage speedup: the score predicts fixed
+                               points, and whether that carries through to
+                               lo-passes, full W9 matches and verified
+                               preimages is unmeasured. See TODO.md for the
+                               preregistered paired experiment that would
+                               settle it.
                                when the best 1% are kept.
     verify_a0_absorber.py    — verifies Proposition (a0 absorber):
                                Gamma(a0) = a0 + gv(a0) = R + W1 - sigma0(W1)

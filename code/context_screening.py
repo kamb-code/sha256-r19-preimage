@@ -35,7 +35,8 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, "/home/administrator/sha/publish/code")
+# resolve sibling modules relative to this file, not to any one machine
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 np.seterr(over="ignore")
 
 from measure_w9_filters import (  # noqa: E402
@@ -127,7 +128,11 @@ def worker(job):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--table", default="/nvme0n1-disk/Kamvid/sigma0_u_table.npy")
+    ap.add_argument("--table",
+                    default=os.environ.get("SIGMA0_TABLE", "sigma0_u_table.npy"),
+                    help="path to the sigma0(u)-u table (16 GiB .npy); "
+                         "defaults to $SIGMA0_TABLE, then ./sigma0_u_table.npy. "
+                         "Build it with build_sigma0_table.py.")
     ap.add_argument("--jobs", type=int, default=14)
     ap.add_argument("--contexts-per-job", type=int, default=20)
     ap.add_argument("--nbatch", type=int, default=2)

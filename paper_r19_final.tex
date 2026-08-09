@@ -689,11 +689,12 @@ Two sequential filters are applied:
 \begin{itemize}
   \item \textbf{Lo filter:}
     $(W_9^{\mathrm{true}} \bmod 2^{16}) = (\hat{W}_9 \bmod 2^{16})$.
-    Passes at $37$--$44\times$ the uniform $2^{-16}$ rate
-    (\S\ref{sec:complexity}).
+    Passes at $52$--$88\times$ (E1) or $37$--$44\times$ (E2) the uniform
+    $2^{-16}$ rate (\S\ref{sec:complexity}).
   \item \textbf{Hi filter:}
     $(W_9^{\mathrm{true}} \gg 16) = (\hat{W}_9 \gg 16)$.
-    Passes at ${\approx}9.2\times$ the uniform rate.  This filter is
+    Passes at $12.6$--$13.3\times$ (E1) or $7$--$11\times$ (E2) the uniform
+    rate.  This filter is
     \emph{not} uniform; a coarse-binned test suggests otherwise but is
     underpowered against a spike at a single residual (\S\ref{sec:chi2}).
 \end{itemize}
@@ -718,7 +719,8 @@ averaged over $>100$ contexts for per-context quantities;
 Quantity & Value \\
 \midrule
 C0 survivors (table hits) & $2{,}721{,}600{,}000$ ($63.4\%$ of $2^{32}$) \\
-\multicolumn{2}{@{}l}{\emph{Deduplicated (unique fixed points); two CPU pilots}}\\
+\multicolumn{2}{@{}l}{\emph{\textbf{E1} --- deduplicated (unique fixed points);
+two CPU pilots}}\\
 C1/C2 fixed points & $3.6$--$5.1\times10^{4}$ per context \\
 $W_9$ lo-pass events & $28$--$68$ per context \\
 $W_9$ lo-pass rate per fixed point & $7.9\times10^{-4}$--$1.3\times10^{-3}$ \\
@@ -745,8 +747,8 @@ Neither half of the $W_9$ filter is uniform.  Both enhancements arise because
 the C1/C2 fixed-point iteration, started from $W_9$-lo-consistent seed pairs,
 preferentially converges to fixed points that also satisfy the $W_9$
 constraint---an effect that acts on the full 32-bit residual, not only on the
-low half.  Measured over $2.2\times10^{9}$ swept $a_0$ values per
-configuration in an independent CPU reimplementation:
+low half.  Experiment \textbf{E2}, an independent CPU reimplementation
+measuring over $2.2\times10^{9}$ swept $a_0$ values per configuration, gives:
 
 \begin{itemize}\itemsep2pt
 \item the \emph{lo} filter passes at $37$--$44\times$ the uniform $2^{-16}$
@@ -755,6 +757,18 @@ configuration in an independent CPU reimplementation:
       is \emph{not} uniform, contrary to what a coarse-binned test suggests
       (\S\ref{sec:chi2}).
 \end{itemize}
+
+E1 and E2 are separate campaigns and their rates are not directly comparable:
+E1 deduplicates fixed points and reports per-fixed-point rates from two CPU
+pilots, whereas E2 reports per-swept-$a_0$ rates from a distinct
+implementation on different contexts.  Both find the same qualitative effect
+--- a large \emph{lo} enhancement and a smaller but nonzero \emph{hi}
+enhancement --- and the residual factor of roughly $1.5$ between them is not
+currently explained; it is within the spread expected from context-to-context
+variation (\S\ref{sec:screening}), which is itself large.  \textbf{E1 is the
+headline dataset}, since it is deduplicated and feeds the $\mu$ projection.
+Neither campaign is yet a preregistered success-rate measurement; that
+experiment remains outstanding.
 
 These rates are not artefacts of the lookup table's representative policy.
 Repeating the measurement on byte-identical contexts with a table built to keep
@@ -816,6 +830,75 @@ to first preimage---is not in general $\mu$ itself if successful fixed points
 cluster in favourable contexts.  A preregistered multi-target campaign
 reporting both quantities is in progress.  The combined search time for the
 three was $1{,}464$\,s on the H100 (871.6, 511.1 and 81.7\,s).
+
+\subsection{Context Screening}
+\label{sec:screening}
+
+The clustering just hypothesised is real and is large enough to exploit.  The
+attack samples a context and then sweeps $a_0$ over $2^{32}$, giving every
+context the same budget; that is optimal only if contexts are interchangeable.
+Over 280 sampled contexts the deduplicated C1/C2 fixed-point count per context
+had mean $63.4$ and variance $97{,}082$, a variance-to-mean ratio of
+${\approx}1{,}530$ against the $1.0$ that a Poisson model would give, with
+median $12$ and maximum $4{,}924$.  The top decile of contexts held $68.6\%$ of
+the total yield.
+
+Overdispersion alone is not usable, since it could be per-sample noise.  The
+operative question is whether a cheap score measured on one $a_0$ sample
+predicts yield on an independent one.  Scoring each of 392 contexts twice on
+independent $2^{20}$ samples gave a Spearman rank correlation of $0.910$
+between the two scores, so productivity is a stable property of the context and
+is recoverable from a short pass.  Since screening costs $2^{20}$ against a full
+sweep of $2^{32}$, it is $1/4096$ of a context's cost and is nearly free:
+selecting the top $1\%$ on the screening sample gave a $12.99\times$
+out-of-sample yield lift for a $2.44\%$ overhead, a net factor of
+$12.68\times$.  Nothing in this construction depends on the round count, so it
+applies unchanged at $R=20$.
+
+\paragraph{Does the lift survive conversion?}
+The score counts C1/C2 fixed points, so the lift above is in the first place a
+fixed-point lift.  The operative question is whether contexts selected for
+fixed-point productivity also yield more of the rarer downstream events, or
+whether they merely produce more fixed points of lower individual quality.  A
+replication (\texttt{screening\_validation.py}, 392 contexts scored twice on
+independent $2^{20}$ samples, seed 99001) reproduced the correlation at
+$\rho=0.929$ and produced 22 lo-pass events, enough to test the conversion
+directly.  Selecting on the sample-1 fixed-point score and counting sample-2
+lo-passes---so that selection and measurement never share data---gives:
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Keep & lo events & expected & lift \\
+\midrule
+top $25\%$ & 7 of 10 & 2.50 & $2.80\times$ \\
+top $10\%$ & 5 of 10 & 1.00 & $5.03\times$ \\
+top $\ \ 5\%$ & 3 of 10 & 0.50 & $5.88\times$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Under the null that screening carries no information about lo-passes, each
+event falls in the top decile with probability $0.1$; observing 5 of 10 has
+$p=1.6\times10^{-3}$ (and the reverse direction, selecting on sample 2 and
+measuring sample 1, gives 9 of 12, $p=1.7\times10^{-7}$; the two directions
+share data and are not independent replicates).  The lift therefore does carry
+through, and does so at roughly the fixed-point lift ($5.0\times$ against
+$6.8\times$ at the top decile), i.e.\ lo-passes scale about proportionally with
+fixed points rather than being diluted.
+
+We nonetheless state the remaining scope limit precisely.  What is now
+supported is that screening raises \emph{lo-pass} yield per attacked context.
+What is still \emph{not} established is conversion through the \emph{hi} filter
+to a full 32-bit $W_9$ match, and thence to a preimage---the rarest and
+decisive step, on which these samples produced no events.  This is therefore
+\textbf{not yet a measured speedup of the attack}, and the preregistered paired
+experiment that would settle it---screened and random-control arms given
+identical $2^{32}$ exposure, with $N_{LH}/C$ as the estimator---is outstanding.
+Finally, the deep tail is unstable: the top-$1\%$ row rests on 4 contexts of
+392 and moved from $12.99\times$ to $31.93\times$ between runs, so we quote the
+top-decile figure ($4.98\times$ and $6.79\times$ in the two runs) as the
+defensible one.
 
 %-----------------------------------------------------------------------
 \section{Experimental Results}
@@ -948,8 +1031,20 @@ introducing a fourth constraint~(C3):
 \]
 where $W_4^{\mathrm{round}}$ is fully determined by $a_0,\ldots,a_3$ once C0--C2 converge and
 $W_{12}^{\mathrm{base}}$ is determined by context.
-Because $\sig{0}$ is a bijection, $W_4^{\mathrm{round}}$ must equal the unique $\sig{0}^{-1}(C3_{\mathrm{tgt}})$;
-this is an independent 32-bit check that passes with probability $\approx 2^{-32}$.
+Because $\sig{0}$ is a bijection, $W_4^{\mathrm{round}}$ must equal the unique $\sig{0}^{-1}(C3_{\mathrm{tgt}})$.
+C3 therefore contributes an additional 32-bit equality.  Under the present
+construction we model it as approximately uniform and independent of C0--C2, so
+that it passes with probability $\approx 2^{-32}$; we stress that this is a
+statistical model which has not been established directly at full width.
+
+Exhaustive experiments in a reduced-width scale model (\S\ref{sec:redwidth})
+bear on the model but do not confirm it at $w=32$.  Measuring
+$P(\text{C3}\mid \text{C0},\text{C1},\text{C2})$ against the independent
+prediction $2^{-w}$ gives a ratio of $1.075\pm0.018$ at $w=4$ and
+$1.005\pm0.035$ at $w=5$: consistent with exact independence at the larger
+width, with a small excess at the smaller one that may be a narrow-width
+artefact.  Any dependence is thus small, but two widths do not establish a
+trend, and the behaviour at $w=32$ remains untested.
 
 \textbf{Schedule identity.}
 For messages satisfying the $\sigma_0$-chain $W_k = \sig{0}(W_{k+1})$, $k=0,\ldots,3$,
@@ -1003,8 +1098,10 @@ Under the null hypothesis of uniform residuals, the expected hi count is $\mu =
 so the absence of hi events is unsurprising.  With an expectation
 below $0.1$, however, observing zero carries almost no information: the result
 is \emph{consistent with} a uniform $2^{-32}$ filter but does not test it.
-The entire $2^{32}$ difficulty increase over $R=19$ is attributable to the independent
-C3 constraint, not to any structural bias in $W_9$.
+The observed difficulty increase over $R=19$ is attributable to the additional
+C3 equality rather than to any structural bias in $W_9$; the attribution of the
+full $2^{32}$ factor to C3 rests on the uniformity model stated above, which
+this run is too small to test.
 A supplementary CPU sweep (10 contexts, batch~$=2^{24}$, two workers) recorded
 254 $W_9$-lo-pass events and zero C3-pass events, yielding an enhancement upper
 bound of $2^{26.3}$ (95\%).  This too is consistent with a uniform
@@ -1012,6 +1109,49 @@ filter and far too small a sample to test independence or estimate its
 probability.  The structural claim---that C3 imposes an additional 32-bit
 equality---rests on the algebra, not on these counts; the probabilistic claim
 should be read as untested.
+
+\subsection{A Reduced-Width Scale Model}
+\label{sec:redwidth}
+
+Claims about C3's independence, and about whether the chained solver is lossy,
+are untestable at full width: the events are too rare to sample and the
+solution set cannot be enumerated.  We therefore build a scale model of the
+round function and message schedule at word width $w$, where the inner space
+$(a_0,a_1,a_2,a_3,a_{11})$ is small enough to enumerate exhaustively.
+Rotation and shift amounts are scaled from SHA-256's by $w/32$ and rounded; $K$
+and the IV are truncated.  The construction preserves the shape of the mixing
+and is not proposed as a standard.
+
+Two fidelity checks are passed.  At $w=32$ the scaled constants reduce to
+SHA-256's exactly, and the model reproduces SHA-256's state evolution
+word for word.  The solution count per context matches the degrees-of-freedom
+prediction: five unknown words less four constraints leaves one surplus word,
+hence $2^w$ solutions, against $19.2$ measured at $w=4$ ($2^4=16$) and $32.0$
+at $w=5$ ($2^5=32$).
+
+The independence measurement is reported in \S\ref{sec:r20}.  The model also
+shows that the chained fixed-point architecture is intrinsically lossy rather
+than merely slow.  A solver using one representative per table entry recovers
+$1.3\%$, $0\%$ and $0\%$ of the true solutions at $w=4,5,6$, while one
+branching over all roots recovers $23.4\%$, $6.8\%$ and $0.7\%$.  Raising the
+beam from 64 to 1024 and the iteration count from 6 to 20 changed coverage not
+at all, so the loss is structural rather than a truncation effect.  Tables
+should therefore be relations, not functions.  This monotone collapse, resting
+on 36, 13 and 2 recovered solutions, is the model's robust finding.
+
+We deliberately do \emph{not} extrapolate these rates to $w=32$.  The
+per-$a_0$ success rate falls by $4.15\times$ from $w=4$ to $w=5$ and by
+$8.67\times$ from $w=5$ to $w=6$, so the point estimates suggest an
+accelerating rather than log-linear decay; but the $w=6$ figure rests on two
+events, whose exact Poisson interval puts the second ratio anywhere in
+$[2.40\times, 71.6\times]$, a range that contains the first.  The data
+therefore constrain neither the functional form nor the rate, while a $5\%$
+change in the fitted rate moves a 27-bit extrapolation by a factor of $4.5$.
+We note additionally that an earlier version of this model, containing an
+initial-state indexing error, produced an apparent agreement with our
+full-width bound that did not survive correction---a cautionary instance of
+how little such an extrapolation constrains.  The scale model's value lies in
+its exhaustive in-range comparisons, not in extrapolated rates.
 
 \subsection{Absorber Reparameterisation and the $a_1\!\leftrightarrow\!a_2$ Coupling}
 \label{sec:ureparam}
