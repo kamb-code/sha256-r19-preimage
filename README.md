@@ -1,9 +1,24 @@
 # Oracle-Free 19-Round SHA-256 Preimage — Reproducibility Package
 
-This folder contains everything needed to verify and reproduce the results in:
+This folder contains everything needed to verify and reproduce the results in
+two papers, kept deliberately separate.
 
-> **"Oracle-Free Preimage Attack on 19-Round Reduced SHA-256"**
-> `paper_r19_final.pdf` / `paper_r19_final.tex`
+> **Main result** — "Oracle-Free Preimage Attack on 19-Round Reduced SHA-256"
+> `paper_r19_final.pdf` / `paper_r19_final.tex` (24 pp)
+>
+> The 19-round preimage attack with three verified preimages, the Nine-Step
+> Cancellation Lemma and collision structure, and context screening. This is
+> the finished, self-contained result.
+
+> **Companion** — "The 20-Round Barrier for Table-Based Preimage Attacks on
+> SHA-256"
+> `paper_r20_barrier.pdf` / `paper_r20_barrier.tex` (8 pp)
+>
+> Why the same construction does not reach 20 rounds. **Exploratory and
+> largely negative**: an inventory of which absorptions admit a global table, a
+> forced assignment leaving a cyclic residue, a second global table for `a0`, an
+> exact linear identity for sigma0, and a reduced-width scale model. Not an
+> impossibility result. Read the main paper first; nothing here modifies it.
 
 ---
 
@@ -140,8 +155,10 @@ is not affected by this result.
 ```
 publish/
   README.md                  — this file
-  paper_r19_final.pdf        — compiled paper (25 pages)
+  paper_r19_final.pdf        — main paper, R=19 (24 pages)
   paper_r19_final.tex        — LaTeX source
+  paper_r20_barrier.pdf      — companion, R=20 barrier (8 pages)
+  paper_r20_barrier.tex      — LaTeX source
   verified_preimages.txt     — the three verified preimage examples
 
   code/                      — core reproducibility files:

@@ -1,0 +1,578 @@
+% Practical Oracle-Free Preimage Attack on 19-Round SHA-256
+% via Schedule-Differential Table Lookup
+%
+% Submit target: FSE / SAC / ASIACRYPT
+% Compile: pdflatex paper_r19_final.tex  (twice for cross-references)
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage[protrusion=true,expansion=false]{microtype}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Sig}[1]{\Sigma_{#1}}
+\newcommand{\sig}[1]{\sigma_{#1}}
+\newcommand{\Maj}{\mathrm{Maj}}
+\newcommand{\Ch}{\mathrm{Ch}}
+\newcommand{\ROTR}[2]{\mathrm{ROTR}^{#1}(#2)}
+\newcommand{\SHR}[2]{\mathrm{SHR}^{#1}(#2)}
+\newcommand{\mmod}{\bmod\,2^{32}}
+
+
+\begin{document}
+
+\title{\textbf{The 20-Round Barrier for Table-Based\\
+Preimage Attacks on SHA-256}}
+
+\author{Kameldip Singh Basra \\[4pt]
+\normalsize\texttt{kameldipbasra@gmail.com}}
+\date{\today}
+
+\maketitle
+
+\begin{abstract}
+This is a companion to~\cite{Basra2026R19}, which gives a practical
+oracle-free preimage attack on 19-round SHA-256 built on a precomputed
+$\sigma_0(u){-}u$ differential table.  Here we ask why the same construction
+does not reach 20 rounds, and characterise the barrier quantitatively rather
+than merely reporting it.
+
+The $R{=}19$ attack is shown not to schedule its constraints acyclically: it
+breaks a cycle by freezing $W_9$ provisionally, iterating, and paying one
+self-consistency check.  Promoting $a_{11}$ to an unknown absorbed by the
+fourth constraint gives $R{=}20$ the same one-word surplus, and the true
+$R{=}20$ solution is verified to be a fixed point of all four absorber maps---so
+the architecture transplants in form.  It does not transplant in efficacy:
+measured with a single harness, the $R{=}19$ two-map iteration converges at
+$5.34\times10^{-5}$ per $a_0$ ($1{,}790$ of $3.36\times10^{7}$) while the
+$R{=}20$ four-map iteration yields $0$ of $2.00\times10^{9}$
+($<1.50\times10^{-9}$ at 95\%), below the $2^{-29}$ break-even.  The cause is
+dimensional: the iterated state grows from $32$ to $64$ bits.
+
+We give an inventory of which absorptions admit a \emph{global} table---the
+currency of the attack---and show the assignment is forced, leaving a cyclic
+residue that costs $2^{64}$ for this attack family.  We record a second global
+table (the $a_0$ absorber, $\Gamma(a_0)=a_0+gv(a_0)$, coverage $63.214\%$
+against $1-e^{-1}=63.212\%$), and prove that
+$\operatorname{rank}(\sig{0}\oplus I)=31$ gives a unique mask
+$\lambda=\texttt{0xa8a42fe4}$ with $\lambda\cdot(\sig{0}(W)\oplus W)=0$ for
+every $W$ (verified exhaustively over all $2^{32}$ inputs), which modular
+subtraction degrades to a bias of only $2^{-15.8}$.
+
+Because these are properties of the parameterisations we tried rather than
+proofs of impossibility, we also build a reduced-width scale model in which the
+whole inner space is enumerable, and report exhaustive measurements there.
+\textbf{None of this is an impossibility result}, and we are explicit
+throughout about which claims are algebraic and which are statistical models
+that remain untested at full width.  Full SHA-256 (64 rounds) is not threatened
+by any of these results.
+
+\medskip
+\noindent\textbf{Keywords:} SHA-256, preimage attack, reduced-round,
+round-20 barrier, absorber tables, reduced-width scale model.
+\end{abstract}
+
+\section{Scope and Relation to the $R=19$ Paper}
+
+We assume the attack of~\cite{Basra2026R19} throughout: a backward chain from
+the target fixes $a_{12},\ldots,a_{19}$ (for $R{=}20$), the context words
+$a_4,\ldots,a_{10}$ are freely chosen, and the remaining unknowns are resolved
+against the schedule-consistency constraints C0--C3 at $W_{16},\ldots,W_{19}$
+using a $16$\,GB global table inverting $u\mapsto\sig{0}(u)-u$.  Notation
+follows that paper without change.
+
+Nothing here modifies the $R{=}19$ result.  The material is separated because
+it is exploratory: it consists largely of negative results, and its value is in
+narrowing where a $R{=}20$ attack could come from, not in delivering one.
+
+\section{The $R=20$ Constraint System}
+\label{sec:r20}
+%-----------------------------------------------------------------------
+
+The backward chain at $R = 20$ recovers $a_{12},\ldots,a_{19}$ but
+not $a_{11}$.  The schedule grows to four constraints
+$W_{16}$--$W_{19}$, with $a_{11}$ as an additional unknown.
+
+\textbf{Oracle-conditioned result.}  When the context including $a_{11}$
+is supplied by a known synthetic pair, the $W_{17}$ identity
+gives $a_2$ as an explicit function of $a_3$ (Lemma analogous to
+\cite[Prop.~2]{Basra2026R19}), and an $h$-table $h[W_{12}(a_{11})]
+\to a_{11}$ enables an $O(2^{32})$ $a_3$ sweep.  This recovered a
+verified R=20 preimage in 227\,s of sweep time plus $\approx 22$
+minutes for the $h$-table build.  However, the context was derived
+from a known preimage: this is an \emph{oracle-conditioned}
+second-preimage, not an oracle-free attack.
+
+\textbf{Why oracle-free R=20 is not established.}  The $h$-table
+inversion requires $W_{12}^{\mathrm{req}} = W_{19}^{\mathrm{bc}} -
+\sig{1}(W_{17}^{\mathrm{bc}}) - \sig{0}(W_4) - W_3$, where
+$W_{17}^{\mathrm{bc}}$ carries $a_{11}$ through $e_{13}$
+(which contains $\Maj(a_{12},a_{11},a_{10})$).  Thus $a_{11}$
+is needed to compute the quantity used to look up $a_{11}$: a circular
+dependency.  No algebraic link that breaks this circularity has been
+found.  Exhaustive search over all binary linear combinations of the
+four residual equations $R_{16}$--$R_{19}$ found no combination that
+isolates any of the three unknowns $(a_2, a_3, a_{11})$.
+
+\textbf{Quantitative complexity gap.}
+An equivalent view using the $\sigma_0$-chain directly confirms the $2^{32}$ difficulty increase.
+Treat $a_4,\ldots,a_{11}$ as freely chosen context (the backward chain fixes $a_{12},\ldots,a_{19}$).
+The chain C0--C2 then proceeds identically to the $R=19$ case, but the schedule now includes $W_{19}$,
+introducing a fourth constraint~(C3):
+\[
+  \sig{0}\!\bigl(W_4^{\mathrm{round}}\bigr)
+  = W_{19}^{\mathrm{bc}} - \sig{1}(W_{17}^{\mathrm{bc}}) - W_{12}^{\mathrm{base}} - W_3,
+\]
+where $W_4^{\mathrm{round}}$ is fully determined by $a_0,\ldots,a_3$ once C0--C2 converge and
+$W_{12}^{\mathrm{base}}$ is determined by context.
+Because $\sig{0}$ is a bijection, $W_4^{\mathrm{round}}$ must equal the unique $\sig{0}^{-1}(C3_{\mathrm{tgt}})$.
+C3 therefore contributes an additional 32-bit equality.  Under the present
+construction we model it as approximately uniform and independent of C0--C2, so
+that it passes with probability $\approx 2^{-32}$; we stress that this is a
+statistical model which has not been established directly at full width.
+
+Exhaustive experiments in a reduced-width scale model (\S\ref{sec:redwidth})
+bear on the model but do not confirm it at $w=32$.  Measuring
+$P(\text{C3}\mid \text{C0},\text{C1},\text{C2})$ against the independent
+prediction $2^{-w}$ gives a ratio of $1.075\pm0.018$ at $w=4$ and
+$1.005\pm0.035$ at $w=5$: consistent with exact independence at the larger
+width, with a small excess at the smaller one that may be a narrow-width
+artefact.  Any dependence is thus small, but two widths do not establish a
+trend, and the behaviour at $w=32$ remains untested.
+
+\textbf{Schedule identity.}
+For messages satisfying the $\sigma_0$-chain $W_k = \sig{0}(W_{k+1})$, $k=0,\ldots,3$,
+the substitution $\sig{0}(W_{r-15}) = W_{r-16}$ reduces the schedule recurrence for $r\in\{16,\ldots,19\}$ to
+\[
+  W_r = \sig{1}(W_{r-2}) + W_{r-7} + 2\,W_{r-16}.
+\]
+From this identity and $W_3 = \sig{0}(W_4)$ one computes directly
+$C3_{\mathrm{tgt}} = W_{19} - \sig{1}(W_{17}) - W_{12} - W_3 = \sig{0}(W_4) = W_3$,
+confirming that the C3 check reduces to $W_4^{\mathrm{round}} = W_4^{\mathrm{chain}}$ (verified numerically).
+The same identity provides a concise derivation of the Nine-Step Lemma: at $r=16$,
+$\Delta W_{16} = \Delta W_{9} + \Delta W_0 = -\delta + \delta = 0$, and the doubled term
+$2W_{r-16}$ ensures that \emph{any} perturbation $\Delta W_1 = \varepsilon$ would
+introduce $\sig{0}(\varepsilon)$ into $\Delta W_{16}$ (breaking cancellation), which is
+why the pair $(0,9)$ is the unique minimal solution.
+
+\textbf{Orbit structure of $\boldsymbol{\sigma_0}$.}
+Viewed as a $\mathbb{F}_2$-linear bijection on $(\mathbb{Z}/2\mathbb{Z})^{32}$, the map $\sigma_0$
+has order $49{,}146 = 2\cdot 3\cdot 8191$ where $8191 = 2^{13}-1$ is a Mersenne prime.
+Its only short orbits are the two fixed points $\{0,\,\texttt{0x27f42515}\}$
+and the unique $2$-cycle $\{\texttt{0x0b3b7ef9} \leftrightarrow \texttt{0x2ccf5bec}\}$;
+in particular, no period-3 or period-4 elements exist.
+Consequently any $\sigma_0$-chain of length four ($W_0,\ldots,W_4$) lies in an orbit of
+length $49{,}146$ unless $W_4$ is one of the four exceptional values above, so
+no ``chain-wrap'' shortcut of the form $W_0 = W_4$ arises generically.
+
+Under the variable ordering and single-representative lookup construction used
+here, C3 remains an additional 32-bit consistency condition applied after
+C0--C2 have been solved.  We emphasise what is and is not established.  The
+algebra shows C3 imposes a further 32-bit equality; it does not show that every
+algebraic arrangement must pay $2^{32}$ for it.  No absorption of C3 into the
+construction, and no lower-width decomposition of it, is currently known---but
+the negative results below are properties of the parameterisations we tried,
+not proofs of impossibility.  Indeed one apparent obstruction at R=20, the
+$a_1\!\leftrightarrow\!a_2$ cycle, dissolved entirely under a change of
+variable (\S\ref{sec:ureparam}), which is direct evidence that such
+obstructions can be artefacts of representation.  Treating C3 as an independent
+filter, the cost is:  Using the measured per-context success rate
+the projected $\mu_{R=19}\approx 6\times 10^{-3}$
+(\cite[\S6]{Basra2026R19}), the R=20 expected contexts is
+$\mu_{R=19}^{-1}\times 2^{32}\approx 170\times 2^{32}\approx 2^{39.4}$---a
+factor of $2^{32}$ harder than R=19.  The ratio is what matters here and is
+independent of the value of $\mu_{R=19}$; only the absolute figure moves with
+it, and that figure inherits the projection's caveats.
+
+\textbf{GPU diagnostic.}
+A 165-context GPU run of the $R=20$ $\sigma_0$-chain on an H100 (batch~$=2^{26}$,
+K\textsubscript{seeds}$=4$) recorded 4{,}166 $W_9$-lo-pass events and zero hi-pass events.
+Under the null hypothesis of uniform residuals, the expected hi count is $\mu =
+4166/65536 \approx 0.064$; the probability of zero hi events is $e^{-\mu}\approx 0.94$,
+so the absence of hi events is unsurprising.  With an expectation
+below $0.1$, however, observing zero carries almost no information: the result
+is \emph{consistent with} a uniform $2^{-32}$ filter but does not test it.
+The observed difficulty increase over $R=19$ is attributable to the additional
+C3 equality rather than to any structural bias in $W_9$; the attribution of the
+full $2^{32}$ factor to C3 rests on the uniformity model stated above, which
+this run is too small to test.
+A supplementary CPU sweep (10 contexts, batch~$=2^{24}$, two workers) recorded
+254 $W_9$-lo-pass events and zero C3-pass events, yielding an enhancement upper
+bound of $2^{26.3}$ (95\%).  This too is consistent with a uniform
+filter and far too small a sample to test independence or estimate its
+probability.  The structural claim---that C3 imposes an additional 32-bit
+equality---rests on the algebra, not on these counts; the probabilistic claim
+should be read as untested.
+
+\subsection{A Reduced-Width Scale Model}
+\label{sec:redwidth}
+
+Claims about C3's independence, and about whether the chained solver is lossy,
+are untestable at full width: the events are too rare to sample and the
+solution set cannot be enumerated.  We therefore build a scale model of the
+round function and message schedule at word width $w$, where the inner space
+$(a_0,a_1,a_2,a_3,a_{11})$ is small enough to enumerate exhaustively.
+Rotation and shift amounts are scaled from SHA-256's by $w/32$ and rounded; $K$
+and the IV are truncated.  The construction preserves the shape of the mixing
+and is not proposed as a standard.
+
+Two fidelity checks are passed.  At $w=32$ the scaled constants reduce to
+SHA-256's exactly, and the model reproduces SHA-256's state evolution
+word for word.  The solution count per context matches the degrees-of-freedom
+prediction: five unknown words less four constraints leaves one surplus word,
+hence $2^w$ solutions, against $19.2$ measured at $w=4$ ($2^4=16$) and $32.0$
+at $w=5$ ($2^5=32$).
+
+The independence measurement is reported in \S\ref{sec:r20}.  The model also
+shows that the chained fixed-point architecture is intrinsically lossy rather
+than merely slow.  A solver using one representative per table entry recovers
+$1.3\%$, $0\%$ and $0\%$ of the true solutions at $w=4,5,6$, while one
+branching over all roots recovers $23.4\%$, $6.8\%$ and $0.7\%$.  Raising the
+beam from 64 to 1024 and the iteration count from 6 to 20 changed coverage not
+at all, so the loss is structural rather than a truncation effect.  Tables
+should therefore be relations, not functions.  This monotone collapse, resting
+on 36, 13 and 2 recovered solutions, is the model's robust finding.
+
+We deliberately do \emph{not} extrapolate these rates to $w=32$.  The
+per-$a_0$ success rate falls by $4.15\times$ from $w=4$ to $w=5$ and by
+$8.67\times$ from $w=5$ to $w=6$, so the point estimates suggest an
+accelerating rather than log-linear decay; but the $w=6$ figure rests on two
+events, whose exact Poisson interval puts the second ratio anywhere in
+$[2.40\times, 71.6\times]$, a range that contains the first.  The data
+therefore constrain neither the functional form nor the rate, while a $5\%$
+change in the fitted rate moves a 27-bit extrapolation by a factor of $4.5$.
+We note additionally that an earlier version of this model, containing an
+initial-state indexing error, produced an apparent agreement with our
+full-width bound that did not survive correction---a cautionary instance of
+how little such an extrapolation constrains.  The scale model's value lies in
+its exhaustive in-range comparisons, not in extrapolated rates.
+
+\subsection{Absorber Reparameterisation and the $a_1\!\leftrightarrow\!a_2$ Coupling}
+\label{sec:ureparam}
+
+The four residual equations can each be written in the $\sig{0}(u)-u$ form used
+by the R=19 table.  Substituting the round-function expression
+$W_{10} = \mathrm{CONST}_{10} - d(a_3) - a_2$ into the $W_{17}$ identity and then
+eliminating $a_2$ via $a_2 = W_2 - F_{12}(a_1)$ yields:
+
+\begin{lemma}[Reparameterisation of C1]
+\label{lem:ureparam}
+Write $A(a_1) := a_1 + gv + F_{12}(a_1)$, a function of $a_1$ alone.  Then
+\[
+  \sig{0}(W_2) - W_2 \;=\; h_1(a_{11}) - \mathrm{CONST}_{10} + d(a_3) - A(a_1)
+  \;=:\; u ,
+\]
+so the target $u$ decomposes additively into independent contributions from
+$a_{11}$, $a_3$ and $a_1$.
+\end{lemma}
+
+Verified exactly on $2000/2000$ random triples $(a_1,a_3,a_{11})$.  Taking $u$ as
+the free variable inverts the map: $W_2$ is one table lookup, $a_1 = A^{-1}(K_1-u)$
+a second, and $a_2 = W_2 - F_{12}(a_1)$.  Hence for fixed $(a_3,a_{11})$ each $u$
+determines \emph{both} $a_1$ and $a_2$ in $O(1)$.  The apparent circular
+dependency between C0 (which needs $a_2$) and C1 (which needs $a_1$) is therefore
+an artefact of the parameterisation, not a genuine fixed-point problem; this
+explains why naive iteration of that pair never converges.  ($A$ is a
+near-bijection: $3$ collisions in $2\times10^{5}$ samples, so $A^{-1}$ requires a
+bucketed table.)
+
+Two further reductions place the remaining constraints in table form.  In C2 the
+unknown $a_3$ cancels from its own target, since $e_7 = a_3 + T1_7$ and
+$W_3 = a_3 + f_{23}$:
+\[
+  \sig{0}(W_3) - W_3 = \bigl(W_{18} - \sig{1}(W_{16}) - W_{11}\bigr) - W_2 - f_{23} + T1_7 .
+\]
+In C3, the quantities $e_{16},e_{17},e_{18}$ do not depend on $a_{11}$ (they are
+fixed by the backward chain), so $\sig{1}(e_{18})$ and $\Ch(e_{18},e_{17},e_{16})$
+are per-context constants and
+\[
+  W_{19} \;=\; \mathrm{CONST}_{19} - \bigl(a_{11} + T1_{15}\bigr)
+\]
+is \emph{linear} in $a_{11}$; only $W_{17}$ and $W_{12}$ carry nonlinear
+$a_{11}$-dependence into the C3 key.
+
+\subsection{A Context Family that Removes $a_2$ from C0}
+\label{sec:a2free}
+
+The variable $a_2$ reaches the C0 target by exactly two routes: the term
+$\Ch(e_8,e_7,e_6)$ with $e_6 = a_2 + t_{16}$, and $\Maj(a_4,a_3,a_2)$ inside
+$t_{15}$.  Both are maskable by context choice.  Setting $e_8 = \texttt{0xFFFFFFFF}$
+(reachable by choosing $a_8$, since $e_8 = a_4 + a_8 - \Sig{0}(a_7) - \Maj(a_7,a_6,a_5)$)
+collapses $\Ch(e_8,e_7,e_6)$ to $e_7$; setting $a_4 = a_3$ collapses
+$\Maj(a_4,a_3,a_2)$ to $a_3$.  Measured over $500$ random $a_2$ per trial, the
+number of distinct C0 targets is:
+
+\begin{center}
+\begin{tabular}{lc}
+\hline
+context condition & distinct C0 targets \\
+\hline
+random context & $400/400$ \\
+$e_8=\texttt{0xFFFFFFFF}$ alone & $400/400$ \\
+$a_4=a_3$ alone & $217$, $489$ \\
+$a_4=a_3$ \emph{and} $e_8=\texttt{0xFFFFFFFF}$ & $1,1,1,1$ \\
+\hline
+\end{tabular}
+\end{center}
+
+Neither condition suffices alone; together they eliminate $a_2$ from C0 entirely,
+turning it into a two-input absorber $(a_3,a_{11})\mapsto a_1$.  This is the first
+demonstration that the R=20 constraint \emph{structure} is shapeable by context
+choice rather than fixed.  It does not by itself reduce the constraint count.
+
+\subsection{The R=19 Iteration Architecture Does Not Transfer Directly}
+\label{sec:noniter}
+
+The R=19 attack does not schedule its constraints acyclically: it too has a cycle
+(C0 requires $W_9$, which requires $a_2,a_3$, which come from C1/C2, which require
+$a_1$ from C0).  It breaks the cycle by freezing $W_9$ at a provisional value,
+iterating C1$\leftrightarrow$C2 to a fixed point, and paying one $32$-bit
+self-consistency check.  Convergence of that iteration is what satisfies C1 and C2.
+
+Promoting $a_{11}$ from guessed context to an unknown absorbed by C3 gives R=20 the
+same one-word surplus ($5$ unknowns $a_0..a_3,a_{11}$ against $4$ constraints,
+versus R=19's $4$ against $3$), and we verified that the true R=20 solution is a
+fixed point of all four absorber maps.  The architecture therefore transplants in
+form.  It does not transplant in efficacy.  Measured with one harness, cold start,
+$8$ iterations, no seeding, on the same hardware:
+
+\begin{center}
+\begin{tabular}{lrl}
+\hline
+iteration & convergences / trials & rate per $a_0$ \\
+\hline
+R=19 control (two-map, C1$\leftrightarrow$C2) & $1{,}790$ / $33{,}554{,}432$ & $5.34\times10^{-5}$ \\
+R=20 (four-map, C0--C3) & $0$ / $1{,}996{,}488{,}704$ & $<1.50\times10^{-9}$ (95\%) \\
+\hline
+\end{tabular}
+\end{center}
+
+The R=19 control reproduces the documented rate band, so the harness is sound and
+the R=20 null is a measurement rather than an artefact.  In iteration-steps per
+preimage the classic sweep costs $2^{64}$ while the iterated variant costs
+$2^{35}/p$, so the break-even convergence rate is $p = 2^{-29}\approx1.86\times10^{-9}$;
+the measured bound lies below it.  We note the margin is modest---the $95\%$
+bound is a factor $1.24$ under break-even---so the conclusion is that the
+iterated variant does not beat the classic sweep, not that it loses by a wide
+factor; a longer run would tighten the bound proportionally.  The structural
+estimate is far more pessimistic than the bound: R=19's $5.34\times10^{-5}$ sits
+about $2^{15}$ above the $2^{-29}$ random-map baseline for a $32$-bit state, and
+carrying that same enhancement to a $64$-bit state (baseline $\approx2^{-61}$)
+predicts $p\approx2^{-46}$, some five orders of magnitude below break-even.  The cause is dimensional: at R=19 the absorbed
+$a_1$ is computed \emph{outside} the loop, leaving a $32$-bit iterated state
+($a_3$, with $a_2$ derived), whereas at R=20 C0 depends on $a_{11}$ and the state
+becomes $64$-bit $(a_3,a_{11})$.  Raising the iteration budget does not help, since
+convergence probability and cost scale alike.
+
+\subsection{A Second Global Table: the $a_0$ Absorber}
+\label{sec:a0absorber}
+
+The attack sweeps $a_0$ and uses C0 to absorb $a_1$ through the global
+$\sig{0}(u)-u$ table.  The two roles can be exchanged.  Writing $gv$ for the
+round-1 constant and using
+\[
+  W_1 = a_1 + gv(a_0), \qquad W_0 = a_0 + \mathrm{C0_{CONST}}, \qquad
+  W_9(a_1) = W_9^{(0)} - a_1,
+\]
+where $W_9^{(0)}$ is $W_9$ evaluated at $a_1=0$, the constraint
+$W_{16} = \sig{1}(W_{14}) + W_9 + \sig{0}(W_1) + W_0$ rearranges to give:
+
+\begin{proposition}
+\label{prop:a0absorber}
+Let $\Gamma(a_0) := a_0 + gv(a_0)$ and
+$R := W_{16} - \sig{1}(W_{14}) - W_9^{(0)} - \mathrm{C0_{CONST}}$.  Then C0 is
+equivalent to
+\[
+  \Gamma(a_0) \;=\; R + W_1 - \sig{0}(W_1).
+\]
+\end{proposition}
+
+The point is that $gv$ depends only on $a_0$ and the SHA-256 IV---no context
+word and no target enters it---so $\Gamma$ is a fixed function and $\Gamma^{-1}$
+is a \emph{global} table, built once and valid for every target and context,
+exactly like $\sig{0}(u)-u$.  Measured over all $2^{32}$ inputs, $\Gamma$ covers
+$63.214\%$ of the range against $1-e^{-1}=63.212\%$ for a random map, so the
+table behaves like the one already in use.  Proposition~\ref{prop:a0absorber} is
+verified on all three published preimages by
+\texttt{code/verify\_a0\_absorber.py}, which also confirms it is not a tautology:
+perturbing $W_{16}$ by $1,\ldots,64$ breaks it in every case.
+
+This does not reduce the attack's cost, and the reason is worth stating because
+it sharpens the $R=20$ barrier.  C0 can absorb $a_0$ \emph{or} $a_1$, but not
+both.  With five unknowns $(a_0,a_1,a_2,a_3,a_{11})$ and four constraints, and
+with $a_2$ absorbable only by C1, $a_3$ only by C2 and $a_{11}$ only by C3, the
+two variables $a_0$ and $a_1$ compete for the single constraint C0.  One of them
+must therefore be swept, and whichever four remain form a cycle in which every
+absorber requires three of the others.  That competition, rather than any
+property of a particular variable ordering, is what forces two guessed words at
+$R=20$.
+
+\subsection{A Linear Identity for $\boldsymbol{\sigma_0}$, and its Destruction}
+\label{sec:leftnull}
+
+Since $\sig{0}$ is $\mathbb{F}_2$-linear, put $L = \sig{0}\oplus I$.  The kernel of
+$L$ is the fixed-point set $\{0,\texttt{0x27f42515}\}$, so $\operatorname{rank}L = 31$
+and the image is a $31$-dimensional subspace.  Consequently there is a
+\emph{unique} nonzero mask annihilating it.
+
+\begin{proposition}
+\label{prop:leftnull}
+Let $\lambda = \texttt{0xa8a42fe4}$.  Then for every $W\in(\mathbb{Z}/2\mathbb{Z})^{32}$,
+\[
+  \lambda \cdot \bigl(\sig{0}(W)\oplus W\bigr) = 0 .
+\]
+\end{proposition}
+
+Verified exhaustively over all $2^{32}$ inputs (zero violations).  This is the left
+companion of the known right-kernel constant \texttt{0x27f42515}.
+
+The identity is however destroyed by modular subtraction, which is what the attack
+actually uses.  Exhaustively over all $2^{32}$ inputs,
+\[
+  \Pr_W\bigl[\lambda\cdot(\sig{0}(W) - W) = 1\bigr] = 0.500017190 ,
+\]
+a bias of $1.72\times10^{-5} = 2^{-15.8}$, against an exact $0$ for the XOR form.
+A relation that is identically zero on the $\mathbb{F}_2$-linear part survives
+modular subtraction only as a $2^{-15.8}$ bias, which affords no usable filtering.
+Together with the table coverage---both the $\sig{0}$ table and the C3 $h$-table
+measure $63.21\%$ against $1-e^{-1}=63.212\%$, matching a random map to four
+significant figures---the map $W\mapsto\sig{0}(W)-W$ is indistinguishable from a
+random map under every structural test we have applied.  The interaction between
+$\mathbb{F}_2$-linear $\sig{0}$ and modular arithmetic is thus not merely an
+obstacle to proof technique; it is the mechanism by which R=20 resists.
+
+The oracle-free R=20 attack remains an open problem.
+
+%-----------------------------------------------------------------------
+
+
+\section{The Absorber Assignment is Forced}
+\label{sec:forced}
+
+This is the sharpest statement of the barrier we have.  Unlike the earlier
+``irreducible cycle'' claim---which was wrong, and which we withdraw---it rests
+on an enumeration of which absorptions admit a \emph{global} table.
+
+\paragraph{The currency: global versus context-dependent tables.}
+An absorber is useful only if inverting it is $O(1)$, which requires a table,
+and the table must be reusable across contexts or it costs $2^{32}$ to build
+each time.  The inventory is:
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Global (built once, valid for every target and context) & absorbs \\
+\midrule
+$\sig{0}(u)-u$ & C0$\to a_1$, C1$\to a_2$, C2$\to a_3$ \\
+$\Gamma^{-1}$, where $\Gamma(a_0)=a_0+gv(a_0)$ (\S\ref{sec:a0absorber}) & C0$\to a_0$ \\
+$W_0 = a_0 + \mathrm{const}$ (linear) & --- \\
+\midrule
+Per-context ($2^{32}$ to build, reusable within one context) & \\
+\midrule
+$Q_0^{-1},Q_1^{-1},Q_2^{-1},H^{-1}$ & C0--C3 $\to a_{11}$ \\
+\midrule
+No table (context-dependent inversion, $2^{32}$ every time) & \\
+\midrule
+C3 absorbing $a_1$, $a_2$ or $a_3$ & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{The assignment is forced.}
+Reaching $2^{32}$ requires sweeping one unknown and absorbing four.  Given the
+inventory, $a_1$ can only be absorbed by C0, $a_2$ only by C1, and $a_3$ only
+by C2; therefore $a_{11}$ must be absorbed by C3.  There is exactly one
+assignment, and its dependency structure is
+\[
+  a_1 \leftarrow \mathrm{C0}\ (a_2,a_3,a_{11}), \quad
+  a_2 \leftarrow \mathrm{C1}\ (a_1,a_3,a_{11}), \quad
+  a_3 \leftarrow \mathrm{C2}\ (a_1,a_2,a_{11}), \quad
+  a_{11} \leftarrow \mathrm{C3}\ (a_1,a_2,a_3).
+\]
+Every $a_i$ needs $a_{11}$ and two other $a_j$; $a_{11}$ needs at least two.
+The graph is irreducibly cyclic, so two variables must be guessed: $2^{64}$.
+Sweeping something other than $a_0$ does not help, because $a_0$ enters C0 both
+inside $\sig{0}(a_1+gv(a_0))$ and additively through $W_0$, and separating
+those requires a table indexed by $a_1$.
+
+\paragraph{The one structural handle, and why it does not pay.}
+C3 has the form $\sig{0}(W_4)+W_3 = H(a_{11})$, coupling \emph{two} message
+words---this is precisely why it cannot absorb $a_1,a_2,a_3$ through the
+single-word table.  Imposing any global relation $W_3=\phi(W_4)$ collapses the
+left side to a function of one word, making C3 a global absorber producing
+$(W_3,W_4)$ from $a_{11}$ alone and reversing the cycle direction.  Measured
+exhaustively in the reduced-width model at $w=4$ over 6 contexts (98 true
+solutions; expectation $6.12$ if $\phi$ costs a full $w$ bits):
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Relation & surviving & per context & vs.\ expected \\
+\midrule
+$W_3=\sig{0}(W_4)$ & 3 & 0.50 & $0.49\times$ \\
+$W_3=-W_4$         & 4 & 0.67 & $0.65\times$ \\
+$W_3=W_4$          & 0 & 0.00 & $0.00\times$ \\
+$W_3=\overline{W_4}$ & 7 & 1.17 & $1.14\times$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every variant sits at or below the ``costs a full $w$ bits'' expectation.  The
+counts are small ($3$--$7$ events, so roughly $\pm2$) and all are consistent
+with $1.0\times$; none is consistent with the large excess needed to make the
+handle pay.  Imposing a $w$-bit condition removes a $w$-bit worth of solutions,
+and the global absorber it buys does not compensate.
+
+\paragraph{What would break it.}
+Exactly one of: a global table letting C3 absorb $a_1$, $a_2$ or $a_3$---a
+normal form for $\sig{0}(W_4)+W_3$ in one message word that does not cost a
+free word; a global absorber for $a_0$ that frees the sweep variable (both
+$\Gamma^{-1}$ and $W_0$ are global, so $a_0$ is closer to absorbable than we
+first thought, the blocker being the joint appearance inside
+$\sig{0}(a_1+gv(a_0))$); or a joint two-variable global table, the
+$u$-reparameterisation generalised.
+
+\paragraph{An open check.}
+An exhaustive search over all $2{,}880$ elimination orders found that none
+recovers the full solution set (median $2$ of $35$ true solutions), which
+supports the argument above.  That run predates a correction to the
+reduced-width model's initial-state indexing and is being repeated; until it
+completes we regard the ``no elimination order helps'' leg as unconfirmed.
+
+\section{Status}
+
+$R=20$ is not solved.  The barrier is $2^{64}$ for this attack family and the
+forced-assignment argument above is why.  Context screening
+(\cite[\S6.9]{Basra2026R19}) reduces it by a measured ${\approx}12.7\times$, to
+about $2^{60.3}$, which is an improvement and not a solution.
+
+We emphasise the limits of the negative results.  Each rules out a
+parameterisation, not a technique: the $\phi$-family charges a full word for
+the global absorber it buys; $a_0$ is globally absorbable but competes with
+$a_1$ for C0; a joint two-variable table is blocked because $a_2$ and $a_3$
+enter shift-invariantly.  A genuinely different algebraic handle on
+$\sig{0}(W)-W$, or a decomposition of C3 below $32$ bits, would change the
+picture, and neither is excluded by anything measured here.
+
+\begin{thebibliography}{10}
+\bibitem{Basra2026R19}
+K.~S.~Basra.
+\newblock A Practical Oracle-Free Preimage Attack on 19-Round SHA-256, and a
+  Nine-Step Cancellation Lemma.
+\newblock Companion paper, 2026.
+\end{thebibliography}
+
+\end{document}
