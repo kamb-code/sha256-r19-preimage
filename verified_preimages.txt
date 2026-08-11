@@ -52,3 +52,21 @@ Message words W[0..15]:
 Solver: h100_extended.py, context 3 (a0 sweep reached ~22% before hit)
 Time: 81.7 s on NVIDIA H100 SXM 80 GB
 Verified: OK
+
+
+# --- P4-P6: found during the preregistered screening campaign
+# (2026-08-10, 240 contexts, one H100; see data_campaign_screening.json)
+# Each verified independently with:
+#   python3 code/verify_r19.py -r 19 --hash <hash> --words "<16 words>"
+
+P4
+  target_hash = c55aecafd68ac4f559bb2b940688f3bc1dabe3ff86a7d03447e8b11a637d7506
+  words       = 3694ee67 a1d020b9 47f08ea3 dc873e2b 1f41c8b1 39018970 d3a2afb2 23f6e6cf 80c46545 f7b2b46c 2e44f333 2effe68b 06d80cdf 8525e7d7 7ef008e5 13e56087
+
+P5
+  target_hash = a8241289b5980304e9dfd401b1370200ab32b5e8cfaff26c26aabcfc8be89df4
+  words       = 3e0a7d67 df0944a3 4bfe156b bd344ac5 7b7d9587 8984e286 21c995d9 d8e53cdd 0a0be79d e02dda1a e17e0f4a e3ff692b 8c782631 97dc4811 5ed68656 dfce314f
+
+P6
+  target_hash = 09156002031fed2899bc67d0e419b6ff81b9a0dd4e3fa417e000817adb85b143
+  words       = 164084a5 f97bd8bd bff47431 a8e55b29 948d1160 10eb8f7d d0ea565e 7918b8b9 87527a3a 6baa5685 a1fbc5dc 7548adfc be3fb206 b9738756 b4ca33e3 b8354a95

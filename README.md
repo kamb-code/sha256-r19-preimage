@@ -35,7 +35,9 @@ SHA256_compress_19(IV, W[0..15]) + IV == target_hash
 No padding constraint is imposed on W[0..15]. This is a claim about the compression
 function, not standard padded SHA-256.
 
-Three independently verified preimages are included (`verified_preimages.txt`).
+Six independently verified preimages are included (`verified_preimages.txt`):
+P1-P3 from dedicated end-to-end attacks, P4-P6 recovered during the
+preregistered screening campaign. All six check against `code/verify_r19.py`.
 
 ---
 

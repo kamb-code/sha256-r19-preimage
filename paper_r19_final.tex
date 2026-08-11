@@ -59,13 +59,17 @@ backward-chain inversion with a precomputed 16\,GB $\sigma_0(u){-}u$
 \emph{differential table} and a two-stage fixed-point iteration,
 performing $O(2^{32})$ work per context attempt.  Deduplicated measurements show that both halves of the
 $W_9$ filter carry substantial structural bias, well above the uniform
-$2^{-16}$ rate.  No complete 32-bit residual match was observed in the
-measurement campaign, however, so the full-match rate is not yet directly
-estimated and we do not state one as a measured complexity claim; the
-marginal rates and their uncertainties are reported in
+$2^{-16}$ rate.  A preregistered campaign of 240 fully attacked contexts on one
+H100 yields the first direct estimate of the full-match rate,
+$\hat\mu = 3/240 = 1.25\times10^{-2}$ per context ($95\%$ Poisson CI
+$[2.6\times10^{-3},\,3.7\times10^{-2}]$), which falls inside the
+independence-derived projection of $6\times10^{-3}$--$1.3\times10^{-2}$ made
+before it was measured.  Three events is a wide interval and we treat it
+accordingly; the marginal rates and their uncertainties are reported in
 \S\ref{sec:complexity}.  Three end-to-end attacks found verified preimages
 after 3, 20 and 34 contexts, which we present as demonstrations of
-feasibility rather than as a runtime estimator.
+feasibility rather than as a runtime estimator; the campaign above recovered
+three further preimages, for six independently verified in total.
 We further show that contexts are far from interchangeable and that a cheap
 $2^{20}$ screening pass---$1/4096$ of a context's budget---selects productive
 ones: in a preregistered paired campaign (40 targets, 240 fully attacked
@@ -198,8 +202,12 @@ concrete verified examples.  Key lemmas:
   \item Analogous \emph{unknown-cancellation identities} for $a_2$
     and $a_3$ forming a fixed-point iteration
     (Proposition~\ref{prop:c1c2}).
-  \item Three independently verified concrete 19-round preimages,
-    found on an NVIDIA H100 in under 15 minutes each.
+  \item Six independently verified concrete 19-round preimages: three
+    found in dedicated end-to-end attacks (under 15 minutes each on an
+    NVIDIA H100), and three more recovered during the preregistered
+    screening campaign of \S\ref{sec:screening}.  All six are listed in
+    \texttt{verified\_preimages.txt} and check against the standalone
+    verifier.
 \end{enumerate}
 
 \smallskip\noindent\emph{Contribution 2 (Collision structure, Section
@@ -726,7 +734,9 @@ Repeat-count inflation factor & $5.5$--$5.9\times$ \\
 \midrule
 $\mu$ (original model: measured lo count $\times$ & \\
 \quad uniform conditional hi) & $\approx 5\times 10^{-4}$ \\
-$\mu$ (directly measured) & not yet estimated ($N_{LH}=0$) \\
+$\mu$ (directly measured, 240 ctx) & $1.25\times10^{-2}$\ \ CI $[2.6{\cdot}10^{-3},3.7{\cdot}10^{-2}]$ \\
+\quad screened arm (120 ctx, $N_{LH}=3$) & $2.50\times10^{-2}$ \\
+\quad control arm (120 ctx, $N_{LH}=0$) & $<3.07\times10^{-2}$ (95\%) \\
 $\mu$ (independence-derived projection) & $6\times10^{-3}$--$1.3\times10^{-2}$ \\
 Observed contexts (P3, P2, P1) & 3,\ 20,\ 34\ \ (mean 19) \\
 Wall time per context (H100) & $\approx 25\;\mathrm{s}$ \\
@@ -785,10 +795,27 @@ lo-consistency, that is exactly the assumption one should not make for free.
 Half-width diagnostics detect no material dependence up to 12 bits, but a
 sparse spike at the exact 16-bit value would remain invisible to them---the
 same limitation that makes the binned $\chi^2$ test uninformative
-(\S\ref{sec:chi2}).  Second, no complete 32-bit match was observed, so the
-direct estimator $\hat\mu = N_{LH}/C$ has no events to work with; over $C$
-context-equivalents with $N_{LH}=0$ the one-sided 95\% Poisson bound is
-$\mu < 2.996/C$.  The available projections are also unstable.  After adopting
+(\S\ref{sec:chi2}).  Second, the direct estimator $\hat\mu = N_{LH}/C$ now has
+events to work with, though few.  The preregistered campaign of
+\S\ref{sec:screening} attacked 240 contexts at full $2^{32}$ exposure and
+recorded $N_{LH}=3$ complete 32-bit matches, all of which verified as
+preimages, giving
+\[
+  \hat\mu \;=\; \frac{3}{240} \;=\; 1.25\times10^{-2}\ \text{per context},
+  \qquad 95\%\ \text{CI}\ [2.58\times10^{-3},\ 3.65\times10^{-2}].
+\]
+Split by arm, the screened half gave $3/120 = 2.50\times10^{-2}$ and the
+control half $0/120$, i.e.\ $\mu < 3.07\times10^{-2}$ at $95\%$ by the rule of
+three.  Two cautions apply.  The pooled figure mixes the two arms and the
+screened half is enriched by construction, so it is not an estimate for
+uniformly sampled contexts; the control arm is the closer analogue and it
+produced no events.  And three events give an interval spanning a factor of
+$14$, so this bounds the rate rather than pinning it.  What it does settle is
+that the rate is not pathologically below the projection: the measured
+$1.25\times10^{-2}$ falls inside the $6\times10^{-3}$--$1.3\times10^{-2}$ band
+projected before the campaign was run, which is a genuine out-of-sample
+check on the independence-derived model rather than a fit to it.
+The projections themselves remain unstable.  After adopting
 global fixed-point deduplication, the independence-derived projection was
 $1.31\times10^{-2}$ in a $0.20$ context-equivalent pilot and
 $5.80\times10^{-3}$ in a $1.37$ context-equivalent pilot.  That variation
