@@ -58,14 +58,52 @@ def tlookup(tbl, t):
     if ok.any(): r[ok] = raw[ok].to(torch.int64) & M
     return r
 
-def find_w9_seeds(w9g_fn, W9_init, n_seeds=500, seed_batch=2**20):
-    """Return up to n_seeds (a2,a3) pairs with W9_lo(a2,a3) == W9_init & 0xFFFF."""
+class FpSeen:
+    """Global dedup on the mathematical fixed-point identity.
+
+    Key is (target_id, context_id, table_policy_id, a0, a1, a2, a3).  Including
+    a1 costs nothing and keeps the key valid for future multi-representative and
+    multi-table experiments, where the same (a0,a2,a3) can arise from a
+    different a1 and IS a distinct fixed point.
+
+    `add_fp` returns True the first time a fixed point is seen, so callers can
+    increment a unique counter without a second pass.
+    """
+
+    def __init__(self, target_id, context_id, policy_id="MAX"):
+        self.prefix = (target_id, context_id, policy_id)
+        self.seen = set()
+
+    def rebind(self, target_id, context_id, policy_id=None):
+        self.prefix = (target_id, context_id,
+                       policy_id if policy_id is not None else self.prefix[2])
+
+    def add_fp(self, a0, a1, a2, a3):
+        k = (self.prefix, a0, a1, a2, a3)
+        if k in self.seen:
+            return False
+        self.seen.add(k)
+        return True
+
+    def __len__(self):
+        return len(self.seen)
+
+
+def find_w9_seeds(w9g_fn, W9_init, n_seeds=500, seed_batch=2**20, gen=None):
+    """Return up to n_seeds (a2,a3) pairs with W9_lo(a2,a3) == W9_init & 0xFFFF.
+
+    Pass `gen` (a torch.Generator on the compute device) to make the seed
+    search reproducible; without it the search is drawn from torch's global
+    RNG and a campaign cannot be replayed from a recorded seed.
+    """
     target_lo = W9_init & LO
     found_a2, found_a3 = [], []
     checked = 0
     while len(found_a2) < n_seeds and checked < 50 * n_seeds * seed_batch:
-        a2v = torch.randint(0, 2**32, (seed_batch,), dtype=torch.int64, device=device)
-        a3v = torch.randint(0, 2**32, (seed_batch,), dtype=torch.int64, device=device)
+        a2v = torch.randint(0, 2**32, (seed_batch,), dtype=torch.int64,
+                            device=device, generator=gen)
+        a3v = torch.randint(0, 2**32, (seed_batch,), dtype=torch.int64,
+                            device=device, generator=gen)
         mask = (w9g_fn(a2v, a3v) & LO) == target_lo
         if mask.any():
             idx = torch.where(mask)[0][:n_seeds - len(found_a2)]
@@ -75,7 +113,9 @@ def find_w9_seeds(w9g_fn, W9_init, n_seeds=500, seed_batch=2**20):
         del a2v, a3v, mask
     return found_a2[:n_seeds], found_a3[:n_seeds]
 
-def run_ctx(tbl, hash_bytes, known_a, R=19, max_iter=8, batch=2**24, K_seeds=4):
+def run_ctx(tbl, hash_bytes, known_a, R=19, max_iter=8, batch=2**24, K_seeds=4,
+            fp_seen=None, gen=None, n_a0=1<<32, a0_start=0,
+            stop_on_found=True):
     a4=known_a[4]; a5=known_a[5]; a6=known_a[6]
     a7=known_a[7]; a8=known_a[8]; a9=known_a[9]; a10=known_a[10]; a11=known_a[11]
     T2_7=(big_sigma0(a6)+maj(a6,a5,a4))&M; T1_7=(a7-T2_7)&M
@@ -100,7 +140,8 @@ def run_ctx(tbl, hash_bytes, known_a, R=19, max_iter=8, batch=2**24, K_seeds=4):
 
     # Pre-compute W9_lo-consistent seed starts (~3.3× more W9_lo events per compute)
     if K_seeds > 0:
-        seeds_a2, seeds_a3 = find_w9_seeds(w9g, W9_init, n_seeds=max(K_seeds*50, 200))
+        seeds_a2, seeds_a3 = find_w9_seeds(w9g, W9_init,
+                                           n_seeds=max(K_seeds*50, 200), gen=gen)
         seeds_a2 = seeds_a2[:K_seeds]; seeds_a3 = seeds_a3[:K_seeds]
         if len(seeds_a2) < K_seeds:
             # Fallback: pad with (0,0) if not enough seeds found
@@ -123,11 +164,19 @@ def run_ctx(tbl, hash_bytes, known_a, R=19, max_iter=8, batch=2**24, K_seeds=4):
     g_W11b=cs(W11_base); g_W9i=cs(W9_init)
     g_W9lo=cs(W9_lo_tgt); g_W9hi=cs(W9_hi_tgt_ctx)
 
-    stats=dict(c0=0,conv=0,lo=0,hi=0,cons=0,verified=0)
+    # conv         = unique trajectories (a lane counted once, at first convergence)
+    # conv_replay  = raw per-iteration hits; ratio to conv is the replay inflation
+    # conv_unique  = distinct mathematical fixed points after GLOBAL dedup
+    #                on (target, context, policy, a0, a1, a2, a3)
+    stats=dict(c0=0,conv=0,conv_replay=0,conv_unique=0,lo=0,hi=0,cons=0,verified=0)
     residuals=[]; found=None
 
-    for bs in range(0,2**32,batch):
-        a0=torch.arange(bs,bs+batch,dtype=torch.int64,device=device)
+    # n_a0 bounds the a0 exposure so a cheap screening pass and a full sweep
+    # share one code path; a0_start lets disjoint samples of the same context
+    # be drawn without overlap.
+    for bs in range(a0_start,a0_start+n_a0,batch):
+        cur=min(batch,a0_start+n_a0-bs)
+        a0=torch.arange(bs,bs+cur,dtype=torch.int64,device=device)&M
         e0v=(a0+CONST_E0)&M; W0v=(a0+C0_CONST)&M
         gv=(-gS0(a0)-gmaj(a0,a_m1,a_m2)-e_m3-gS1(e0v)-gch(e0v,e_m1,e_m2)-K[1])&M
         F0=(W16r-small_sigma1(W14)-gv-g_W9i-a0-C0_CONST)&M
@@ -143,6 +192,12 @@ def run_ctx(tbl, hash_bytes, known_a, R=19, max_iter=8, batch=2**24, K_seeds=4):
         for sk in range(len(seeds_a2)):
             a2c=torch.full((n0,),int(seeds_a2[sk]),dtype=torch.int64,device=device)
             a3c=torch.full((n0,),int(seeds_a3[sk]),dtype=torch.int64,device=device)
+            # Converged lanes are frozen (see the torch.where at the end of the
+            # loop), so without this mask they re-satisfy the convergence test on
+            # every later iteration and are counted again -- the measured
+            # 5.5-5.9x replay inflation. `dead` retires a lane after its FIRST
+            # convergence so stats['conv'] counts trajectories, not iterations.
+            dead=torch.zeros(n0,dtype=torch.bool,device=device)
 
             for it in range(max_iter):
                 T16a=(g_a6-g_S0a5-gmaj(g_a5,g_a4,a3c))&M
@@ -160,10 +215,20 @@ def run_ctx(tbl, hash_bytes, known_a, R=19, max_iter=8, batch=2**24, K_seeds=4):
                 W3v=torch.where(h2,W3v,torch.zeros_like(W3v)); a3n=(W3v-F23v)&M
                 both=h1&h2
                 a2n=torch.where(both,a2n,a2c); a3n=torch.where(both,a3n,a3c)
-                conv=both&(a2n==a2c)&(a3n==a3c)
+                conv_raw=both&(a2n==a2c)&(a3n==a3c)
+                stats['conv_replay']+=conv_raw.sum().item()   # implementation diagnostic
+                conv=conv_raw&~dead                           # first convergence only
+                dead|=conv
                 if conv.any():
                     stats['conv']+=conv.sum().item()
                     a2f=a2c[conv]; a3f=a3c[conv]
+                    # global dedup on the mathematical fixed-point identity
+                    if fp_seen is not None:
+                        _a0l=a0a[conv].tolist(); _a1l=a1a[conv].tolist()
+                        _a2l=a2f.tolist(); _a3l=a3f.tolist()
+                        for _i in range(len(_a0l)):
+                            if fp_seen.add_fp(_a0l[_i],_a1l[_i],_a2l[_i],_a3l[_i]):
+                                stats['conv_unique']+=1
                     a0f=a0a[conv]; a1f=a1a[conv]; W1f=W1a[conv]; gvf=gva[conv]; W0f=W0a[conv]
                     T16f=(g_a6-g_S0a5-gmaj(g_a5,g_a4,a3f))&M
                     e6f=(a2f+T16f)&M; e7f=(a3f+g_T1_7)&M
@@ -217,7 +282,13 @@ def run_ctx(tbl, hash_bytes, known_a, R=19, max_iter=8, batch=2**24, K_seeds=4):
                                         f.write(f"hash={hash_bytes.hex()}\n")
                                         f.write(f"msg_words={[hex(w) for w in mw]}\n")
                                     print(f"  saved → {out_path}", flush=True)
-                                    return stats, residuals, found
+                                    # A paired campaign must give every context
+                                    # the SAME exposure, so returning here would
+                                    # under-expose exactly the lucky contexts and
+                                    # bias the comparison. Callers measuring rates
+                                    # pass stop_on_found=False.
+                                    if stop_on_found:
+                                        return stats, residuals, found
 
                 a2c=torch.where(both&~conv,a2n,a2c)
                 a3c=torch.where(both&~conv,a3n,a3c)

@@ -65,7 +65,15 @@ estimated and we do not state one as a measured complexity claim; the
 marginal rates and their uncertainties are reported in
 \S\ref{sec:complexity}.  Three end-to-end attacks found verified preimages
 after 3, 20 and 34 contexts, which we present as demonstrations of
-feasibility rather than as a runtime estimator.  All three were verified on a
+feasibility rather than as a runtime estimator.
+We further show that contexts are far from interchangeable and that a cheap
+$2^{20}$ screening pass---$1/4096$ of a context's budget---selects productive
+ones: in a preregistered paired campaign (40 targets, 240 fully attacked
+contexts, matched $2^{32}$ exposure per arm) screening raised $W_9$ lo-pass
+yield per context by $3.41\times$ ($95\%$ CI $[2.13, 5.82]$, target-blocked
+bootstrap; sign test $p=3.4\times10^{-4}$).  The effect is heterogeneous---it
+helped on 31 of 40 targets and hurt on 9---and its conversion through the
+final 32-bit filter to preimages remains unmeasured.  All three were verified on a
 single NVIDIA H100 GPU in under 15 minutes each (cost $<$\$1.50).
 For context on the practical frontier: the most recent SAT-based analysis
 of round-reduced SHA-256~\cite{Davydov2025} finds full-target preimages at
@@ -835,54 +843,73 @@ between the two scores, so productivity is a stable property of the context and
 is recoverable from a short pass.  Since screening costs $2^{20}$ against a full
 sweep of $2^{32}$, it is $1/4096$ of a context's cost and is nearly free:
 selecting the top $1\%$ on the screening sample gave a $12.99\times$
-out-of-sample yield lift for a $2.44\%$ overhead, a net factor of
-$12.68\times$.  Nothing in this construction depends on the round count, so it
-applies unchanged at $R=20$.
+out-of-sample \emph{fixed-point} yield lift for a $2.44\%$ overhead.  We stress
+that this is a statement about fixed points only; the attack-relevant lift is
+measured below and is substantially smaller.  The deep tail is also unstable
+---the top-$1\%$ row rests on 4 contexts of 392 and moved from $12.99\times$ to
+$31.93\times$ between runs---so the top-decile figure ($4.98\times$ and
+$6.79\times$ in two runs) is the defensible one at this level.  Nothing in the
+construction depends on the round count, so it applies unchanged at $R=20$.
 
 \paragraph{Does the lift survive conversion?}
 The score counts C1/C2 fixed points, so the lift above is in the first place a
-fixed-point lift.  The operative question is whether contexts selected for
-fixed-point productivity also yield more of the rarer downstream events, or
-whether they merely produce more fixed points of lower individual quality.  A
-replication (\texttt{screening\_validation.py}, 392 contexts scored twice on
-independent $2^{20}$ samples, seed 99001) reproduced the correlation at
-$\rho=0.929$ and produced 22 lo-pass events, enough to test the conversion
-directly.  Selecting on the sample-1 fixed-point score and counting sample-2
-lo-passes---so that selection and measurement never share data---gives:
+fixed-point lift.  Whether it survives to the events that actually determine
+attack cost is a separate question, and we settled it with a preregistered
+paired campaign (\texttt{campaign\_screening.py}, seed 20260810, commit
+recorded in the run manifest) rather than by assuming proportionality.
+
+\emph{Design, fixed before the run.}  40 independent targets; 10 contexts
+generated per target; every context scored on an identical cheap $2^{20}$ $a_0$
+sample; the top $30\%$ by score forming the \textsc{screened} arm and an equal
+number drawn at random from the remainder forming the \textsc{control} arm;
+both arms then given \emph{exactly} the same full $2^{32}$ exposure per
+context, with no early stop on a hit, so that a lucky context is never
+under-exposed.  240 contexts were fully attacked, 120 per arm, in $5.96$\,h on
+one H100.
 
 \begin{center}
 \begin{tabular}{@{}lrrr@{}}
 \toprule
-Keep & lo events & expected & lift \\
+Counter (per context) & screened & control & lift \\
 \midrule
-top $25\%$ & 7 of 10 & 2.50 & $2.80\times$ \\
-top $10\%$ & 5 of 10 & 1.00 & $5.03\times$ \\
-top $\ \ 5\%$ & 3 of 10 & 0.50 & $5.88\times$ \\
+C1/C2 fixed points & $159{,}545$ & $19{,}624$ & $8.13\times$ \\
+$W_9$ lo-passes    & $114.86$    & $33.73$    & $\mathbf{3.41\times}$ \\
+$W_9$ hi-passes    & $0.025$     & $0$        & --- \\
+full 32-bit $W_9$  & $0.025$     & $0$        & --- \\
+verified preimages & $0.025$     & $0$        & --- \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-Under the null that screening carries no information about lo-passes, each
-event falls in the top decile with probability $0.1$; observing 5 of 10 has
-$p=1.6\times10^{-3}$ (and the reverse direction, selecting on sample 2 and
-measuring sample 1, gives 9 of 12, $p=1.7\times10^{-7}$; the two directions
-share data and are not independent replicates).  The lift therefore does carry
-through, and does so at roughly the fixed-point lift ($5.0\times$ against
-$6.8\times$ at the top decile), i.e.\ lo-passes scale about proportionally with
-fixed points rather than being diluted.
+\emph{The conversion is sublinear.}  An $8.13\times$ lift in fixed points buys
+only a $3.41\times$ lift in lo-passes: screened contexts yield more fixed
+points, but each individual fixed point is \emph{less} likely to pass the lo
+filter.  An earlier pilot on 10 lo events suggested the conversion was
+proportional; that pilot was underpowered and this campaign supersedes it.
 
-We nonetheless state the remaining scope limit precisely.  What is now
-supported is that screening raises \emph{lo-pass} yield per attacked context.
-What is still \emph{not} established is conversion through the \emph{hi} filter
-to a full 32-bit $W_9$ match, and thence to a preimage---the rarest and
-decisive step, on which these samples produced no events.  This is therefore
-\textbf{not yet a measured speedup of the attack}, and the preregistered paired
-experiment that would settle it---screened and random-control arms given
-identical $2^{32}$ exposure, with $N_{LH}/C$ as the estimator---is outstanding.
-Finally, the deep tail is unstable: the top-$1\%$ row rests on 4 contexts of
-392 and moved from $12.99\times$ to $31.93\times$ between runs, so we quote the
-top-decile figure ($4.98\times$ and $6.79\times$ in the two runs) as the
-defensible one.
+\emph{The effect is real but highly heterogeneous.}  A target-blocked bootstrap
+(20{,}000 resamples, blocking on target because contexts within a target are
+not independent) gives a $95\%$ interval of $[2.13\times, 5.82\times]$ on the
+pooled lo lift.  Per target the median lift is $3.78\times$ and the geometric
+mean $3.80\times$, but the interquartile range spans $1.31\times$ to
+$12.35\times$: screening helped on $31$ of $40$ targets and \emph{hurt} on the
+other $9$, where it selected contexts richer in fixed points but poorer in
+lo-passes.  A distribution-free sign test on the per-target lifts---which is
+insensitive to the heavy tail that makes the pooled ratio unstable---gives
+$p=3.4\times10^{-4}$.
+
+\emph{What remains unmeasured.}  The screened arm produced 3 full 32-bit $W_9$
+matches and 3 verified preimages against 0 in control.  Under the null of equal
+rates the control arm would expect ${\approx}3$ events, so observing 0 has
+$p=0.050$: suggestive, at the margin, and \emph{not} significant.  We therefore
+report no lift for the full-match or preimage counters.  Establishing one would
+require of order $10^2$ GPU-hours, which we did not spend.
+
+\emph{Summary of the claim.}  Screening costs $1/4096$ of a context's budget
+and delivers a measured $3.41\times$ ($95\%$ CI $[2.13, 5.82]$) improvement in
+lo-pass yield per attacked context.  It is \textbf{not} the ${\approx}12.7\times$
+figure quoted for fixed points, which we retain above only as a statement about
+fixed points; and it is not yet established as a speedup in time-to-preimage.
 
 %-----------------------------------------------------------------------
 \section{Experimental Results}

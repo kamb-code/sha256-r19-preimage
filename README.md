@@ -177,13 +177,18 @@ publish/
                                and a cheap 2^20 screening pass predicts yield
                                with Spearman 0.91, giving ~12.7x higher
                                out-of-sample C1/C2 FIXED-POINT yield per
-                               attacked context. This is NOT yet a measured
-                               preimage speedup: the score predicts fixed
-                               points, and whether that carries through to
-                               lo-passes, full W9 matches and verified
-                               preimages is unmeasured. See TODO.md for the
-                               preregistered paired experiment that would
-                               settle it.
+                               attacked context.
+    campaign_screening.py    — the preregistered paired campaign that measures
+                               what screening is actually worth. 40 targets,
+                               240 fully attacked contexts, matched 2^32
+                               exposure per arm, no early stop. RESULT: the
+                               8.13x fixed-point lift converts to only 3.41x
+                               on W9 lo-passes (95% CI [2.13, 5.82], sign test
+                               p=3.4e-4) -- conversion is SUBLINEAR. Helped on
+                               31/40 targets, hurt on 9. Conversion through the
+                               final 32-bit filter to preimages remains
+                               unmeasured (screened 3, control 0, p=0.050).
+    screening_validation.py  — predictiveness + keep-fraction economics
                                when the best 1% are kept.
     verify_a0_absorber.py    — verifies Proposition (a0 absorber):
                                Gamma(a0) = a0 + gv(a0) = R + W1 - sigma0(W1)
