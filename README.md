@@ -145,10 +145,29 @@ propagates constraints into the schedule words (W[16], W[17], ...) that the
 attack depends on. A padded-message variant would require extending the method
 to handle those fixed values — this is not done here and remains an open problem.
 
+**Update (2026-08-13): the padding constraints turn out to be nearly free.**
+See `code/padded_preimage.py`. In the round function `e[r] = a[r-4] + T1[r]`,
+so context words a5, a6, a7 enter W13, W14, W15 additively and each padding
+word is linear in its context word with coefficient exactly -1. Solving in the
+order a7 -> a6 -> a5 pins all three in ONE closed-form pass with no search:
+
+    a_new = a_old + (W_current - W_wanted)
+
+Padding therefore costs three context words, not an exponential factor;
+a4, a8, a9, a10 stay free (128 bits). Verified: 200/200 contexts land exactly
+on W15=440, W14=0, W13&0xFF=0x80, and the padding is independent of the swept
+a0..a3 (1500/1500), which is what makes it survive the sweep.
+
+HOWEVER, no padded preimage has yet been demonstrated. A 167-context H100 run
+produced 6,762 lo-passes and zero hi-passes; against the unpadded rate the
+expectation was 1.14, so P(0) = 0.32 -- consistent with bad luck, but NOT a
+demonstration. The padded contexts yield normally (40.5 lo/ctx against 33.7
+unpadded), so there is no sign of degradation. Raw log: `data_padded_run.log`.
+
 **The bottom line:** the method is the same (backward chain + σ₀-differential
-table + C0/C1/C2 cancellations), but padding constraints would require
-additional work to accommodate. The security of full 64-round padded SHA-256
-is not affected by this result.
+table + C0/C1/C2 cancellations); padding is a closed-form three-word solve
+rather than an obstacle, but a demonstration artifact is still outstanding.
+The security of full 64-round padded SHA-256 is not affected by this result.
 
 ---
 
