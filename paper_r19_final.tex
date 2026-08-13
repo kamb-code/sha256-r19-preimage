@@ -1830,17 +1830,21 @@ Davydov et al.~\cite{Davydov2025}
   & 19 & SAT, \emph{unsolved} & Yes & No \\
 Davydov et al.~\cite{Davydov2025}
   & 19$^c$ & SAT + cube-and-conquer & Yes & Partial only \\
-Zaikin~\cite{Zaikin2026}
-  & 19 & param.\ SAT + cube-and-conquer & Yes & Yes \\
+Zaikin~\cite{Zaikin2026}$^d$
+  & 19 & param.\ SAT + cube-and-conquer & Yes & Reported \\
 \midrule
 \textbf{This work}
-  & \textbf{19} & $O(2^{32})$ & \textbf{Yes} & \textbf{Yes (3 examples)} \\
+  & \textbf{19} & $O(2^{32})$ & \textbf{Yes} & \textbf{Yes (6 examples)} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \noindent$^c$\,\emph{Weakened} problem: only a prefix of the 256-bit output is
 constrained (to zero), not the full target.
+$^d$\,We have not obtained the full text and cannot confirm whether the target
+is full or, like $^c$, partially constrained; the entry records what is
+reported, and we make no priority claim at 19 rounds either way
+(\S\ref{sec:comparison}).
 
 The MITM result of~\cite{AokiSasaki2009} achieves a lower round count
 in theory but has never been executed; the $2^{104.5}$ preimage work is
