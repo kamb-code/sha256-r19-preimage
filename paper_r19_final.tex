@@ -121,9 +121,10 @@ compression function earlier than the Nine-Step's post-dead-zone active rounds.
 \textbf{The 20-round barrier.}
 The same construction does not reach 20 rounds.  A companion
 paper~\cite{Basra2026R20} characterises that barrier quantitatively---an
-inventory of which absorptions admit a global table, a forced assignment
-leaving a cyclic residue, a second global table for $a_0$, and an exact linear
-identity for $\sig{0}$---and we do not develop it here.
+inventory of which absorptions admit a global table, a measurement showing
+that the full-avalanche dependency graph among absorbed words acquires its
+first cycle at exactly 20 rounds, a second global table for $a_0$, and an
+exact linear identity for $\sig{0}$---and we do not develop it here.
 
 Full SHA-256 (64 rounds) is not threatened by any of these results.
 
@@ -1926,8 +1927,9 @@ bits, rather than whether an additional round adds an additional equation.
 We characterise that barrier quantitatively in a companion
 paper~\cite{Basra2026R20}, which shows the $R{=}19$ architecture transplants to
 $R{=}20$ in form but not in efficacy, inventories which absorptions admit a
-global table, and proves a new exact identity for $\sig{0}$.  Its results are
-negative and we do not restate them here.
+global table, locates the obstruction in a single term ($\Sig{0}(a_4)$
+entering $W_9$), and proves a new exact identity for $\sig{0}$.  Its results
+are negative and we do not restate them here.
 
 \paragraph{Nine-Step structure (collision direction).}
 The Nine-Step Cancellation Lemma establishes an 8-round algebraic

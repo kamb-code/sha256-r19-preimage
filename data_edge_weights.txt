@@ -1,0 +1,61 @@
+1. how a_k enters W_(k+m)   (+ / - exactly linear, N nonlinear, . none)   R=20
+   m:     0  1  2  3  4  5  6  7  8  9
+   a0:    +  N  N  N  N  N  N  N  -  .
+   a1:    +  N  N  N  N  N  N  N  -  .
+   a2:    +  N  N  N  N  N  N  N  -  .
+   a3:    +  N  N  N  N  N  N  N  -  .
+   a4:    +  N  N  N  N  N  N  N  -  .
+   pattern (+ at m=0, - at m=8, N between): OK
+
+2. W_k + W_(k+8) is independent of a_k   R=20
+   k=1: W1+W9 took 1 distinct value(s) over 8 random a1   OK
+   k=2: W2+W10 took 1 distinct value(s) over 8 random a2   OK
+   k=3: W3+W11 took 1 distinct value(s) over 8 random a3   OK
+   k=4: W4+W12 took 1 distinct value(s) over 8 random a4   OK
+
+3. R=19: mean Hamming weight of dC_j for a single-bit flip in a_k
+   (unknown window a1..a3 absorbed by C0..C2; a0 swept; rest context; 200 trials per cell)
+             C0    C1    C2
+   a0 :      15.4   15.9   15.9
+   a1 :       8.0   15.3   16.2
+   a2 :       1.5    7.9   15.1
+   a3 :       1.9    1.4    8.3
+   heavy feedback edges: none (all feedback is Maj/Ch only)
+
+3. R=20: mean Hamming weight of dC_j for a single-bit flip in a_k
+   (unknown window a1..a4 absorbed by C0..C3; a0 swept; rest context; 200 trials per cell)
+             C0    C1    C2    C3
+   a0 :      15.6   15.8   15.8   15.0
+   a1 :       7.6   15.2   16.1   15.7
+   a2 :       1.3    7.9   14.9   16.3
+   a3 :       1.9    1.6    8.3   15.2
+   a4 :      12.2    1.7    1.4    7.8
+   heavy feedback edges: a4->C0 (12.2)
+
+3. R=21: mean Hamming weight of dC_j for a single-bit flip in a_k
+   (unknown window a1..a5 absorbed by C0..C4; a0 swept; rest context; 200 trials per cell)
+             C0    C1    C2    C3    C4
+   a0 :      15.1   16.1   15.7   15.2   15.5
+   a1 :       8.0   15.1   16.2   15.9   15.3
+   a2 :       1.5    7.6   14.9   16.1   16.0
+   a3 :       1.7    1.4    7.8   15.4   16.1
+   a4 :      12.4    1.8    1.5    7.8   15.2
+   a5 :       8.3   12.4    1.6    1.3    8.0
+   heavy feedback edges: a4->C0 (12.4), a5->C0 (8.3), a5->C1 (12.4)
+
+3. R=20: mean Hamming weight of dC_j for a single-bit flip in a_k
+   (frame A: unknowns a1,a2,a3,a11 absorbed by C0..C3; a0 swept; a4..a10 context; 200 trials per cell)
+             C0    C1    C2    C3
+   a0 :      15.3   16.0   15.7   15.4
+   a1 :       8.0   15.2   15.9   15.6
+   a2 :       1.4    7.8   14.9   15.9
+   a3 :       1.6    1.4    8.1   15.6
+   a11:      15.7   13.3   15.0   14.5
+   heavy feedback edges: a11->C0 (15.7), a11->C1 (13.3), a11->C2 (15.0)
+
+Summary: heavy feedback edges per round count
+   R=19: 0
+   R=20: 1
+   R=21: 3
+   R=20A: 3
+Structural checks: ALL PASS

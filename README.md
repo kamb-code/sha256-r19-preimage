@@ -15,10 +15,14 @@ two papers, kept deliberately separate.
 > `paper_r20_barrier.pdf` / `paper_r20_barrier.tex` (8 pp)
 >
 > Why the same construction does not reach 20 rounds. **Exploratory and
-> largely negative**: an inventory of which absorptions admit a global table, a
-> forced assignment leaving a cyclic residue, a second global table for `a0`, an
-> exact linear identity for sigma0, and a reduced-width scale model. Not an
-> impossibility result. Read the main paper first; nothing here modifies it.
+> largely negative**: an inventory of which absorptions admit a global table
+> (every constraint C_j has one, for a_(j+1)), a measurement showing that the
+> full-avalanche dependency graph among absorbed words is acyclic at 19 rounds
+> and acquires its first cycle at exactly 20 (one edge, a4 -> C0 through W9,
+> 12.2 bits per flipped bit against <= 1.9 for every feedback edge at 19), a
+> second global table for `a0`, an exact linear identity for sigma0, and a
+> reduced-width scale model. Not an impossibility result. Read the main paper
+> first; nothing here modifies it.
 
 ---
 
@@ -211,6 +215,14 @@ publish/
                                unmeasured (screened 3, control 0, p=0.050).
     screening_validation.py  — predictiveness + keep-fraction economics
                                when the best 1% are kept.
+    edge_weights.py          — the heavy-cycle measurement of the companion
+                               paper: verifies that each a_k enters W_k with
+                               +1 and W_(k+8) with -1 (so C_j absorbs a_(j+1)
+                               globally for every j, C3 -> a4 included), then
+                               measures the avalanche weight of every
+                               unknown -> constraint edge at 19, 20 and 21
+                               rounds and in both R=20 frames. CPU only,
+                               about 10 s. Raw output: data_edge_weights.txt.
     verify_a0_absorber.py    — verifies Proposition (a0 absorber):
                                Gamma(a0) = a0 + gv(a0) = R + W1 - sigma0(W1)
                                is equivalent to the C0 schedule constraint.

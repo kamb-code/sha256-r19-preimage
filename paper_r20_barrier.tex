@@ -62,9 +62,24 @@ $R{=}20$ four-map iteration yields $0$ of $2.00\times10^{9}$
 ($<1.50\times10^{-9}$ at 95\%), below the $2^{-29}$ break-even.  The cause is
 dimensional: the iterated state grows from $32$ to $64$ bits.
 
-We give an inventory of which absorptions admit a \emph{global} table---the
-currency of the attack---and show the assignment is forced, leaving a cyclic
-residue that costs $2^{64}$ for this attack family.  We record a second global
+We then give the structural reason.  Each free state word $a_k$ enters
+exactly two recovered message words linearly, $W_k$ with coefficient $+1$ and
+$W_{k+8}$ with coefficient $-1$, so constraint C$_j$ absorbs $a_{j+1}$ through
+the one global $\sigma_0(u){-}u$ table for \emph{every} $j$, C3$\to a_4$
+included.  Among the absorbed words, dependence is full-avalanche only in the
+forward direction.  At $R{=}19$ every feedback edge passes through Maj/Ch
+alone (at most $1.9$ bits of a constraint change per flipped bit); at
+$R{=}20$ exactly one feedback edge is heavy, $a_4\to$C0 through $W_9$
+($12.2$ bits), and the heavy dependency graph acquires its first cycle.  The
+$R{=}19$ iteration works because it cuts its cycle at a mild edge; a heavy
+cycle has no mild cut, and any $32$-bit cut of it is a random map.  The
+obstruction is $\Sigma_0(a_4)$ subtracted directly inside $W_9$, which no
+context choice removes; it is the reach of the round function, not of the
+frame: the window is all-mild exactly when $R\le19$, and $R{=}21$ has three
+heavy feedback edges.  We give the corrected inventory of which absorptions
+admit a global table, show the assignment is forced up to a choice between
+two frames, both of which close the heavy cycle, and record the resulting
+$2^{64}$ cost for this attack family.  We record a second global
 table (the $a_0$ absorber, $\Gamma(a_0)=a_0+gv(a_0)$, coverage $63.214\%$
 against $1-e^{-1}=63.212\%$), and prove that
 $\operatorname{rank}(\sig{0}\oplus I)=31$ gives a unique mask
@@ -89,7 +104,8 @@ round-20 barrier, absorber tables, reduced-width scale model.
 
 We assume the attack of~\cite{Basra2026R19} throughout: a backward chain from
 the target fixes $a_{12},\ldots,a_{19}$ (for $R{=}20$), the context words
-$a_4,\ldots,a_{10}$ are freely chosen, and the remaining unknowns are resolved
+$a_4,\ldots,a_{10}$ are freely chosen (one of the two admissible frames,
+\S\ref{sec:frames}), and the remaining unknowns are resolved
 against the schedule-consistency constraints C0--C3 at $W_{16},\ldots,W_{19}$
 using a $16$\,GB global table inverting $u\mapsto\sig{0}(u)-u$.  Notation
 follows that paper without change.
@@ -375,7 +391,10 @@ predicts $p\approx2^{-46}$, some five orders of magnitude below break-even.  The
 $a_1$ is computed \emph{outside} the loop, leaving a $32$-bit iterated state
 ($a_3$, with $a_2$ derived), whereas at R=20 C0 depends on $a_{11}$ and the state
 becomes $64$-bit $(a_3,a_{11})$.  Raising the iteration budget does not help, since
-convergence probability and cost scale alike.
+convergence probability and cost scale alike.  Section~\ref{sec:heavy} gives the
+structural reason the state cannot be held at $32$ bits in \emph{any} frame:
+at $R{=}20$ the full-avalanche dependency graph among the absorbed words
+acquires a cycle, and a cycle with no Maj/Ch-only edge has no cheap cut.
 
 \subsection{A Second Global Table: the $a_0$ Absorber}
 \label{sec:a0absorber}
@@ -459,24 +478,69 @@ The oracle-free R=20 attack remains an open problem.
 %-----------------------------------------------------------------------
 
 
-\section{The Absorber Assignment is Forced}
+\section{The Absorber Assignment, and the Heavy-Cycle Barrier}
 \label{sec:forced}
 
-This is the sharpest statement of the barrier we have.  Unlike the earlier
-``irreducible cycle'' claim---which was wrong, and which we withdraw---it rests
-on an enumeration of which absorptions admit a \emph{global} table.
+This section gives the sharpest statement of the barrier we have, in two
+steps.  First an inventory of which absorptions admit a \emph{global} table,
+correcting an omission in the version of this inventory we circulated
+earlier.  Second a measurement of the dependency structure among the absorbed
+words that explains, with one number per edge, why the $R{=}19$ iteration
+architecture cannot be carried to $R{=}20$ in any frame.  Unlike the earlier
+``irreducible cycle'' claim---which was wrong, and which we withdraw---neither
+step is an argument about cycles alone: the $R{=}19$ assignment is also
+cyclic and succeeds.  What matters is the \emph{weight} of the edges.
 
-\paragraph{The currency: global versus context-dependent tables.}
-An absorber is useful only if inverting it is $O(1)$, which requires a table,
-and the table must be reusable across contexts or it costs $2^{32}$ to build
-each time.  The inventory is:
+\subsection{Linear Entries and the Global Absorbers}
+\label{sec:linear}
+
+Write $T_2(x,y,z)=\Sig{0}(x)+\Maj(x,y,z)$.  In the $a$-only representation
+of~\cite{Basra2026R19}, $e_r = a_{r-4} + a_r - T_2(a_{r-1},a_{r-2},a_{r-3})$
+and the recovered message word is
+\[
+  W_r \;=\; a_r - T_2(a_{r-1},a_{r-2},a_{r-3}) - e_{r-4} - \Sig{1}(e_{r-1})
+          - \Ch(e_{r-1},e_{r-2},e_{r-3}) - K_r .
+\]
+
+\begin{lemma}[Linear entries]
+\label{lem:linear}
+For every state word $a_k$: $W_k = a_k + f(a_{k-8},\ldots,a_{k-1})$;
+$W_{k+8} = -a_k + g(a_{k+1},\ldots,a_{k+8})$; $a_k$ enters
+$W_{k+1},\ldots,W_{k+7}$ nonlinearly; and it enters no other $W_r$.
+\end{lemma}
+\begin{proof}
+$W_r$ depends on $a_{r-8},\ldots,a_r$ and nothing else (the nine-word
+dependence of~\cite{Basra2026R19}).  In $W_k$ the word $a_k$ occurs once, as
+the leading term.  In $W_{k+8}$ it occurs once, inside the $h$-term
+$e_{k+4}=a_k+a_{k+4}-T_2(a_{k+3},a_{k+2},a_{k+1})$, which is subtracted.  For
+$1\le m\le7$ it occurs only inside a $T_2$, a $\Sig{1}$ or a $\Ch$ argument.
+\end{proof}
+
+The lemma is checked numerically by \texttt{edge\_weights.py}: for $k\le4$
+at $R{=}20$ and three distinct increments each, $W_k$ moves by exactly
+$+\delta$, $W_{k+8}$ by exactly $-\delta$, the words between by neither, and
+$W_k+W_{k+8}$ is invariant under $a_k$.
+
+\begin{corollary}[Every constraint has a global absorber]
+\label{cor:absorb}
+$\mathrm{C}_j = W_{16+j}-\sig{1}(W_{14+j})-W_{9+j}-\sig{0}(W_{1+j})-W_j$
+contains $a_{j+1}$ exactly twice: as $+a_{j+1}$ inside the $\sig{0}$ argument
+$W_{1+j}$ and as $-a_{j+1}$ inside $W_{9+j}$.  With $u=W_{1+j}$ it reads
+$\sig{0}(u)-u = (\text{terms free of } a_{j+1})$, so the single global table
+absorbs $a_{j+1}$ from $\mathrm{C}_j$ for every $j=0,\ldots,R-17$.
+\end{corollary}
+
+For $j=0,1,2$ this is the opposite-sign pattern that drives the $R{=}19$
+attack.  For $j=3$ it is C3$\to a_4$, which the inventory we circulated
+earlier listed as absent; the corrected inventory is:
 
 \begin{center}
 \begin{tabular}{@{}ll@{}}
 \toprule
 Global (built once, valid for every target and context) & absorbs \\
 \midrule
-$\sig{0}(u)-u$ & C0$\to a_1$, C1$\to a_2$, C2$\to a_3$ \\
+$\sig{0}(u)-u$ & C$_j\to a_{j+1}$ for every $j$: \\
+ & C0$\to a_1$, C1$\to a_2$, C2$\to a_3$, C3$\to a_4$ \\
 $\Gamma^{-1}$, where $\Gamma(a_0)=a_0+gv(a_0)$ (\S\ref{sec:a0absorber}) & C0$\to a_0$ \\
 $W_0 = a_0 + \mathrm{const}$ (linear) & --- \\
 \midrule
@@ -486,27 +550,125 @@ $Q_0^{-1},Q_1^{-1},Q_2^{-1},H^{-1}$ & C0--C3 $\to a_{11}$ \\
 \midrule
 No table (context-dependent inversion, $2^{32}$ every time) & \\
 \midrule
-C3 absorbing $a_1$, $a_2$ or $a_3$ & --- \\
+C3 absorbing $a_1$, $a_2$ or $a_3$; C0 absorbing $a_4$ & --- \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\paragraph{The assignment is forced.}
-Reaching $2^{32}$ requires sweeping one unknown and absorbing four.  Given the
-inventory, $a_1$ can only be absorbed by C0, $a_2$ only by C1, and $a_3$ only
-by C2; therefore $a_{11}$ must be absorbed by C3.  There is exactly one
-assignment, and its dependency structure is
+\subsection{Two Frames, Both Cyclic}
+\label{sec:frames}
+
+Reaching $2^{32}$ per context requires sweeping one unknown and absorbing
+four.  Given the inventory there are exactly two ways to do it at $R{=}20$.
+\emph{Frame A} (used in \S\ref{sec:noniter}) keeps $a_4,\ldots,a_{10}$ as
+context, sweeps $a_0$, and absorbs $a_1,a_2,a_3$ globally and $a_{11}$
+per-context:
 \[
   a_1 \leftarrow \mathrm{C0}\ (a_2,a_3,a_{11}), \quad
   a_2 \leftarrow \mathrm{C1}\ (a_1,a_3,a_{11}), \quad
   a_3 \leftarrow \mathrm{C2}\ (a_1,a_2,a_{11}), \quad
   a_{11} \leftarrow \mathrm{C3}\ (a_1,a_2,a_3).
 \]
-Every $a_i$ needs $a_{11}$ and two other $a_j$; $a_{11}$ needs at least two.
-The graph is irreducibly cyclic, so two variables must be guessed: $2^{64}$.
-Sweeping something other than $a_0$ does not help, because $a_0$ enters C0 both
-inside $\sig{0}(a_1+gv(a_0))$ and additively through $W_0$, and separating
-those requires a table indexed by $a_1$.
+\emph{Frame B} keeps $a_5,\ldots,a_{11}$ as context, sweeps $a_0$, and absorbs
+$a_1,\ldots,a_4$ with the one global table:
+\[
+  a_1 \leftarrow \mathrm{C0}\ (a_2,a_3,a_4), \quad
+  a_2 \leftarrow \mathrm{C1}\ (a_1,a_3,a_4), \quad
+  a_3 \leftarrow \mathrm{C2}\ (a_1,a_2,a_4), \quad
+  a_4 \leftarrow \mathrm{C3}\ (a_1,a_2,a_3).
+\]
+Sweeping something other than $a_0$ does not help in either frame, because
+$a_0$ enters C0 both inside $\sig{0}(a_1+gv(a_0))$ and additively through
+$W_0$, and separating those requires a table indexed by $a_1$.  Both
+assignments are cyclic.  So is the $R{=}19$ assignment
+($a_1\leftarrow\mathrm{C0}(a_2,a_3)$, $a_2\leftarrow\mathrm{C1}(a_1,a_3)$,
+$a_3\leftarrow\mathrm{C2}(a_1,a_2)$), and it succeeds; cyclicity is not the
+barrier.
+
+\subsection{Edge Weights: the Heavy Cycle Appears at $R=20$}
+\label{sec:heavy}
+
+What distinguishes the three assignments is how strongly each absorbed word
+feeds back into the constraints that absorb the others.  We measure it
+directly: for random targets, contexts and unknowns, flip one random bit of
+$a_k$ and record the Hamming weight of the change in $\mathrm{C}_j$, averaged
+over $200$ trials per cell (\texttt{edge\_weights.py}, seed $20260902$; raw
+output in \texttt{data\_edge\_weights.txt}).  Full avalanche is about $16$;
+a \emph{mild} edge, one that passes only through $\Maj$ and $\Ch$ of $a_k$
+plus a constant, moves one or two bits.
+
+\begin{center}
+\small
+\begin{tabular}{@{}l rrr@{\hspace{1.6em}} rrrr@{\hspace{1.6em}} rrrrr@{}}
+\toprule
+ & \multicolumn{3}{c}{$R{=}19$} & \multicolumn{4}{c}{$R{=}20$, frame B} & \multicolumn{5}{c}{$R{=}21$} \\
+flip & C0 & C1 & C2 & C0 & C1 & C2 & C3 & C0 & C1 & C2 & C3 & C4 \\
+\midrule
+$a_0$ (swept) & 15.4 & 15.9 & 15.9 & 15.6 & 15.8 & 15.8 & 15.0 & 15.1 & 16.1 & 15.7 & 15.2 & 15.5 \\
+$a_1$ & \underline{8.0} & 15.3 & 16.2 & \underline{7.6} & 15.2 & 16.1 & 15.7 & \underline{8.0} & 15.1 & 16.2 & 15.9 & 15.3 \\
+$a_2$ & 1.5 & \underline{7.9} & 15.1 & 1.3 & \underline{7.9} & 14.9 & 16.3 & 1.5 & \underline{7.6} & 14.9 & 16.1 & 16.0 \\
+$a_3$ & 1.9 & 1.4 & \underline{8.3} & 1.9 & 1.6 & \underline{8.3} & 15.2 & 1.7 & 1.4 & \underline{7.8} & 15.4 & 16.1 \\
+$a_4$ & & & & \textbf{12.2} & 1.7 & 1.4 & \underline{7.8} & \textbf{12.4} & 1.8 & 1.5 & \underline{7.8} & 15.2 \\
+$a_5$ & & & & & & & & \textbf{8.3} & \textbf{12.4} & 1.6 & 1.3 & \underline{8.0} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Underlined cells are self-edges (the absorbed word moving its own
+$\sig{0}(u)-u$ term); entries above the diagonal are forward edges; entries
+below it are feedback edges, with the heavy ones in bold.  Frame A at
+$R{=}20$ (rows $a_1,a_2,a_3,a_{11}$, same script) has feedback weights
+$a_{11}\to$C0 $15.7$, $a_{11}\to$C1 $13.3$, $a_{11}\to$C2 $15.0$.
+
+\paragraph{Reading.}
+At $R{=}19$ every feedback edge is mild.  The full-avalanche (``heavy'')
+dependency graph is the chain $a_1\to a_2\to a_3$, which is acyclic, and the
+attack exploits exactly this: it computes $a_1$ outside the loop, iterates
+$a_3\to a_2\to a_3'$, and thereby cuts its cycle at the mild edge
+$a_3\to$C1.  That is why the iterated map is nothing like a random map (its
+convergence rate of $5.34\times10^{-5}$ sits $2^{15}$ above the random-map
+baseline, \S\ref{sec:noniter}).  At $R{=}20$ exactly one feedback edge is
+heavy, $a_4\to$C0 at $12.2$ bits, and the heavy graph becomes the cycle
+$a_1\to a_2\to a_3\to a_4\to a_1$.  A heavy cycle has no mild cut.  Cutting
+it at any single $32$-bit word composes full-avalanche maps with table
+lookups, which is a random map on $2^{32}$ points; its fixed points cost
+$2^{32}$ each to find, which is the classic sweep.  Frame A is worse, with
+three heavy feedback edges through $a_{11}$.  This is the content of the
+``dimensional'' explanation in \S\ref{sec:noniter}: the state cannot be held
+at $32$ bits because no mild cut exists.  It is also why partial seeding of
+$(a_2,a_3,a_4)$ never helped in our early $R{=}20$ experiments: the seed had
+to be exact in $a_4$, because $a_4$ is the word on the heavy edge.
+
+\paragraph{Why it is the round function and not the frame.}
+The weight of an entry is set by its offset.  $a_k$ enters $W_{k+m}$ for
+$m=6,7$ only through $\Maj$ and $\Ch$ of $a_k$ plus constants (mild); for
+$m=5$ through the $h$-term $e_{k+1}$, which contains $\Sig{0}(a_k)$ subtracted
+directly, and through $\Sig{1}(e_{k+4})=\Sig{1}(a_k+c)$ (heavy; measured
+$12.2$--$12.4$); for $m=4$ through $\Ch(e_{k+3},e_{k+2},e_{k+1})$, which
+selects about half the bits of $\Sig{0}(a_k)$ (measured $8.3$); and for
+$m\le3$ through $\Sig{0}$ and $\Sig{1}$ of $a_k$ itself.  The last word of
+the window, $a_n$ with $n=R-16$, feeds C0 through $W_9$ at offset $9-n$, which
+is mild if and only if $n\le3$, i.e.\ $R\le19$.  No context choice removes
+$\Sig{0}(a_4)$ from $W_9$, because no context word stands between them.  At
+$R{=}21$ the window has three heavy feedback edges (table), and the count
+grows from there.
+
+\paragraph{What would cut it.}
+A trick that cancels the barrier must cut one heavy edge, and the cheapest
+candidate is the new one: in C0, invert $\Sig{0}(a_4)-\Sig{1}(a_4+c_8)$ plus
+its $\Maj/\Ch$ terms \emph{jointly} with the $a_1$ absorber $\sig{0}(W_1)-W_1$
+at well below $2^{32}$ per instance.  All of these are rotation--XOR maps, so
+over $\mathrm{GF}(2)$ they would combine linearly; the modular carries between
+them are what destroy the combination, and \S\ref{sec:leftnull} measures that
+destruction for $\sig{0}$ alone (an exact $\mathrm{GF}(2)$ identity degraded
+to a $2^{-15.8}$ bias).  The routes listed in earlier versions of this
+section---a normal form for $\sig{0}(W_4)+W_3$ in one message word, freeing
+the sweep variable through the $a_0$ absorber, a joint two-variable global
+table---are all instances of cutting a heavy edge, and none has been found.
+The two attempts recorded below are of this kind and both charge full price.
+
+\subsection{Attempts to Cut the Cycle}
+\label{sec:cut}
 
 \paragraph{The one structural handle, and why it does not pay.}
 C3 has the form $\sig{0}(W_4)+W_3 = H(a_{11})$, coupling \emph{two} message
@@ -536,36 +698,41 @@ with $1.0\times$; none is consistent with the large excess needed to make the
 handle pay.  Imposing a $w$-bit condition removes a $w$-bit worth of solutions,
 and the global absorber it buys does not compensate.
 
-\paragraph{What would break it.}
-Exactly one of: a global table letting C3 absorb $a_1$, $a_2$ or $a_3$---a
-normal form for $\sig{0}(W_4)+W_3$ in one message word that does not cost a
-free word; a global absorber for $a_0$ that frees the sweep variable (both
-$\Gamma^{-1}$ and $W_0$ are global, so $a_0$ is closer to absorbable than we
-first thought, the blocker being the joint appearance inside
-$\sig{0}(a_1+gv(a_0))$); or a joint two-variable global table, the
-$u$-reparameterisation generalised.
-
-\paragraph{An open check.}
-An exhaustive search over all $2{,}880$ elimination orders found that none
-recovers the full solution set (median $2$ of $35$ true solutions), which
-supports the argument above.  That run predates a correction to the
-reduced-width model's initial-state indexing and is being repeated; until it
-completes we regard the ``no elimination order helps'' leg as unconfirmed.
+\paragraph{Elimination orders.}
+An elimination order cannot change an edge weight, so the heavy-cycle
+argument predicts that no order recovers the solution set.  The exhaustive
+search over all $2{,}880$ elimination orders in the reduced-width model
+($w{=}4$, $41$ true solutions across its contexts), repeated after the
+correction to the model's initial-state indexing (\S\ref{sec:redwidth}),
+agrees: $2{,}560$ of $2{,}880$ orders find at least one solution, the median
+finds $2$ and the best finds $11$, and the hand-chosen $R{=}19$-style order
+(sweep $a_0$; $a_1\leftarrow$C0, $a_2\leftarrow$C1, $a_3\leftarrow$C2,
+$a_{11}\leftarrow$C3) ranks $175$th with $5$.  The pre-correction run had
+reported a median of $2$ of $35$; the conclusion is unchanged.
 
 \section{Status}
 
-$R=20$ is not solved.  The barrier is $2^{64}$ for this attack family and the
-forced-assignment argument above is why.  Context screening
-(\cite[\S6.9]{Basra2026R19}) reduces it by a measured ${\approx}12.7\times$, to
-about $2^{60.3}$, which is an improvement and not a solution.
+$R=20$ is not solved.  The barrier is $2^{64}$ for this attack family, and its
+sharpest form is the heavy-cycle argument of \S\ref{sec:heavy}: the
+full-avalanche dependency graph among the absorbed words is acyclic for
+$R\le19$ and cyclic from $R{=}20$ in every admissible frame, because
+$\Sig{0}(a_k)$ is subtracted directly into $W_{k+5}$.  Context screening
+(\cite[\S5.7]{Basra2026R19}) raises $W_9$ lo-pass yield by a measured
+$3.41\times$ ($95\%$ CI $[2.13,5.82]$) with conversion to preimages
+unmeasured; taken at face value that is about $2^{62.2}$, an improvement and
+not a solution.
 
 We emphasise the limits of the negative results.  Each rules out a
 parameterisation, not a technique: the $\phi$-family charges a full word for
 the global absorber it buys; $a_0$ is globally absorbable but competes with
 $a_1$ for C0; a joint two-variable table is blocked because $a_2$ and $a_3$
-enter shift-invariantly.  A genuinely different algebraic handle on
-$\sig{0}(W)-W$, or a decomposition of C3 below $32$ bits, would change the
-picture, and neither is excluded by anything measured here.
+enter shift-invariantly; no elimination order helps.  The heavy-cycle
+argument is a measurement of this attack family, not a lower bound.  What
+would change the picture is a way to invert $\Sig{0}(a_4)-\Sig{1}(a_4+c_8)$
+jointly with $\sig{0}(W_1)-W_1$ inside C0 at well below $2^{32}$, and nothing
+measured here excludes one; it does say that any such trick is a statement
+about carries between rotation--XOR maps, which is where \S\ref{sec:leftnull}
+found only a $2^{-15.8}$ bias.
 
 \begin{thebibliography}{10}
 \bibitem{Basra2026R19}
