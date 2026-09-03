@@ -262,8 +262,12 @@ def run_ctx(tbl, hash_bytes, known_a, R=19, max_iter=8, batch=2**24, K_seeds=4,
                             if n_mismatch>0:
                                 print(f'  [WARN] {n_mismatch} hi_pass recheck mismatch', flush=True)
 
-                            for i in range(min(cons.sum().item(),20)):
-                                ci=torch.where(cons)[0][i].item()
+                            # a0_v..a3_v are already compacted to the hi-passing
+                            # candidates, so index them directly.  (An earlier
+                            # version indexed them with positions from the larger
+                            # lo-pass list, which crashed whenever the winner was
+                            # not first in its batch.)
+                            for ci in range(min(int(a0_v.shape[0]),20)):
                                 kav=dict(known_a)
                                 kav.update({0:int(a0_v[ci]),1:int(a1_v[ci]),
                                            2:int(a2_v[ci]),3:int(a3_v[ci])})
