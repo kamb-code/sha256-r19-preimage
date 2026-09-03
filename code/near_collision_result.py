@@ -20,7 +20,6 @@ Near-collision:
   Total nonzero bits: 118/256  (random expected: ~128)
 """
 import sys
-sys.path.insert(0, '/home/administrator/sha/sha256')
 from utils import MASK32 as M, H0, K, small_sigma0 as s0, small_sigma1 as s1
 from utils import big_sigma0 as S0, big_sigma1 as S1, ch, maj
 

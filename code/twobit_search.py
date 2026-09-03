@@ -8,9 +8,7 @@ Then all C(512,3)≈22M three-bit triples.
 GPU: evaluate all pairs/triples in a single batched kernel launch.
 """
 import os
-os.environ['CUDA_PATH'] = '/usr'
 import cupy as cp, numpy as np, sys, time, itertools
-sys.path.insert(0, '/home/administrator/sha/sha256')
 from utils import MASK32 as M, H0 as H0_cpu, K as K_cpu, small_sigma0 as s0
 from utils import small_sigma1 as s1, big_sigma0 as S0, big_sigma1 as S1, ch, maj
 

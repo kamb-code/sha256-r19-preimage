@@ -1,0 +1,19 @@
+# Verifier (code/verify_r19.py): Python >= 3.8, standard library only.
+#
+# CPU analysis scripts (edge_weights.py, screening_validation.py,
+# measure_w9_filters.py, context_screening.py, build_sigma0_table.py,
+# padded_preimage.py --self-test):
+numpy>=1.24
+tqdm>=4.60
+#
+# GPU solver and campaign driver (h100_extended.py, campaign_screening.py,
+# padded_preimage.py --hash): a CUDA build of PyTorch.  The published runs
+# used Python 3.11.10, torch 2.4.1+cu124, CUDA 12.4 on an NVIDIA H100 SXM
+# 80 GB (see the manifest in data_campaign_screening.json).  Install the
+# wheel matching your driver from https://pytorch.org rather than from
+# this file:
+#   torch==2.4.1  (CUDA build)
+#
+# Auxiliary near-collision scripts (cuda_sweep.py and friends) additionally
+# need CuPy matching your CUDA version; they are research artefacts, not
+# part of the paper's claims.

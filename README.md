@@ -1,120 +1,149 @@
-# Oracle-Free 19-Round SHA-256 Preimage — Reproducibility Package
+# 19-Round SHA-256 Preimage Attack — Reproducibility Package
 
-This folder contains everything needed to verify and reproduce the results in
-two papers, kept deliberately separate.
+This repository contains everything needed to verify and reproduce the results
+of two documents, kept deliberately separate.
 
-> **Main result** — "Oracle-Free Preimage Attack on 19-Round Reduced SHA-256"
-> `paper_r19_final.pdf` / `paper_r19_final.tex` (24 pp)
+> **Main paper** — "A Practical Preimage Attack on the 19-Round SHA-256
+> Compression Function via a Global σ₀-Difference Table"
+> `paper_r19_final.pdf` / `paper_r19_final.tex` (16 pp)
 >
-> The 19-round preimage attack with three verified preimages, the Nine-Step
-> Cancellation Lemma and collision structure, and context screening. This is
-> the finished, self-contained result.
+> The attack, six verified preimages, the measured success rate, and the
+> preregistered screening campaign. This is the self-contained result.
 
-> **Companion** — "The 20-Round Barrier for Table-Based Preimage Attacks on
-> SHA-256"
-> `paper_r20_barrier.pdf` / `paper_r20_barrier.tex` (8 pp)
+> **Companion note** — "The 20-Round Barrier for Table-Based Preimage Attacks
+> on SHA-256"
+> `paper_r20_barrier.pdf` / `paper_r20_barrier.tex` (10 pp)
 >
 > Why the same construction does not reach 20 rounds. **Exploratory and
 > largely negative**: an inventory of which absorptions admit a global table
 > (every constraint C_j has one, for a_(j+1)), a measurement showing that the
 > full-avalanche dependency graph among absorbed words is acyclic at 19 rounds
-> and acquires its first cycle at exactly 20 (one edge, a4 -> C0 through W9,
-> 12.2 bits per flipped bit against <= 1.9 for every feedback edge at 19), a
-> second global table for `a0`, an exact linear identity for sigma0, and a
-> reduced-width scale model. Not an impossibility result. Read the main paper
-> first; nothing here modifies it.
+> and acquires its first cycle at exactly 20 (in the frame that absorbs a4 a
+> single edge, a4 -> C0 through W9, 12.2 bits per flipped bit against <= 1.9
+> for every feedback edge at 19), a second global table for `a0`, an exact
+> linear identity for σ₀, and a reduced-width scale model. Not an
+> impossibility result. Read the main paper first; nothing here modifies it.
 
 ---
 
 ## What is claimed
 
-An oracle-free preimage attack on the **19-round reduced SHA-256 compression function**
-initialized with the standard IV. Given only a 32-byte target hash, the solver
-finds 16 arbitrary 32-bit message words W[0..15] such that:
+A preimage attack on the **19-round SHA-256 compression function** in the
+standard setting: the chaining value is the fixed IV, only the 32-byte target
+digest is given, and the attacker chooses the 512-bit block. The solver finds
+16 arbitrary 32-bit words W[0..15] such that
 
 ```
-SHA256_compress_19(IV, W[0..15]) + IV == target_hash
+SHA256_compress_19(IV, W[0..15]) + IV == target
 ```
 
-No padding constraint is imposed on W[0..15]. This is a claim about the compression
-function, not standard padded SHA-256.
+No padding constraint is imposed on W[0..15], so this is a claim about the
+compression function, not about length-padded SHA-256 (see "Padding" below).
 
-Six independently verified preimages are included (`verified_preimages.txt`):
-P1-P3 from dedicated end-to-end attacks, P4-P6 recovered during the
-preregistered screening campaign. All six check against `code/verify_r19.py`.
+Six independently verified preimages of digests of random messages are
+included (`verified_preimages.txt`): P1–P3 from dedicated end-to-end runs,
+P4–P6 recovered during the preregistered screening campaign. All six check
+against `code/verify_r19.py`.
+
+**Prior work and priority.** SAT-based cryptanalysis (Davydov, Pikhtovnikov,
+Kiryanova, Zaikin, 2025) found 17- and 18-round preimages of the zero digest
+and reached 19 rounds only in a weakened form. Zaikin's *Constraints* article
+(published online 23 January 2026, DOI 10.1007/s10601-025-09383-0) reports
+that a parameterized Cube-and-Conquer solver inverted the 19-round compression
+function. We make **no priority claim** at 19 rounds; the contribution is a
+different, algebraic route with an explicit and low cost profile
+(about 25 s per attempt on one H100, roughly one attempt in eighty
+succeeding in the campaign) and complete artefacts.
+
+Full 64-round SHA-256 is not affected by any of this.
 
 ---
 
-## Quick verification (no GPU, no lookup table needed)
+## Quick verification (no GPU, no lookup table)
 
-Requirements: Python 3.8+, no third-party packages.
+Requirements: Python 3.8+, standard library only.
 
 ```bash
-# Verify P1
+# P1
 python3 code/verify_r19.py --rounds 19 \
   --hash 1e65261c54255188604f5375091839733de63e966b5e4715658226bf03588447 \
   --words "22f091af ec52d67b 74c33819 a280dc6a b001ff1a 1f2356a5 3eccf108 bd9a2333 \
            abe611d1 6d1e5a20 8041df25 e43d31af aa895a2e 69106ad2 7479fa3a 2a9abb91"
 
-# Verify P2
+# P2
 python3 code/verify_r19.py --rounds 19 \
   --hash fb52f81baed24f8728faf5bbce82c67d510761172fb9876d9e3a72dda351b7ca \
   --words "37e6702f bc20efea 2dd42a3e 501dfbe9 3cacc578 ea2de1c1 11c0f066 0f22be47 \
            2a447d2d 13f0080f 1f33df6b d655d8e6 15730eaa 9bf64950 9f129973 5a964edf"
 
-# Verify P3
+# P3
 python3 code/verify_r19.py --rounds 19 \
   --hash 1bd7ebbdc4d938fb26d19b5dd5caf333de397bd1c745727bd5556baf38ccf977 \
   --words "3ce8fba4 e2fb9661 44730c59 e1cf4bc0 e1a18d93 97658983 67efe2a7 ef260ecb \
            d4c6dbe0 13e9388e 95664a59 4d9e248b 74137862 664815ac 89eae95a cd7dbef5"
+
+# P4
+python3 code/verify_r19.py --rounds 19 \
+  --hash c55aecafd68ac4f559bb2b940688f3bc1dabe3ff86a7d03447e8b11a637d7506 \
+  --words "3694ee67 a1d020b9 47f08ea3 dc873e2b 1f41c8b1 39018970 d3a2afb2 23f6e6cf \
+           80c46545 f7b2b46c 2e44f333 2effe68b 06d80cdf 8525e7d7 7ef008e5 13e56087"
+
+# P5
+python3 code/verify_r19.py --rounds 19 \
+  --hash a8241289b5980304e9dfd401b1370200ab32b5e8cfaff26c26aabcfc8be89df4 \
+  --words "3e0a7d67 df0944a3 4bfe156b bd344ac5 7b7d9587 8984e286 21c995d9 d8e53cdd \
+           0a0be79d e02dda1a e17e0f4a e3ff692b 8c782631 97dc4811 5ed68656 dfce314f"
+
+# P6
+python3 code/verify_r19.py --rounds 19 \
+  --hash 09156002031fed2899bc67d0e419b6ff81b9a0dd4e3fa417e000817adb85b143 \
+  --words "164084a5 f97bd8bd bff47431 a8e55b29 948d1160 10eb8f7d d0ea565e 7918b8b9 \
+           87527a3a 6baa5685 a1fbc5dc 7548adfc be3fb206 b9738756 b4ca33e3 b8354a95"
 ```
 
-All three should print `result: OK`.
+All six should print `result: OK`. The verifier is self-contained and
+deliberately imports no attack code.
 
-The verifier (`code/verify_r19.py`) is self-contained and deliberately does not
-import any attack code.
+Two CPU checks of the algebra, each under a minute:
+
+```bash
+python3 code/edge_weights.py            # heavy-cycle measurement (companion note)
+python3 code/padded_preimage.py --self-test
+```
 
 ---
 
-## Running the solver on your own target hash (requires NVIDIA GPU + CUDA)
+## Running the solver on your own target (NVIDIA GPU + CUDA)
 
-Requirements: Python 3.10+, NumPy, tqdm, a CUDA-enabled PyTorch build, NVIDIA GPU
-(H100 recommended). A CPU-only PyTorch install will not run the solver.
+Requirements: Python 3.10+, NumPy, tqdm, a CUDA build of PyTorch, and a GPU
+with at least 24 GB of memory (the published runs used an H100 SXM 80 GB;
+see `requirements.txt` for the exact versions recorded in the campaign
+manifest). A CPU-only PyTorch install will not run the solver.
 
 ```bash
 pip install numpy tqdm
-# Install PyTorch using the CUDA wheel appropriate for your driver/CUDA setup.
+# install the PyTorch CUDA wheel matching your driver
 
-# Attack a specific 19-round target hash of your choice:
-python3 code/h100_extended.py --hash <64-hex-char-hash>
-
-# Example (reproduces P1):
-python3 code/h100_extended.py \
-  --hash 1e65261c54255188604f5375091839733de63e966b5e4715658226bf03588447
-
-# Run with default random targets (benchmark / statistical mode):
-python3 code/h100_extended.py
-
-# Full options:
+python3 code/h100_extended.py --hash <64-hex-char-target>     # attack one target
+python3 code/h100_extended.py                                  # random targets, statistics mode
 python3 code/h100_extended.py --help
 ```
 
-The solver:
-1. Builds the σ₀(u)−u representative table in GPU memory (~16 GB, ~1.8 s on H100).
-2. Runs the backward chain on the target hash to fix the high state words.
-3. Samples random contexts for the free state words a[4..10].
-4. Sweeps a[0] over 2³² values per context using the C0/C1/C2 cancellation chain.
-5. Prints any found preimage to stdout and saves it to a `.txt` file.
+The solver builds the σ₀(u)−u table in GPU memory (16 GB, about 2 s on an
+H100), runs the backward chain on the target, samples random contexts
+a[4..10], and sweeps a[0] over 2³² per context (about 25 s on an H100 with
+`K_seeds=0`, about 89 s with `K_seeds=4`). Any preimage found is printed and
+saved to a `.txt` file.
 
-No precomputed table file is required — the table is rebuilt from scratch each run.
-Expected time to first hit on H100: not yet measured. The three recorded
-attacks succeeded after 3, 20 and 34 contexts (~25 s per context), but three
-observations cannot establish a distribution — the exact 95% interval on that
-success rate is [0.011, 0.146]. A larger multi-target campaign is in progress.
+**Success rate.** The preregistered 240-context campaign measured
+μ̂ = 3/240 = 1.25×10⁻² per context (95 % Poisson interval
+[2.6×10⁻³, 3.7×10⁻²]); all three events were in the screened arm and the
+control arm gave 0/120. The three dedicated runs succeeded after 3, 20 and 34
+contexts. Expect tens of contexts, i.e. tens of minutes, per preimage, with a
+wide spread.
 
-**Generate your own target to attack:**
-Choose any 16 input words and run the verifier without `--hash`; it will print
-the corresponding 19-round target hash. Then pass that hash to the solver.
+**Generate a target of your own:** run the verifier without `--hash` and it
+prints the 19-round digest of the words you give it.
 
 ```bash
 python3 code/verify_r19.py --rounds 19 \
@@ -122,56 +151,36 @@ python3 code/verify_r19.py --rounds 19 \
            00000008 00000009 0000000a 0000000b 0000000c 0000000d 0000000e 0000000f"
 ```
 
+**Table file for the CPU analysis scripts.** `measure_w9_filters.py`,
+`context_screening.py` and `screening_validation.py` read the table from disk:
+
+```bash
+python3 code/build_sigma0_table.py --out sigma0_u_table.npy   # 16 GiB, ~3 min, needs ~17 GiB RAM
+python3 code/build_sigma0_table.py --check sigma0_u_table.npy
+```
+
 ---
 
-## Does padding matter? Why W[0..15] are unconstrained here
+## Padding
 
-Standard SHA-256 appends a specific padding to each message before hashing:
-a `0x80` byte, then zeros, then the 8-byte message bit-length. For a message
-shorter than 56 bytes, this all fits in one 512-bit block, so several of the
-16 input words are fixed by the padding format.
+Standard SHA-256 pads a message with `0x80`, zeros, and the 8-byte bit
+length. For a single-block 55-byte message this fixes W[15] = 440, W[14] = 0
+and the low byte of W[13]. The attack as published leaves W[0..15] free, so
+its result is about the compression function.
 
-**This attack does not use standard padding.** W[0..15] are treated as 16
-arbitrary 32-bit words — no structure is required. This gives the solver the
-maximum possible freedom to satisfy the 19-round equations.
+`code/padded_preimage.py` shows that the three padding conditions cost
+nothing to impose: in the round function `e[r] = a[r-4] + T1[r]`, so the
+context words a5, a6, a7 enter W13, W14, W15 with coefficient exactly −1, and
+the closed-form solve `a_new = a_old + (W_current − W_wanted)` in the order
+a7 → a6 → a5 pins all three (200/200 contexts; independent of the swept
+a0..a3, 1500/1500). Four context words stay free.
 
-**What this means in practice:**
-
-| Scenario | Applies? |
-|---|---|
-| "Find W[0..15] s.t. 19-round compress(IV,W)+IV = T" (this paper) | ✅ Yes |
-| "Find a padded message s.t. standard SHA-256(msg) = T" (real preimage) | ❌ Not directly |
-
-To attack a padded message preimage you would need to additionally satisfy
-the padding constraints (e.g. W[14]=0, W[15]=bit_length, specific 0x80 byte).
-That reduces the attacker's free variables from 16 to roughly 13–14, and
-propagates constraints into the schedule words (W[16], W[17], ...) that the
-attack depends on. A padded-message variant would require extending the method
-to handle those fixed values — this is not done here and remains an open problem.
-
-**Update (2026-08-13): the padding constraints turn out to be nearly free.**
-See `code/padded_preimage.py`. In the round function `e[r] = a[r-4] + T1[r]`,
-so context words a5, a6, a7 enter W13, W14, W15 additively and each padding
-word is linear in its context word with coefficient exactly -1. Solving in the
-order a7 -> a6 -> a5 pins all three in ONE closed-form pass with no search:
-
-    a_new = a_old + (W_current - W_wanted)
-
-Padding therefore costs three context words, not an exponential factor;
-a4, a8, a9, a10 stay free (128 bits). Verified: 200/200 contexts land exactly
-on W15=440, W14=0, W13&0xFF=0x80, and the padding is independent of the swept
-a0..a3 (1500/1500), which is what makes it survive the sweep.
-
-HOWEVER, no padded preimage has yet been demonstrated. A 167-context H100 run
-produced 6,762 lo-passes and zero hi-passes; against the unpadded rate the
-expectation was 1.14, so P(0) = 0.32 -- consistent with bad luck, but NOT a
-demonstration. The padded contexts yield normally (40.5 lo/ctx against 33.7
-unpadded), so there is no sign of degradation. Raw log: `data_padded_run.log`.
-
-**The bottom line:** the method is the same (backward chain + σ₀-differential
-table + C0/C1/C2 cancellations); padding is a closed-form three-word solve
-rather than an obstacle, but a demonstration artifact is still outstanding.
-The security of full 64-round padded SHA-256 is not affected by this result.
+**No padded preimage has been demonstrated.** A 167-context H100 run
+produced 6,762 lo-passes and zero hi-passes where about 1.1 hi-passes were
+expected (P(0) ≈ 0.32), so the run is uninformative rather than negative.
+Padded contexts yield normally (40.5 lo-passes per context against 33.7
+unpadded). Raw log: `data_padded_run.txt`. The paper therefore claims only
+the compression-function result.
 
 ---
 
@@ -180,120 +189,111 @@ The security of full 64-round padded SHA-256 is not affected by this result.
 ```
 publish/
   README.md                  — this file
-  paper_r19_final.pdf        — main paper, R=19 (24 pages)
-  paper_r19_final.tex        — LaTeX source
-  paper_r20_barrier.pdf      — companion, R=20 barrier (8 pages)
-  paper_r20_barrier.tex      — LaTeX source
-  verified_preimages.txt     — the three verified preimage examples
+  LICENSE                    — MIT (code and data); papers are author copyright
+  CITATION.cff               — citation metadata
+  requirements.txt           — Python dependencies and the recorded versions
+  paper_r19_final.pdf/.tex   — main paper (16 pages)
+  paper_r20_barrier.pdf/.tex — companion note (10 pages)
+  verified_preimages.txt     — the six verified preimages with provenance
+  data_campaign_screening.json — raw per-context data and run manifest of the
+                               preregistered 240-context campaign (§5.7)
+  data_edge_weights.txt      — raw output of code/edge_weights.py (companion §3)
+  data_padded_run.txt        — raw log of the 167-context padded run
 
-  code/                      — core reproducibility files:
-    verify_r19.py            — standalone verifier (no dependencies beyond stdlib)
-    measure_w9_filters.py    — measures the W9 lo/hi filter pass rates that set
-                               the complexity constant mu. Deduplicates fixed
-                               points globally, tests lo/hi independence at
-                               several half-widths, and reports the DIRECT
-                               estimator mu = N_LH / C (with a Poisson upper
-                               bound when no full match is observed, which is
-                               the current situation). Pass --table with the
-                               path to the 16 GB sigma0(u)-u table; ~1 h on
-                               14 cores for ~1.4 context-equivalents.
-    context_screening.py     — measures per-context productivity and its
-                               predictiveness. Contexts are ~1500x overdispersed
-                               and a cheap 2^20 screening pass predicts yield
-                               with Spearman 0.91, giving ~12.7x higher
-                               out-of-sample C1/C2 FIXED-POINT yield per
-                               attacked context.
-    campaign_screening.py    — the preregistered paired campaign that measures
-                               what screening is actually worth. 40 targets,
-                               240 fully attacked contexts, matched 2^32
-                               exposure per arm, no early stop. RESULT: the
-                               8.13x fixed-point lift converts to only 3.41x
-                               on W9 lo-passes (95% CI [2.13, 5.82], sign test
-                               p=3.4e-4) -- conversion is SUBLINEAR. Helped on
-                               31/40 targets, hurt on 9. Conversion through the
-                               final 32-bit filter to preimages remains
-                               unmeasured (screened 3, control 0, p=0.050).
-    screening_validation.py  — predictiveness + keep-fraction economics
-                               when the best 1% are kept.
-    edge_weights.py          — the heavy-cycle measurement of the companion
-                               paper: verifies that each a_k enters W_k with
-                               +1 and W_(k+8) with -1 (so C_j absorbs a_(j+1)
-                               globally for every j, C3 -> a4 included), then
-                               measures the avalanche weight of every
-                               unknown -> constraint edge at 19, 20 and 21
-                               rounds and in both R=20 frames. CPU only,
-                               about 10 s. Raw output: data_edge_weights.txt.
-    verify_a0_absorber.py    — verifies Proposition (a0 absorber):
-                               Gamma(a0) = a0 + gv(a0) = R + W1 - sigma0(W1)
-                               is equivalent to the C0 schedule constraint.
-                               gv depends only on a0 and the IV, so Gamma^-1 is
-                               a GLOBAL table (63.214% coverage). Checked on all
-                               three preimages; --full adds the 2^32 scan.
-    verify_sigma0_identities.py
-                             — checks the sigma0 linear identities of §"Discussion:
-                               R=20 Status": rank(sigma0 XOR I) = 31, the kernel
-                               {0, 0x27f42515}, and the unique left-null mask
-                               lambda = 0xa8a42fe4 satisfying
-                               lambda·(sigma0(W) XOR W) = 0 for every W.
-                               Run with --full for the exhaustive 2^32 pass and
-                               the modular-subtraction bias (2^-15.8).
+  code/                      — scripts behind the paper's claims:
+    verify_r19.py            — standalone verifier (stdlib only)
     h100_extended.py         — production GPU solver (PyTorch + CUDA)
-    extended_solver.py       — backward chain + W recovery utilities
-    sha256_core.py           — SHA-256 full-trace reference implementation
-    utils.py                 — SHA-256 primitives (ROTR, Σ, σ, Ch, Maj, H0, K)
+    campaign_screening.py    — the preregistered paired campaign (§5.7): 40
+                               targets, 240 contexts, matched 2^32 exposure per
+                               arm, no early stop. Result: 8.13x fixed-point
+                               lift converts to 3.41x on W9 lo-passes (95 % CI
+                               [2.13, 5.82]; one-sided sign test p = 3.4e-4);
+                               helped on 31/40 targets, hurt on 9; conversion
+                               to preimages unmeasured (3 vs 0, p = 0.125).
+    context_screening.py     — per-context productivity and its predictiveness
+                               (Spearman 0.91 between independent 2^20 samples;
+                               top-1 % keep gives 12.99x FIXED-POINT lift, a
+                               statement about fixed points only).
+    screening_validation.py  — predictiveness and keep-fraction economics.
+    measure_w9_filters.py    — W9 lo/hi filter pass rates with global fixed-point
+                               deduplication and half-width independence tests;
+                               needs the 16 GB table (--table).
+    build_sigma0_table.py    — builds/checks the on-disk σ₀(u)−u table.
+    edge_weights.py          — the heavy-cycle measurement of the companion note.
+    padded_preimage.py       — padding as a closed-form three-word solve, with
+                               --self-test (CPU) and --hash (GPU attack).
+    verify_a0_absorber.py    — the a0-absorber proposition (companion §2.5):
+                               Gamma(a0) = a0 + g(a0) = R + W1 − σ₀(W1) is
+                               equivalent to C0; Gamma^-1 is a global table
+                               (63.214 % coverage). --full adds the 2^32 scan.
+    verify_sigma0_identities.py
+                             — the σ₀ identities of companion §2.6:
+                               rank(σ₀ XOR I) = 31, kernel {0, 0x27f42515},
+                               left-null mask 0xa8a42fe4; --full for the
+                               exhaustive pass and the 2^-15.8 bias.
+    extended_solver.py       — backward chain and W recovery utilities
+    sha256_core.py           — full-trace reference SHA-256
+    utils.py                 — SHA-256 primitives
 
-                               auxiliary research scripts for the full-round
-                               differential / near-collision sections:
-    absorption_analysis.py   — multi-block coordinate descent experiments
-    alt_differential.py      — alternate differential experiments
-    angle_analysis.py        — differential angle analysis
-    block1_coord.py          — single-block coordinate descent
-    block2_coord.py          — two-block coordinate descent
-    cuda_sweep.py            — CUDA birthday sweep for near-collisions
-    deep_search.py           — extended birthday search
-    differential_trace.py    — differential trace logging
-    final_results.py         — result aggregation
-    gpu_sa.py                — GPU simulated annealing (experimental)
-    near_collision_result.py — near-collision result logging
-    schedule_differential.py — schedule differential analysis
-    sensitivity_matrix.py    — sensitivity matrix computation
-    threeblock_coord.py      — three-block coordinate descent
-    twobit_search.py         — two-bit differential search
-    twoblock_sweep.py        — two-block birthday sweep
-    zero_window_lemma.py     — zero-window lemma verification
+                               research artefacts, NOT part of the paper's
+                               claims (see note below):
+    alt_differential.py      — exhaustive survey of two-position schedule
+                               differences (supports Appendix A's uniqueness
+                               statement)
+    zero_window_lemma.py     — numerical check of the Nine-Step lemma
+    absorption_analysis.py, angle_analysis.py, block1_coord.py,
+    block2_coord.py, cuda_sweep.py, deep_search.py, differential_trace.py,
+    final_results.py, gpu_sa.py, near_collision_result.py,
+    schedule_differential.py, sensitivity_matrix.py, threeblock_coord.py,
+    twobit_search.py, twoblock_sweep.py
+                             — GPU/CPU near-collision searches built on the
+                               Nine-Step difference.
 ```
 
-The lightweight verification scripts for the displayed full-round
-near-collision claims are `final_results.py` and `zero_window_lemma.py`.
-The larger GPU/coordinate-descent scripts may require CuPy/CUDA and were kept as
-research artifacts rather than polished command-line tools.
+**Note on the near-collision scripts.** These searches found message pairs
+with one equal output word of full SHA-256 and multi-block output
+differences of Hamming weight 72/256. They are kept for completeness and
+are **not claimed as results**: over 2³² fixed-difference trials the expected
+minimum Hamming weight of an unbiased 256-bit difference is 78, and over the
+2³⁷–2³⁹ evaluations of the multi-block searches it is 72–74, so the observed
+minima are at the level of chance, and one-word equalities occur at the
+birthday rate 2⁻³² per word. The main paper's Appendix A says the same.
+Several of these scripts need CuPy and a GPU; `schedule_differential.py`
+runs a 2²⁰-step CPU loop before its GPU phase.
 
 ---
 
-## Key algebraic identities (see paper §4–§5)
+## Key algebraic facts (main paper §4–§5)
 
-**Lemma 1 (W9 differential).**
-Define Ŵ₉ = W₉_sched(a₁=0). Then Ŵ₉ − W₉_real = a₁.
+**Proposition (provisional-W₉ form).** With Ŵ₉ computed from the context at
+a₂ = a₃ = 0, Ŵ₉ − W₉ = a₁ + ε(a₂, a₃), where ε depends on a₂, a₃ only through
+Maj and Ch terms and vanishes at a₂ = a₃ = 0. The attack proceeds as if
+ε = 0 and tests ε(a₂, a₃) = 0 exactly afterwards (the "W9 filter"); the
+measured pass rates are in §5.6.
 
-**Proposition 1 (C0 cancellation).**
-F₀ = W₁₆_bc − σ₁(W₁₄) − g(a₀) − Ŵ₉ − a₀ − C₀_const = σ₀(W₁) − W₁.
-So a₁ cancels and the σ₀-differential table recovers W₁, hence a₁ = W₁ − g(a₀).
+**Proposition (C0 cancellation).** Under ε = 0,
+F₀ = W₁₆_bc − σ₁(W₁₄) − g(a₀) − Ŵ₉ − W₀ = σ₀(W₁) − W₁, so one table lookup
+returns W₁ and a₁ = W₁ − g(a₀).
 
-**Proposition 2 (C1/C2 cancellations).**
-In C1 the target unknown a₂ cancels; in C2 the target unknown a₃ cancels.
-Both reduce to σ₀-differential table lookups.
-
-These three identities together make the full 2³² sweep tractable on a single GPU.
+**Proposition (C1/C2 cancellations).** In C1 the unknown a₂ cancels; in C2
+(under ε = 0) the unknown a₃ cancels. Both reduce to table lookups, iterated
+to a fixed point.
 
 ---
 
-## Attack model disclaimer
+## Attack model
 
-The preimage result concerns only the one-block reduced-round SHA-256
-**compression function** (19 of 64 rounds), initialized with the standard IV and
-with no padding constraint on the 16 input words. The later differential
-experiments concern the full 64-round compression function, also on arbitrary
-one-block inputs without a padding constraint. This is **not** a preimage attack
-on standard padded SHA-256.
+The preimage result concerns the one-block 19-round SHA-256 compression
+function with the standard IV and no padding constraint on the 16 input
+words. It is a preimage attack in the standard sense for the compression
+function (fixed chaining value, only the digest given), not a pseudo-preimage
+or free-start result, and not a preimage attack on padded SHA-256. The
+20-round case remains open (companion note).
 
-The oracle-free 20-round case remains open (see paper §7).
+## How to cite
+
+See `CITATION.cff`. Until an ePrint identifier is assigned:
+
+> K. S. Basra. A Practical Preimage Attack on the 19-Round SHA-256
+> Compression Function via a Global σ₀-Difference Table. Preprint, 2026.
+> https://github.com/kamb-code/sha256-r19-preimage

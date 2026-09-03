@@ -5,7 +5,6 @@ No schedule matrix stored; all state in registers. Should be 10-100x faster than
 the vectorized numpy/cupy approach.
 """
 import os
-os.environ['CUDA_PATH'] = '/usr'
 
 import cupy as cp
 import numpy as np
@@ -179,7 +178,6 @@ hits_w15   = cp.zeros(MAX_HITS, dtype=cp.uint64)
 def verify_reference(w15):
     """CPU reference implementation to verify kernel correctness."""
     import sys
-    sys.path.insert(0, '/home/administrator/sha/sha256')
     from utils import MASK32 as M32, H0 as H0ref, K as Kref, small_sigma0, small_sigma1, big_sigma0, big_sigma1, ch, maj
 
     def sched(W16):

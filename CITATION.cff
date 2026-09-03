@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this code or these results, please cite the paper below."
+title: "A Practical Preimage Attack on the 19-Round SHA-256 Compression Function via a Global sigma0-Difference Table"
+authors:
+  - family-names: Basra
+    given-names: Kameldip Singh
+    orcid: "https://orcid.org/0009-0001-0977-4614"
+date-released: 2026-09-03
+repository-code: "https://github.com/kamb-code/sha256-r19-preimage"
+license: MIT
+keywords:
+  - SHA-256
+  - preimage attack
+  - step-reduced
+  - cryptanalysis
+preferred-citation:
+  type: unpublished
+  title: "A Practical Preimage Attack on the 19-Round SHA-256 Compression Function via a Global sigma0-Difference Table"
+  authors:
+    - family-names: Basra
+      given-names: Kameldip Singh
+  year: 2026
+  notes: "Preprint. Companion note: The 20-Round Barrier for Table-Based Preimage Attacks on SHA-256 (same repository). ePrint identifier to be added on acceptance."

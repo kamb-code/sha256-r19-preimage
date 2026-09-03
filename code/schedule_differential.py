@@ -17,9 +17,7 @@ Part 4: GPU exhaustive — for each of the 120 pairs (i<j), sweep δ over
 Goal: discover if any pair beyond (0,9) creates an extended algebraic dead zone.
 """
 import os
-os.environ['CUDA_PATH'] = '/usr'
 import numpy as np, sys, time
-sys.path.insert(0, '/home/administrator/sha/sha256')
 from utils import MASK32 as M, small_sigma0 as s0, small_sigma1 as s1
 
 DELTA = 0x0011e034

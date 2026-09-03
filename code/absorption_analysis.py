@@ -6,7 +6,6 @@ the state difference ΔState reaches 0 by round 19 (within the zero window).
 This script tests this claim rigorously.
 """
 import sys, random
-sys.path.insert(0, '/home/administrator/sha/sha256')
 from utils import MASK32 as M, H0, K, small_sigma0 as s0, small_sigma1 as s1
 from utils import big_sigma0 as S0, big_sigma1 as S1, ch, maj
 

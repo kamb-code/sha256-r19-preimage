@@ -24,8 +24,9 @@ lo-pass events.
     a lift in fixed-point yield per attacked context. It is NOT a measured
     preimage speedup: whether productive contexts also convert fixed points
     into full 32-bit W9 matches and verified preimages at the same rate is not
-    established by this script and requires the preregistered paired
-    experiment described in TODO.md. Do not quote these numbers as an
+    established by this script; the preregistered paired experiment that
+    measures it is campaign_screening.py (result: 3.41x on lo-passes,
+    conversion to preimages unmeasured). Do not quote these numbers as an
     attack speedup.
 
 Usage (the exact command behind the published figures):

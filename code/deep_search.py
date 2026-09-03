@@ -8,9 +8,7 @@ Deep search for minimum near-collision HW across:
 Runs as a single process to avoid GPU contention.
 """
 import os
-os.environ['CUDA_PATH'] = '/usr'
 import cupy as cp, numpy as np, sys, time
-sys.path.insert(0, '/home/administrator/sha/sha256')
 from utils import MASK32 as M, H0 as H0_cpu, K as K_cpu, small_sigma0 as s0
 from utils import small_sigma1 as s1, big_sigma0 as S0, big_sigma1 as S1, ch, maj
 

@@ -5,7 +5,6 @@ Building on the Nine-Step Cancellation Lemma (ΔW[0]=+δ, ΔW[9]=-δ → ΔW[16.
 import sys, random
 import numpy as np
 from collections import Counter
-sys.path.insert(0, '/home/administrator/sha/sha256')
 from utils import MASK32 as M, H0, K, small_sigma0 as s0, small_sigma1 as s1
 from utils import big_sigma0 as S0, big_sigma1 as S1, ch, maj
 

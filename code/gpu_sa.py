@@ -4,7 +4,6 @@ Evaluates batches of SA neighbor candidates on RTX 4060 via CUDA.
 Target: zero multiple words of ΔState[64] under the Nine-Step differential.
 """
 import os
-os.environ['CUDA_PATH'] = '/usr'
 
 import cupy as cp
 import numpy as np

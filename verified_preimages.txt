@@ -1,5 +1,5 @@
-VERIFIED ORACLE-FREE R=19 SHA-256 PREIMAGES
-============================================
+VERIFIED 19-ROUND SHA-256 PREIMAGES
+====================================
 Convention: one-block reduced-round SHA-256 compression initialized with
 the standard SHA-256 IV. W[0..15] are arbitrary 32-bit words (no padding
 constraint). Verification: SHA256_compress_19(IV, W) + IV == target.
@@ -68,6 +68,10 @@ Message words W[0..15]:
   80c46545 f7b2b46c 2e44f333 2effe68b
   06d80cdf 8525e7d7 7ef008e5 13e56087
 
+Solver: campaign_screening.py (h100_extended.py core, K_seeds=4), target 2, context 9, screened arm
+Time: 91.8 s for the context on NVIDIA H100 SXM 80 GB
+Verified: OK
+
 --- P5 ---
 Target hash (19-round):
   a8241289b5980304e9dfd401b1370200ab32b5e8cfaff26c26aabcfc8be89df4
@@ -78,6 +82,10 @@ Message words W[0..15]:
   0a0be79d e02dda1a e17e0f4a e3ff692b
   8c782631 97dc4811 5ed68656 dfce314f
 
+Solver: campaign_screening.py (h100_extended.py core, K_seeds=4), target 20, context 7, screened arm
+Time: 91.1 s for the context on NVIDIA H100 SXM 80 GB
+Verified: OK
+
 --- P6 ---
 Target hash (19-round):
   09156002031fed2899bc67d0e419b6ff81b9a0dd4e3fa417e000817adb85b143
@@ -87,3 +95,7 @@ Message words W[0..15]:
   948d1160 10eb8f7d d0ea565e 7918b8b9
   87527a3a 6baa5685 a1fbc5dc 7548adfc
   be3fb206 b9738756 b4ca33e3 b8354a95
+
+Solver: campaign_screening.py (h100_extended.py core, K_seeds=4), target 25, context 4, screened arm
+Time: 89.7 s for the context on NVIDIA H100 SXM 80 GB
+Verified: OK
