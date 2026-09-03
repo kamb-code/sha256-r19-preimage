@@ -99,3 +99,28 @@ Message words W[0..15]:
 Solver: campaign_screening.py (h100_extended.py core, K_seeds=4), target 25, context 4, screened arm
 Time: 89.7 s for the context on NVIDIA H100 SXM 80 GB
 Verified: OK
+
+
+P7 is a preimage of the target used by Zaikin (Constraints, 2026): the
+all-ones digest. It is a different message from the one in his Table 7, so
+it is also a second preimage of that digest. Raw solver log:
+data_ones_target_run.txt.
+
+--- P7 ---
+Target hash (19-round):
+  ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
+Message words W[0..15]:
+  3c6ff45c a5b23f8d dc6b8089 4f232935
+  79578e14 9c2da339 b22ec37a 9554191b
+  e69661f0 49a43b7a d8c60a2b 88d7588c
+  6225084d 87c95c4e 23ee573d 8d8fedfa
+
+Solver: h100_extended.py --hash ffff...ffff --contexts 240 (K_seeds=4), commit 66b728c
+Found: 84th context of the run (index 83), 20 s into its sweep (about 22% of the a0 range)
+Time: 7,373 s (122.9 min) of solving on NVIDIA H100 SXM 80 GB, 2026-09-03
+Note: a first run on this target produced a full 32-bit W9 match at its 14th
+      context that the candidate-assembly code then discarded by crashing
+      (indexing bug, fixed in commit 66b728c). Counting it, the target gave
+      two full matches in 98 contexts.
+Verified: OK

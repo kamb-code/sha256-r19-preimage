@@ -74,8 +74,9 @@ and Zaikin has recently inverted the 19-round compression function for a
 fixed all-ones digest with a parameterized Cube-and-Conquer solver, in
 $18.5$ hours on 192 CPU cores.  Priority at 19 rounds is his.  The
 contribution here is a different route to the same round count, algebraic
-rather than search-based, that reaches an arbitrary digest in about half an
-hour of one GPU, with complete artefacts.  A companion note explains why the
+rather than search-based, that reaches an arbitrary digest in about two
+hours of one GPU in expectation, did so for his target in $123$ minutes,
+and comes with complete artefacts.  A companion note explains why the
 construction stops at 20 rounds.  Full SHA-256 is not affected by any of
 these results.
 
@@ -153,9 +154,10 @@ Priority at 19 rounds is Zaikin's and we claim none.
 We give an algebraic, table-based preimage attack on the 19-round
 compression function.  Its cost profile is explicit and low: after a
 one-time $16$\,GB precomputation, each attempt is a single $2^{32}$ sweep
-on one GPU, about $25$ seconds on an NVIDIA H100, and in the campaign of
-\S\ref{sec:screening} about one attempt in eighty succeeded.  The
-ingredients are:
+on one GPU, $25$ to $89$ seconds on an NVIDIA H100 depending on the number
+of seed chains, and in the campaign of \S\ref{sec:screening} (four chains)
+about one attempt in eighty succeeded, so a preimage of an arbitrary digest
+costs about two GPU-hours in expectation.  The ingredients are:
 \begin{enumerate}
   \item a backward chain that recovers the eight state words
     $a_{11},\ldots,a_{18}$ from the digest alone (\S\ref{sec:structure});
@@ -167,10 +169,11 @@ ingredients are:
     unknowns are provisionally fixed (\S\ref{sec:attack}); the provisional
     assignment is closed by a fixed-point iteration and tested exactly by a
     32-bit consistency check;
-  \item six independently verified preimages of digests of random
+  \item seven independently verified preimages: six of digests of random
     messages, three from dedicated runs and three from a preregistered
-    240-attempt campaign that also measures the success rate directly
-    (\S\ref{sec:experiments});
+    240-attempt campaign that also measures the success rate directly, and
+    one of the all-ones digest that Zaikin attacked, found in 84 attempts
+    (\S\ref{sec:experiments}, \S\ref{sec:comparison});
   \item a measured, preregistered account of how much a cheap screening
     pass improves the intermediate yield, and of what it does not establish
     (\S\ref{sec:screening}).
@@ -940,8 +943,12 @@ sweep; table lookups are implemented as indexed tensor reads.
 \caption{Verified 19-round preimages.  P1--P3 were found in dedicated runs
 ($K_{\mathrm{seeds}}{=}0$); P4--P6 in the screened arm of the campaign of
 \S\ref{sec:screening} ($K_{\mathrm{seeds}}{=}4$; target and context number
-given).  Only the target digest was supplied to the solver.  All values are
-hexadecimal.  $^\dagger$Found inside the third context.}
+given).  P7 is a preimage of the all-ones digest, the target of
+Zaikin~\cite{Zaikin2026} (\S\ref{sec:comparison}), found in a dedicated run
+with $K_{\mathrm{seeds}}{=}4$.  Only the target digest was supplied to the
+solver.  All values are hexadecimal.  $^\dagger$Found inside the third
+context.  $^\ddagger$Found 20\,s into the 84th context; 7{,}373\,s is the
+whole run.}
 \label{tab:preimages}
 \footnotesize
 \begin{tabular}{@{}lll@{}}
@@ -989,6 +996,13 @@ P6 & \texttt{09156002 031fed28 99bc67d0 e419b6ff} & campaign \\
    & \texttt{948d1160 10eb8f7d d0ea565e 7918b8b9} & \\
    & \texttt{87527a3a 6baa5685 a1fbc5dc 7548adfc} & $W_8$--$W_{15}$ \\
    & \texttt{be3fb206 b9738756 b4ca33e3 b8354a95} & \\
+\midrule
+P7 & \texttt{ffffffff ffffffff ffffffff ffffffff} & 7{,}373\,s \\
+   & \texttt{ffffffff ffffffff ffffffff ffffffff} & ctx~84$^\ddagger$ \\
+   & \texttt{3c6ff45c a5b23f8d dc6b8089 4f232935} & $W_0$--$W_7$ \\
+   & \texttt{79578e14 9c2da339 b22ec37a 9554191b} & \\
+   & \texttt{e69661f0 49a43b7a d8c60a2b 88d7588c} & $W_8$--$W_{15}$ \\
+   & \texttt{6225084d 87c95c4e 23ee573d 8d8fedfa} & \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1042,7 +1056,7 @@ residual resolution.
 \caption{Preimage results on step-reduced SHA-256.  ``Concrete'' means at
 least one preimage was computed and verified.}
 \label{tab:comparison}
-\small
+\footnotesize
 \begin{tabular}{@{}lllll@{}}
 \toprule
 Reference & Rounds & Cost & Target & Concrete \\
@@ -1054,7 +1068,7 @@ Davydov et al.~\cite{Davydov2025} & 17, 18 & SAT, seconds & zero digest & yes \\
 Davydov et al.~\cite{Davydov2025} & 19 & SAT, unsolved$^{a}$ & zero digest & partial \\
 Zaikin~\cite{Zaikin2026} & 19 & $18$\,h\,$33$\,min on 192 CPU cores$^{b}$ & all-ones digest & yes (one) \\
 \midrule
-\textbf{This work} & \textbf{19} & ${\approx}2^{32}$ per attempt, ${\approx}80$ attempts & random digests & \textbf{six} \\
+\textbf{This work} & \textbf{19} & ${\approx}2^{32}$ per attempt, ${\approx}80$ attempts & random; all-ones & \textbf{seven} \\
 \bottomrule
 \end{tabular}
 
@@ -1097,11 +1111,28 @@ rounds.  Seven off-the-shelf parallel SAT solvers found nothing.  The
 attack model is the same as ours.  What the present work adds is a
 different method with a different cost profile: after a one-time $16$\,GB
 precomputation, each attempt is one $2^{32}$ sweep of about $25$\,s on a
-single GPU, about one attempt in eighty succeeded in the campaign of
-\S\ref{sec:screening}, so a preimage of an arbitrary digest costs of the
-order of half an hour of one H100, and six preimages of random digests are
-published together with the code that found them.  We do not convert
+single GPU with four seed chains, about one attempt in eighty succeeded in
+the campaign of \S\ref{sec:screening}, so a preimage of an arbitrary digest
+costs about two hours of one H100 in expectation, and six preimages of
+random digests are published together with the code that found them.  We do not convert
 between GPU-hours and CPU core-hours; the two figures are simply stated.
+
+\paragraph{Head-to-head on the same target.}
+After reading~\cite{Zaikin2026} we ran the attack on its target, the
+all-ones digest, with the campaign configuration ($K_{\mathrm{seeds}}{=}4$)
+on one H100.  A first run produced a full 32-bit $W_9$ match at its 14th
+context that the candidate-assembly code then discarded by crashing: it
+indexed the compacted list of full matches with a position from the longer
+list of lo-passes, which is correct only when the winner is first in its
+batch, as all six earlier preimages had happened to be.  The bug is fixed
+in the artefacts and the published counts are unaffected, since a crash
+would have aborted the campaign.  The rerun with the fixed code found a
+preimage 20\,s into its 84th context, after $7{,}373$\,s ($122.9$\,min) of
+solving; it is P7 in Table~\ref{tab:preimages}, verified like the others,
+and it differs from the preimage in Zaikin's Table~7, so it is also a
+second preimage of that digest.  Counting the discarded match, the target
+gave two full matches in 98 contexts, in line with the campaign rate.  The
+raw log is \texttt{data\_ones\_target\_run.txt}.
 
 \paragraph{Attack scope.}
 The attack covers 19 of 64 rounds and targets the compression function
@@ -1117,8 +1148,9 @@ on its security margin.
 Three cancellation identities in the SHA-256 round and schedule equations,
 together with a provisional assignment for the part of $W_9$ that depends
 on $a_2,a_3$, reduce the recovery of a 19-round preimage to one $2^{32}$
-sweep of table lookups per attempt.  Six preimages of random digests were
-found and verified, and a preregistered 240-attempt campaign measured the
+sweep of table lookups per attempt.  Six preimages of random digests and
+one of the all-ones digest attacked by Zaikin~\cite{Zaikin2026} were found
+and verified, and a preregistered 240-attempt campaign measured the
 success rate directly, $\hat\mu = 1.25\times10^{-2}$ per attempt with a
 wide interval.  A cheap screening pass improves the intermediate yield by
 a measured $3.41\times$; whether that survives to the final success rate

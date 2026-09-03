@@ -40,10 +40,11 @@ SHA256_compress_19(IV, W[0..15]) + IV == target
 No padding constraint is imposed on W[0..15], so this is a claim about the
 compression function, not about length-padded SHA-256 (see "Padding" below).
 
-Six independently verified preimages of digests of random messages are
-included (`verified_preimages.txt`): P1–P3 from dedicated end-to-end runs,
-P4–P6 recovered during the preregistered screening campaign. All six check
-against `code/verify_r19.py`.
+Seven independently verified preimages are included
+(`verified_preimages.txt`): P1–P3 from dedicated end-to-end runs on digests
+of random messages, P4–P6 recovered during the preregistered screening
+campaign, and P7 for the all-ones digest used as the target by Zaikin. All
+seven check against `code/verify_r19.py`.
 
 **Prior work and priority.** SAT-based cryptanalysis (Davydov, Pikhtovnikov,
 Kiryanova, Zaikin, 2025) found 17- and 18-round preimages of the zero digest
@@ -54,9 +55,12 @@ with all 256 bits fixed, in the same attack model as here: 18 h 33 min on
 192 CPU cores (about 3,560 core-hours) with a parameterized Kissat inside
 Cube-and-Conquer, via an intermediate problem between rounds 18 and 19. We
 make **no priority claim** at 19 rounds. The contribution here is a
-different, algebraic route whose cost is about 25 s per attempt on one H100
-with roughly one attempt in eighty succeeding, i.e. of the order of half a
-GPU-hour per arbitrary digest, with complete artefacts.
+different, algebraic route whose cost is 25 to 89 s per attempt on one H100
+(one or four seed chains) with roughly one attempt in eighty succeeding in
+the four-chain campaign, i.e. about two GPU-hours per arbitrary digest in
+expectation, with complete artefacts. **On his own target, the all-ones
+digest, this attack found a different preimage (P7 below) after 84 attempts,
+123 minutes on one H100**, so it is also a second preimage of that digest.
 
 Full 64-round SHA-256 is not affected by any of this.
 
@@ -102,9 +106,15 @@ python3 code/verify_r19.py --rounds 19 \
   --hash 09156002031fed2899bc67d0e419b6ff81b9a0dd4e3fa417e000817adb85b143 \
   --words "164084a5 f97bd8bd bff47431 a8e55b29 948d1160 10eb8f7d d0ea565e 7918b8b9 \
            87527a3a 6baa5685 a1fbc5dc 7548adfc be3fb206 b9738756 b4ca33e3 b8354a95"
+
+# P7 -- the all-ones digest, the target of Zaikin (Constraints, 2026)
+python3 code/verify_r19.py --rounds 19 \
+  --hash ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff \
+  --words "3c6ff45c a5b23f8d dc6b8089 4f232935 79578e14 9c2da339 b22ec37a 9554191b \
+           e69661f0 49a43b7a d8c60a2b 88d7588c 6225084d 87c95c4e 23ee573d 8d8fedfa"
 ```
 
-All six should print `result: OK`. The verifier is self-contained and
+All seven should print `result: OK`. The verifier is self-contained and
 deliberately imports no attack code.
 
 Two CPU checks of the algebra, each under a minute:
@@ -197,11 +207,13 @@ publish/
   requirements.txt           — Python dependencies and the recorded versions
   paper_r19_final.pdf/.tex   — main paper (16 pages)
   paper_r20_barrier.pdf/.tex — companion note (10 pages)
-  verified_preimages.txt     — the six verified preimages with provenance
+  verified_preimages.txt     — the seven verified preimages with provenance
   data_campaign_screening.json — raw per-context data and run manifest of the
                                preregistered 240-context campaign (§5.7)
   data_edge_weights.txt      — raw output of code/edge_weights.py (companion §3)
   data_padded_run.txt        — raw log of the 167-context padded run
+  data_ones_target_run.txt   — raw solver log of the run that found P7
+                               (all-ones digest, 84 contexts, 7,373 s)
 
   code/                      — scripts behind the paper's claims:
     verify_r19.py            — standalone verifier (stdlib only)
