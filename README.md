@@ -48,12 +48,15 @@ against `code/verify_r19.py`.
 **Prior work and priority.** SAT-based cryptanalysis (Davydov, Pikhtovnikov,
 Kiryanova, Zaikin, 2025) found 17- and 18-round preimages of the zero digest
 and reached 19 rounds only in a weakened form. Zaikin's *Constraints* article
-(published online 23 January 2026, DOI 10.1007/s10601-025-09383-0) reports
-that a parameterized Cube-and-Conquer solver inverted the 19-round compression
-function. We make **no priority claim** at 19 rounds; the contribution is a
-different, algebraic route with an explicit and low cost profile
-(about 25 s per attempt on one H100, roughly one attempt in eighty
-succeeding in the campaign) and complete artefacts.
+(received March 2025, online 23 January 2026, DOI 10.1007/s10601-025-09383-0)
+inverted the 19-round compression function first, for the all-ones digest
+with all 256 bits fixed, in the same attack model as here: 18 h 33 min on
+192 CPU cores (about 3,560 core-hours) with a parameterized Kissat inside
+Cube-and-Conquer, via an intermediate problem between rounds 18 and 19. We
+make **no priority claim** at 19 rounds. The contribution here is a
+different, algebraic route whose cost is about 25 s per attempt on one H100
+with roughly one attempt in eighty succeeding, i.e. of the order of half a
+GPU-hour per arbitrary digest, with complete artefacts.
 
 Full 64-round SHA-256 is not affected by any of this.
 

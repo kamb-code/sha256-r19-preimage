@@ -69,12 +69,13 @@ $3.41\times$ (95\% CI $[2.13, 5.82]$, target-blocked bootstrap), helping on
 31 of 40 targets and hurting on 9; its effect on the final success rate is
 not established.
 
-SAT-based cryptanalysis has produced 17- and 18-round preimages of the zero
-digest, and a parameterized Cube-and-Conquer solver has recently been
-reported to invert the 19-round compression function.  We make no priority
-claim at 19 rounds.  The contribution here is a different route to the same round
-count, algebraic rather than search-based, with an explicit and low cost
-profile and complete artefacts.  A companion note explains why the
+SAT-based cryptanalysis inverts 17 and 18 rounds in seconds on one core,
+and Zaikin has recently inverted the 19-round compression function for a
+fixed all-ones digest with a parameterized Cube-and-Conquer solver, in
+$18.5$ hours on 192 CPU cores.  Priority at 19 rounds is his.  The
+contribution here is a different route to the same round count, algebraic
+rather than search-based, that reaches an arbitrary digest in about half an
+hour of one GPU, with complete artefacts.  A companion note explains why the
 construction stops at 20 rounds.  Full SHA-256 is not affected by any of
 these results.
 
@@ -137,14 +138,16 @@ Zaikin~\cite{Zaikin2026} then constructs intermediate inverse problems
 between consecutive round counts, parameterizes a CDCL solver on them, and
 reports that the resulting parallel Cube-and-Conquer solver inverted the
 29-step MD5, 24-round SHA-1 and 19-round SHA-256 compression functions for
-the first time.  The intermediate problems are weakened by construction;
-the abstract's claim is for the compression function itself, and since the
-same group had already published the weakened 19-round
-result~\cite{Davydov2025}, ``for the first time'' can only refer to the
-full inversion.  That article appeared in January 2026.  We have not been
-able to examine its full text, so we cannot confirm that all 256 output
-bits were fixed, nor compare the attack model or the computational cost,
-and we make no priority claim at 19 rounds.
+the first time.  For SHA-256 the target is one fixed digest, the all-ones
+string, with all 256 bits fixed, in the same model as here: compression
+function, standard IV, no padding, feed-forward kept.  The 19-round
+instance itself was not solved within seven days on 192 cores; the preimage
+was obtained from the intermediate problem between rounds 18 and 19 whose
+solutions are 19-round preimages with probability $1/8$, in
+$18$\,h\,$33$\,min on 192 CPU cores (two 96-core AMD EPYC 9654), about
+$148$ core-days, and it verifies against the reference implementation.
+That article was submitted in March 2025 and appeared in January 2026.
+Priority at 19 rounds is Zaikin's and we claim none.
 
 \paragraph{This work.}
 We give an algebraic, table-based preimage attack on the 19-round
@@ -1049,7 +1052,7 @@ Aoki et al.~\cite{AokiGuo2009} & 43 & $2^{254.9}$ & any & no \\
 Khovratovich et al.~\cite{KRS2012} & 45 & $2^{255.5}$ & any & no \\
 Davydov et al.~\cite{Davydov2025} & 17, 18 & SAT, seconds & zero digest & yes \\
 Davydov et al.~\cite{Davydov2025} & 19 & SAT, unsolved$^{a}$ & zero digest & partial \\
-Zaikin~\cite{Zaikin2026} & 19 & param.\ Cube-and-Conquer$^{b}$ & not examined$^{b}$ & reported \\
+Zaikin~\cite{Zaikin2026} & 19 & $18$\,h\,$33$\,min on 192 CPU cores$^{b}$ & all-ones digest & yes (one) \\
 \midrule
 \textbf{This work} & \textbf{19} & ${\approx}2^{32}$ per attempt, ${\approx}80$ attempts & random digests & \textbf{six} \\
 \bottomrule
@@ -1059,8 +1062,8 @@ Zaikin~\cite{Zaikin2026} & 19 & param.\ Cube-and-Conquer$^{b}$ & not examined$^{
 \begin{minipage}{0.92\linewidth}\footnotesize
 $^{a}$\,Reached only in a weakened form that constrains at most 31 of the
 256 output bits.\quad
-$^{b}$\,Reported for the compression function itself; full text, cost and
-target form not examined (see text).
+$^{b}$\,Parameterized Kissat inside Cube-and-Conquer, via an intermediate
+problem between rounds 18 and 19 (see text).
 \end{minipage}
 \end{table}
 
@@ -1080,18 +1083,25 @@ i.e.\ at most 31 of the 256 output bits.  The authors conclude that a
 the SAT encoding and uses parallel computing.''  Their published benchmark
 instances fix the all-zero digest as the target.
 
-Zaikin~\cite{Zaikin2026} reports that a parameterized Cube-and-Conquer
-solver inverted the 19-round compression function, the first such result.
-The weakened problems in that method are the intermediate instances used
-to tune the solver; the reported result is stated for the compression
-function itself.  We have not been able to examine the article's full
-text, so we cannot confirm that all 256 output bits were fixed, nor state
-its computational cost, and we make no priority claim.  What the present work adds is a different method with an
-explicit cost profile: after a one-time $16$\,GB precomputation, each
-attempt is one $2^{32}$ sweep of about $25$\,s on a single GPU, about one
-attempt in eighty succeeded in the campaign of \S\ref{sec:screening}, and
-six preimages of random digests are published together with the code that
-found them.
+Zaikin~\cite{Zaikin2026} inverted the 19-round compression function first,
+for the all-ones digest with all 256 output bits fixed.  His method
+constructs weakened intermediate problems between consecutive round counts,
+tunes Kissat on them with ParamILS, and runs a Cube-and-Conquer solver with
+the tuned Kissat.  Direct attempts on the 19-round instance found nothing
+in seven days on 192 cores; the preimage came from the intermediate problem
+between rounds 18 and 19 that keeps 29 of the 32 bits of the last message
+word, whose solutions are full 19-round preimages with probability $1/8$,
+after $18$\,h\,$33$\,min on 192 CPU cores, about $3{,}560$ core-hours (his
+Tables~8 and~9), against $25$\,s and $1$\,s on one core for 18 and 17
+rounds.  Seven off-the-shelf parallel SAT solvers found nothing.  The
+attack model is the same as ours.  What the present work adds is a
+different method with a different cost profile: after a one-time $16$\,GB
+precomputation, each attempt is one $2^{32}$ sweep of about $25$\,s on a
+single GPU, about one attempt in eighty succeeded in the campaign of
+\S\ref{sec:screening}, so a preimage of an arbitrary digest costs of the
+order of half an hour of one H100, and six preimages of random digests are
+published together with the code that found them.  We do not convert
+between GPU-hours and CPU core-hours; the two figures are simply stated.
 
 \paragraph{Attack scope.}
 The attack covers 19 of 64 rounds and targets the compression function
@@ -1263,8 +1273,8 @@ V.~V.~Davydov, M.~D.~Pikhtovnikov, A.~P.~Kiryanova, and O.~S.~Zaikin.
 O.~Zaikin.
 \newblock Preimage attacks on round-reduced {MD5}, {SHA-1}, and {SHA-256}
   using parameterized {SAT} solver.
-\newblock \emph{Constraints}, published online 23 January 2026.
-  DOI 10.1007/s10601-025-09383-0.
+\newblock \emph{Constraints}, published online 23 January 2026 (received
+  28 March 2025).  DOI 10.1007/s10601-025-09383-0.
 
 \end{thebibliography}
 \end{document}
