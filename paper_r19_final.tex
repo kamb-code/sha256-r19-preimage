@@ -1107,8 +1107,14 @@ between rounds 18 and 19 that keeps 29 of the 32 bits of the last message
 word, whose solutions are full 19-round preimages with probability $1/8$,
 after $18$\,h\,$33$\,min on 192 CPU cores, about $3{,}560$ core-hours (his
 Tables~8 and~9), against $25$\,s and $1$\,s on one core for 18 and 17
-rounds.  Seven off-the-shelf parallel SAT solvers found nothing.  The
-attack model is the same as ours.  What the present work adds is a
+rounds.  Seven off-the-shelf parallel SAT solvers found nothing.  Since,
+by his account, a solution of that intermediate problem is a 19-round
+preimage with probability $1/8$ and the solutions found at $20$, $24$ and
+$28$ kept bits were not, the reported time is a single favourable draw;
+taken as an expectation his route costs about eight times that figure, and
+there is no second success to estimate the spread.  Our rate, by contrast,
+is measured over $338$ attempts with an interval.  The attack model is the
+same as ours.  What the present work adds is a
 different method with a different cost profile: after a one-time $16$\,GB
 precomputation, each attempt is one $2^{32}$ sweep of about $25$\,s on a
 single GPU with four seed chains, about one attempt in eighty succeeded in
