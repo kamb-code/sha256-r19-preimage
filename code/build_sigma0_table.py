@@ -16,9 +16,14 @@ Format (the one the CPU scripts expect, and that of the published table):
 
 Note on the sentinel: u = 0xFFFFFFFF itself is a legitimate preimage
 (sigma0(0xFFFFFFFF) - 0xFFFFFFFF = 0x20000000), so that single entry is
-indistinguishable from a miss under this format.  The GPU build uses the
-int32 minimum as its sentinel instead and does not have this collision; the
-effect on any statistic is one entry in 2.7e9 and is ignored throughout.
+indistinguishable from a miss under this format.  Counting non-sentinel
+entries in the file therefore gives 2,721,603,627, one below the true
+coverage of 2,721,603,628 quoted in the paper; the missing entry is
+v = 0x20000000.  The GPU build uses the int32 minimum as its sentinel
+instead and does not have this collision; the effect on any statistic is
+one entry in 2.7e9 and is ignored throughout.  A table built by this script
+with --policy max is identical, entry for entry, to the table used for the
+published runs (checked 2026-09-03).
 
 Representative policy: with --policy max (default) the LARGEST u mapping to
 each v is stored; with --policy min the smallest.  The paper's E3 experiment
