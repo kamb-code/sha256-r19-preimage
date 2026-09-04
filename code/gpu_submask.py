@@ -138,13 +138,13 @@ def verify_hit(cc, h, R, a0, a1, a2, a3):
 
 
 # ---- one context ------------------------------------------------------------
-def sweep_context(tbls, cc, h, R, dev, n_a0, kmax, stop_on_hit, log):
+def sweep_context(tbls, cc, h, R, dev, n_a0, kmax, stop_on_hit, log, a0_start=0):
     c = {k: int(v) for k, v in cc.items() if k not in ('a', 'e')}
     st = dict(a0=0, sol=0, sub=0, c3=0, ver=0)
     kcounts = np.zeros(kmax + 1, dtype=np.int64)
     hits = []
-    for s in range(0, n_a0, CHUNK):
-        b = min(CHUNK, n_a0 - s)
+    for s in range(a0_start, a0_start + n_a0, CHUNK):
+        b = min(CHUNK, a0_start + n_a0 - s)
         A0 = torch.arange(s, s + b, dtype=torch.int64, device=dev) & MASK
         st['a0'] += b
         E0 = (A0 + c['Ce0']) & MASK

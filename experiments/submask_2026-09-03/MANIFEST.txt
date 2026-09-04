@@ -67,3 +67,4 @@ b530c12a7f828132ba4d893e5fc0f4ac7e01537f58145d50ce56177e5d9ea61f  reviewers/ref2
 0e0d2e8bbbb205bca1d8e9c51381482446c48ff27a9ee54e222da58514c15780  reviewers/ref2/scale.py  463 bytes
 fd36bdcfa4c7cafee63cf18d706472dd9dec318807ca0f8f182943ff420edd5d  reviewers/ref2/__pycache__/indep_attack.cpython-312.pyc  14729 bytes
 c168bddcfd0886c94cc10d749f0cb17ff110352493a223c3a951b967dfba50ba  reviewers/ref2/__pycache__/ref_sha.cpython-312.pyc  5896 bytes
+2dd8200904a5f7da0a56e42d837847f103f532b17a6874b0370cada07f7b1a4d  scripts/plant_r20.py  3667 bytes   (added 2026-09-04: planted-preimage end-to-end test of the R=20 path; 10 found, 6 missing-root, 0 failures of 16)
