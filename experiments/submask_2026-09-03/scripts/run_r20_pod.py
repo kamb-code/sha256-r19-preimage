@@ -18,6 +18,7 @@ KEY = "/home/administrator/sha/sha256/sha256_key"
 PUB = open(os.path.join(S, "sha256_key.pub")).read().strip()
 CODE = "/home/administrator/sha/publish/code"
 HOURS = float(sys.argv[3]) if len(sys.argv) > 3 else 60.0
+TARGET = sys.argv[4] if len(sys.argv) > 4 else None
 WALL_CAP = (HOURS + 1.0) * 3600
 POLL = 300
 API = "https://rest.runpod.io/v1"
@@ -106,15 +107,16 @@ def main():
     try:
         ip, port = wait_ssh(pod_id)
         ssh(ip, port, "mkdir -p /workspace/r20")
-        for f in ("submask_family.py", "gpu_submask.py"):
+        for f in ("submask_family.py", "gpu_submask.py", "submask_triton.py"):
             r = scp(ip, port, os.path.join(CODE, f), f"/workspace/r20/{f}")
             if r.returncode != 0:
                 log(f"scp {f} failed: {r.stderr[:200]}"); raise SystemExit(1)
         r = ssh(ip, port, "nvidia-smi --query-gpu=name,memory.total --format=csv,noheader; "
                           "python3 -c 'import torch;print(torch.__version__)'")
         log("pod: " + " | ".join(r.stdout.split()))
-        cmd = (f"cd /workspace/r20 && (setsid nohup python3 gpu_submask.py --rounds 20 --roots 3 "
-               f"--stop-on-hit --hours {HOURS} --out /workspace/r20 > stdout.log 2>&1 < /dev/null "
+        tgt = f"--hash {TARGET} " if TARGET else ""
+        cmd = (f"cd /workspace/r20 && (setsid nohup python3 submask_triton.py --run --rounds 20 "
+               f"--roots 3 --hours {HOURS} {tgt}--out /workspace/r20 > stdout.log 2>&1 < /dev/null "
                f"& echo $! > solver.pid) ; sleep 3; kill -0 $(cat solver.pid) 2>/dev/null "
                f"&& echo started || echo NOT-STARTED")
         r = ssh(ip, port, cmd)

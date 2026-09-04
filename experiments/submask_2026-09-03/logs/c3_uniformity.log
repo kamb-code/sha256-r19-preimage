@@ -1,0 +1,177 @@
+forward model matches hashlib at 64 rounds
+sigma0 table mapped 0s
+[c3 t600] R=20 a0 67,108,864: survivors 42,528,306  triangular solutions 17,075,998 (0.4015/survivor)
+    a3 submask of a2 : 1,703  rate 9.9731e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t601] R=20 a0 67,108,864: survivors 42,520,980  triangular solutions 17,070,059 (0.4015/survivor)
+    a3 submask of a2 : 1,727  rate 1.0117e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t602] R=20 a0 67,108,864: survivors 42,520,964  triangular solutions 17,071,091 (0.4015/survivor)
+    a3 submask of a2 : 1,788  rate 1.0474e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t603] R=20 a0 67,108,864: survivors 42,530,390  triangular solutions 17,077,094 (0.4015/survivor)
+    a3 submask of a2 : 1,687  rate 9.8787e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t604] R=20 a0 67,108,864: survivors 42,523,673  triangular solutions 17,070,024 (0.4014/survivor)
+    a3 submask of a2 : 1,715  rate 1.0047e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t605] R=20 a0 67,108,864: survivors 42,528,564  triangular solutions 17,075,881 (0.4015/survivor)
+    a3 submask of a2 : 1,769  rate 1.0360e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t606] R=20 a0 67,108,864: survivors 42,522,023  triangular solutions 17,075,383 (0.4016/survivor)
+    a3 submask of a2 : 1,771  rate 1.0372e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t607] R=20 a0 67,108,864: survivors 42,525,686  triangular solutions 17,081,668 (0.4017/survivor)
+    a3 submask of a2 : 1,701  rate 9.9580e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t608] R=20 a0 67,108,864: survivors 42,523,314  triangular solutions 17,072,864 (0.4015/survivor)
+    a3 submask of a2 : 1,661  rate 9.7289e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t609] R=20 a0 67,108,864: survivors 42,521,994  triangular solutions 17,073,625 (0.4015/survivor)
+    a3 submask of a2 : 1,735  rate 1.0162e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t610] R=20 a0 67,108,864: survivors 42,530,021  triangular solutions 17,077,831 (0.4015/survivor)
+    a3 submask of a2 : 1,752  rate 1.0259e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t611] R=20 a0 67,108,864: survivors 42,527,825  triangular solutions 17,077,411 (0.4016/survivor)
+    a3 submask of a2 : 1,720  rate 1.0072e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t612] R=20 a0 67,108,864: survivors 42,527,635  triangular solutions 17,083,340 (0.4017/survivor)
+    a3 submask of a2 : 1,716  rate 1.0045e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t613] R=20 a0 67,108,864: survivors 42,518,448  triangular solutions 17,071,232 (0.4015/survivor)
+    a3 submask of a2 : 1,756  rate 1.0286e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t614] R=20 a0 67,108,864: survivors 42,520,232  triangular solutions 17,072,898 (0.4015/survivor)
+    a3 submask of a2 : 1,696  rate 9.9339e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t615] R=20 a0 67,108,864: survivors 42,524,588  triangular solutions 17,081,796 (0.4017/survivor)
+    a3 submask of a2 : 1,729  rate 1.0122e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t616] R=20 a0 67,108,864: survivors 42,524,315  triangular solutions 17,077,325 (0.4016/survivor)
+    a3 submask of a2 : 1,667  rate 9.7615e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t617] R=20 a0 67,108,864: survivors 42,533,761  triangular solutions 17,081,637 (0.4016/survivor)
+    a3 submask of a2 : 1,609  rate 9.4195e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t618] R=20 a0 67,108,864: survivors 42,526,368  triangular solutions 17,077,672 (0.4016/survivor)
+    a3 submask of a2 : 1,685  rate 9.8667e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t619] R=20 a0 67,108,864: survivors 42,517,125  triangular solutions 17,070,960 (0.4015/survivor)
+    a3 submask of a2 : 1,755  rate 1.0281e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t620] R=20 a0 67,108,864: survivors 42,525,565  triangular solutions 17,082,205 (0.4017/survivor)
+    a3 submask of a2 : 1,774  rate 1.0385e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t621] R=20 a0 67,108,864: survivors 42,522,000  triangular solutions 17,071,452 (0.4015/survivor)
+    a3 submask of a2 : 1,690  rate 9.8996e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t622] R=20 a0 67,108,864: survivors 42,517,781  triangular solutions 17,073,254 (0.4016/survivor)
+    a3 submask of a2 : 1,609  rate 9.4241e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t623] R=20 a0 67,108,864: survivors 42,535,096  triangular solutions 17,082,357 (0.4016/survivor)
+    a3 submask of a2 : 1,642  rate 9.6123e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t624] R=20 a0 67,108,864: survivors 42,526,405  triangular solutions 17,074,895 (0.4015/survivor)
+    a3 submask of a2 : 1,716  rate 1.0050e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t625] R=20 a0 67,108,864: survivors 42,523,625  triangular solutions 17,078,431 (0.4016/survivor)
+    a3 submask of a2 : 1,766  rate 1.0341e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t626] R=20 a0 67,108,864: survivors 42,527,439  triangular solutions 17,074,301 (0.4015/survivor)
+    a3 submask of a2 : 1,726  rate 1.0109e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t627] R=20 a0 67,108,864: survivors 42,522,173  triangular solutions 17,072,846 (0.4015/survivor)
+    a3 submask of a2 : 1,736  rate 1.0168e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t628] R=20 a0 67,108,864: survivors 42,533,781  triangular solutions 17,081,886 (0.4016/survivor)
+    a3 submask of a2 : 1,687  rate 9.8760e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t629] R=20 a0 67,108,864: survivors 42,526,277  triangular solutions 17,073,410 (0.4015/survivor)
+    a3 submask of a2 : 1,727  rate 1.0115e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t630] R=20 a0 67,108,864: survivors 42,521,489  triangular solutions 17,075,478 (0.4016/survivor)
+    a3 submask of a2 : 1,743  rate 1.0208e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t631] R=20 a0 67,108,864: survivors 42,531,642  triangular solutions 17,076,054 (0.4015/survivor)
+    a3 submask of a2 : 1,668  rate 9.7681e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t632] R=20 a0 67,108,864: survivors 42,525,794  triangular solutions 17,078,122 (0.4016/survivor)
+    a3 submask of a2 : 1,747  rate 1.0229e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t633] R=20 a0 67,108,864: survivors 42,522,405  triangular solutions 17,074,973 (0.4016/survivor)
+    a3 submask of a2 : 1,715  rate 1.0044e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t634] R=20 a0 67,108,864: survivors 42,528,281  triangular solutions 17,079,315 (0.4016/survivor)
+    a3 submask of a2 : 1,782  rate 1.0434e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t635] R=20 a0 67,108,864: survivors 42,519,316  triangular solutions 17,073,447 (0.4015/survivor)
+    a3 submask of a2 : 1,657  rate 9.7051e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t636] R=20 a0 67,108,864: survivors 42,529,589  triangular solutions 17,075,527 (0.4015/survivor)
+    a3 submask of a2 : 1,699  rate 9.9499e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 1 (rate 5.886e-04 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t637] R=20 a0 67,108,864: survivors 42,526,515  triangular solutions 17,077,913 (0.4016/survivor)
+    a3 submask of a2 : 1,710  rate 1.0013e-04   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t638] R=20 a0 67,108,864: survivors 42,525,845  triangular solutions 17,071,844 (0.4014/survivor)
+    a3 submask of a2 : 1,638  rate 9.5947e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+[c3 t639] R=20 a0 67,108,864: survivors 42,530,375  triangular solutions 17,077,987 (0.4015/survivor)
+    a3 submask of a2 : 1,640  rate 9.6030e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-26.0
+
+C3 UNIFORMITY, conditioned on the submask condition: 68,414 samples
+  low  4 bits: chi2 =      11.3  dof    15  z =  -0.67  OK (uniform)
+  high  4 bits: chi2 =      13.6 dof    15  z =  -0.26  OK (uniform)
+  low  6 bits: chi2 =      54.5  dof    63  z =  -0.76  OK (uniform)
+  high  6 bits: chi2 =      56.3 dof    63  z =  -0.60  OK (uniform)
+  low  8 bits: chi2 =     259.1  dof   255  z =  +0.18  OK (uniform)
+  high  8 bits: chi2 =     286.5 dof   255  z =  +1.40  OK (uniform)
+  low 10 bits: chi2 =    1045.0  dof  1023  z =  +0.49  OK (uniform)
+  high 10 bits: chi2 =    1118.1 dof  1023  z =  +2.10  OK (uniform)
+  low 12 bits: chi2 =    4168.8  dof  4095  z =  +0.82  OK (uniform)
+  high 12 bits: chi2 =    4158.1 dof  4095  z =  +0.70  OK (uniform)
+  exact zeros: 0 (expected 0.0000)
+  distinct values: 67,858 of 68,414 (collision check)
+DONE

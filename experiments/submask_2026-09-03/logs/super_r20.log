@@ -1,0 +1,8 @@
+forward model matches hashlib at 64 rounds
+sigma0 table mapped 0s
+=== target 400: dc8be4780eac99d0b7d0935ff78d2516858241426096aabb5fd95dcc87b5935c
+[sub t400] R=20 a0 268,435,456: survivors 170,102,575  triangular solutions 68,304,085 (0.4015/survivor)
+    a3 submask of a2 : 6,789  rate 9.9394e-05   (predicted (3/4)^32 = 1.0037e-04, uniform 2.33e-10)
+    C3 == 0          : 0   C3_lo==0 0 (rate 0.000e+00 vs uniform 1.526e-05)
+    VERIFIED PREIMAGES: 0   -> 0.000e+00 per swept a0 = 2^-28.0
+=== target 401: e3b086328c06e3b4a552b9b49cb89093aedfc11e3551ca34af10c86fd1b9ea0e

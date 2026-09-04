@@ -1,0 +1,1 @@
+{"R": 20, "roots": 3, "seed": 1885566557, "target": "d962ca30635f9b74ac6c8c1243a1a9cf800e81bc05f1d2e40764c68c795f7388", "contexts": 968, "elapsed_s": 5002.277893543243, "a0_per_s": 831127024.728951, "expected_preimages": 0.09080036915838718, "kernel": "triton", "a0": 4157528342528, "sub": 389984616, "ver": 0, "hits": []}

@@ -1,0 +1,37 @@
+forward model matches hashlib
+sigma0 table loaded 25s
+P0 table loaded 16s
+instance 100: R19-loop conv   0 of 166,087 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 101: R19-loop conv   2 of 165,970 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 102: R19-loop conv   0 of 166,171 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 103: R19-loop conv   0 of 166,524 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 104: R19-loop conv   0 of 165,589 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 105: R19-loop conv   0 of 166,312 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 106: R19-loop conv   1 of 165,935 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 107: R19-loop conv   0 of 166,021 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 108: R19-loop conv   1 of 166,143 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 109: R19-loop conv   1 of 166,015 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 110: R19-loop conv   0 of 166,362 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 111: R19-loop conv   0 of 166,599 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 112: R19-loop conv   0 of 166,361 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 113: R19-loop conv   8 of 166,427 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 114: R19-loop conv   0 of 166,441 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 115: R19-loop conv   0 of 165,495 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 116: R19-loop conv   0 of 165,615 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 117: R19-loop conv   0 of 166,182 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 118: R19-loop conv   0 of 166,147 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 119: R19-loop conv   1 of 165,777 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 120: R19-loop conv   0 of 165,488 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 121: R19-loop conv   0 of 165,855 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 122: R19-loop conv   0 of 165,646 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 123: R19-loop conv   0 of 166,249 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 124: R19-loop conv   0 of 166,191 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 125: R19-loop conv   0 of 165,730 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 126: R19-loop conv   0 of 165,983 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 127: R19-loop conv   1 of 166,501 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 128: R19-loop conv   0 of 166,353 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 129: R19-loop conv   0 of 166,183 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 130: R19-loop conv   0 of 166,055 survivors | frame C conv   0 of 262,144 pairs, C3 0
+instance 131: R19-loop conv   0 of 165,976 survivors | frame C conv   0 of 262,144 pairs, C3 0
+TOTAL over 32 instances: R19-loop 15 / 5,314,383 survivors = 2.82e-06 per survivor (paper ~1e-5); frame C 0 / 8,388,608 pairs = 0.00e+00 per pair; C3 passes 0  [97s]
+DONE

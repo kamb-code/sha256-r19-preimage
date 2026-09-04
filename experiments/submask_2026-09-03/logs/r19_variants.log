@@ -1,0 +1,31 @@
+sigma0 table loaded 5s
+=== target 92abcbc744d59491
+[random] a5==a4: False  e9=0xbcd97eb6  W9hat=0x5e484f3f
+[random] a0 tried 4,194,304: C0 survivors 2,655,043, fixed points 0 (0.000e+00 per survivor), lo-pass 0, full 0, verified 0
+[a5=a4 only] a5==a4: True  e9=0x2691e498  W9hat=0xe7b6bc61
+[a5=a4 only] a0 tried 4,194,304: C0 survivors 2,659,207, fixed points 3 (1.128e-06 per survivor), lo-pass 0, full 0, verified 0
+[e9=-1 only] a5==a4: False  e9=0xffffffff  W9hat=0xa16ed088
+[e9=-1 only] a0 tried 4,194,304: C0 survivors 2,657,637, fixed points 5 (1.881e-06 per survivor), lo-pass 0, full 0, verified 0
+[both] a5==a4: True  e9=0xffffffff  W9hat=0xc124d7c8
+  FULL MATCH a0=0xbf5c5f37: verified=True words=['0xc353d6ea', '0xd9332eba', '0x953906ab', '0xfd81b552', '0xca0eef2f', '0xbed374c0', '0xe17552c1', '0x841d8bbc', '0x23e8d1b', '0x549ced0e', '0x27c544a9', '0xdc950d9b', '0xc063238', '0x45d51d1e', '0x4cde02fc', '0xe8d3d202']
+[both] a0 tried 4,194,304: C0 survivors 2,659,330, fixed points 1,067,150 (4.013e-01 per survivor), lo-pass 274, full 1, verified 1
+=== target d14f8339a95d9edd
+[random] a5==a4: False  e9=0xe609c7af  W9hat=0xe01d1586
+[random] a0 tried 4,194,304: C0 survivors 2,657,565, fixed points 6 (2.258e-06 per survivor), lo-pass 0, full 0, verified 0
+[a5=a4 only] a5==a4: True  e9=0x7296077a  W9hat=0x88a275d9
+[a5=a4 only] a0 tried 4,194,304: C0 survivors 2,657,567, fixed points 28 (1.054e-05 per survivor), lo-pass 0, full 0, verified 0
+[e9=-1 only] a5==a4: False  e9=0xffffffff  W9hat=0xfa134dd6
+[e9=-1 only] a0 tried 4,194,304: C0 survivors 2,656,055, fixed points 2 (7.530e-07 per survivor), lo-pass 0, full 0, verified 0
+[both] a5==a4: True  e9=0xffffffff  W9hat=0x160c6e5e
+  FULL MATCH a0=0x4bab758a: verified=True words=['0x4fa2ed3d', '0x9129ade5', '0xa91e8b92', '0x32e26daa', '0x562baac1', '0x27128997', '0x23ae1dd2', '0x523e0a0c', '0x4b464ebd', '0xf14266ae', '0x4cee5334', '0x57b35725', '0x9aea67d5', '0x6a438206', '0xe922063a', '0xf543a1e8']
+[both] a0 tried 4,194,304: C0 survivors 2,655,766, fixed points 1,066,579 (4.016e-01 per survivor), lo-pass 2635, full 1, verified 1
+=== target ba68db5d3d214a93
+[random] a5==a4: False  e9=0x12b4f4fa  W9hat=0xd138de4f
+[random] a0 tried 4,194,304: C0 survivors 2,658,555, fixed points 16 (6.018e-06 per survivor), lo-pass 0, full 0, verified 0
+[a5=a4 only] a5==a4: True  e9=0xdbf6c0be  W9hat=0x98dfec03
+[a5=a4 only] a0 tried 4,194,304: C0 survivors 2,659,164, fixed points 391 (1.470e-04 per survivor), lo-pass 0, full 0, verified 0
+[e9=-1 only] a5==a4: False  e9=0xffffffff  W9hat=0xbe83e954
+[e9=-1 only] a0 tried 4,194,304: C0 survivors 2,656,160, fixed points 236 (8.885e-05 per survivor), lo-pass 1, full 0, verified 0
+[both] a5==a4: True  e9=0xffffffff  W9hat=0xbce92b44
+[both] a0 tried 4,194,304: C0 survivors 2,656,125, fixed points 1,066,054 (4.014e-01 per survivor), lo-pass 1190, full 0, verified 0
+DONE

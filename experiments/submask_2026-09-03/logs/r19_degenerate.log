@@ -1,0 +1,9 @@
+sigma0 table loaded 5s
+target (19-round digest of a random 55-byte message): 036fe63dae8ed426f7fddbb8a0ce332cc022f93fd99367184141def7f42b4830
+[random ctx] a5==a4: False  e9=0x90765205  W9hat=0x6d590073
+[random ctx] a0 tried 4,194,304: C0 survivors 2,658,188, fixed points 4 (1.505e-06 per survivor), lo-pass 0, full 0, verified 0
+[degenerate ctx a5=a4, e9=-1] a5==a4: True  e9=0xffffffff  W9hat=0x236d5e53
+  FULL MATCH a0=0xe73cc107: verified=True words=['0xeb3438ba', '0x2f46ebd1', '0xaf1a54d2', '0xc7f8c5e6', '0xe947c326', '0xe39ab187', '0x460997eb', '0x1492b0a0', '0xac6dba37', '0x74a9c379', '0x71cce18a', '0xcca2dd0', '0x1488393a', '0x51ba260', '0x9d57d6a1', '0x6a389f92']
+  FULL MATCH a0=0xb44e66f4: verified=True words=['0xb845dea7', '0x2868e3d0', '0xa230a068', '0x4f0ca9b5', '0x1f460f06', '0x9b4a04ad', '0xccb16a04', '0x6a0f9424', '0x5ab08b40', '0x27307161', '0xb11c61bf', '0xb4aa5b5d', '0x1488393a', '0x51ba260', '0x9d57d6a1', '0x6a389f92']
+[degenerate ctx a5=a4, e9=-1] a0 tried 4,194,304: C0 survivors 2,657,091, fixed points 1,067,059 (4.016e-01 per survivor), lo-pass 2305, full 2, verified 2
+DONE

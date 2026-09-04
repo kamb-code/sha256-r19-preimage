@@ -1,0 +1,7 @@
+   25.0%     202s
+   50.0%     354s
+   75.0%     526s
+  100.0%     653s
+first-root coverage  ~63.21%   (Poisson(1): 63.21%)
+second-root coverage ~26.44%   (Poisson(1): 26.42%)
+saved /nvme0n1-disk/Kamvid/sigma0_u_table_root2.npy  [667s]

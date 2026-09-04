@@ -1,0 +1,68 @@
+sigma0 table loaded 0s
+=== target 200: 81c1a6f4637743d416ac4970f043141212c58aa355c74f7c5c44175f06040dbc
+[deg t200] a5==a4: True  e9=0xffffffff  W9hat=0x23c09602
+  FULL MATCH a0=0xa6cc847f: verified=True words=['0xaac3fc32', '0xbd48cffd', '0xd7f56cc1', '0xae2042c2', '0xd6e9c20d', '0x75ff5a49', '0x7fbeb5de', '0xf7866380', '0xf555a09c', '0xb977105', '0xfe4b9bea', '0x840c2a59', '0x35aad2e0', '0xeacef3be', '0x8170ba57', '0x348ba25e']
+  FULL MATCH a0=0xf9f4ed78: verified=True words=['0xfdec652b', '0x63f0d9d1', '0x4a7c454e', '0x73d620b2', '0xc69a7be5', '0xd9acbfd9', '0xf4c650e3', '0x827d2414', '0x5ecfa912', '0xfece4cc9', '0x957be216', '0xaefc407f', '0x35aad2e0', '0xeacef3be', '0x8170ba57', '0x348ba25e']
+  FULL MATCH a0=0x687d4b40: verified=True words=['0x6c74c2f3', '0x5907e4e8', '0x4093cc68', '0xe641f3d4', '0xd1577ecc', '0x19f4061e', '0x11a51626', '0x46b3ad7', '0x24ddc7c0', '0x66aac61', '0xf9646b8a', '0xd1a529fa', '0x35aad2e0', '0xeacef3be', '0x8170ba57', '0x348ba25e']
+  FULL MATCH a0=0x9b37cf83: verified=True words=['0x9f2f4736', '0xbdf72dc3', '0xde6b250a', '0x2c82946f', '0xf7ef4f4b', '0x71805b74', '0xd4bf78d0', '0x3d13fd3e', '0x1043879a', '0x9aa32895', '0xf8cb6b6f', '0x7eecb8e0', '0x35aad2e0', '0xeacef3be', '0x8170ba57', '0x348ba25e']
+[deg t200] a0 tried 16,777,216: C0 survivors 10,628,453, fixed points 4,265,417 (4.013e-01 per survivor), lo-pass 9464, full 4, verified 4
+=== target 201: 9bd58cea184e83d597dcd576fe768030fe18d39fef6171abbc91ae82423c3a92
+[deg t201] a5==a4: True  e9=0xffffffff  W9hat=0x4da9f03d
+  FULL MATCH a0=0xd5a23565: verified=True words=['0xd999ad18', '0xc6156069', '0x72da12', '0xa42dded6', '0xcaab4baf', '0x23536683', '0xc523a754', '0x11a2e505', '0x757ee5ea', '0x9ddd9aa1', '0x4b1d9ee7', '0x9ec28ca6', '0xc5910d57', '0xeb613a92', '0xddbbaaae', '0x5808a2f']
+[deg t201] a0 tried 16,777,216: C0 survivors 10,628,094, fixed points 4,265,853 (4.014e-01 per survivor), lo-pass 783, full 1, verified 1
+=== target 202: 926913ba45b728aed8bb891e547398eb2b809cdb62ab7c4a3597b3e6163f4fe1
+[deg t202] a5==a4: True  e9=0xffffffff  W9hat=0xa7f1dfcd
+  FULL MATCH a0=0xa0d43746: verified=True words=['0xa4cbaef9', '0xe05ebd16', '0x934716d8', '0x525463a3', '0xb6db3b14', '0x15ade7ce', '0xcca3d839', '0x94f29e94', '0x48a71cdf', '0x2055a278', '0xfb8564', '0xc8a69165', '0xcd9938fd', '0xdb8dfb15', '0x9763329d', '0x1e8a5c9']
+  FULL MATCH a0=0x6a9a0f46: verified=True words=['0x6e9186f9', '0xb9049893', '0xfd332783', '0xa827dfa4', '0xea4d11f5', '0xfff1f551', '0xea314d9e', '0x26856611', '0x8b811739', '0xdea828e5', '0xbd90f41b', '0x703d29e', '0xcd9938fd', '0xdb8dfb15', '0x9763329d', '0x1e8a5c9']
+  FULL MATCH a0=0x810b7804: verified=True words=['0x8502efb7', '0xefbddcf3', '0x362b01ca', '0xe0c6e739', '0xe36cfb40', '0x937c8b26', '0x27890579', '0xa8cb9db1', '0x9c8c6451', '0x5198f8c1', '0x5b8f1fe', '0xa3b26d81', '0xcd9938fd', '0xdb8dfb15', '0x9763329d', '0x1e8a5c9']
+  FULL MATCH a0=0xf107d6a0: verified=True words=['0xf4ff4e53', '0xe6ebaafd', '0xb660778c', '0x5f5a2e41', '0xdcba5da0', '0x68bc4019', '0x7129b0be', '0x88bbed6c', '0x17edd0b7', '0x6100fa3d', '0x4f22fc1e', '0xf6ce7a95', '0xcd9938fd', '0xdb8dfb15', '0x9763329d', '0x1e8a5c9']
+  FULL MATCH a0=0x4d78f415: verified=True words=['0x51706bc8', '0xb0daf0ac', '0x42fdf81d', '0xd743acbd', '0x1f5921b0', '0x529090af', '0xe587e434', '0x3f17f37e', '0xc3fdd398', '0x1eedf0b6', '0x4a9a85a9', '0xe28d1928', '0xcd9938fd', '0xdb8dfb15', '0x9763329d', '0x1e8a5c9']
+  FULL MATCH a0=0x0aabfd4d: verified=True words=['0xea37500', '0x56b2789f', '0x8f0fd869', '0xc173ea6c', '0x5c0de6f7', '0xa3d0ac47', '0x7844c39e', '0x9d28d21b', '0x915c0f24', '0xaaafb0f2', '0xbcba8a84', '0xe5ad1535', '0xcd9938fd', '0xdb8dfb15', '0x9763329d', '0x1e8a5c9']
+  FULL MATCH a0=0x4aea87dc: verified=True words=['0x4ee1ff8f', '0xb8871d42', '0x271ac6a2', '0xc93f064e', '0xacd17e2c', '0x7ac911f1', '0xd030e141', '0x60e9949b', '0x58878a94', '0xbf9ce0fe', '0x9ec588c0', '0x43b3a537', '0xcd9938fd', '0xdb8dfb15', '0x9763329d', '0x1e8a5c9']
+  FULL MATCH a0=0xaafa9a64: verified=True words=['0xaef21217', '0x9c26b560', '0x5eef2c0', '0x7b4af079', '0x7611ae8a', '0xfa370185', '0x38b0df55', '0xbf831a57', '0x4af30612', '0x34d9555a', '0x7025d27b', '0x68841066', '0xcd9938fd', '0xdb8dfb15', '0x9763329d', '0x1e8a5c9']
+  FULL MATCH a0=0xfea186d9: verified=True words=['0x298fe8c', '0x6daeddbc', '0xd712faa6', '0xad687d02', '0xf4e883fe', '0x41bfadde', '0x33eba159', '0xa2f90f74', '0x8a8ec0a2', '0x9f15884d', '0xf0bddd80', '0xc92a29bd', '0xcd9938fd', '0xdb8dfb15', '0x9763329d', '0x1e8a5c9']
+  FULL MATCH a0=0xaf59be87: verified=True words=['0xb351363a', '0xa547f7ba', '0x862d9de2', '0x433f1f50', '0x8f3f1005', '0x30a9a9cf', '0x30644b57', '0x157a9633', '0xd6639cf9', '0x145215bd', '0xf05949db', '0xba916d66', '0xcd9938fd', '0xdb8dfb15', '0x9763329d', '0x1e8a5c9']
+  FULL MATCH a0=0x1fb0c49d: verified=True words=['0x23a83c50', '0x93ecf3fc', '0xae78494a', '0xf47ff26a', '0xefef03b8', '0xed6a2e04', '0x4b1c0a39', '0xd167b8fc', '0xb76ff43c', '0x6862848d', '0x21a44480', '0xc97e9263', '0xcd9938fd', '0xdb8dfb15', '0x9763329d', '0x1e8a5c9']
+  FULL MATCH a0=0x277cee11: verified=True words=['0x2b7465c4', '0x9f0946ec', '0x21b0e688', '0x9563751a', '0xb65bad6b', '0x876c781e', '0x46591f77', '0xcb5e5947', '0xb9b18fc8', '0x9cd7a0ea', '0x7b71ce45', '0x9383a4ca', '0xcd9938fd', '0xdb8dfb15', '0x9763329d', '0x1e8a5c9']
+  FULL MATCH a0=0x4b0754af: verified=True words=['0x4efecc62', '0xc0eea8a7', '0xdd0902ec', '0x65cf5efa', '0x13b14476', '0xcb2645fb', '0xdac6ae47', '0x6c9b88a9', '0x938bb4d5', '0x16fb5f60', '0x4c3dce0', '0xa31ea966', '0xcd9938fd', '0xdb8dfb15', '0x9763329d', '0x1e8a5c9']
+[deg t202] a0 tried 16,777,216: C0 survivors 10,633,575, fixed points 4,271,605 (4.017e-01 per survivor), lo-pass 4851, full 13, verified 13
+=== target 203: 1924957523eff065daee6a69c7728d31c830eb436d4d1e2e28442c0deec1453b
+[deg t203] a5==a4: True  e9=0xffffffff  W9hat=0x5c732f0f
+  FULL MATCH a0=0x713a4ff8: verified=True words=['0x7531c7ab', '0xa2db2ce3', '0xcb696030', '0x18d0da61', '0x7827cc91', '0xf4b6bb0f', '0xa0aa2f9e', '0x76f3e261', '0xfedc8657', '0xeae373c', '0xcdd614f0', '0x3062675f', '0x3ddaaad7', '0x5269aa20', '0xe05e968a', '0x79bdea75']
+  FULL MATCH a0=0x303c3be0: verified=True words=['0x3433b393', '0x6a9f6e79', '0xd0b4f23d', '0xe5878fcc', '0x78d692af', '0xc92255c5', '0xdbbfa3ce', '0x9b2abfc9', '0xfdf3c1df', '0x43b9fd13', '0xc9d11be8', '0xbc420a97', '0x3ddaaad7', '0x5269aa20', '0xe05e968a', '0x79bdea75']
+  FULL MATCH a0=0xec67e37e: verified=True words=['0xf05f5b31', '0x4de92d48', '0x6a55dc87', '0x5ae23dc9', '0x16931d25', '0xd77f8716', '0x6d055002', '0x5183e50a', '0xee474f7a', '0xd931faa0', '0xcf0015eb', '0x728e125a', '0x3ddaaad7', '0x5269aa20', '0xe05e968a', '0x79bdea75']
+  FULL MATCH a0=0x8e2e18b4: verified=True words=['0x92259067', '0xdb121cbc', '0x8f85478a', '0xf28d5728', '0xc751daf0', '0x528afbaa', '0xb1b01f90', '0x5bb25172', '0x9c255b9d', '0x23e55889', '0x6189ef94', '0x497befe9', '0x3ddaaad7', '0x5269aa20', '0xe05e968a', '0x79bdea75']
+  FULL MATCH a0=0xe2f2c2d7: verified=True words=['0xe6ea3a8a', '0xc006fb78', '0x9bb57fd1', '0xf01401c0', '0x4b517585', '0x204dad1f', '0xa461b205', '0xf1a5674a', '0xcf87e063', '0x5dbd1d38', '0xe1ec6e8f', '0xb837b04c', '0x3ddaaad7', '0x5269aa20', '0xe05e968a', '0x79bdea75']
+[deg t203] a0 tried 16,777,216: C0 survivors 10,632,129, fixed points 4,267,724 (4.014e-01 per survivor), lo-pass 2059, full 5, verified 5
+=== target 204: 06419cc55ffae4b631596d25847db35bd3ef92a7027b5192eacc6bb1545c80e8
+[deg t204] a5==a4: True  e9=0xffffffff  W9hat=0xdd882f5e
+  FULL MATCH a0=0x893096c5: verified=True words=['0x8d280e78', '0xa29e5676', '0xe9b67c29', '0x99f1f1bd', '0x67e956cf', '0xa3761375', '0x41e5fbb', '0x4ecce95', '0x4ec8daef', '0x9197b210', '0xc4553392', '0xb277d61e', '0xe347b85c', '0x6bad532c', '0x3330ab78', '0x9014bdcc']
+  FULL MATCH a0=0xa22da434: verified=True words=['0xa6251be7', '0xfc65ccbf', '0x1082ce90', '0x617ab388', '0x5090272d', '0x441f66d6', '0xf4faec5b', '0x9db07e50', '0x6f5f5b5a', '0xd1ca764f', '0xaae83dea', '0xeffe8417', '0xe347b85c', '0x6bad532c', '0x3330ab78', '0x9014bdcc']
+  FULL MATCH a0=0x611dab7a: verified=True words=['0x6515232d', '0x545c3607', '0x8ee555a8', '0xd9733cdc', '0x743ff468', '0x5a9ecae4', '0xff3872c9', '0x74f54a12', '0x80111dca', '0x1c931065', '0xcedbe96a', '0xb4000089', '0xe347b85c', '0x6bad532c', '0x3330ab78', '0x9014bdcc']
+  FULL MATCH a0=0x8983664b: verified=True words=['0x8d7addfe', '0xb2788006', '0xd43efcf3', '0x8c1b8904', '0xbee7e9d2', '0x67494b95', '0xb1b1929', '0x22ea489e', '0x5bd9423e', '0xc2a5f3b1', '0x44578baa', '0xe177abc8', '0xe347b85c', '0x6bad532c', '0x3330ab78', '0x9014bdcc']
+[deg t204] a0 tried 16,777,216: C0 survivors 10,630,785, fixed points 4,269,496 (4.016e-01 per survivor), lo-pass 2457, full 4, verified 4
+=== target 205: 4edbad927121e6bc67b09221526686bd44f9c50b9527dbe66ea9745f75f161b2
+[deg t205] a5==a4: True  e9=0xffffffff  W9hat=0x1c75493c
+  FULL MATCH a0=0x889fb58c: verified=True words=['0x8c972d3f', '0x2f65185d', '0x7f74f338', '0xf0408320', '0x1e485360', '0x9b0b406e', '0xff55adc5', '0x2c58108b', '0x3d48fa39', '0x4f6b46a9', '0x4e8ee2d', '0x3eb05ec9', '0x130aca3b', '0xf80f34c3', '0x9445536a', '0xcf46bbb0']
+  FULL MATCH a0=0xb6a9e5b1: verified=True words=['0xbaa15d64', '0xdcd8e85a', '0xa4c254d1', '0x1fc0088f', '0xdcb9dc68', '0x17f77844', '0xc1f2f52e', '0xecd8585', '0x19c45be1', '0x86d21d79', '0x786ddf89', '0x789f63b2', '0x130aca3b', '0xf80f34c3', '0x9445536a', '0xcf46bbb0']
+  FULL MATCH a0=0x3e24e954: verified=True words=['0x421c6107', '0x39ccaa37', '0x1ef22168', '0xcc08fb69', '0x36f472ea', '0x1d9595c8', '0x853ca596', '0x1ff9e095', '0xd2d01889', '0x4fc37362', '0xe2a61cdc', '0x29906072', '0x130aca3b', '0xf80f34c3', '0x9445536a', '0xcf46bbb0']
+[deg t205] a0 tried 16,777,216: C0 survivors 10,628,246, fixed points 4,267,458 (4.015e-01 per survivor), lo-pass 2288, full 3, verified 3
+=== target 206: 8cf0d394ccfbe2f14d5331a7dbdbb723ca70900bacd9727781105e5bdc979aa3
+[deg t206] a5==a4: True  e9=0xffffffff  W9hat=0x46e94e54
+  FULL MATCH a0=0x1fb8c72a: verified=True words=['0x23b03edd', '0x74de8e2f', '0xd655803d', '0x4a81ba3e', '0xecd1a2a1', '0xf0b40ca8', '0x3822885e', '0x82c126c9', '0xf9a33bc2', '0xa85f3df2', '0x9b7574bd', '0xcfe74355', '0x1087c4bd', '0xf0203a1f', '0x6882302b', '0x957f3c7f']
+[deg t206] a0 tried 16,777,216: C0 survivors 10,630,273, fixed points 4,270,228 (4.017e-01 per survivor), lo-pass 2283, full 1, verified 1
+=== target 207: 0384dc56a0df2792be8feac66812b014a6d38ac17f663800791600b24ef5832e
+[deg t207] a5==a4: True  e9=0xffffffff  W9hat=0x3fd6f489
+  FULL MATCH a0=0xcf68fa43: verified=True words=['0xd36071f6', '0xbfcb433f', '0x88c44db4', '0xe8ac647c', '0x7097212b', '0x1f266f90', '0x5497c786', '0x4672381a', '0x4f585d0f', '0xc8147953', '0x8cfe3984', '0x945871fc', '0x5633e1c3', '0x5449d2ff', '0x7c77afb0', '0x4aabede4']
+  FULL MATCH a0=0xf8c418fc: verified=True words=['0xfcbb90af', '0xd16e7ef1', '0xe21d0e1d', '0xb7a75721', '0x37363e78', '0x188a9e11', '0xb9e9191f', '0xb556179a', '0x4768c25b', '0xf0cf0435', '0x82be3d96', '0xb887d65c', '0x5633e1c3', '0x5449d2ff', '0x7c77afb0', '0x4aabede4']
+[deg t207] a0 tried 16,777,216: C0 survivors 10,632,161, fixed points 4,268,605 (4.015e-01 per survivor), lo-pass 4495, full 2, verified 2
+
+SCALE TOTAL (8 targets, 134,217,728 a0, degenerate family):
+  C0 survivors 85,043,716
+  fixed points 34,146,386  = 0.4015 per survivor
+  lo-passes    28,680  = 8.399e-04 per fixed point (uniform 1.526e-05, enh 55.0x)
+  full matches 33  = 1.151e-03 per lo-pass
+  verified     33
+  PREIMAGES PER a0: 2.459e-07 = 2^-22.0
+  [162s]
+DONE

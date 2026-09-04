@@ -1,0 +1,245 @@
+
+=== after round 1/12: 6,979,321,856 swept a0 in 452s (1.54e+07 a0/s)
+    triangular solutions 1,775,860,603 (0.2544/a0)
+    submask (eps==0)     178,460 (1.0049e-04/solution)
+    C3 low-k zero, against the uniform prediction sub/2^k:
+        k     observed    predicted    ratio
+        0      178,460    178460.00     1.00
+        2       44,692     44615.00     1.00
+        4       11,141     11153.75     1.00
+        6        2,798      2788.44     1.00
+        8          679       697.11     0.97
+       10          156       174.28     0.90
+       12           44        43.57     1.01
+       14           14        10.89     1.29
+       16            7         2.72     2.57
+       18            1         0.68     1.47
+       20            0         0.17     0.00
+       22            0         0.04     0.00
+    deepest residuals kept: 1; min |C3| trailing zeros = 18
+
+=== after round 2/12: 13,958,643,712 swept a0 in 904s (1.54e+07 a0/s)
+    triangular solutions 3,551,699,645 (0.2544/a0)
+    submask (eps==0)     357,059 (1.0053e-04/solution)
+    C3 low-k zero, against the uniform prediction sub/2^k:
+        k     observed    predicted    ratio
+        0      357,059    357059.00     1.00
+        2       89,266     89264.75     1.00
+        4       22,298     22316.19     1.00
+        6        5,649      5579.05     1.01
+        8        1,418      1394.76     1.02
+       10          322       348.69     0.92
+       12           95        87.17     1.09
+       14           30        21.79     1.38
+       16           12         5.45     2.20
+       18            2         1.36     1.47
+       20            0         0.34     0.00
+       22            0         0.09     0.00
+       24            0         0.02     0.00
+    deepest residuals kept: 2; min |C3| trailing zeros = 18
+
+=== after round 3/12: 20,937,965,568 swept a0 in 1361s (1.54e+07 a0/s)
+    triangular solutions 5,327,513,504 (0.2544/a0)
+    submask (eps==0)     535,055 (1.0043e-04/solution)
+    C3 low-k zero, against the uniform prediction sub/2^k:
+        k     observed    predicted    ratio
+        0      535,055    535055.00     1.00
+        2      133,767    133763.75     1.00
+        4       33,291     33440.94     1.00
+        6        8,325      8360.23     1.00
+        8        2,046      2090.06     0.98
+       10          481       522.51     0.92
+       12          126       130.63     0.96
+       14           39        32.66     1.19
+       16           15         8.16     1.84
+       18            3         2.04     1.47
+       20            1         0.51     1.96
+       22            0         0.13     0.00
+       24            0         0.03     0.00
+    deepest residuals kept: 3; min |C3| trailing zeros = 20
+
+=== after round 4/12: 27,917,287,424 swept a0 in 1812s (1.54e+07 a0/s)
+    triangular solutions 7,103,377,342 (0.2544/a0)
+    submask (eps==0)     714,020 (1.0052e-04/solution)
+    C3 low-k zero, against the uniform prediction sub/2^k:
+        k     observed    predicted    ratio
+        0      714,020    714020.00     1.00
+        2      178,294    178505.00     1.00
+        4       44,380     44626.25     0.99
+        6       11,133     11156.56     1.00
+        8        2,775      2789.14     0.99
+       10          646       697.29     0.93
+       12          175       174.32     1.00
+       14           50        43.58     1.15
+       16           16        10.90     1.47
+       18            3         2.72     1.10
+       20            1         0.68     1.47
+       22            0         0.17     0.00
+       24            0         0.04     0.00
+    deepest residuals kept: 3; min |C3| trailing zeros = 20
+
+=== after round 5/12: 34,896,609,280 swept a0 in 2263s (1.54e+07 a0/s)
+    triangular solutions 8,879,218,656 (0.2544/a0)
+    submask (eps==0)     892,539 (1.0052e-04/solution)
+    C3 low-k zero, against the uniform prediction sub/2^k:
+        k     observed    predicted    ratio
+        0      892,539    892539.00     1.00
+        2      222,867    223134.75     1.00
+        4       55,510     55783.69     1.00
+        6       13,919     13945.92     1.00
+        8        3,512      3486.48     1.01
+       10          834       871.62     0.96
+       12          226       217.91     1.04
+       14           61        54.48     1.12
+       16           16        13.62     1.17
+       18            3         3.40     0.88
+       20            1         0.85     1.17
+       22            0         0.21     0.00
+       24            0         0.05     0.00
+    deepest residuals kept: 3; min |C3| trailing zeros = 20
+
+=== after round 6/12: 41,875,931,136 swept a0 in 2716s (1.54e+07 a0/s)
+    triangular solutions 10,655,027,615 (0.2544/a0)
+    submask (eps==0)     1,071,090 (1.0052e-04/solution)
+    C3 low-k zero, against the uniform prediction sub/2^k:
+        k     observed    predicted    ratio
+        0    1,071,090   1071090.00     1.00
+        2      267,387    267772.50     1.00
+        4       66,798     66943.12     1.00
+        6       16,762     16735.78     1.00
+        8        4,228      4183.95     1.01
+       10        1,007      1045.99     0.96
+       12          271       261.50     1.04
+       14           72        65.37     1.10
+       16           19        16.34     1.16
+       18            3         4.09     0.73
+       20            1         1.02     0.98
+       22            0         0.26     0.00
+       24            0         0.06     0.00
+    deepest residuals kept: 3; min |C3| trailing zeros = 20
+
+=== after round 7/12: 48,855,252,992 swept a0 in 3169s (1.54e+07 a0/s)
+    triangular solutions 12,430,857,299 (0.2544/a0)
+    submask (eps==0)     1,248,614 (1.0044e-04/solution)
+    C3 low-k zero, against the uniform prediction sub/2^k:
+        k     observed    predicted    ratio
+        0    1,248,614   1248614.00     1.00
+        2      311,939    312153.50     1.00
+        4       77,848     78038.38     1.00
+        6       19,599     19509.59     1.00
+        8        4,958      4877.40     1.02
+       10        1,182      1219.35     0.97
+       12          318       304.84     1.04
+       14           83        76.21     1.09
+       16           22        19.05     1.15
+       18            4         4.76     0.84
+       20            1         1.19     0.84
+       22            0         0.30     0.00
+       24            0         0.07     0.00
+    deepest residuals kept: 4; min |C3| trailing zeros = 20
+
+=== after round 8/12: 55,834,574,848 swept a0 in 3620s (1.54e+07 a0/s)
+    triangular solutions 14,206,692,828 (0.2544/a0)
+    submask (eps==0)     1,427,123 (1.0045e-04/solution)
+    C3 low-k zero, against the uniform prediction sub/2^k:
+        k     observed    predicted    ratio
+        0    1,427,123   1427123.00     1.00
+        2      356,925    356780.75     1.00
+        4       89,112     89195.19     1.00
+        6       22,448     22298.80     1.01
+        8        5,675      5574.70     1.02
+       10        1,364      1393.67     0.98
+       12          356       348.42     1.02
+       14           94        87.10     1.08
+       16           25        21.78     1.15
+       18            5         5.44     0.92
+       20            1         1.36     0.73
+       22            0         0.34     0.00
+       24            0         0.09     0.00
+       26            0         0.02     0.00
+    deepest residuals kept: 5; min |C3| trailing zeros = 20
+
+=== after round 9/12: 62,813,896,704 swept a0 in 4070s (1.54e+07 a0/s)
+    triangular solutions 15,982,608,160 (0.2544/a0)
+    submask (eps==0)     1,605,383 (1.0045e-04/solution)
+    C3 low-k zero, against the uniform prediction sub/2^k:
+        k     observed    predicted    ratio
+        0    1,605,383   1605383.00     1.00
+        2      401,535    401345.75     1.00
+        4      100,346    100336.44     1.00
+        6       25,256     25084.11     1.01
+        8        6,381      6271.03     1.02
+       10        1,538      1567.76     0.98
+       12          403       391.94     1.03
+       14          108        97.98     1.10
+       16           27        24.50     1.10
+       18            5         6.12     0.82
+       20            1         1.53     0.65
+       22            0         0.38     0.00
+       24            0         0.10     0.00
+       26            0         0.02     0.00
+    deepest residuals kept: 5; min |C3| trailing zeros = 20
+
+=== after round 10/12: 69,793,218,560 swept a0 in 4522s (1.54e+07 a0/s)
+    triangular solutions 17,758,424,426 (0.2544/a0)
+    submask (eps==0)     1,783,875 (1.0045e-04/solution)
+    C3 low-k zero, against the uniform prediction sub/2^k:
+        k     observed    predicted    ratio
+        0    1,783,875   1783875.00     1.00
+        2      446,192    445968.75     1.00
+        4      111,420    111492.19     1.00
+        6       27,988     27873.05     1.00
+        8        7,037      6968.26     1.01
+       10        1,703      1742.07     0.98
+       12          432       435.52     0.99
+       14          119       108.88     1.09
+       16           27        27.22     0.99
+       18            5         6.80     0.73
+       20            1         1.70     0.59
+       22            0         0.43     0.00
+       24            0         0.11     0.00
+       26            0         0.03     0.00
+    deepest residuals kept: 5; min |C3| trailing zeros = 20
+
+=== after round 11/12: 76,772,540,416 swept a0 in 4973s (1.54e+07 a0/s)
+    triangular solutions 19,534,308,447 (0.2544/a0)
+    submask (eps==0)     1,962,851 (1.0048e-04/solution)
+    C3 low-k zero, against the uniform prediction sub/2^k:
+        k     observed    predicted    ratio
+        0    1,962,851   1962851.00     1.00
+        2      491,087    490712.75     1.00
+        4      122,754    122678.19     1.00
+        6       30,826     30669.55     1.01
+        8        7,741      7667.39     1.01
+       10        1,882      1916.85     0.98
+       12          470       479.21     0.98
+       14          130       119.80     1.09
+       16           30        29.95     1.00
+       18            6         7.49     0.80
+       20            1         1.87     0.53
+       22            0         0.47     0.00
+       24            0         0.12     0.00
+       26            0         0.03     0.00
+    deepest residuals kept: 6; min |C3| trailing zeros = 20
+
+=== after round 12/12: 83,751,862,272 swept a0 in 5423s (1.54e+07 a0/s)
+    triangular solutions 21,310,123,919 (0.2544/a0)
+    submask (eps==0)     2,141,377 (1.0049e-04/solution)
+    C3 low-k zero, against the uniform prediction sub/2^k:
+        k     observed    predicted    ratio
+        0    2,141,377   2141377.00     1.00
+        2      535,888    535344.25     1.00
+        4      133,849    133836.06     1.00
+        6       33,623     33459.02     1.00
+        8        8,469      8364.75     1.01
+       10        2,034      2091.19     0.97
+       12          503       522.80     0.96
+       14          139       130.70     1.06
+       16           34        32.67     1.04
+       18            7         8.17     0.86
+       20            1         2.04     0.49
+       22            0         0.51     0.00
+       24            0         0.13     0.00
+       26            0         0.03     0.00
+    deepest residuals kept: 7; min |C3| trailing zeros = 20
+DONE

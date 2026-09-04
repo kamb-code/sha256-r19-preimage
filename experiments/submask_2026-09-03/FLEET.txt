@@ -1,0 +1,17 @@
+R=20 GPU CAMPAIGN -- every pod, in order (all RunPod, image runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04, torch 2.4.1+cu124)
+Attack model everywhere: SHA-256 compression function reduced to 20 rounds, standard IV, one block, no padding, feed-forward kept, all 256 output bits fixed.
+Kernel "pytorch" = code/gpu_submask.py (int64 eager PyTorch); kernel "triton" = code/submask_triton.py --run (fused, signed int32). Both: 3 root tables built on the device (first/second/third root of u -> sigma0(u)-u; coverage 63.3% / 26.4% / 8.0%).
+
+pod            GPU               $/h   kernel   target                         seed        start (UTC 2026-09)  stop                 contexts   a0 swept   sub candidates  expected  outcome
+n2zom46pxzmcgg H100 80GB HBM3    3.49  pytorch  e3523d58... (random message)   status.json  03 19:04            04 14:44 (stopped)   7,351      3.157e13   2,961,786,410   0.690     no hit, deleted; ~$68
+b69rcro3uqlki1 A100-SXM4-80GB    1.59  pytorch  (random message)               status.json  04 06:03            04 14:45 (stopped)   ~1,852     7.96e12    746,574,678     0.174     no hit; pod REUSED below
+9sqc6t0c47dfe9 A100-SXM4-80GB    1.59  pytorch  (random message)               status.json  04 06:03            04 14:54 (stopped)   ~1,850     7.9e12     ~7.4e8          ~0.17     no hit, deleted
+b69rcro3uqlki1 A100-SXM4-80GB    1.59  triton   d962ca30635f9b74... (random)   1885566557  04 14:55            running              --         --         --              --        "dev"/hedge pod; solver started by hand; managed by attach_pod.py
+oxgcuwlleea1fd A100-SXM4-80GB    1.59  triton   random (abandoned after ~21 ctx) then ALL-ONES ffff...ffff  3971886063  04 14:57 / restarted 15:07  running  tag t1 (run_r20_pod.py)
+3r52zyawqj9jd7 A100 80GB PCIe    1.59  triton   random (abandoned after ~27 ctx) then ALL-ONES ffff...ffff  1138247750  04 14:56 / restarted 15:07  running  tag t2 (run_r20_pod.py)
+
+Rates: pytorch H100 4.47e8 a0/s; pytorch A100 2.54e8; triton A100 9.1-9.3e8 kernel-timed, ~8.2-8.8e8 wall (5.2-5.3 s per 2^32 context incl. host overhead).
+Expected preimages = (sub candidates) x 2^-32, assuming C3 uniform (measured uniform to ~24 bits; extrapolated over the last bits).
+Fleet after 15:07: 0.13/h on the all-ones pair + 0.065/h hedge = ~0.19/h production-measured (0.216/h from the bench figure). Mean ~5.3 h, ~$25 expected at $4.77/h.
+Stop rule: on an ALL-ONES hit every pod stops (stop_watcher2.py -> r20_GLOBAL_STOP); on a hedge hit only the hedge pod stops. Pre-registered reading: no hit by 3 expected preimages on the all-ones pair (~23 h) would indicate a defect, not bad luck (P = e^-3 = 5%).
+Live copies of every pod's status.json/run.log/HIT.txt are mirrored every 60 s into gpu_run_snapshot/live/<tag>/ (mirror.py) and any hit is re-verified there with code/verify_r19.py --rounds 20.

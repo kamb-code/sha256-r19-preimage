@@ -1,0 +1,5 @@
+[2026-09-03 19:03:00] R=20 roots=2 device=cpu seed=2 target=dac72686c62d93117642e92c88e05ec62b4b556dc1dd25674adf810f2c51949d
+[2026-09-03 19:03:00] torch 2.14.0+cpu; cpu
+[2026-09-03 19:03:00] loaded 2 on-disk table(s)
+[2026-09-03 19:03:10] ctx 0: 4,194,304 a0 in 10.1s | cumulative a0 4.194e+06 sol 3.036e+06 sub 287 c3 0 ver 0 | 4.15e+05 a0/s | expected preimages so far 0.000, projected hours per preimage 41971.5
+[2026-09-03 19:03:10] DONE

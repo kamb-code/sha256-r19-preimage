@@ -1,0 +1,65 @@
+sigma0 table mapped 0s
+=== R=20 target 300: 3aae62fd2cbf2ddb32640a08d9b22e89b2781ad11c68a2329e8037016ab27288
+[deg t300] a5==a4 True  e9=0xffffffff  W9hat=0x5d182849
+[deg t300] a0 8,388,608: survivors 5,315,508  fixed points 2,134,314 (0.4015/survivor)
+    eps==0            0  rate 0.000e+00  (uniform 2.33e-10, enh 0x)
+    eps_lo==0       249  rate 1.167e-04  (uniform 1.526e-05, enh 7.6x)
+    C3==0             0  rate 0.000e+00
+    C3_lo==0         32  rate 1.499e-05  (uniform 1.526e-05, enh 0.98x)
+    both_lo           0  vs 0.00 expected under independence  (ratio 0.00)
+    verified   0
+=== R=20 target 301: 22c6799cdd549ad94543693a28a1fda30f698562be4520814419a3c2165c0fb1
+[deg t301] a5==a4 True  e9=0xffffffff  W9hat=0x3917afdf
+[deg t301] a0 8,388,608: survivors 5,314,308  fixed points 2,135,899 (0.4019/survivor)
+    eps==0            9  rate 4.214e-06  (uniform 2.33e-10, enh 18098x)
+    eps_lo==0     1,783  rate 8.348e-04  (uniform 1.526e-05, enh 54.7x)
+    C3==0             0  rate 0.000e+00
+    C3_lo==0         31  rate 1.451e-05  (uniform 1.526e-05, enh 0.95x)
+    both_lo           0  vs 0.03 expected under independence  (ratio 0.00)
+    verified   0
+=== R=20 target 302: a036bf2a8b430c7171b747843d641b6e55bd95bc8685597fcc12fcd64fbe2c8f
+[deg t302] a5==a4 True  e9=0xffffffff  W9hat=0x1899f01c
+[deg t302] a0 8,388,608: survivors 5,320,121  fixed points 2,135,545 (0.4014/survivor)
+    eps==0            0  rate 0.000e+00  (uniform 2.33e-10, enh 0x)
+    eps_lo==0       904  rate 4.233e-04  (uniform 1.526e-05, enh 27.7x)
+    C3==0             0  rate 0.000e+00
+    C3_lo==0         25  rate 1.171e-05  (uniform 1.526e-05, enh 0.77x)
+    both_lo           0  vs 0.01 expected under independence  (ratio 0.00)
+    verified   0
+=== R=20 target 303: 3b19e2c4b824cf53e1029c93cec5172f96df362b55fb1c3233d79c1d8e1c5147
+[deg t303] a5==a4 True  e9=0xffffffff  W9hat=0xcc0eaaf4
+[deg t303] a0 8,388,608: survivors 5,312,656  fixed points 2,130,965 (0.4011/survivor)
+    eps==0            0  rate 0.000e+00  (uniform 2.33e-10, enh 0x)
+    eps_lo==0       269  rate 1.262e-04  (uniform 1.526e-05, enh 8.3x)
+    C3==0             0  rate 0.000e+00
+    C3_lo==0         37  rate 1.736e-05  (uniform 1.526e-05, enh 1.14x)
+    both_lo           0  vs 0.00 expected under independence  (ratio 0.00)
+    verified   0
+=== R=20 target 304: d8a005cafc788bbc6c39de21fd37777b665df1c14490754f06961f720d0d5cef
+[deg t304] a5==a4 True  e9=0xffffffff  W9hat=0xa3e835eb
+[deg t304] a0 8,388,608: survivors 5,315,282  fixed points 2,134,181 (0.4015/survivor)
+    eps==0            1  rate 4.686e-07  (uniform 2.33e-10, enh 2012x)
+    eps_lo==0       925  rate 4.334e-04  (uniform 1.526e-05, enh 28.4x)
+    C3==0             0  rate 0.000e+00
+    C3_lo==0         30  rate 1.406e-05  (uniform 1.526e-05, enh 0.92x)
+    both_lo           0  vs 0.01 expected under independence  (ratio 0.00)
+    verified   0
+=== R=20 target 305: 905a76d333a1cd5a8024d70e962a2921dddad9df4bb2cc78e0edf7dc8030f0ec
+[deg t305] a5==a4 True  e9=0xffffffff  W9hat=0xd7d41ae3
+[deg t305] a0 8,388,608: survivors 5,315,850  fixed points 2,134,785 (0.4016/survivor)
+    eps==0            0  rate 0.000e+00  (uniform 2.33e-10, enh 0x)
+    eps_lo==0     2,528  rate 1.184e-03  (uniform 1.526e-05, enh 77.6x)
+    C3==0             0  rate 0.000e+00
+    C3_lo==0         32  rate 1.499e-05  (uniform 1.526e-05, enh 0.98x)
+    both_lo           0  vs 0.04 expected under independence  (ratio 0.00)
+    verified   0
+
+R=20 GRAND TOTAL (6 targets, 50,331,648 a0, degenerate family):
+  fixed points 12,805,689 (0.4015 per survivor)
+  eps_lo==0 6,658 -> 5.199e-04 (34.1x uniform)
+  C3_lo==0  187 -> 1.460e-05 (0.96x uniform)
+  both_lo   0 vs 0.10 expected under independence (ratio 0.00)
+  eps==0 (full 32-bit) 10 -> 7.809e-07
+  verified R=20 preimages 0
+  [17s]
+DONE

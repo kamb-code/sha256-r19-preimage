@@ -5,13 +5,18 @@ sigma0 table: /nvme0n1-disk/Kamvid/sigma0_u_table.npy (int32, sentinel -1, one r
 GPU run commands: run_r20_gpu.py 60 (H100, seed random, target = 20-round digest of a random 55-byte message, recorded in each status.json); run_r20_pod.py a100a|a100b 'NVIDIA A100 80GB PCIe,NVIDIA A100-SXM4-80GB' 60
 NOTE: gpu_run_snapshot/ is a snapshot of a run STILL IN PROGRESS at snapshot time.
 
+MANIFEST regenerated 2026-09-04 16:19:46 UTC after the second review; see NOTES.md and FLEET.txt. gpu_run_snapshot/live/ is a moving mirror and is not hashed.
+
 sha256  path  size
-5824fed6fde66e84a90430fce5a9be1b29157bca795d277ff8056f5ae9929a91  gpu_run_snapshot/a100a_runner.log  12925 bytes
-2578c421b585a9bd5bb034c8cbea5108460e04a2c931bacade93f7500154b9b9  gpu_run_snapshot/a100a_status.json  591 bytes
-6eed11ec1ce90fe6ce9d6f6bac6fe6e2aab73d66bd76ab7a4734ce94820e8705  gpu_run_snapshot/a100b_runner.log  12926 bytes
-6b6bb7b208ead07d49ca4d339da03fdc5003ad7eb8bb9e91ef608db00b60b862  gpu_run_snapshot/a100b_status.json  592 bytes
+db6ad037082ae5760348348b12ea394b79bb549e164c691e71e4565a03cadee6  FLEET.txt  2863 bytes
+4047222ee82d925d8500e33433ddc5679d83b82b5aa9597cbfeb32ccd1289000  NOTES.md  2648 bytes
+e9619741d2c4f1670f252e8817a803e446b6d52d8cf7b41130038b33136fa84f  gpu_run_snapshot/a100a_runner.log  25063 bytes
+9e93bace62b578611b06b3bcafecdd985974efd3a313c766bd053665e875182d  gpu_run_snapshot/a100a_status.json  600 bytes
+2f627c248b431c7c4cebbc20c069c18396aecc2d22ddb986fd39ac2bc8dc631d  gpu_run_snapshot/a100b_runner.log  25064 bytes
+14235e09629444a652efabd5aca941407330a444e6d61571235cdf22365c8bf0  gpu_run_snapshot/a100b_status.json  600 bytes
 cc1199cb8c9c8b005d350a7682538876460fabc59782550450fa98ff1e61092f  gpu_run_snapshot/h100_runner.log  42996 bytes
-c7481dfac5ba059dc7e2357cfe84b279a11c35aae3899d9ae281cdaf0bbcae9a  gpu_run_snapshot/h100_status.json  616 bytes
+21c090d3b5b2c35b2d1c55e85a1e60dfbd2623580f5d730cc0a8a4c6579d6c29  gpu_run_snapshot/h100_status.json  619 bytes
+ab632a7982f919f283d30d1e9aa5d0bc3a1df608705656e6b2172316e0bed14b  scripts/attach_pod.py  4776 bytes
 0303d0b275c21ba209af837a307ec68d51290383a1c8646b551ff81b81f4338a  scripts/c3_scaling.py  7948 bytes
 8aedd205b822632a5ce2afa9e6cf02f559b692825a35eae7e5295d16cd5e0761  scripts/c3_uniformity.py  12197 bytes
 b948772b815852af126958051e29ff61995bf2ee1f96e2dc20dc3bbddb504bba  scripts/frame_c_test.py  12079 bytes
@@ -19,14 +24,19 @@ b948772b815852af126958051e29ff61995bf2ee1f96e2dc20dc3bbddb504bba  scripts/frame_
 bec36bffe5aa6c72e6355a919ee33faadc0735fc601768d9737cb789787ef4fd  scripts/frame_c_test3.py  11396 bytes
 d316ed02853da4ddca3000dd4c7f4f8a56b25f50fb283f33089a8197b76f2691  scripts/frame_search.py  6278 bytes
 bd851a06111a68931335a34214d2b4a1be05a0cc72ca6a28722e8562a95aef05  scripts/frame_search2.py  8269 bytes
+507ef3e00bb29c56cc2a5b2a5a8612c731b865ce444083ab24374ebee0a5d062  scripts/mirror.py  3502 bytes
 cbf3bd189c4cbbcea653ba3784534b2501bb8d35026decfea38361312e325163  scripts/multiroot.py  7891 bytes
+2dd8200904a5f7da0a56e42d837847f103f532b17a6874b0370cada07f7b1a4d  scripts/plant_r20.py  3667 bytes
+aef348f5a6725418c2bc4f30a13f7f461dab717d571e9c22706a26758178a28c  scripts/quantized_table.py  4373 bytes
 e5bd04e0dd4637e2db988f8cb3a960092f00a79d2caae2fe75420e34f92d5a13  scripts/r19_degenerate.py  10004 bytes
 dd7e4328d4d0b16d1971689264090a5bbc9f5421a1d64306d4e3bdfc1166ef99  scripts/r19_scale.py  10542 bytes
 1630b9ed0e5f622e60e7f2828734e2441089f9546380b4fd31c7262191a4a681  scripts/r19_variants.py  9966 bytes
 b52a91b5f243546bc312a5660ab7a63e37204f4bc13dcb648425bca7b796186b  scripts/r20_degenerate.py  11473 bytes
 67754b292649a10371cc894f17fe7ad6c0a25fcf49e18ff66f11ea1402259b67  scripts/run_r20_gpu.py  6967 bytes
-c70ecd6f167e8336976772b2bce2ccb61161c6e060d4175f6a92ee975e7ce090  scripts/run_r20_pod.py  7246 bytes
+d43225681b24db8ee9143f141374b7999686e927ba3e134b80be819d6982d165  scripts/run_r20_pod.py  7371 bytes
 6d10b4db045b9940796c251a9a675df223543a56144f18cc9d6a024ed9cde6a5  scripts/stop_watcher.py  1143 bytes
+71b18c8c0c1846f57a90368bc86b85d2ed6f76015c8e7b033a93794e1f45d62d  scripts/stop_watcher2.py  1206 bytes
+24ee9a96b704fe56917e838237ef03b57956c60613ce500982dbfb1313436879  scripts/submask_triton.py  15017 bytes
 6c77f00cf6a5478c24da417f7078922006da0c8fac03a411542735c266522ffa  scripts/super_degenerate.py  12044 bytes
 b71ac3c369cc799af53e901dfe2c8bb1b55a88a8876d090ae426579a417fda8a  scripts/super_fixed_targets.py  11135 bytes
 ac8eb353c7f35759cea8963d66130ddd1c7296f198c4629c24c66015f30bf2fb  scripts/super_general_v.py  11347 bytes
@@ -67,4 +77,10 @@ b530c12a7f828132ba4d893e5fc0f4ac7e01537f58145d50ce56177e5d9ea61f  reviewers/ref2
 0e0d2e8bbbb205bca1d8e9c51381482446c48ff27a9ee54e222da58514c15780  reviewers/ref2/scale.py  463 bytes
 fd36bdcfa4c7cafee63cf18d706472dd9dec318807ca0f8f182943ff420edd5d  reviewers/ref2/__pycache__/indep_attack.cpython-312.pyc  14729 bytes
 c168bddcfd0886c94cc10d749f0cb17ff110352493a223c3a951b967dfba50ba  reviewers/ref2/__pycache__/ref_sha.cpython-312.pyc  5896 bytes
-2dd8200904a5f7da0a56e42d837847f103f532b17a6874b0370cada07f7b1a4d  scripts/plant_r20.py  3667 bytes   (added 2026-09-04: planted-preimage end-to-end test of the R=20 path; 10 found, 6 missing-root, 0 failures of 16)
+33d6f543b7ef8bc432dec705071cd32709af0452460ec412c2ad9b505dd651fe  reviewers/round2/_plant_print.log  4277 bytes
+7feb18e5d0d92953bc5b90e8e07a5e6d9c1a170a06b5a228f735460182ce2b3d  reviewers/round2/c3_ones_check.log  1692 bytes
+79ee0271a5368f77acf321789b424a7df71be18788c3a10d8cba3c645f6424a6  reviewers/round2/c3_ones_check.py  5187 bytes
+f5a8389226e3b459e4bcc83b0d027de2c1516b76ccbf9d2e6292b74c5719417d  reviewers/round2/refuter1_3roots.log  2252 bytes
+c059bd306c98693c3e841b2bb7aac742bad5ddfa17b3b60e2cfc2bf46d9550b8  reviewers/round2/reports.json  120899 bytes
+2693f30dc81fb0354fed221cfa67beda90d86a043f76a1250bf78f22b1d907ec  reviewers/round2/stats_review.py  10807 bytes
+2deed1643f9c3045d4d3c0c06c4561433e6bfdd12f7be57f06bff6e161b094db  reviewers/round2/triton_interp_test.py  4519 bytes

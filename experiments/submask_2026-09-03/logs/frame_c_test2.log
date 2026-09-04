@@ -1,0 +1,9 @@
+forward model matches hashlib
+sigma0 table loaded 12s
+P0 table built+saved 259s
+C3 residual at true point: 0x0
+true point maps: a3 OK, a4 OK, a2 rep-diff (table representatives)
+Calibration A (paper's R19 loop, frame A): 1,048,576 random a0, C0 survivors 664,838, converged 0 = 0.00e+00 per a0 (paper: ~2.3e-5 per survivor)  [3s]
+Experiment B (frame C, per random (a0,a1) pair, seed 0): 1,048,576 pairs, converged 0 = 0.00e+00 per pair, C3 passes 0  [11s]
+B2 (true pair, 1,048,576 random seeds): fixed points 0, true point 0  [9s]
+DONE
