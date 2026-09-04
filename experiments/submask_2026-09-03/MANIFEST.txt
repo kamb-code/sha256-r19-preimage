@@ -1,0 +1,69 @@
+snapshot taken 2026-09-04 10:25:46 UTC
+python 3.12.3  numpy 2.4.2  platform Linux-6.8.0-107-generic-x86_64-with-glibc2.39
+CPU torch (smoke tests): 2.14.0+cpu in scratchpad venv; pod torch 2.4.1+cu124 on runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04
+sigma0 table: /nvme0n1-disk/Kamvid/sigma0_u_table.npy (int32, sentinel -1, one root per value, LARGEST u wins = build_sigma0_table.py --policy max); second-root table sigma0_u_table_root2.npy built by multiroot.py --build (first free slot, u != first root); GPU runs build 3 root tables in-memory with the same policies (gpu_submask.py build_tables)
+GPU run commands: run_r20_gpu.py 60 (H100, seed random, target = 20-round digest of a random 55-byte message, recorded in each status.json); run_r20_pod.py a100a|a100b 'NVIDIA A100 80GB PCIe,NVIDIA A100-SXM4-80GB' 60
+NOTE: gpu_run_snapshot/ is a snapshot of a run STILL IN PROGRESS at snapshot time.
+
+sha256  path  size
+5824fed6fde66e84a90430fce5a9be1b29157bca795d277ff8056f5ae9929a91  gpu_run_snapshot/a100a_runner.log  12925 bytes
+2578c421b585a9bd5bb034c8cbea5108460e04a2c931bacade93f7500154b9b9  gpu_run_snapshot/a100a_status.json  591 bytes
+6eed11ec1ce90fe6ce9d6f6bac6fe6e2aab73d66bd76ab7a4734ce94820e8705  gpu_run_snapshot/a100b_runner.log  12926 bytes
+6b6bb7b208ead07d49ca4d339da03fdc5003ad7eb8bb9e91ef608db00b60b862  gpu_run_snapshot/a100b_status.json  592 bytes
+cc1199cb8c9c8b005d350a7682538876460fabc59782550450fa98ff1e61092f  gpu_run_snapshot/h100_runner.log  42996 bytes
+c7481dfac5ba059dc7e2357cfe84b279a11c35aae3899d9ae281cdaf0bbcae9a  gpu_run_snapshot/h100_status.json  616 bytes
+0303d0b275c21ba209af837a307ec68d51290383a1c8646b551ff81b81f4338a  scripts/c3_scaling.py  7948 bytes
+8aedd205b822632a5ce2afa9e6cf02f559b692825a35eae7e5295d16cd5e0761  scripts/c3_uniformity.py  12197 bytes
+b948772b815852af126958051e29ff61995bf2ee1f96e2dc20dc3bbddb504bba  scripts/frame_c_test.py  12079 bytes
+0fad46ffb51cb74a8bb7581c55e1c177455d3fb0be371ea2b53a5c37e9801df9  scripts/frame_c_test2.py  12764 bytes
+bec36bffe5aa6c72e6355a919ee33faadc0735fc601768d9737cb789787ef4fd  scripts/frame_c_test3.py  11396 bytes
+d316ed02853da4ddca3000dd4c7f4f8a56b25f50fb283f33089a8197b76f2691  scripts/frame_search.py  6278 bytes
+bd851a06111a68931335a34214d2b4a1be05a0cc72ca6a28722e8562a95aef05  scripts/frame_search2.py  8269 bytes
+cbf3bd189c4cbbcea653ba3784534b2501bb8d35026decfea38361312e325163  scripts/multiroot.py  7891 bytes
+e5bd04e0dd4637e2db988f8cb3a960092f00a79d2caae2fe75420e34f92d5a13  scripts/r19_degenerate.py  10004 bytes
+dd7e4328d4d0b16d1971689264090a5bbc9f5421a1d64306d4e3bdfc1166ef99  scripts/r19_scale.py  10542 bytes
+1630b9ed0e5f622e60e7f2828734e2441089f9546380b4fd31c7262191a4a681  scripts/r19_variants.py  9966 bytes
+b52a91b5f243546bc312a5660ab7a63e37204f4bc13dcb648425bca7b796186b  scripts/r20_degenerate.py  11473 bytes
+67754b292649a10371cc894f17fe7ad6c0a25fcf49e18ff66f11ea1402259b67  scripts/run_r20_gpu.py  6967 bytes
+c70ecd6f167e8336976772b2bce2ccb61161c6e060d4175f6a92ee975e7ce090  scripts/run_r20_pod.py  7246 bytes
+6d10b4db045b9940796c251a9a675df223543a56144f18cc9d6a024ed9cde6a5  scripts/stop_watcher.py  1143 bytes
+6c77f00cf6a5478c24da417f7078922006da0c8fac03a411542735c266522ffa  scripts/super_degenerate.py  12044 bytes
+b71ac3c369cc799af53e901dfe2c8bb1b55a88a8876d090ae426579a417fda8a  scripts/super_fixed_targets.py  11135 bytes
+ac8eb353c7f35759cea8963d66130ddd1c7296f198c4629c24c66015f30bf2fb  scripts/super_general_v.py  11347 bytes
+7bb8d2e269d3548398b6164a9086425264296f7dc131f2efedf8be2c2ba62487  logs/c3_deep.txt  1526 bytes
+ef2b75c4ace002729fbfacad8f40ec96e27963ad7bfb4e03379ce8997163951b  logs/c3_scaling.log  11330 bytes
+43b7b385b12dc3b08d1617ca2114241496cea73d90ef0f8eea4884bbeabbad6c  logs/c3_uniformity.log  14599 bytes
+df458b8a6f530469c60d95f4ee39d6bcb0a61cea65a95fd46479f22d3ac8a55f  logs/frame_c_test.log  704 bytes
+fffa44e882dd8333bad1144f838b4fd1baf4a35c9755311dbe7bbeccd26ced69  logs/frame_c_test2.log  536 bytes
+561f6b8de38aece00b7e8bec1fb36f774c558d0d3cfb576278da39fe8267c4c0  logs/frame_c_test3.log  3285 bytes
+e3dcfd63073209f9736badeda151ab6a250e28090fee3aade4838d5add82dc03  logs/multiroot_build.log  236 bytes
+4799caa032b045d1cd677ff9c6aaf76e1f72eee5dbf5188f360e85dd6344a5d2  logs/r19_big.log  6266 bytes
+03361ff7f520c6464612f376440bbbaa503e29885c4d97fb3ab01faf468f68f6  logs/r19_degenerate.log  1110 bytes
+a2c50358258c02eff9fb6e31c828a2e87cd0ad558e36c230938847add2e5398f  logs/r19_scale.log  11549 bytes
+64b58cca9b178fd3e1218fee134fdeed2a123d5b4658ddb4d16d507b40e1944a  logs/r19_variants.log  2884 bytes
+490738af2c90905d3dcd903ac6fc89a7637f494f9c9b19b8f86efe9c07bf5cfd  logs/r20_degenerate.log  3814 bytes
+cb1cc7013637227d3c13adbfdc72fe6393ee6b89d11e6470b0bf650f002f5591  logs/smoke19_1root.log  12696 bytes
+db5deca980185a51c3fa270f44739e1015f937dab675a75ae2faaf1b310b84f6  logs/smoke19_2roots.log  35266 bytes
+7f13ac383a2a257bb6646e93cb5b66944490765de2264a757121534d32e9fbde  logs/smoke20_2roots.log  442 bytes
+147773191a5e6a274b620d3e75e0b8038d7616bdb163fbec6e17273fd1401455  logs/smoke20_status.json  435 bytes
+bdef24c78a6504bd90020d36c2cdb8d4e8b62cc14a0bd3e012d75e1e9e18ca89  logs/super_r20.log  573 bytes
+14ff957dc6b03de7459671bf3da25ef6352559ae41b916ea2da0e6d5ab8482c3  reviewers/audit_v.py  12309 bytes
+4e69879ef0a6774caed049e386f017eb99642b40c0dd873074d007cdc6ff21c8  reviewers/compact_form.py  877 bytes
+7167dad0c330d302a4cb7a49e5c66bb32d22a58282d6cf436fccf99ec56780e0  reviewers/indep_algebra.py  11772 bytes
+12242d4b79f688f7050fb359875d3d427d9723b1e8ae637cd77d4a9e7ecb4124  reviewers/indep_attack.py  14296 bytes
+b0b108aff9737a253319cc811b03f3bb716bf1c3c47b1b15cd296d22d2b31ccc  reviewers/independent_audit_sha.py  7679 bytes
+ba201ed388b5d2cf4bda8250e3d6e9d2aba0acf35a54ddf2589d0516253e61f3  reviewers/pq_proof.py  1471 bytes
+aebc8dd19a50b73a0776a6a8eb46f4bab4bf9fc357b438f36e4eade2db11e105  reviewers/probe1.py  501 bytes
+05e10a72149b313627a38a7fbf1b8737c5a61e490f78d45b39c39a8da7619508  reviewers/probe2.py  4939 bytes
+747dda9420751b46ff5c906d525bc4b7effc87f070743b23c2a3f73efe310287  reviewers/probe3.py  1024 bytes
+649a684af853e5e7a177f661f899c835153e64c8f894f5fe8695f14f24e1600b  reviewers/probe4.py  979 bytes
+bd47b85ce90973de3d021b7db34d225d98a4fc8951a3170a47dc30c397af13bb  reviewers/ref_sha.py  1997 bytes
+e5d5d65407cdcc32818f00a92e9b85453b2d88d6f14e26aa0efe0eb5228a294e  reviewers/refute_audit.py  5570 bytes
+96071054c424ddc93122f69590c6050092fb51157f9a2e53bbc865f0dd6b55d9  reviewers/refute_indep.py  9804 bytes
+17c1e8b1f8bb07204ee06b5c06a28376fcd03c43830d4df7efb2994200a4e0bd  reviewers/reports.json  89993 bytes
+b6960c31c1186e217e3f7d9c1fee7f3eede08bc16cc7aa2dd9b44affbf6cea6d  reviewers/super_v.py  12153 bytes
+b530c12a7f828132ba4d893e5fc0f4ac7e01537f58145d50ce56177e5d9ea61f  reviewers/ref2/indep_attack.py  5139 bytes
+770774e571370e1d4fc7a53fa8d5731f24ee707a360f6f0cc6a0a13efab8db92  reviewers/ref2/ref_sha.py  1918 bytes
+0e0d2e8bbbb205bca1d8e9c51381482446c48ff27a9ee54e222da58514c15780  reviewers/ref2/scale.py  463 bytes
+fd36bdcfa4c7cafee63cf18d706472dd9dec318807ca0f8f182943ff420edd5d  reviewers/ref2/__pycache__/indep_attack.cpython-312.pyc  14729 bytes
+c168bddcfd0886c94cc10d749f0cb17ff110352493a223c3a951b967dfba50ba  reviewers/ref2/__pycache__/ref_sha.cpython-312.pyc  5896 bytes
