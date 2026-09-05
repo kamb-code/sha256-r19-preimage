@@ -4,8 +4,8 @@ Convention: one-block reduced-round SHA-256 compression initialized with
 the standard SHA-256 IV. W[0..15] are arbitrary 32-bit words (no padding
 constraint). Verification: SHA256_compress_19(IV, W) + IV == target.
 
-All six preimages were independently verified with verify_r19.py.
-Verification command (any of the six):
+All seven preimages were independently verified with verify_r19.py.
+Verification command (any of the seven):
   python3 code/verify_r19.py --rounds 19 --hash <HASH> --words "<W0 .. W15>"
 
 

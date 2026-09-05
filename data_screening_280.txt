@@ -1,0 +1,15 @@
+loading table...
+
+contexts sampled = 280, a0 per context = 2,097,152  (440s)
+
+fixed points: mean 63.4  var 97082.1  variance/mean = 1530.14
+  top 10% of contexts hold 68.6% of the yield
+  top 25% of contexts hold 85.3% of the yield
+  min 0  median 12  max 4924
+  => OVERDISPERSED: screening the top decile would give ~6.9x the yield per context attacked
+
+lo-pass events: mean 0.0  var 0.1  variance/mean = 2.66
+  top 10% of contexts hold 100.0% of the yield
+  top 25% of contexts hold 100.0% of the yield
+  min 0  median 0  max 5
+  => OVERDISPERSED: screening the top decile would give ~10.0x the yield per context attacked

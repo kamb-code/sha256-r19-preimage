@@ -1,7 +1,7 @@
 # Filing package — Cryptology ePrint Archive
 
 Everything the ePrint submit form asks for, ready to paste. The PDF to upload is
-`paper_submask_r20.pdf` (A4, 14 pages, author e-mail on page 1).
+`paper_submask_r20.pdf` (A4, 15 pages, author e-mail on page 1).
 
 **Title**
 

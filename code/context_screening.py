@@ -84,10 +84,13 @@ def _score(sig, C, rng, nbatch, batch, iters, kseeds):
         T2_2a = S0(a1a) + maj(a1a, a0a, A_M1)
         F12a = u32(0) - T2_2a - E_M2 - S1(e1a) - ch(e1a, e0a, E_M1) - KU[2]
         W16s = s1(C["W14"]) + w9_init + s0(W1a) + W0a - a1a
+        # One mask for all seed chains: a fixed point reached by two chains is
+        # counted once.  (The 2026-08-10 campaign used a per-chain mask, i.e.
+        # counted per converged trajectory; see the paper's screening section.)
+        seen = np.zeros(a0a.size, dtype=bool)
         for sa2, sa3 in seeds:
             a2c = np.full(a0a.size, sa2, dtype=np.uint32)
             a3c = np.full(a0a.size, sa3, dtype=np.uint32)
-            seen = np.zeros(a0a.size, dtype=bool)
             for _it in range(iters):
                 T16a = C["a6"] - C["S0a5"] - maj(C["a5"], C["a4"], a3c)
                 Da3 = T16a + ch(C["e9"], C["e8"], a3c + C["T1_7"])

@@ -64,7 +64,7 @@ $\Maj(a_4,a_3,a_2)-a_3 \mmod$, whose vanishing is a bitwise condition of
 probability exactly $(3/4)^{32}$ rather than $2^{-32}$.  The measured cost of a
 19-round preimage falls from about $2^{38.3}$ swept values of $a_0$ to about
 $2^{15.25}$, within one per cent of the derived
-$1/(c^3(3/4)^{32})=39{,}124$: about 12 milliseconds of one CPU core.  We
+$1/(c^3(3/4)^{32})=39{,}124$: about 12 milliseconds of one CPU core after a reusable one-time table precomputation.  We
 exhibit 13{,}840 verified preimages produced in 152 seconds, and 108 preimages
 of the all-ones digest that Zaikin~\cite{Zaikin2026} inverted at 19 rounds in
 18~h~33~min on 192 cores.
@@ -81,10 +81,7 @@ it (about \$26 on that GPU, \$52 for the pair, against an expected 15~h and
 Section~\ref{sec:priority} (as of September 2026, covering the IACR ePrint
 archive, dblp, OpenAlex, arXiv and the SAT, CP and AI venues), no computed
 preimage of the SHA-256 compression function beyond 19 rounds has been
-published.  We also show that, for this construction, 21 rounds costs the full
-additional $2^{64}$: the fourth and fifth constraints are independent, and the dependency
-that blocks a further collapse passes through $\Sig0$ of the unknown itself,
-which no context word can saturate.  Neither lever is new on its own; the
+published.  We also give evidence that, for this construction, 21 rounds costs the full additional $2^{64}$: the fourth and fifth constraints are measured to be independent, and the dependency that blocks a further collapse passes through $\Sig0$ of the unknown itself, which no context word can saturate.  Neither lever is new on its own; the
 contribution is their combination and the bitwise collapse.  Nothing here
 affects full SHA-256.
 \end{abstract}
@@ -376,9 +373,7 @@ in the repository, which needs no table.
 
 \begin{corollary}[Yield]
 \label{cor:yield}
-With a single-root table of image fraction $c=0.633673$, each swept $a_0$
-yields $c^3=0.2545$ triangular solutions, of which a fraction $(3/4)^{32}$
-satisfy~\eqref{eq:eps}.  Every such triple is a 19-round preimage.  The
+Model the three lookups as returning words that are uniform and independent of $v$ and of one another; the count $3^{32}$ is exact for uniform independent pairs, and Section~\ref{sec:r19} tests the model.  Under it, with a single-root table of image fraction $c=0.633673$, each swept $a_0$ yields $c^3=0.2545$ triangular solutions, of which a fraction $(3/4)^{32}$ satisfy~\eqref{eq:eps}.  Every such triple is a 19-round preimage.  The
 expected number of swept $a_0$ per 19-round preimage is therefore
 \[
 \frac{1}{c^3\,(3/4)^{32}} \;=\; 39{,}124 \;=\; 2^{15.26}.
@@ -787,9 +782,7 @@ On 214{,}583 freshly generated 21-round candidates (84 targets,
 $8.4\times10^{9}$ swept $a_0$; \path{analysis/scripts/symdep/gen.log})
 satisfying everything up to the collapsed condition, the residuals of $C_3$ (at $W_{19}$) and $C_4$ (at
 $W_{20}$) are each uniform and their mutual information is below $10^{-5}$
-bits.  Twenty-one rounds therefore costs this construction the full $2^{64}$
-above nineteen, about $2^{77}$ swept $a_0$ with three-root tables ($2^{79}$
-with one), beyond reach.
+bits.  On this evidence we model 21 rounds as costing this construction the full $2^{64}$ above nineteen, about $2^{77}$ swept $a_0$ with three-root tables ($2^{79}$ with one), beyond reach; the measurement bounds the dependence between the two filters, it does not prove exact independence.
 
 \paragraph{What the preimage set does not contain.}
 We mined 51{,}268 verified 19-round preimages and 68{,}680 20-round
@@ -799,9 +792,7 @@ $a_0$, residue-class structure in $c_3$, and the entropy accounting of
 Proposition~\ref{prop:collapse}.  The 32 per-bit-position entropies of $(a_2,a_3)$ sum to $50.7189$ bits
 against the predicted $32\log_2 3=50.7188$ (each position
 $1.58496\pm0.00003$), and the 496 pairwise mutual informations between
-positions sum to $0.001$ bits, so within the resolution of the corpus the
-surviving pairs are uniform on the allowed set and the filter leaves no
-further structure; the GF(2) rank deficit is exactly the three carry-free least-significant
+positions sum to $0.001$ bits, so the surviving pairs are consistent with uniformity on the allowed set at first and second order; higher-order dependence is not excluded by this test, and its practical effect is bounded only by the yield audit and the Fourier scan above; the GF(2) rank deficit is exactly the three carry-free least-significant
 bit relations the construction implies; and no other test departed from its
 null.  Seven separate automated analyses (see the disclosure) proposed eight
 candidate levers, and a separate refutation pass rejected every one on
@@ -814,8 +805,9 @@ $69\sigma$ ``collision'' signal in $c_3$ until deduplicated.
 
 \paragraph{Computed preimages of round-reduced SHA-256.}
 16 rounds by SAT in 2012~\cite{Homsirikamol2012}; 17 and 18 rounds for the
-all-zero digest, 19 only in a weakened form (at most 24 of the 256 digest bits fixed, to
-zero), and 19-round collisions, by Davydov et~al.~\cite{Davydov2025}; 19 rounds for the
+all-zero digest, 19 only in a weakened form (at most 31 of the 256 digest bits fixed, to
+zero: 32 instances at one-bit steps, all but the 32-bit one solved), and
+19-round collisions, by Davydov et~al.~\cite{Davydov2025}; 19 rounds for the
 all-ones digest by Zaikin~\cite{Zaikin2026}, extending~\cite{Zaikin2024CP,
 Zaikin2024JAIR}; and 19 rounds for arbitrary digests, seven preimages, by our
 earlier paper~\cite{Basra2026R19}.  Before submitting we searched the IACR
@@ -889,7 +881,7 @@ silently.
   with a pairing on two context words is the step it did not take.
 \item The screening campaign of~\cite{Basra2026R19} reports a $3.41\times$
   lift in a downstream counter.  That figure is trajectory-counted;
-  duplicates are $0.03\%$, and identity-level deduplication can move it only
+  duplicates are $0.03\%$ of converged trajectories, and identity-level deduplication can move it only
   within $[2.42\times,3.44\times]$.  It is now of historical interest only.
 \end{itemize}
 
@@ -906,8 +898,7 @@ construction, with a fused GPU kernel and three-root tables, computes
 one A100; two are exhibited, one for the all-ones digest previously inverted
 at 19 rounds on 192 cores.  To our knowledge, as of September 2026 and after the search described in
 Section~\ref{sec:priority}, no computed preimage of the SHA-256 compression
-function beyond 19 rounds had previously been published.  For this construction, twenty-one rounds costs the full additional
-$2^{64}$, for a reason we can state exactly: the surviving dependency passes
+function beyond 19 rounds had previously been published.  For this construction, twenty-one rounds costs the full additional $2^{64}$ on the evidence we have, for a reason we can state exactly: the surviving dependency passes
 through $\Sig0$ of the unknown, which no context word can saturate.  We do
 not claim that this is fundamental.  Full SHA-256 is
 untouched.
@@ -1008,8 +999,8 @@ O.~Zaikin.
 O.~Zaikin.
 \newblock Preimage attacks on round-reduced {MD5}, {SHA-1}, and {SHA-256}
   using parameterized {SAT} solver.
-\newblock \emph{Constraints}, published online 23 January 2026 (received
-  28 March 2025).  DOI 10.1007/s10601-025-09383-0.
+\newblock \emph{Constraints}, 31:5, 2026 (received 28 March 2025, published
+  online 23 January 2026).  DOI 10.1007/s10601-025-09383-0.
 
 \bibitem{Bouam2021}
 M.~Bouam, C.~Bouillaguet, C.~Delaplace, and C.~No\^us.

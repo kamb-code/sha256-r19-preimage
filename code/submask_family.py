@@ -436,6 +436,8 @@ def main():
     ap.add_argument("--table", default=None)
     ap.add_argument("--seed", type=int, default=20260903)
     ap.add_argument("--trials", type=int, default=2000)
+    ap.add_argument("--v", type=lambda x: int(x, 0) & 0xFFFFFFFF, default=None,
+                    help="fix the family word v = a4 = a5 (default: random per context)")
     args = ap.parse_args()
 
     if not args.attack and not args.measure:
@@ -454,7 +456,7 @@ def main():
         t0 = time.time()
         tot = dict(a0=0, sol=0, eps0=0, ver=0)
         for ci in range(args.contexts):
-            st, out = attack_context(tbl, h, make_context(rng, R), R, args.a0, rng)
+            st, out = attack_context(tbl, h, make_context(rng, R, v=args.v), R, args.a0, rng)
             for k in tot:
                 tot[k] += st[k]
             for Wm in out:
@@ -475,9 +477,10 @@ def main():
         msg = bytes(rng.integers(0, 256, 55, dtype=np.uint8).tolist())
         pad = msg + b"\x80" + b"\x00" * (56 - 1 - 55) + struct.pack(">Q", 55 * 8)
         h = digest([struct.unpack(">I", pad[4 * i:4 * i + 4])[0] for i in range(16)], R)
-        st, _ = attack_context(tbl, h, make_context(rng, R), R, args.a0, rng)
-        for k in tot:
-            tot[k] += st[k]
+        for _ci in range(args.contexts):
+            st, _ = attack_context(tbl, h, make_context(rng, R, v=args.v), R, args.a0, rng)
+            for k in tot:
+                tot[k] += st[k]
         print(f"target {ti} {h.hex()[:16]}...: solutions {st['sol']:,} "
               f"({st['sol']/max(st['surv'],1):.4f}/survivor) eps==0 {st['eps0']:,} "
               f"verified {st['ver']}", flush=True)

@@ -5,10 +5,12 @@ of two documents, kept deliberately separate.
 
 > **Main paper** — "A Practical Preimage Attack on the 19-Round SHA-256
 > Compression Function via a Global σ₀-Difference Table"
-> `paper_r19_final.pdf` / `paper_r19_final.tex` (16 pp)
+> `paper_r19_final.pdf` / `paper_r19_final.tex` (18 pp)
 >
-> The attack, six verified preimages, the measured success rate, and the
-> preregistered screening campaign. This is the self-contained result.
+> The attack, seven verified preimages (six of random digests, one of the
+> all-ones digest), the measured success rate, and the preregistered
+> screening campaign. Its cost figures are for random contexts and are
+> superseded by the second paper below.
 
 > **Companion note** — "The 20-Round Barrier for Table-Based Preimage Attacks
 > on SHA-256"
@@ -27,7 +29,7 @@ of two documents, kept deliberately separate.
 > **Second paper** — "Context Shaping for Reduced-Round SHA-256
 > Compression-Function Preimages: Nineteen Rounds in Milliseconds, and
 > Computed Preimages at Twenty Rounds"
-> `paper_submask_r20.pdf` / `paper_submask_r20.tex` (14 pp), filing package
+> `paper_submask_r20.pdf` / `paper_submask_r20.tex` (15 pp), filing package
 > `SUBMISSION.md`
 >
 > Choosing the context so that a4 = a5 and e8 = e9 = 0xFFFFFFFF removes the
@@ -185,8 +187,8 @@ saved to a `.txt` file.
 **Success rate.** The preregistered 240-context campaign measured
 μ̂ = 3/240 = 1.25×10⁻² per context (95 % Poisson interval
 [2.6×10⁻³, 3.7×10⁻²]); all three events were in the screened arm and the
-control arm gave 0/120. The three dedicated runs succeeded after 3, 20 and 34
-contexts. Expect tens of contexts, i.e. tens of minutes, per preimage, with a
+control arm gave 0/120. The three dedicated runs succeeded in their 4th, 21st
+and 35th contexts (solver indices 3, 20 and 34). Expect tens of contexts, i.e. tens of minutes, per preimage, with a
 wide spread.
 
 **Generate a target of your own:** run the verifier without `--hash` and it
@@ -254,9 +256,12 @@ publish/
   LICENSE                    — MIT (code and data); papers are author copyright
   CITATION.cff               — citation metadata
   requirements.txt           — Python dependencies and the recorded versions
-  paper_r19_final.pdf/.tex   — main paper (16 pages)
+  paper_r19_final.pdf/.tex   — main paper (18 pages)
+  RESUBMISSION_R19.md        — ePrint filing package for the main paper
+  data_screening_validation.json, data_screening_280.txt,
+  data_screening_notes_20260808.md — archived screening runs behind §5.7
   paper_r20_barrier.pdf/.tex — companion note (10 pages)
-  paper_submask_r20.pdf/.tex — second paper (14 pages); supersedes the cost
+  paper_submask_r20.pdf/.tex — second paper (15 pages); supersedes the cost
                                figures of the two documents above
   SUBMISSION.md              — ePrint filing package for the second paper
   experiments/submask_2026-09-03/ — the second paper's evidence: as-run scripts,
