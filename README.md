@@ -5,7 +5,7 @@ of two documents, kept deliberately separate.
 
 > **Main paper** — "A Practical Preimage Attack on the 19-Round SHA-256
 > Compression Function via a Global σ₀-Difference Table"
-> `paper_r19_final.pdf` / `paper_r19_final.tex` (18 pp)
+> `paper_r19_final.pdf` / `paper_r19_final.tex` (19 pp)
 >
 > The attack, seven verified preimages (six of random digests, one of the
 > all-ones digest), the measured success rate, and the preregistered
@@ -76,9 +76,7 @@ with all 256 bits fixed, in the same attack model as here: 18 h 33 min on
 Cube-and-Conquer, via an intermediate problem between rounds 18 and 19. We
 make **no priority claim** at 19 rounds. The contribution here is a
 different, algebraic route whose cost is 25 to 89 s per attempt on one H100
-(one or four seed chains) with roughly one attempt in eighty succeeding in
-the four-chain campaign, i.e. about two GPU-hours per arbitrary digest in
-expectation, with complete artefacts. **On his own target, the all-ones
+(one or four seed chains) with roughly one attempt in eighty succeeding when both arms of the four-chain campaign are pooled (3/240; screened arm 3/120, control arm 0/120), i.e. about two GPU-hours per arbitrary digest at that pooled rate and nearer three for a uniformly random context, with complete artefacts. **On his own target, the all-ones
 digest, this attack found a different preimage (P7 below) after 84 attempts,
 123 minutes on one H100**, so it is also a second preimage of that digest.
 
@@ -188,8 +186,7 @@ saved to a `.txt` file.
 μ̂ = 3/240 = 1.25×10⁻² per context (95 % Poisson interval
 [2.6×10⁻³, 3.7×10⁻²]); all three events were in the screened arm and the
 control arm gave 0/120. The three dedicated runs succeeded in their 4th, 21st
-and 35th contexts (solver indices 3, 20 and 34). Expect tens of contexts, i.e. tens of minutes, per preimage, with a
-wide spread.
+and 35th contexts (solver indices 3, 20 and 34). Expect of order eighty contexts per preimage at the pooled campaign rate (about two GPU-hours at 89 s per context; the unscreened control arm gave 0/120, so a uniformly random context is nearer three hours), with a wide spread.
 
 **Generate a target of your own:** run the verifier without `--hash` and it
 prints the 19-round digest of the words you give it.
@@ -240,8 +237,7 @@ a7 → a6 → a5 pins all three (200/200 contexts; independent of the swept
 a0..a3, 1500/1500). Four context words stay free.
 
 **No padded preimage has been demonstrated.** A 167-context H100 run
-produced 6,762 lo-passes and zero hi-passes where about 1.1 hi-passes were
-expected (P(0) ≈ 0.32), so the run is uninformative rather than negative.
+produced 6,762 lo-passes and zero hi-passes where one to two hi-passes were expected at the projected 6×10⁻³ and the pooled campaign rate 1.25×10⁻² (P(0) between 0.37 and 0.12), so the run is uninformative rather than negative.
 Padded contexts yield normally (40.5 lo-passes per context against 33.7
 unpadded). Raw log: `data_padded_run.txt`. The paper therefore claims only
 the compression-function result.
@@ -256,7 +252,7 @@ publish/
   LICENSE                    — MIT (code and data); papers are author copyright
   CITATION.cff               — citation metadata
   requirements.txt           — Python dependencies and the recorded versions
-  paper_r19_final.pdf/.tex   — main paper (18 pages)
+  paper_r19_final.pdf/.tex   — main paper (19 pages)
   RESUBMISSION_R19.md        — ePrint filing package for the main paper
   data_screening_validation.json, data_screening_280.txt,
   data_screening_notes_20260808.md — archived screening runs behind §5.7
@@ -287,7 +283,7 @@ publish/
                                helped on 31/40 targets, hurt on 9; conversion
                                to preimages unmeasured (3 vs 0, p = 0.125).
     context_screening.py     — per-context productivity and its predictiveness
-                               (Spearman 0.91 between independent 2^20 samples;
+                               (Spearman 0.929 between independent 2^20 samples in the archived run, 0.91 in an earlier one;
                                top-1 % keep gives 12.99x FIXED-POINT lift, a
                                statement about fixed points only).
     screening_validation.py  — predictiveness and keep-fraction economics.
@@ -330,9 +326,7 @@ publish/
 with one equal output word of full SHA-256 and multi-block output
 differences of Hamming weight 72/256. They are kept for completeness and
 are **not claimed as results**: over 2³² fixed-difference trials the expected
-minimum Hamming weight of an unbiased 256-bit difference is 78, and over the
-2³⁷–2³⁹ evaluations of the multi-block searches it is 72–74, so the observed
-minima are at the level of chance, and one-word equalities occur at the
+minimum Hamming weight of an unbiased 256-bit difference is 78, and over the 2³⁷–2³⁹ evaluations of the multi-block searches it is 74–73, so a minimum of 72 occurs by chance with probability 0.11–0.38 and the observed minima are at the level of chance, and one-word equalities occur at the
 birthday rate 2⁻³² per word. The main paper's Appendix A says the same.
 Several of these scripts need CuPy and a GPU; `schedule_differential.py`
 runs a 2²⁰-step CPU loop before its GPU phase.

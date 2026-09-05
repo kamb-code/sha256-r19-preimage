@@ -101,7 +101,7 @@ compression function and not the length-padded hash.  For a single-block
 55-byte message the padding fixes $W_{14}$, $W_{15}$ and the low byte of
 $W_{13}$; those three conditions can be met by choosing three of the
 attack's context words in closed form (\texttt{padded\_preimage.py} in the
-artefacts), but a 167-attempt run produced no padded preimage where one to two were expected at the projected $6\times10^{-3}$ and at the pooled campaign rate ($P(0)$ between $0.12$ and $0.29$), so the run neither confirms nor excludes the padded variant and we claim only the compression-function result.
+artefacts), but a 167-attempt run produced no padded preimage where one to two were expected at the projected $6\times10^{-3}$ and at the pooled campaign rate ($P(0)$ between $0.12$ and $0.37$), so the run neither confirms nor excludes the padded variant and we claim only the compression-function result.
 
 \paragraph{Prior work.}
 Theoretical preimage attacks on step-reduced SHA-256 reach far beyond 19
@@ -111,7 +111,7 @@ steps at $2^{240}$; Aoki et al.~\cite{AokiGuo2009} reach 43 steps at
 $2^{254.9}$ by meet-in-the-middle; Khovratovich, Rechberger and
 Savelieva~\cite{KRS2012} reach 45 steps at $2^{255.5}$ with bicliques; Guo, Li, Liu, Wang and Zhang~\cite{GuoLiLiuWangZhang2026} have since extended the meet-in-the-middle line to 46 steps at $2^{254.5}$ and 47 steps at $2^{255.6}$.  None of these has been executed in full.  Collision attacks are a different problem and are far more advanced: Li, Liu and Wang~\cite{LiLiuWang2024} lowered the 31-step collision attack on SHA-256 to $2^{49.8}$ and Li et al.~\cite{LiLiuWangDongSun2024} then computed a practical 31-step collision, both building on local-collision techniques~\cite{SanadhyaSarkar2008,MendelNadSchlaffer2013}; they do not yield preimages.
 
-The practical preimage frontier belongs to SAT-based cryptanalysis, which Mironov and Zhang~\cite{MironovZhang2006} introduced for hash functions in the collision setting.  Davydov, Pikh\-tov\-ni\-kov,
+The practical preimage frontier belongs to SAT-based cryptanalysis, which Mironov and Zhang~\cite{MironovZhang2006} applied early to hash functions, in the collision setting.  Davydov, Pikh\-tov\-ni\-kov,
 Kir\-ya\-no\-va and Zaikin~\cite{Davydov2025} find preimages of the 17- and 18-round
 compression function with Kissat under six CNF encodings (CBMC, Transalg, and four adder variants of SAT-encoding), report 19 rounds as unsolved under every one of them, and reach 19 rounds only in a weakened
 form in which at most 31 of the 256 output bits are constrained, and they also report 19-round collisions, a different problem; their published benchmark instances target the all-zero digest.  For SHA-256 both literatures use ``round'' and ``step'' for the same 64 applications of the step function, so no prior result changes its round count under the other convention.
@@ -276,7 +276,7 @@ three consistency constraints at $R=19$:
   W_{17} &= \sig{1}(W_{15}) + W_{10} + \sig{0}(W_2) + W_1, \tag{C1}\\
   W_{18} &= \sig{1}(W_{16}) + W_{11} + \sig{0}(W_3) + W_2. \tag{C2}
 \end{align}
-Here $W_{16}, W_{17}, W_{18}$ are recovered from the target alone via the
+Here $W_{16}, W_{17}, W_{18}$ are recovered from the target and the context via the
 backward chain and~\eqref{eq:W-round-inv}, using the known
 $a_{11},\ldots,a_{18}$ together with the context values
 $a_4,\ldots,a_{10}$ (which supply $e_{12},e_{13},e_{14}$ through $a_8,a_9,a_{10}$; together with $e_{15},e_{16},e_{17}$ from the chain alone these are the $e$-words that~\eqref{eq:W-round-inv} needs at $r=16,17,18$).  Similarly $W_{14}$
@@ -296,7 +296,7 @@ of $2^{32}$ 32-bit entries:
 \]
 where $u$ is a representative satisfying $\sig{0}(u) - u \equiv v
 \pmod{2^{32}}$, or a sentinel $\perp$ if no such $u$ exists.
-When multiple $u$ share the same $v$, the largest such $u$ is stored; this is the policy of the published table and of every run reported here, and \S\ref{sec:complexity} (E3) tests the alternative.  On disk the table is an \texttt{int32} array with sentinel $-1$; the single value $v=\mathtt{0x20000000}$, whose only root is $u=\mathtt{0xFFFFFFFF}$, then coincides with the sentinel, one entry in $2.7\times10^{9}$.  The GPU build uses the \texttt{int32} minimum as sentinel and has no such collision.
+When multiple $u$ share the same $v$, the published table stores the largest such $u$ (verified exhaustively).  The GPU build used for the runs (\texttt{build\_table} in \texttt{h100\_extended.py}) writes the roots in ascending order of $u$ with a CUDA scatter whose choice among repeated indices PyTorch does not specify, so its representative of a multi-root $v$ is a root of $v$ but is not guaranteed to be the largest; \S\ref{sec:complexity} (E3) shows the measured rates are insensitive to the policy.  On disk the table is an \texttt{int32} array with sentinel $-1$; the single value $v=\mathtt{0x20000000}$, whose only root is $u=\mathtt{0xFFFFFFFF}$, then coincides with the sentinel, one entry in $2.7\times10^{9}$.  The GPU build uses the \texttt{int32} minimum as sentinel and has no such collision.
 \end{definition}
 
 \paragraph{Construction.}
@@ -361,10 +361,11 @@ context values and backward-chain values:
 From these: $W_0 = a_0 + C_0$ and $e_0 = a_0 + C_{e_0}$, both
 linear in $a_0$.
 
-For the context rounds $r = 7,\ldots,11$, compute
-$T_2^{(r)}, T_1^{(r)}, e_r$ from~\eqref{eq:T1}--\eqref{eq:e} using
-the context $a_4,\ldots,a_{10}$ together with $a_{11}$ from the backward
-chain.
+For the context rounds $r = 7,\ldots,11$, compute $T_2^{(r)}$ and
+$T_1^{(r)}$, and for $r=8,\ldots,11$ also $e_r = a_{r-4} + T_1^{(r)}$,
+from~\eqref{eq:T1}--\eqref{eq:e} using the context $a_4,\ldots,a_{10}$
+together with $a_{11}$ from the backward chain.  ($e_7 = a_3 + T_1^{(7)}$
+depends on the unknown $a_3$ and is not a context constant.)
 Define:
 \begin{align}
   W_9^{\mathrm{base}} &= T_1^{(9)} - \Sig{1}(e_8) - K_9, \label{eq:W9base}\\
@@ -522,7 +523,7 @@ and $W_{16}^* = W_{16}^{\mathrm{sched}} - a_1$.  Then:
   F_{\mathrm{C1}}(a_3) &= W_{17}^{\mathrm{bc}} - \sig{1}(W_{15})
     - W_1 - \mathit{CONST}_{10} - F_{12} + D(a_3)
     = \sig{0}(W_2) - W_2, \tag{C1-target}\\
-  F_{\mathrm{C2}}(a_2,a_3) &= W_{18}^{\mathrm{bc}} - \sig{1}(W_{16}^*)
+  F_{\mathrm{C2}}(a_2) &= W_{18}^{\mathrm{bc}} - \sig{1}(W_{16}^*)
     - W_{11}^{\mathrm{base}} - W_2 - F_{23}(a_0,a_1,a_2)
     = \sig{0}(W_3) - W_3, \tag{C2-target}
 \end{align}
@@ -583,24 +584,25 @@ Using $W_3 = a_3 + F_{23}$, the $a_3$ terms cancel:
      + a_3 - W_2 - a_3 - F_{23}\\
   &= W_{18}^{\mathrm{bc}} - \sig{1}(W_{16}^*) - W_{11}^{\mathrm{base}}
      - W_2 - F_{23}
-   = F_{\mathrm{C2}}(a_2,a_3).
+   = F_{\mathrm{C2}}(a_2).
 \end{align*}
 \end{proof}
 
 \paragraph{Iteration.}
 The joint C1/C2 system defines a map
 \[
-  (a_2,a_3) \;\mapsto\;
-  \bigl(\mathcal{T}[F_{\mathrm{C1}}(a_3)] - F_{12},\;
-        \mathcal{T}[F_{\mathrm{C2}}(a_2,a_3)] - F_{23}\bigr).
+  (a_2,a_3) \;\mapsto\; (a_2',a_3'),\qquad
+  a_2' = \mathcal{T}[F_{\mathrm{C1}}(a_3)] - F_{12},\qquad
+  a_3' = \mathcal{T}[F_{\mathrm{C2}}(a_2')] - F_{23}(a_0,a_1,a_2'),
 \]
+in which the C2 lookup uses the freshly updated $a_2'$ (Gauss--Seidel order, as implemented in \texttt{h100\_extended.py}); a step in which either lookup misses leaves the pair unchanged.
 We iterate from a seed $(a_2^{(0)}, a_3^{(0)})$ for up to $8$ steps.
 A \emph{convergent pair} is one at which both C1 and C2 are satisfied
 simultaneously, i.e., the map is a fixed point.  Empirical convergence
 rate: $1.3$--$1.9\times10^{-5}$ per C0 survivor (E1, \S\ref{sec:complexity}).
 
 \paragraph{K-seed optimisation.}
-Pre-computing $K$ initial pairs $(a_2,a_3)$ that satisfy the low-16-bit constraint $W_9^{\mathrm{conv}}(a_2,a_3) \bmod 2^{16} = \hat{W}_9 \bmod 2^{16}$, i.e.\ $\varepsilon(a_2,a_3) \equiv 0 \pmod{2^{16}}$, was measured to improve the convergence rate by $\approx 3.3\times$ on fixed points in an early pilot; no per-context lo-pass difference is visible between the $K_{\mathrm{seeds}}{=}0$ and $K_{\mathrm{seeds}}{=}4$ datasets of Table~\ref{tab:stats}.
+Pre-computing $K$ initial pairs $(a_2,a_3)$ that satisfy the low-16-bit constraint $W_9^{\mathrm{conv}}(a_2,a_3) \bmod 2^{16} = \hat{W}_9 \bmod 2^{16}$, i.e.\ $\varepsilon(a_2,a_3) \equiv 0 \pmod{2^{16}}$, was measured in an early pilot to yield about $3.3\times$ more $W_9$ lo-pass events per unit of compute than the single $(0,0)$ start; no per-context lo-pass difference is visible between the $K_{\mathrm{seeds}}{=}0$ and $K_{\mathrm{seeds}}{=}4$ datasets of Table~\ref{tab:stats}.
 
 \subsection{W9 Bit-Filter}
 \label{sec:w9filter}
@@ -773,7 +775,7 @@ deduplicated on the fixed-point identity $(a_0,a_1,a_2,a_3)$ within a context.
 \paragraph{What the three dedicated finds do and do not establish.}
 The three dedicated runs found preimages in their 4th, 21st and 35th contexts (solver indices 3, 20 and 34): three successes over 60 attempted contexts, $\hat p = 0.050$ with an exact 95\% interval of $[0.010,\,0.139]$.  The $6\times10^{-3}$ projection lies \emph{below} that interval. Under $p=0.006$, observing three or more successes in 60 contexts has probability $0.006$, so either the historical runs were unusually favourable
 or the projection is low.  Two very small samples are in tension here, and
-neither settles the rate.  It is not compatible with the uniform-filter model: at
+neither settles the rate.  The observation is, however, not compatible with the uniform-filter model: at
 $p\approx5\times10^{-4}$ the same observation has probability $4\times10^{-6}$,
 so the finds do falsify the uniform model even though they cannot pin the true
 rate.  We therefore present them as demonstrations of feasibility, not as a
@@ -954,7 +956,7 @@ P6 & \texttt{09156002 031fed28 99bc67d0 e419b6ff} & campaign \\
    & \texttt{be3fb206 b9738756 b4ca33e3 b8354a95} & \\
 \midrule
 P7 & \texttt{ffffffff ffffffff ffffffff ffffffff} & 7{,}373\,s \\
-   & \texttt{ffffffff ffffffff ffffffff ffffffff} & ctx~84$^\ddagger$ \\
+   & \texttt{ffffffff ffffffff ffffffff ffffffff} & ctx~83$^\ddagger$ \\
    & \texttt{3c6ff45c a5b23f8d dc6b8089 4f232935} & $W_0$--$W_7$ \\
    & \texttt{79578e14 9c2da339 b22ec37a 9554191b} & \\
    & \texttt{e69661f0 49a43b7a d8c60a2b 88d7588c} & $W_8$--$W_{15}$ \\
@@ -967,8 +969,8 @@ Each row of Table~\ref{tab:preimages} was independently verified by
 the following procedure:
 \begin{enumerate}
   \item Parse the 16 words $W_0,\ldots,W_{15}$ as a 512-bit block.
-  \item Run the standard SHA-256 message schedule for 19 rounds,
-    initialised with the standard IV.
+  \item Run the SHA-256 compression function for 19 rounds from the
+    standard IV, with the standard message schedule.
   \item Add the final state to the IV word-by-word.
   \item Confirm the resulting 32-byte value equals the target hash.
 \end{enumerate}
@@ -1044,9 +1046,7 @@ al.~\cite{Davydov2025} use three encoding tools, CBMC, Transalg and SAT-encoding
 the 17- and 18-round compression function (18 rounds in $2.38$--$20.6$\,s
 depending on encoding), and report 19 rounds as not solved for every
 encoding tried.  Their weakened 19-round problem constrains only a zero
-prefix of the output: plain Kissat reached a 24-bit prefix, and a 24-hour
-cube-and-conquer run on 16 cores solved every case except the 32-bit one,
-i.e.\ at most 31 of the 256 output bits.  The authors conclude that finding a 19-round preimage ``is too difficult a task even if the SAT encoding is carefully chosen and parallel computing is used'' (our translation; the article is in Russian with an English abstract).  Their published benchmark
+prefix of the output: plain Kissat reached a 24-bit prefix, and a 24-hour cube-and-conquer run on 16 cores, applied to eight of the remaining instances, solved all of them except the 32-bit one, i.e.\ at most 31 of the 256 output bits.  The authors conclude that finding a 19-round preimage ``is too difficult a task even if the SAT encoding is carefully chosen and parallel computing is used'' (our translation; the article is in Russian with an English abstract).  Their published benchmark
 instances fix the all-zero digest as the target.
 
 Zaikin~\cite{Zaikin2026} inverted the 19-round compression function first,
@@ -1062,7 +1062,7 @@ by his account, a solution of that intermediate problem is a 19-round
 preimage with probability $1/8$ and the solutions found at $20$, $24$ and
 $28$ kept bits were not, the reported time is a single favourable draw;
 taken as an expectation his route costs about eight times that figure, and
-there is no second success to estimate the spread.  Our rate, by contrast, is measured over $240$ preregistered attempts with an interval (\S\ref{sec:complexity}), and the $98$ further attempts on his target (two full matches, one of them discarded by the bug described below) and the $60$ of the three dedicated runs are consistent with it.  The attack model is the same as ours (his published preimage, Table~7 of~\cite{Zaikin2026}, verifies under \texttt{verify\_r19.py} at 19 rounds).  What the present work adds is a
+there is no second success to estimate the spread.  Our rate, by contrast, is measured over $240$ preregistered attempts with an interval (\S\ref{sec:complexity}), and the $98$ further attempts on his target (two full matches, one of them discarded by the bug described below) and the $60$ of the three dedicated runs ($3/60$, interval $[0.010, 0.139]$) do not contradict it, the intervals overlapping.  The attack model is the same as ours (his published preimage, Table~7 of~\cite{Zaikin2026}, verifies under \texttt{verify\_r19.py} at 19 rounds).  What the present work adds is a
 different method with a different cost profile: after a one-time $16$\,GB
 precomputation, each attempt is one $2^{32}$ sweep on a single GPU, about $25$\,s with a single seed chain and $89$\,s with the four chains used in the campaign of \S\ref{sec:screening}, where about one attempt in eighty succeeded when both arms are pooled ($3/120$ screened, $0/120$ control), so a preimage of an arbitrary digest costs about two hours of one H100 at that pooled rate, within a 95\% interval spanning a factor of 14, and seven preimages, six of random digests and one of the all-ones digest, are published together with the code that found them.  We do not convert
 between GPU-hours and CPU core-hours; the two figures are simply stated.
@@ -1168,14 +1168,14 @@ GPU sweeps built on this difference located message pairs with one equal
 output word of the full 64-round compression function, and multi-block
 coordinate descent reached output differences of Hamming weight $72/256$.
 We record these only to state why they are not results.  For a fixed input
-difference, the expected minimum Hamming weight of a random 256-bit output difference over $2^{32}$ independent trials is $79$ (median $78$), and over the $2^{37}$--$2^{39}$ evaluations used by the multi-block searches it is $75$--$74$; a minimum of $72$ or below occurs by chance with probability $0.11$--$0.38$ over that many independent trials, and a directed descent does at least as well.  The
+difference, the expected minimum Hamming weight of a random 256-bit output difference over $2^{32}$ independent trials is $78$ (median $78$), and over the $2^{37}$--$2^{39}$ evaluations used by the multi-block searches it is $74$--$73$; a minimum of $72$ or below occurs by chance with probability $0.11$--$0.38$ over that many independent trials, and a directed descent does at least as well.  The
 observed minima ($75$--$95$ over single $2^{32}$ sweeps, $72$ after
 multi-block descent) are therefore at the level expected of an unbiased
 difference, and one-word equalities occurred at the uniform rate of $2^{-32}$ per output word per trial.  The code and data remain in the repository for
 completeness.
 
 %-----------------------------------------------------------------------
-\paragraph{Note added, September 2026.}  After this paper was written, a chosen-context variant of the attack~\cite{Basra2026Submask} imposed three conditions on the context words ($a_4=a_5$, $e_8=e_9=\mathtt{0xFFFFFFFF}$), which removes the fixed-point iteration and collapses the consistency check to a bitwise condition.  It reduces the cost of a 19-round preimage from about $2^{38.3}$ to about $2^{15.3}$ swept $a_0$ and reaches 20 rounds, where the fourth constraint remains an exact $2^{-32}$ filter, giving about $2^{45.4}$ swept $a_0$ per preimage (about 15 hours on one A100); two computed 20-round preimages are reported there, one of the all-ones digest.  That paper supersedes the cost figures here, and the screening result of \S\ref{sec:screening} is of historical interest only for the attack it was measured on.  The figures in this paper are those of the random-context attack and remain correct for it.
+\paragraph{Note added, September 2026.}  After this paper was written, a chosen-context variant of the attack~\cite{Basra2026Submask} imposed three conditions on the context ($a_4=a_5$, and for the derived words $e_8=e_9=\mathtt{0xFFFFFFFF}$), which removes the fixed-point iteration and collapses the consistency check to a bitwise condition.  It reduces the cost of a 19-round preimage from about $2^{38.3}$ swept $a_0$ (80 attempts at the pooled campaign rate) to about $2^{15.3}$ and reaches 20 rounds, where the fourth constraint remains an exact $2^{-32}$ filter, giving about $2^{45.4}$ swept $a_0$ per preimage (about 15 hours on one A100); two computed 20-round preimages are reported there, one of the all-ones digest.  That paper supersedes the cost figures here, and the screening result of \S\ref{sec:screening} is of historical interest only for the attack it was measured on.  The figures in this paper are those of the random-context attack and remain correct for it.
 
 \begin{thebibliography}{10}
 
@@ -1210,8 +1210,7 @@ K.~Aoki, J.~Guo, K.~Matusiewicz, Y.~Sasaki, and L.~Wang.
 J.~Guo, H.~Li, M.~Liu, S.~Wang, and T.~Zhang.
 \newblock Dual-syncopation meet-in-the-middle attacks: new results on
   {SHA-2} and {MD5}.
-\newblock In \emph{Advances in Cryptology -- EUROCRYPT 2026, Part VI},
-  LNCS 16546, pp.~121--151. Springer, 2026.
+\newblock In \emph{Advances in Cryptology -- EUROCRYPT 2026}, LNCS 16546, pp.~121--151. Springer, 2026.
   DOI 10.1007/978-3-032-25333-0\_5.  Cryptology ePrint Archive, Report
   2026/353.
 
@@ -1265,7 +1264,8 @@ V.~V.~Davydov, M.~D.~Pikhtovnikov, A.~P.~Kiryanova, and O.~S.~Zaikin.
 O.~Zaikin.
 \newblock Preimage attacks on round-reduced {MD5}, {SHA-1}, and {SHA-256}
   using parameterized {SAT} solver.
-\newblock \emph{Constraints}, 31:5, 2026 (received 28 March 2025, published online 23 January 2026).  DOI 10.1007/s10601-025-09383-0.
+\newblock \emph{Constraints}, 2026 (received 28 March 2025, accepted 16 December
+  2025, published online 23 January 2026).  DOI 10.1007/s10601-025-09383-0.
 
 \end{thebibliography}
 \end{document}
