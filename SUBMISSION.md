@@ -87,6 +87,6 @@ affects full SHA-256.
   https://github.com/kamb-code/sha256-r19-preimage
 * The earlier manuscript is cited as a manuscript, not as an ePrint report,
   because it is not on the archive.
-* Decide whether to keep the acknowledgement of AI assistance. It is accurate
-  as written; several venues now require such a statement, and ePrint does not
-  forbid one.
+* The acknowledgement of AI assistance is kept, by the author's decision, in
+  both papers. It is accurate as written; several venues now require such a
+  statement, and ePrint does not forbid one.

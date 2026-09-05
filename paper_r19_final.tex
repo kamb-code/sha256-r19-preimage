@@ -1177,6 +1177,19 @@ completeness.
 %-----------------------------------------------------------------------
 \paragraph{Note added, September 2026.}  After this paper was written, a chosen-context variant of the attack~\cite{Basra2026Submask} imposed three conditions on the context ($a_4=a_5$, and for the derived words $e_8=e_9=\mathtt{0xFFFFFFFF}$), which removes the fixed-point iteration and collapses the consistency check to a bitwise condition.  It reduces the cost of a 19-round preimage from about $2^{38.3}$ swept $a_0$ (80 attempts at the pooled campaign rate) to about $2^{15.3}$ and reaches 20 rounds, where the fourth constraint remains an exact $2^{-32}$ filter, giving about $2^{45.4}$ swept $a_0$ per preimage (about 15 hours on one A100); two computed 20-round preimages are reported there, one of the all-ones digest.  That paper supersedes the cost figures here, and the screening result of \S\ref{sec:screening} is of historical interest only for the attack it was measured on.  The figures in this paper are those of the random-context attack and remain correct for it.
 
+\section*{Acknowledgements and disclosure}
+The derivations, code, experiments, verification and text of this paper, and
+the corrections made for this resubmission, were developed with substantial
+assistance from an AI system (Anthropic's Claude, used through Claude Code)
+operating under the author's direction.  The fact-checking passes that
+preceded resubmission, in which every number was recomputed from the archived
+data and every citation resolved against its source, were likewise carried out
+by separate AI-agent sessions working from fresh implementations, not by human
+referees; their reports are in the repository under
+\path{experiments/submask_2026-09-03/reviewers/}.  All results were verified by
+code that shares nothing with the attack implementation and can be reproduced
+from the repository.
+
 \begin{thebibliography}{10}
 
 \bibitem{Basra2026Submask}
