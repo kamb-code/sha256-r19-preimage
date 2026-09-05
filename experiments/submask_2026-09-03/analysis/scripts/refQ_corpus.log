@@ -1,0 +1,24 @@
+(a) max-representative signature in the corpus message words
+    exact bit means of ALL stored max representatives (from lin_N_table.log, bits 24..31):
+      0.501086 0.501931 0.503720 0.507737 0.515409 0.530850 0.561988 0.622566
+    r19 W1: bits24..31 mean 0.5050 0.5032 0.5085 0.5069 0.5148 0.5286 0.5624 0.6229   n=51268
+    r19 W2: bits24..31 mean 0.5019 0.5021 0.5051 0.5053 0.5167 0.5327 0.5605 0.6234   n=51268
+    r19 W3: bits24..31 mean 0.4984 0.4988 0.5040 0.5049 0.5158 0.5342 0.5573 0.6237   n=51268
+    r19 W0 (control, not a root): 0.5012 0.4993 0.4983 0.5015 0.4983 0.4960 0.4974 0.5026
+    r20 W1: bits24..31 mean 0.4990 0.5027 0.5044 0.5087 0.5167 0.5315 0.5598 0.6237   n=68680
+    r20 W2: bits24..31 mean 0.5060 0.5015 0.5063 0.5098 0.5150 0.5290 0.5598 0.6252   n=68680
+    r20 W3: bits24..31 mean 0.5005 0.5048 0.5036 0.5068 0.5170 0.5321 0.5585 0.6214   n=68680
+    r20 W0 (control, not a root): 0.4999 0.5001 0.4993 0.4966 0.4966 0.4995 0.4996 0.5023
+
+(b) does the measured sweep survival separate p^3 from (1-1/e)^3?
+    lin_K_seq_big: 21348062/83886080 = 0.254489 +- 0.000048
+      p^3 (exact image)        = 0.254446   z = +0.91
+      (1-1/e)^3 (random map)   = 0.252580   z = +40.13
+    -> the exact constant is the right one; the random-map constant is excluded.
+    size of the correction: +0.01061 bits out of the ~45.4 bits of R=20 cost
+
+(c) can the image anomaly touch the fourth constraint?
+    r20 residual c3: n=68680, zeros=0, mean=2.151e+09
+    W1: max |z| of a residual bit mean over 16 top-nibble buckets x 32 bits = 3.03  (512 tests, Bonferroni 5% threshold z=3.9)
+    W2: max |z| of a residual bit mean over 16 top-nibble buckets x 32 bits = 3.11  (512 tests, Bonferroni 5% threshold z=3.9)
+    W3: max |z| of a residual bit mean over 16 top-nibble buckets x 32 bits = 2.81  (512 tests, Bonferroni 5% threshold z=3.9)

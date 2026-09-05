@@ -1,0 +1,110 @@
+n = 68680, contexts = 40
+
+=== 1. per-bit marginals of c3 (pooled over all 40 contexts) ===
+ bit   p(bit=1)    dev/sd      |  within-ctx-centred chi2 vs 40 df
+   0   0.501558     +0.82     | chi2=   36.9 (E=40, sd=8.9)
+   1   0.499636     -0.19     | chi2=   35.5 (E=40, sd=8.9)
+   2   0.498034     -1.03     | chi2=   54.4 (E=40, sd=8.9)
+   3   0.499388     -0.32     | chi2=   43.1 (E=40, sd=8.9)
+   4   0.496855     -1.65     | chi2=   59.2 (E=40, sd=8.9)
+   5   0.502548     +1.34     | chi2=   29.2 (E=40, sd=8.9)
+   6   0.500393     +0.21     | chi2=   35.2 (E=40, sd=8.9)
+   7   0.500801     +0.42     | chi2=   35.4 (E=40, sd=8.9)
+   8   0.498151     -0.97     | chi2=   41.7 (E=40, sd=8.9)
+   9   0.500364     +0.19     | chi2=   34.1 (E=40, sd=8.9)
+  10   0.500189     +0.10     | chi2=   28.6 (E=40, sd=8.9)
+  11   0.500422     +0.22     | chi2=   39.2 (E=40, sd=8.9)
+  12   0.500364     +0.19     | chi2=   43.5 (E=40, sd=8.9)
+  13   0.501543     +0.81     | chi2=   38.5 (E=40, sd=8.9)
+  14   0.502286     +1.20     | chi2=   39.4 (E=40, sd=8.9)
+  15   0.503378     +1.77     | chi2=   64.3 (E=40, sd=8.9)
+  16   0.501835     +0.96     | chi2=   21.2 (E=40, sd=8.9)
+  17   0.497976     -1.06     | chi2=   48.9 (E=40, sd=8.9)
+  18   0.497699     -1.21     | chi2=   43.5 (E=40, sd=8.9)
+  19   0.500422     +0.22     | chi2=   47.4 (E=40, sd=8.9)
+  20   0.498078     -1.01     | chi2=   31.9 (E=40, sd=8.9)
+  21   0.498209     -0.94     | chi2=   47.4 (E=40, sd=8.9)
+  22   0.503407     +1.79     | chi2=   49.1 (E=40, sd=8.9)
+  23   0.499651     -0.18     | chi2=   26.4 (E=40, sd=8.9)
+  24   0.499243     -0.40     | chi2=   39.7 (E=40, sd=8.9)
+  25   0.500830     +0.44     | chi2=   47.2 (E=40, sd=8.9)
+  26   0.503029     +1.59     | chi2=   55.1 (E=40, sd=8.9)
+  27   0.500495     +0.26     | chi2=   24.0 (E=40, sd=8.9)
+  28   0.497219     -1.46     | chi2=   32.9 (E=40, sd=8.9)
+  29   0.497321     -1.40     | chi2=   56.5 (E=40, sd=8.9)
+  30   0.499607     -0.21     | chi2=   31.5 (E=40, sd=8.9)
+  31   0.502563     +1.34     | chi2=   42.9 (E=40, sd=8.9)
+largest |z| over 32 bits: 1.79  (Bonferroni 32 tests: need |z|>3.4 for p<0.05)
+
+=== 2. entropy of c3 ===
+sum of per-bit entropies (upper bound on H(c3)) = 32.000016 bits  (deficit -1.65e-05)
+
+ H(c3 mod 2^b) plug-in, pooled and worst/best context:
+   b   H_pooled   b-H     H_perctx(mean)  worst-ctx H  (n/ctx=1717)
+   1    1.00000  -3.50e-06    1.00003       0.99846
+   2    2.00002  -1.82e-05    2.00025       1.99886
+   3    3.00004  -4.26e-05    3.00015       2.99738
+   4    4.00003  -2.57e-05    4.00001       3.99529
+   5    4.99995  +5.41e-05    4.99945       4.98957
+   6    6.00007  -6.64e-05    5.99900       5.98640
+   7    6.99996  +4.32e-05    6.99848       6.98614
+   8    7.99997  +2.51e-05    7.99365       7.97648
+   9    8.99996  +3.66e-05    8.96561       8.94094
+  10    9.99941  +5.85e-04    9.83645       9.79718
+  11   10.99887  +1.13e-03   10.49509      10.42330
+  12   11.99741  +2.59e-03   10.92471      10.85572
+  13   12.99364  +6.36e-03   11.17183      11.09530
+  14   13.98144  +1.86e-02   11.30550      11.22129
+  null (uniform random 32-bit, same n):
+   b= 8  H= 8.00029  (b-H = -2.86e-04)
+   b=12  H=12.00085  (b-H = -8.53e-04)
+   b=14  H=13.98992  (b-H = +1.01e-02)
+
+=== 3. Walsh / linear test on c3 alone: corr of <beta,c3> ===
+    (any bias in a linear combination of c3 bits is directly exploitable)
+ n masks tested = 4528 ; corr sd under null = 0.00382 ; Bonferroni 4.5sd = 0.01717
+ top |corr|: [('0x6ce920f0', 0.01503, 3.94), ('0x23bd9994', -0.01357, -3.56), ('0x641e6c5c', -0.01322, -3.46), ('0xf1505271', -0.01293, -3.39), ('0x6e9799c7', 0.01255, 3.29), ('0x800400', 0.01238, 3.24), ('0x751c0f30', 0.01229, 3.22), ('0x682b8dd8', -0.0122, -3.2)]
+ max |z| = 3.94
+ within-context (mean over ctx of |corr|, best single ctx/mask):
+   best |z| over 40 ctx x 528 masks = 4.34  (need >4.6 for p<0.05 after 21120 tests)
+
+=== 4. MI( c3 bit ; predictor ) ===
+null E[MI] for 2x2 with n=68680 is 1.05e-05 bits; 99.99%ile ~ 1.59e-04
+
+ --- PRE-LOOKUP (exploitable) ---
+  a0    max bit-bit MI = 9.947e-05 bits (a0bit30,c3bit18)   max nibble-nibble MI = 0.0007 bits (n5,n2)
+  v     max bit-bit MI = 7.380e-05 bits (a0bit26,c3bit15)   max nibble-nibble MI = 0.0005 bits (n3,n5)
+  tgt   max bit-bit MI = 9.695e-05 bits (a0bit10,c3bit18)   max nibble-nibble MI = 0.0006 bits (n1,n7)
+  W0    max bit-bit MI = 1.606e-04 bits (a0bit30,c3bit18)   max nibble-nibble MI = 0.0007 bits (n7,n0)
+  e0    max bit-bit MI = 1.017e-04 bits (a0bit25,c3bit2)   max nibble-nibble MI = 0.0007 bits (n5,n2)
+
+ --- POST-LOOKUP (worthless for speed) ---
+  a1    max bit-bit MI = 1.285e-04 bits (a0bit6,c3bit4)   max nibble-nibble MI = 0.0005 bits (n3,n7)
+  a2    max bit-bit MI = 1.076e-04 bits (a0bit13,c3bit23)   max nibble-nibble MI = 0.0006 bits (n6,n5)
+  a3    max bit-bit MI = 1.178e-04 bits (a0bit10,c3bit6)   max nibble-nibble MI = 0.0006 bits (n7,n5)
+  W1    max bit-bit MI = 1.300e-04 bits (a0bit3,c3bit20)   max nibble-nibble MI = 0.0007 bits (n4,n4)
+  W2    max bit-bit MI = 9.194e-05 bits (a0bit9,c3bit14)   max nibble-nibble MI = 0.0008 bits (n0,n1)
+  W3    max bit-bit MI = 1.264e-04 bits (a0bit13,c3bit10)   max nibble-nibble MI = 0.0005 bits (n0,n2)
+  W4    max bit-bit MI = 1.114e-04 bits (a0bit16,c3bit0)   max nibble-nibble MI = 0.0007 bits (n2,n1)
+  e1    max bit-bit MI = 1.219e-04 bits (a0bit16,c3bit4)   max nibble-nibble MI = 0.0006 bits (n2,n5)
+  e2    max bit-bit MI = 1.255e-04 bits (a0bit29,c3bit2)   max nibble-nibble MI = 0.0006 bits (n2,n3)
+  e3    max bit-bit MI = 1.215e-04 bits (a0bit10,c3bit16)   max nibble-nibble MI = 0.0006 bits (n3,n6)
+
+ --- categorical / aggregate pre-lookup predictors ---
+  ctx (=v, 40 vals)     max MI with a c3 bit = 2.328e-04 (bit 15);  MI with c3 low byte = 0.0064
+                        SHUFFLE NULL       = 2.039e-04            ;                       = 0.0026
+  popcount(a0) (33)     max MI with a c3 bit = 2.215e-04 (bit 6);  MI with c3 low byte = 0.0119
+                        SHUFFLE NULL       = 1.482e-04            ;                       = 0.0123
+  a0 high 8 bits        max MI with a c3 bit = 5.721e-04 (bit 8);  MI with c3 low byte = 0.3636
+                        SHUFFLE NULL       = 4.077e-04            ;                       = 0.3455
+  a0 low 8 bits         max MI with a c3 bit = 5.215e-04 (bit 1);  MI with c3 low byte = 0.3597
+                        SHUFFLE NULL       = 6.249e-04            ;                       = 0.3485
+  a0 top 12 bits        max MI with a c3 bit = 3.822e-03 (bit 21);  MI with c3 low byte = 3.3184
+                        SHUFFLE NULL       = 3.298e-03            ;                       = 3.2978
+
+=== 5. per-context heterogeneity of the c3 distribution ===
+ If some contexts give a systematically better residual distribution, the
+ per-context low-bit histograms should differ by more than multinomial noise.
+  I(ctx ; c3 mod 2^8) = 0.00635 bits   shuffle null = 0.00040 bits
+  I(ctx ; c3 mod 2^10) = 0.16277 bits   shuffle null = 0.14659 bits
+  I(ctx ; c3 mod 2^12) = 1.07197 bits   shuffle null = 1.04505 bits

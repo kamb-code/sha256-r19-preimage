@@ -1,0 +1,22 @@
+/home/administrator/sha/publish/code/gpu_submask.py:79: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/utils/tensor_numpy.cpp:213.)
+  tbls.append(torch.from_numpy(np.asarray(arr).view(np.int32)))
+R=19 plant 0: roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True OK
+R=19 plant 1: roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True OK
+R=19 plant 2: roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True OK
+R=19 plant 3: roots_stored=True kernel hits=2 sub=2 ver=2 | ref sub=2 ver=2 | found=True OK
+R=19 plant 4: roots_stored=True kernel hits=2 sub=2 ver=2 | ref sub=2 ver=2 | found=True OK
+R=19 plant 5: roots_stored=True kernel hits=2 sub=2 ver=2 | ref sub=2 ver=2 | found=True OK
+R=19 plant 6: roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True OK
+R=19 plant 7: roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True OK
+R=20 plant 0: roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True OK
+R=20 plant 1: roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True OK
+R=20 plant 2: roots_stored=True kernel hits=1 sub=2 ver=1 | ref sub=2 ver=1 | found=True OK
+R=20 plant 3: roots_stored=True kernel hits=1 sub=2 ver=1 | ref sub=2 ver=1 | found=True OK
+R=20 plant 4: roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True OK
+R=20 plant 5: roots_stored=True kernel hits=1 sub=2 ver=1 | ref sub=2 ver=1 | found=True OK
+R=20 plant 6: roots_stored=True kernel hits=1 sub=3 ver=1 | ref sub=3 ver=1 | found=True OK
+R=20 plant 7: roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True OK
+planted found 16/16 (3-root expectation 0.93)
+window 2^19 (3 tables): kernel 58 hits sub=58 [186s]; ref ver=58 sub=58 sol=488568 sol/a0=0.9319
+a0 multiset equal: True | sub equal: True | rebuilt W == ref W: True
+RESULT: ALL OK

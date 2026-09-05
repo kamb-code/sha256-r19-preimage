@@ -22,12 +22,18 @@ Attacks and cryptanalysis
 SHA-256, preimage attack, reduced-round, compression function, hash function
 cryptanalysis, table-based attack, GPU cryptanalysis, practical attack
 
-**Publication information**
+**Publication status** (public field)
 
-Preprint; not published elsewhere; no DOI. This is a new paper, not a revision
-of the author's earlier submission (rejected as xxxx/110082, "Oracle-Free
-Preimage Attack on 19-Round Reduced SHA-256"), which it supersedes in its cost
-figures and cites as a manuscript.
+Published nowhere else; no DOI.
+
+**Message to the editors** (private field, not displayed)
+
+This is a new paper, not a revision of my earlier submission (submission
+110082, "Oracle-Free Preimage Attack on 19-Round Reduced SHA-256", not
+accepted). It cites that manuscript as unpublished, supersedes its cost
+figures, and reports new results (computed 20-round preimages). Every citation
+was checked against its source and every number is traceable to a committed
+log in the public repository.
 
 **Licence**
 
@@ -43,7 +49,7 @@ a provisional value of the message word $W_9$. We show that both costs vanish
 on a large subfamily of contexts. Choosing the context so that $a_4=a_5$ and
 two derived words satisfy $e_8=e_9=$ 0xFFFFFFFF makes the three schedule
 constraints solve triangularly in three table lookups per attempt, with no
-iteration, and collapses the consistency residual to $Maj(a_4,a_3,a_2)-a_3$
+iteration, and collapses the consistency residual to $\mathrm{Maj}(a_4,a_3,a_2)-a_3$
 modulo $2^{32}$, whose vanishing is a bitwise condition of probability exactly
 $(3/4)^{32}$ rather than $2^{-32}$. The measured cost of a 19-round preimage
 falls from about $2^{38.3}$ swept values of $a_0$ to about $2^{15.25}$, within
@@ -55,16 +61,18 @@ preimages of the all-ones digest that Zaikin inverted at 19 rounds in 18 hours
 At 20 rounds the fourth schedule constraint remains an exact 32-bit filter. We
 measure its residual to be uniform to 24 bits and find, by a
 characteristic-function analysis with a validated positive control, no bias
-that a table representative policy or a context choice could exploit. The cost
-is $2^{45.4}$ swept $a_0$ with three-root tables, about 15 hours on one NVIDIA
-A100. We report two computed and verified 20-round preimages, one for the
-all-ones digest, found after 16 hours on one A100 for about 26 US dollars. To
+that a table representative policy or a context choice could exploit: the first-harmonic contribution is below $10^{-3}$ bits at our
+sample size. The cost is therefore $2^{45.4}$ swept $a_0$ with three-root
+tables, about 15 hours on one NVIDIA A100. We report two computed and verified 20-round preimages, one for the
+all-ones digest, found after 16 hours on one of two A100s searching it (about 26 US dollars on
+that GPU, 52 for the pair, against an expected 15 hours and 24 dollars per
+preimage). To
 our knowledge, and after a search of the IACR ePrint archive, dblp, OpenAlex,
 arXiv and the SAT, CP and AI venues as of September 2026, no computed preimage
 of the SHA-256 compression function beyond 19 rounds has been published. We
 also show that, for this construction, 21 rounds costs the full additional
 $2^{64}$: the fourth and fifth constraints are independent, and the dependency
-that blocks a further collapse passes through $Sigma_0$ of the unknown itself,
+that blocks a further collapse passes through $\Sigma_0$ of the unknown itself,
 which no context word can saturate. Neither lever is new on its own; the
 contribution is their combination and the bitwise collapse. Nothing here
 affects full SHA-256.

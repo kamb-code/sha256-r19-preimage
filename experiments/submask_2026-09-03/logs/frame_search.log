@@ -1,0 +1,25 @@
+  return (-T15 - np.uint32(S1(e8)) - Ch(np.uint32(e8), e7, e6))
+  return (-T15 - np.uint32(S1(e8)) - Ch(np.uint32(e8), e7, e6))
+Which ABOVE-DIAGONAL dependencies can context choice clear?
+C_j absorbs a_{j+1} (the diagonal, always present and wanted).
+C0's row is special: its dependence on a2,a3,.. is frozen provisionally
+and paid for by the consistency residual, which the family collapses.
+For an extra round to be free, C3 must absorb a4, which needs
+C1 free of BOTH a3 and a4, and C2 free of a4.
+
+context conditions                  C1 free of a3  C1 free of a4  C2 free of a4   verdict
+-----------------------------------------------------------------------------------------
+random context                              False          False          False   nothing cleared
+family a4=a5, e8=e9=-1                       True          False          False   iteration removed only
+family + a6=a5                               True          False          False   iteration removed only
+shifted a5=a6, e9=e10=-1                    False          False           True   nothing cleared
+TRIPLE a4=a5=a6, e8=e9=e10=-1                True          False           True   iteration removed only
+QUAD a4..a7 equal, e8..e11=-1                True          False           True   iteration removed only
+
+Also: does the consistency residual still collapse under each?
+  random context                     P(eps==0) = 1.272e-07   full 32-bit
+  family a4=a5, e8=e9=-1             P(eps==0) = 9.321e-05   COLLAPSED
+  family + a6=a5                     P(eps==0) = 9.956e-05   COLLAPSED
+  shifted a5=a6, e9=e10=-1           P(eps==0) = 2.543e-07   full 32-bit
+  TRIPLE a4=a5=a6, e8=e9=e10=-1      P(eps==0) = 1.016e-04   COLLAPSED
+  QUAD a4..a7 equal, e8..e11=-1      P(eps==0) = 9.867e-05   COLLAPSED

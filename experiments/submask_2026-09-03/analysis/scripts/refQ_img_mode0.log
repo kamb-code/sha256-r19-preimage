@@ -1,0 +1,24 @@
+mode=0
+total_preimages_counted = 4294967296 (should be 4294967296)
+image(>=1) = 2721603628  frac=0.633672724
+>=2        = 1134997809  frac=0.264262270
+>=3        = 341482690  frac=0.079507635
+>=4        = 79297548  frac=0.018462899
+  exactly  0 : 1573363668  frac=0.366327276
+  exactly  1 : 1586605819  frac=0.369410454
+  exactly  2 : 793515119  frac=0.184754636
+  exactly  3 : 262185142  frac=0.061044735
+  exactly  4 : 64407366  frac=0.014996008
+  exactly  5 : 12552261  frac=0.002922551
+  exactly  6 : 2022487  frac=0.000470897
+  exactly  7 : 277772  frac=0.000064674
+  exactly  8 : 33662  frac=0.000007838
+  exactly  9 : 3624  frac=0.000000844
+  exactly 10 : 338  frac=0.000000079
+  exactly 11 : 33  frac=0.000000008
+  exactly 12 : 3  frac=0.000000001
+  exactly 13 : 1  frac=0.000000000
+  exactly 14 : 1  frac=0.000000000
+  exactly 15 : 0  frac=0.000000000
+  exactly 16 : 0  frac=0.000000000
+f(0xFFFFFFFF) = 536870912  multiplicity there = 1

@@ -1,0 +1,22 @@
+rows 68680 ; distinct (ctx,a0) 68152 ; duplicate PAIRS from repeated a0 = 530
+  example dup (ctx=0,a0=2395564): c3 values ['0xb676ac1e', '0xb676ac1e'] -> identical: True
+  example dup (ctx=0,a0=151977447): c3 values ['0xa64a1c82', '0xa64a1c82'] -> identical: True
+  example dup (ctx=0,a0=1052907258): c3 values ['0x3627b120', '0x3627b120'] -> identical: True
+
+Collision test on c3 mod 2^b, WITHIN context, before and after de-duplicating (ctx,a0):
+  kept 68152 of 68680 rows after dedup
+   b= 8 raw   :   231251 collisions vs  230332.9 expected  z= +1.91   implied deficit  +0.0029 bits
+   b= 8 dedup :   227151 collisions vs  226802.2 expected  z= +0.73   implied deficit  +0.0011 bits
+        [dup pairs alone would add 530 collisions at every b]
+   b=12 raw   :    15207 collisions vs   14395.8 expected  z= +6.76   implied deficit  +0.0406 bits
+   b=12 dedup :    14426 collisions vs   14175.1 expected  z= +2.11   implied deficit  +0.0128 bits
+        [dup pairs alone would add 530 collisions at every b]
+   b=16 raw   :     1424 collisions vs     899.7 expected  z=+17.48   implied deficit  +0.4203 bits
+   b=16 dedup :      878 collisions vs     885.9 expected  z= -0.27   implied deficit  -0.0065 bits
+        [dup pairs alone would add 530 collisions at every b]
+   b=20 raw   :      574 collisions vs      56.2 expected  z=+69.05   implied deficit  +6.6417 bits
+   b=20 dedup :       44 collisions vs      55.4 expected  z= -1.53   implied deficit  -0.1481 bits
+        [dup pairs alone would add 530 collisions at every b]
+
+Same check on the R=19 corpus (a0 uniqueness):
+  rows 51268 distinct (ctx,a0) 51063 -> 206 duplicate pairs

@@ -1,0 +1,68 @@
+configurations enumerated: 2835, legal (saturations realizable): 1485
+
+solvable (constraint, unknown, edge type) -> number of configurations:
+    (0, 'a1', 's0lin+lin') 1485
+    (0, 'a5', 'lin') 9
+    (1, 'a2', 's0lin+lin') 1485
+    (1, 'a3', 'lin') 135
+    (2, 'a3', 's0lin+lin') 1485
+    (2, 'a4', 'lin') 18
+    (2, 'a5', 'lin') 12
+    (3, 'a4', 's0lin+lin') 156
+    (3, 'a5', 'lin') 21
+    (3, 'a6', 'lin') 6
+    (4, 'a5', 's0lin+lin') 108
+
+top configurations by number of distinct solvable constraints:
+
+  promote=(5,) eq=((6, 4), (7, 4)) sat(e8..e11)=['0xffffffff', '-', '0xffffffff', '0x0']  solvable constraints (0, 1, 2, 3, 4)
+                a0          a1          a2          a3          a5
+    C0:      heavy   s0lin+lin       heavy       heavy         lin
+    C1:      heavy       heavy   s0lin+lin       heavy       heavy
+    C2:      heavy       heavy       heavy   s0lin+lin         lin
+    C3:      heavy       heavy       heavy       heavy         lin
+    C4:      heavy       heavy       heavy       heavy   s0lin+lin
+
+  promote=(5,) eq=((6, 4), (7, 4)) sat(e8..e11)=['-', '-', '0xffffffff', '0x0']  solvable constraints (0, 1, 2, 3, 4)
+                a0          a1          a2          a3          a5
+    C0:      heavy   s0lin+lin       heavy       heavy       heavy
+    C1:      heavy       heavy   s0lin+lin       heavy       heavy
+    C2:      heavy       heavy       heavy   s0lin+lin         lin
+    C3:      heavy       heavy       heavy       heavy         lin
+    C4:      heavy       heavy       heavy       heavy   s0lin+lin
+
+  promote=(5,) eq=((6, 4), (7, 4)) sat(e8..e11)=['0xffffffff', '-', '-', '0x0']  solvable constraints (0, 1, 2, 3, 4)
+                a0          a1          a2          a3          a5
+    C0:      heavy   s0lin+lin       heavy       heavy         lin
+    C1:      heavy       heavy   s0lin+lin       heavy       heavy
+    C2:      heavy       heavy       heavy   s0lin+lin       heavy
+    C3:      heavy       heavy       heavy       heavy         lin
+    C4:      heavy       heavy       heavy       heavy   s0lin+lin
+
+  promote=(5,) eq=((6, 4), (7, 4)) sat(e8..e11)=['0xffffffff', '-', '0x0', '0x0']  solvable constraints (0, 1, 2, 3, 4)
+                a0          a1          a2          a3          a5
+    C0:      heavy   s0lin+lin       heavy       heavy         lin
+    C1:      heavy       heavy   s0lin+lin       heavy       heavy
+    C2:      heavy       heavy       heavy   s0lin+lin        none
+    C3:      heavy       heavy       heavy       heavy         lin
+    C4:      heavy       heavy       heavy       heavy   s0lin+lin
+
+  promote=(5,) eq=((6, 4), (7, 4)) sat(e8..e11)=['0x0', '-', '0xffffffff', '0x0']  solvable constraints (0, 1, 2, 3, 4)
+                a0          a1          a2          a3          a5
+    C0:      heavy   s0lin+lin       heavy       heavy       heavy
+    C1:      heavy       heavy   s0lin+lin       heavy       heavy
+    C2:      heavy       heavy       heavy   s0lin+lin         lin
+    C3:      heavy       heavy       heavy       heavy         lin
+    C4:      heavy       heavy       heavy       heavy   s0lin+lin
+
+  promote=(4, 5) eq=((7, 6),) sat(e8..e11)=['-', '-', '-', '0x0']  solvable constraints (0, 1, 2, 3, 4)
+                a0          a1          a2          a3          a4          a5
+    C0:      heavy   s0lin+lin       heavy       heavy       heavy       heavy
+    C1:      heavy       heavy   s0lin+lin       heavy       heavy       heavy
+    C2:      heavy       heavy       heavy   s0lin+lin       heavy       heavy
+    C3:      heavy       heavy       heavy       heavy   s0lin+lin         lin
+    C4:      heavy       heavy       heavy       heavy       heavy   s0lin+lin
+
+=== the claimed barrier: the edge a4 -> C0 when a4 is an unknown ===
+   edge type of (C0, a4) over all legal configurations promoting a4: {'heavy': 156}
+   edge types (C0,a5),(C1,a5) over configurations promoting a5: {('heavy', 'heavy'): 99, ('lin', 'heavy'): 9}

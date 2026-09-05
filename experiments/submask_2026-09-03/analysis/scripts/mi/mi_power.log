@@ -1,0 +1,45 @@
+==============================================================================
+1. THE a2/a3 PER-BIT BIAS IS A COROLLARY OF THE FORCED Maj CONDITION
+   Allowed (a2_i,a3_i) states are {(v,v),(~v,v),(~v,~v)}, each 1/3.
+   => p(a2_i = 1) = 1/3 if v_i=1 else 2/3 ;  p(a3_i = 1) = 2/3 if v_i=1 else 1/3.
+   predicted vs measured over all 1920 (context,bit) cells:
+   a2: mean residual +0.00024  rms 0.01593   (binomial sd 0.01613) -> ratio 0.99
+   a3: mean residual +0.00054  rms 0.01625   (binomial sd 0.01613) -> ratio 1.01
+   spread-inflation of pooled p across contexts, predicted (1/6)/0.01710 = 9.74
+   => the pooled "biases" at bits 25/29 are 60-context sampling noise in v, not structure.
+
+==============================================================================
+2. THE MAXIMAL-REPRESENTATIVE LAW
+   For a random function, a class has R~Poisson(1) roots; P(u is the max of its
+   class) = sum_j e^-1/j! * x^j = e^{x-1}.  Normalising: f(x)=e^{x-1}/(1-e^{-1}).
+   predicted p(bit31=1) = (1-e^{-1/2})/(1-e^{-1}) = 0.62246
+     W1 measured 0.62292   E[W]/2^32 pred 0.58198 meas 0.58196
+     W2 measured 0.62345   E[W]/2^32 pred 0.58198 meas 0.58225
+     W3 measured 0.62368   E[W]/2^32 pred 0.58198 meas 0.58164
+   TOTAL entropy deficit of this law = 0.05864 bits (out of 32)
+   fraction of classes non-empty = 1-e^{-1} = 0.63212  (matches the quoted 0.634 hit rate)
+   solutions reached per swept a0 = (1-e^{-1})^3 = 0.25258 = 2^-1.985  -> 1.985 bits discarded
+
+==============================================================================
+3. DETECTION POWER ON c3 (this bounds any speedup that could be hiding)
+   n=68680 in 40 contexts (1717 per context).
+   (i) CONCENTRATED deficit (one frequency / one predictor):
+       T(beta)=sum_c n_c|phi_c|^2 ~ Gamma(40,1).  A 4.5-sigma excess is T-40 = 28.5,
+       i.e. mean |phi_c(beta)|^2 = 4.14e-04.  Entropy deficit of a +-beta pair = |phi|^2/ln2:
+       ==> any SINGLE-FREQUENCY deficit above 5.98e-04 bits (= 2^0.0 speedup) would have shown.
+   (ii) BROADLY SPREAD deficit: aggregate collision test on c3 mod 2^b, within context.
+       b= 8: 231251 collisions vs 230333 expected (1.91 sd).  Total deficit inside this
+             2^8 subgroup = +0.0029 bits; 4-sigma upper limit 0.0060 bits.
+       b=12: 15207 collisions vs 14396 expected (6.76 sd).  Total deficit inside this
+             2^12 subgroup = +0.0406 bits; 4-sigma upper limit 0.0240 bits.
+       b=16: 1424 collisions vs 900 expected (17.48 sd).  Total deficit inside this
+             2^16 subgroup = +0.4203 bits; 4-sigma upper limit 0.0962 bits.
+   (iii) MI noise floor: 2x2 tables, n=68680 -> E[MI_null]=1.05e-05 bits, 99.99%ile 1.59e-04 bits.
+        per-bit probability resolution: sd(p)=0.00191, so |p-0.5|>0.0076 detectable.
+
+==============================================================================
+4. WHAT THE CONVOLUTION COSTS AN ATTACKER WHO RESTRICTS THE TABLE
+   Suppose the policy stores roots only in a subset of density 2^-k (H(W3)=32-k).
+   Then the table hit rate falls by 2^-k, so the lookups cost 2^k MORE swept a0,
+   while c3 could at best gain 2^k.  Exactly zero-sum -- before the convolution,
+   which additionally destroys the gain because phi_c3 = phi_W3 * phi_{s0(W4)}.

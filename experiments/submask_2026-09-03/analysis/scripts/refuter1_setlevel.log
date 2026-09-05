@@ -1,0 +1,5 @@
+/home/administrator/sha/publish/code/gpu_submask.py:79: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/utils/tensor_numpy.cpp:213.)
+  tbls.append(torch.from_numpy(np.asarray(arr).view(np.int32)))
+window 2^20 from 0xd34f04f3: kernel 83 hits (unique 83) sub=83 [156s]; ref ver=83 sub=83 sol=760418
+multiset equal: True | sub equal: True
+rebuilt W multiset == reference W multiset: True 83 83

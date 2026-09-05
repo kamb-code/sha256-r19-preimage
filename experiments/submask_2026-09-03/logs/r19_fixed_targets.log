@@ -1,0 +1,17 @@
+19-round preimages of fixed benchmark digests, submask family, one root table
+script: code/submask_family.py (attack_context); table: sigma0_u_table.npy
+
+all-ones (Zaikin, Constraints 2026)
+  target ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  swept a0 4,194,304  C0 survivors 2,658,126  triangular solutions 1,068,641 (0.4020/survivor)
+  eps==0 108  verified 108  -> 38,836 swept a0 per preimage  [2.2s]
+  witness: 3d2b2a63 ca2c1040 ee8cae07 71f3a8c3 35213aa1 4874a1df 65808e21 ec62f876 cf12e170 5a84dc14 1e6f516e 76bf038f df70a2d4 b7ad9ce0 3d3f93d6 8b0711d4
+  witness: 743f6e23 d4daea91 19df306e 5abca5eb af5eba3f debaae0d ab6f6a64 bb9e770f 25548e67 3c9be346 3a3a1042 b9c19404 df70a2d4 b7ad9ce0 3d3f93d6 8b0711d4
+
+all-zero (Davydov et al. 2025)
+  target 0000000000000000000000000000000000000000000000000000000000000000
+  swept a0 4,194,304  C0 survivors 2,658,049  triangular solutions 1,068,359 (0.4019/survivor)
+  eps==0 115  verified 115  -> 36,472 swept a0 per preimage  [1.2s]
+  witness: 1f1a3feb 3c173d2c 4ed32089 20f254aa b901c45a 1ca8d19c aaa8d939 051cfe10 ce966a96 6b6b9733 2abedb0b 29b2f28d 89ac000f 0a2f0a59 5d97d893 7e238d8b
+  witness: a7782b9b c7a8990a cb30c674 39a8fd7a 0bf6f636 4995663f 2784aa0a b9f9c6ef 6769b527 48867e64 b125c583 a6b1b263 89ac000f 0a2f0a59 5d97d893 7e238d8b
+

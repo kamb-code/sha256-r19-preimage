@@ -1,0 +1,25 @@
+scan done 293s
+mode=2
+total_preimages_counted = 4294967296 (should be 4294967296)
+image(>=1) = 2726849769  frac=0.634894187
+>=2        = 1134909066  frac=0.264241608
+>=3        = 338850418  frac=0.078894761
+>=4        = 77587426  frac=0.018064730
+  exactly  0 : 1568117527  frac=0.365105813
+  exactly  1 : 1591940703  frac=0.370652579
+  exactly  2 : 796058648  frac=0.185346847
+  exactly  3 : 261262992  frac=0.060830031
+  exactly  4 : 63316287  frac=0.014741972
+  exactly  5 : 12089777  frac=0.002814871
+  exactly  6 : 1898653  frac=0.000442065
+  exactly  7 : 250830  frac=0.000058401
+  exactly  8 : 28659  frac=0.000006673
+  exactly  9 : 2933  frac=0.000000683
+  exactly 10 : 267  frac=0.000000062
+  exactly 11 : 19  frac=0.000000004
+  exactly 12 : 1  frac=0.000000000
+  exactly 13 : 0  frac=0.000000000
+  exactly 14 : 0  frac=0.000000000
+  exactly 15 : 0  frac=0.000000000
+  exactly 16 : 0  frac=0.000000000
+f(0xFFFFFFFF) = 536870912  multiplicity there = 2

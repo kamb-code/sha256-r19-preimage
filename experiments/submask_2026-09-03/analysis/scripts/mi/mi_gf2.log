@@ -1,0 +1,20 @@
+============================================================================
+R19 pooled: 7 relations found on a 1348-row subsample. VERIFYING ON ALL 51268 ROWS:
+   a0[1] ^ W0[0] ^ W0[1]                                                   violations: 0 / 51268  EXACT
+   W0[0] ^ e0[0]                                                           violations: 0 / 51268  EXACT
+   a0[0] ^ a0[1] ^ e0[1]                                                   violations: 0 / 51268  EXACT
+   a0[1] ^ W0[0] ^ W0[2] ^ e0[2]                                           violations: 0 / 51268  EXACT
+   a0[0] ^ a0[2] ^ a0[13] ^ a0[22] ^ a1[0] ^ W1[0] ^ e0[6] ^ e0[11] ^ e0[  violations: 0 / 51268  EXACT
+   a0[0] ^ a0[2] ^ a0[13] ^ a0[22] ^ a1[0] ^ W0[0] ^ e1[0]                 violations: 0 / 51268  EXACT
+   a0[0] ^ W0[0] ^ 1                                                       violations: 0 / 51268  EXACT
+
+============================================================================
+R20 pooled: 7 relations found on a 1380-row subsample. VERIFYING ON ALL 68680 ROWS:
+   a0[1] ^ W0[0] ^ W0[1]                                                   violations: 0 / 68680  EXACT
+   W0[0] ^ e0[0]                                                           violations: 0 / 68680  EXACT
+   a0[0] ^ a0[1] ^ e0[1]                                                   violations: 0 / 68680  EXACT
+   a0[1] ^ W0[0] ^ W0[2] ^ e0[2]                                           violations: 0 / 68680  EXACT
+   a0[0] ^ a0[2] ^ a0[13] ^ a0[22] ^ a1[0] ^ W1[0] ^ e0[6] ^ e0[11] ^ e0[  violations: 0 / 68680  EXACT
+   a0[0] ^ a0[2] ^ a0[13] ^ a0[22] ^ a1[0] ^ W0[0] ^ e1[0]                 violations: 0 / 68680  EXACT
+   a0[0] ^ W0[0] ^ 1                                                       violations: 0 / 68680  EXACT
+

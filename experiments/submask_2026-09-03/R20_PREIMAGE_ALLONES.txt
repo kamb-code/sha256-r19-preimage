@@ -35,9 +35,11 @@ except the fourth.  Marginal cost about $26 on this pod; the pair of pods on
 this target cost about $52.
 
 The second pod on this target (3r52zyawqj9jd7, A100 80GB PCIe, seed
-1138247750) swept 12,016 contexts = 5.161e13 a0 over 16.4 h without a hit and
-was stopped by the global stop.  Exactly ONE preimage of the all-ones digest was
-found; the pair's combined exposure was 1.07e14 swept a0 and about $52.
+1138247750) swept 12,075 contexts = 5.186e13 a0 over 16.3 h without a hit
+(final mirror: gpu_run_snapshot/live/t1/status.json; it kept sweeping for
+eight minutes after the global stop was raised) and was then stopped.  Exactly
+ONE preimage of the all-ones digest was found; the pair's combined exposure
+was 1.04e14 swept a0 and about $52.
 
 COMPARISON.  Zaikin (Constraints, 2026, DOI 10.1007/s10601-025-09383-0) inverted
 this same digest at 19 rounds in 18 h 33 min on 192 CPU cores (about 3,560

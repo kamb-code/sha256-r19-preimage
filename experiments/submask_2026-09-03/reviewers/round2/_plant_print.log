@@ -1,0 +1,33 @@
+/home/administrator/sha/publish/code/gpu_submask.py:79: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/utils/tensor_numpy.cpp:213.)
+  tbls.append(torch.from_numpy(np.asarray(arr).view(np.int32)))
+PLANT_WORDS 0 2dceac04 06c34cbf a3d15967 672d9790 a5f1ec01 16d482d7 5ed91f5f a4b9361a 31e20d45 4cb76aa1 ca5f675c b4555b5c e7b781a8 b8a12017 2d6704ce dbc3b34f 8d687e48f209eb5e4159858cfc67fd2025f6cd7932ebb0aae34bbbaae7344fbf
+plant  0: v=0xda12f9aa a0=0x29d73451 roots_stored=True ver=1 -> FOUND
+PLANT_WORDS 1 4c5d91f6 2a699431 f78ad5b2 043e581f c9c807a7 0d8734bc a2c86dd4 9aab2900 8b1165a9 fcded131 83e11cd6 a500c935 d36ddf24 a7f54914 72c91142 75cb5e1b 2cde2d48ff25ee1514d4b198f1229f2bc5274a247536830381a92ac4fee2bb76
+plant  1: v=0x19351d0d a0=0x48661a43 roots_stored=True ver=1 -> FOUND
+plant  2: v=0x2840db0d a0=0x432cef77 roots_stored=False ver=0 -> not found  (true root not stored; expected)
+plant  3: v=0x7a40d6a2 a0=0x9451a982 roots_stored=False ver=0 -> not found  (true root not stored; expected)
+PLANT_WORDS 4 90397fe6 9855b078 6ec989f5 51c73507 d4ed642e b0997f21 51c0626c 688ab827 4d868b03 96e27fcb 5056876a 140f0ad2 42f523f4 1b10bf38 b36a4efc 6d85d734 7e9a931bc2d9045cbb1e5eb833ff67afa39f3015e22f150c3a6d9c81ad13d78c
+plant  4: v=0xcb768f9e a0=0x8c420833 roots_stored=True ver=1 -> FOUND
+plant  5: v=0x8a41667f a0=0x7a4502b3 roots_stored=False ver=0 -> not found  (true root not stored; expected)
+PLANT_WORDS 6 78500382 08b3678f acf6b12e b834525d 6499fd96 078b016e 6a90b67d cc0fc57b 56f0de7e 65c16cbf cb459e9e df9412a9 84f65d43 c0b23ac8 53986e5b ba1e5294 8173d94943cade2fd343912b8a9cdc21d4b5621da68271e0d2e0c81926e9c20b
+plant  6: v=0xdb146a3f a0=0x74588bcf roots_stored=True ver=1 -> FOUND
+plant  7: v=0x4db726ba a0=0x13f49ae9 roots_stored=False ver=0 -> not found  (true root not stored; expected)
+PLANT_WORDS 8 c632c499 855049a8 f55dec48 c19209d2 8abfb075 5ecb0875 9ef5a06b 4c5959e5 5b83f74e e0f97a81 f272a923 45346ffa 060cc65c 099c0ef7 4c36afdb fab8b4a5 5ebe13b0c0c03be03c666b235c1ef9c5fd7dadfd2fd25b04f5cbe439224acb0a
+plant  8: v=0x30b14261 a0=0xc23b4ce6 roots_stored=True ver=1 -> FOUND
+plant  9: v=0x1a23e905 a0=0xa80551e9 roots_stored=False ver=0 -> not found  (true root not stored; expected)
+PLANT_WORDS 10 eb1c0e75 2c266e18 30319f0e 00de7234 d0f26092 56874341 c9a873c2 9545479e 62858928 6875e98e a8dc059a 11cad6aa 8bca9a6d c97c109d ead1c481 fd5d05d6 e81696158cb9478563f1649b323166003895d05be2437904aa3365911ab36eb8
+plant 10: v=0x4da9e263 a0=0xe72496c2 roots_stored=True ver=1 -> FOUND
+PLANT_WORDS 11 996cc5da bbd017e6 d0723bb9 6e27f625 407dc748 170ea65d 9d91f344 222f759a 591f7451 54ea3398 c41af52a 55b3a7b9 1155ba74 48cd8b52 9b582ff1 9756ffd8 da115f3c10ac2ff360af5fe525dcbf2d804e6f372c52cd898596191cf8c51ace
+plant 11: v=0xc483fbd7 a0=0x95754e27 roots_stored=True ver=1 -> FOUND
+PLANT_WORDS 12 a0db67cf f1e3a092 52432fec 64b6ba20 549ad626 f41244b9 56912f48 9012ae0c 2628ec6a 9380e270 20db2dbe 78aadccd 47ad89f8 557b36ad 08603b4c 6c0ecc99 af8bd54523cceb7fc2e455ef2fca3db26517c7d0ff5d54d9ccb4d0407d590964
+plant 12: v=0x5c696f3b a0=0x9ce3f01c roots_stored=True ver=1 -> FOUND
+PLANT_WORDS 13 8e0561bd 6bdc19ef 3b50931b 45e89ba9 72d33f9f acd95163 a8d98c85 fe4f110b c0921ff7 ca5e02e8 5ae54755 c709bfbe 5194f1da dc043e7b 504c76ac 13d74634 de30424814750042bfcffa6d6e925f2eafcca5fdc11fb09ea96f0e5c98c8ef19
+plant 13: v=0xed1ea9a9 a0=0x8a0dea0a roots_stored=True ver=1 -> FOUND
+plant 14: v=0x7446047c a0=0xa5ceeadb roots_stored=False ver=0 -> not found  (true root not stored; expected)
+PLANT_WORDS 15 a6714865 b4fb3971 b7a72a92 296d67a7 bc0f5a52 79456ab3 5802545c b20b468a 46880e07 f82f37be 9ab9ff83 866ccf90 68cbe27c 230b5aeb 1a0813e9 00ab0a37 9928a5e937f345716434af255c554deb9ee4f4d87f39859bf225af5ba226a409
+plant 15: v=0x74e36d6c a0=0xa279d0b2 roots_stored=True ver=1 -> FOUND
+
+10 found, 6 unfindable (missing root), 0 pipeline failures, of 16
+expected found fraction with two roots ~ (2/e)^3 = 0.40
+PASS
+exit 0

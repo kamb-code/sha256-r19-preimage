@@ -34,3 +34,6 @@ printed by them or made in the project log are WRONG and are corrected here:
   on one A100 SXM 80GB in expectation with the Triton kernel.
 * The repository's `.gitignore` excluded `*.log`, so the first snapshot commit
   contained no logs although MANIFEST.txt listed them; they are force-added now.
+
+* Final production rates from each Triton pod's status.json (a0/elapsed_s): dev 8.61e8, t1 8.84e8, t2 9.01e8 a0/s (4.8-5.0 s per context); the 8.2-8.8e8 / 5.2-5.3 s figures quoted earlier in this file and in FLEET.txt were early readings.
+* The second all-ones pod's final exposure is 12,075 contexts / 5.186e13 a0 / 16.3 h (gpu_run_snapshot/live/t1/status.json), not the 12,016 / 5.161e13 counted at the moment of the hit.

@@ -17,3 +17,7 @@ tqdm>=4.60
 # Auxiliary near-collision scripts (cuda_sweep.py and friends) additionally
 # need CuPy matching your CUDA version; they are research artefacts, not
 # part of the paper's claims.
+
+# Fused kernel (code/submask_triton.py, second paper): triton as bundled with the
+# torch 2.4.1+cu124 wheel used on the pods (image runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04);
+# an 80 GB GPU is needed for three root tables (16 GB each).

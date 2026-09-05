@@ -1,0 +1,8 @@
+LINEAR (GF(2)) CRYPTANALYSIS OF c3 -- deduped n=68152
+ tested 17280000 (a0-mask, c3-mask) linear approximations (a0 is PRE-LOOKUP)
+ corr sd under null = 0.00383 ; best |corr| = 0.02104 = 5.49 sd
+ expected max of 17280000 indep gaussians = 5.77 sd
+ verdict: CONSISTENT WITH NOISE
+ best masks: a0=0xf71d85c9 c3=0x398b435f
+ => any linear (GF(2)) predictor of a c3 bit-combination from a0 has bias < 0.00919,
+    i.e. removes less than 2.44e-04 bits of entropy.

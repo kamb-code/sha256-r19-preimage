@@ -11,6 +11,7 @@ oxgcuwlleea1fd A100-SXM4-80GB    1.59  triton   random (abandoned after ~21 ctx)
 3r52zyawqj9jd7 A100 80GB PCIe    1.59  triton   random (abandoned after ~27 ctx) then ALL-ONES ffff...ffff  1138247750  04 14:56 / restarted 15:07  running  tag t2 (run_r20_pod.py)
 
 Rates: pytorch H100 4.47e8 a0/s; pytorch A100 2.54e8; triton A100 9.1-9.3e8 kernel-timed, ~8.2-8.8e8 wall (5.2-5.3 s per 2^32 context incl. host overhead).
+Final production rates from each Triton pod's status.json (a0 / elapsed_s): dev 8.61e8, t1 8.84e8, t2 9.01e8 a0/s (4.8-5.0 s per context); the 8.2-8.8e8 / 5.2-5.3 s figures above were early readings.
 Expected preimages = (sub candidates) x 2^-32, assuming C3 uniform (measured uniform to ~24 bits; extrapolated over the last bits).
 Fleet after 15:07: 0.13/h on the all-ones pair + 0.065/h hedge = ~0.19/h production-measured (0.216/h from the bench figure). Mean ~5.3 h, ~$25 expected at $4.77/h.
 Stop rule: on an ALL-ONES hit every pod stops (stop_watcher2.py -> r20_GLOBAL_STOP); on a hedge hit only the hedge pod stops. Pre-registered reading: no hit by 3 expected preimages on the all-ones pair (~23 h) would indicate a defect, not bad luck (P = e^-3 = 5%).

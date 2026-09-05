@@ -1,0 +1,14 @@
+  n=18 (60 random invertible-ish L): mean dev -0.001114  sd 0.009201  |dev| median 0.005156   sampling sd of a true random map 6.09e-04
+    [0s]
+  n=20 (60 random invertible-ish L): mean dev -0.001438  sd 0.006648  |dev| median 0.003883   sampling sd of a true random map 3.04e-04
+    [2s]
+  n=22 (40 random invertible-ish L): mean dev +0.000477  sd 0.004333  |dev| median 0.003065   sampling sd of a true random map 1.52e-04
+    [8s]
+  n=24 (40 random invertible-ish L): mean dev +0.000202  sd 0.002593  |dev| median 0.001831   sampling sd of a true random map 7.61e-05
+    [36s]
+  n=26 (20 random invertible-ish L): mean dev +0.000176  sd 0.002417  |dev| median 0.001679   sampling sd of a true random map 3.81e-05
+    [99s]
+  n=28 (8 random invertible-ish L): mean dev +0.000863  sd 0.001056  |dev| median 0.001057   sampling sd of a true random map 1.90e-05
+    [170s]
+
+sigma0 (n=32) actual dev = +0.001552165

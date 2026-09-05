@@ -1,0 +1,33 @@
+ctx 0: a0 268,435,456 sol 68,299,829 sub 6,822 [77s]
+ctx 1: a0 536,870,912 sol 136,614,949 sub 13,771 [153s]
+ctx 2: a0 805,306,368 sol 204,921,516 sub 20,587 [230s]
+ctx 3: a0 1,073,741,824 sol 273,222,719 sub 27,428 [308s]
+ctx 4: a0 1,342,177,280 sol 341,529,674 sub 34,319 [383s]
+ctx 5: a0 1,610,612,736 sol 409,853,727 sub 41,314 [458s]
+ctx 6: a0 1,879,048,192 sol 478,159,792 sub 48,315 [535s]
+ctx 7: a0 2,147,483,648 sol 546,468,909 sub 55,090 [608s]
+
+target ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff  R=20  swept a0 2,147,483,648  sub rate 1.0081e-04 (pred 1.0045e-04)  candidates 55,090
+   low  4 bits: chi2      17.7 dof    15 z +0.50
+  high  4 bits: chi2       8.8 dof    15 z -1.13
+   low  6 bits: chi2      78.5 dof    63 z +1.38
+  high  6 bits: chi2      46.6 dof    63 z -1.46
+   low  8 bits: chi2     261.5 dof   255 z +0.29
+  high  8 bits: chi2     250.3 dof   255 z -0.21
+   low 10 bits: chi2    1085.9 dof  1023 z +1.39
+  high 10 bits: chi2     989.8 dof  1023 z -0.73
+   low 12 bits: chi2    4094.6 dof  4095 z -0.00
+  high 12 bits: chi2    3848.5 dof  4095 z -2.72
+  trailing-zero ladder (observed / expected n/2^k):
+    k= 0:    55,090 /     55090.0  ratio 1.000
+    k= 2:    13,882 /     13772.5  ratio 1.008
+    k= 4:     3,469 /      3443.1  ratio 1.008
+    k= 6:       891 /       860.8  ratio 1.035
+    k= 8:       220 /       215.2  ratio 1.022
+    k=10:        54 /        53.8  ratio 1.004
+    k=12:        18 /        13.4  ratio 1.338
+    k=14:         4 /         3.4  ratio 1.190
+    k=16:         1 /         0.8  ratio 1.190
+    k=18:         0 /         0.2  ratio 0.000
+    k=20:         0 /         0.1  ratio 0.000
+  exact zeros: 0

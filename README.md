@@ -24,6 +24,24 @@ of two documents, kept deliberately separate.
 > linear identity for σ₀, and a reduced-width scale model. Not an
 > impossibility result. Read the main paper first; nothing here modifies it.
 
+> **Second paper** — "Context Shaping for Reduced-Round SHA-256
+> Compression-Function Preimages: Nineteen Rounds in Milliseconds, and
+> Computed Preimages at Twenty Rounds"
+> `paper_submask_r20.pdf` / `paper_submask_r20.tex` (14 pp), filing package
+> `SUBMISSION.md`
+>
+> Choosing the context so that a4 = a5 and e8 = e9 = 0xFFFFFFFF removes the
+> fixed-point iteration from the 19-round attack and collapses its consistency
+> check to a bitwise condition of probability (3/4)^32. Measured cost of a
+> 19-round preimage: about 2^15.25 swept a0 (roughly 12 ms of one CPU core)
+> against 2^38.3 for the random-context attack above. At 20 rounds the fourth
+> schedule constraint remains a flat 2^-32 filter, giving 2^45.4 swept a0 with
+> three-root tables; two computed and verified 20-round preimages are reported,
+> one for the all-ones digest that Zaikin inverted at 19 rounds. **Supersedes
+> the cost figures of the two documents above.** 21 rounds is shown to cost
+> this construction the full additional 2^64. Evidence, logs, reviewer reports
+> and a sha256 manifest: `experiments/submask_2026-09-03/`.
+
 ---
 
 ## What is claimed
@@ -69,6 +87,22 @@ Full 64-round SHA-256 is not affected by any of this.
 ## Quick verification (no GPU, no lookup table)
 
 Requirements: Python 3.8+, standard library only.
+
+The two 20-round preimages of the second paper (each prints `result: OK`;
+`--rounds 19` and `--rounds 21` print `FAIL`):
+
+```bash
+# all-ones digest (Zaikin's 19-round target), 20 rounds
+python3 code/verify_r19.py --rounds 20 \
+  --hash ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff \
+  --words "0b0187bf b9aea692 b66effa5 087dca3a 0caea827 1d2f9916 739a224e a87c0eae 7f9ef4a7 b318a7de a8848c61 a7a141a4 11ac114b 952299be 97aaa67f c6acfe57"
+# solver-generated digest, 20 rounds
+python3 code/verify_r19.py --rounds 20 \
+  --hash d962ca30635f9b74ac6c8c1243a1a9cf800e81bc05f1d2e40764c68c795f7388 \
+  --words "a36f4238 f2c9204e b5b6653b 070401f7 5928e4f3 fe766be2 52026907 f7ee1812 01344603 ea505012 86cbe6cb 6ce73d0b 5c91de6a 43355e3b ff3d5e88 c1ad0b54"
+```
+
+The seven 19-round preimages of the main paper:
 
 ```bash
 # P1
@@ -174,6 +208,21 @@ python3 code/build_sigma0_table.py --check sigma0_u_table.npy
 
 ---
 
+### The submask family (second paper)
+
+`code/submask_family.py` (CPU, numpy) runs the 19-round attack of the second
+paper against the 16 GB table; with no arguments it runs a table-free
+algebraic self-test of the paper's two propositions. `code/gpu_submask.py` is
+the eager PyTorch sweep and `code/submask_triton.py` the fused kernel used for
+both 20-round preimages; the kernel needs Triton (bundled with the torch wheel
+recorded in `requirements.txt`) and an 80 GB GPU for three root tables:
+
+```bash
+python3 code/submask_triton.py --verify            # planted-preimage check of the kernel
+python3 code/submask_triton.py --bench             # timing
+python3 code/submask_triton.py --run --rounds 20 --roots 3 --hash <64-hex-char-target>
+```
+
 ## Padding
 
 Standard SHA-256 pads a message with `0x80`, zeros, and the 8-byte bit
@@ -207,6 +256,13 @@ publish/
   requirements.txt           — Python dependencies and the recorded versions
   paper_r19_final.pdf/.tex   — main paper (16 pages)
   paper_r20_barrier.pdf/.tex — companion note (10 pages)
+  paper_submask_r20.pdf/.tex — second paper (14 pages); supersedes the cost
+                               figures of the two documents above
+  SUBMISSION.md              — ePrint filing package for the second paper
+  experiments/submask_2026-09-03/ — the second paper's evidence: as-run scripts,
+                               logs, GPU run snapshots, witnesses with
+                               provenance, reviewer and analysis reports,
+                               priority search, sha256 MANIFEST.txt
   verified_preimages.txt     — the seven verified preimages with provenance
   data_campaign_screening.json — raw per-context data and run manifest of the
                                preregistered 240-context campaign (§5.7)
@@ -303,7 +359,10 @@ function with the standard IV and no padding constraint on the 16 input
 words. It is a preimage attack in the standard sense for the compression
 function (fixed chaining value, only the digest given), not a pseudo-preimage
 or free-start result, and not a preimage attack on padded SHA-256. The
-20-round case remains open (companion note).
+companion note's 20-round analysis is superseded by the second paper
+(`paper_submask_r20.pdf`), which computes 20-round preimages in the same
+model; 21 rounds is shown there to cost this construction the full additional
+2^64.
 
 ## How to cite
 

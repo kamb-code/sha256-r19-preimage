@@ -5,5 +5,8 @@ __pycache__/
 *.aux
 *.log
 *.out
+# experiment evidence cited by the papers must be tracked even when it is a log or an array
+!experiments/**/*.log
+!experiments/**/*.npy
 *.synctex.gz
 .DS_Store

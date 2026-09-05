@@ -1,0 +1,121 @@
+==============================================================================
+CONTROL: uniform random 32-bit values, same shape as corpus_r20
+
+--- NULL : uniform control  (40 groups, n=68680, 863 frequencies) ---
+  T ~ Gamma(40,1): mean 40.0 sd 6.32 ; Bonferroni p<0.05 over 863 tests needs T > 67.2
+  observed: mean 40.14  max 61.96 (z=3.47)
+    beta=200369836    T=   61.96 z= +3.47   [random]
+    beta=2946438869   T=   61.21 z= +3.35   [random]
+    beta=791434537    T=   61.08 z= +3.33   [random]
+    beta=4009005763   T=   60.87 z= +3.30   [random]
+    beta=2000767715   T=   60.26 z= +3.20   [random]
+    beta=12           T=   59.86 z= +3.14   [beta=12]
+
+==============================================================================
+THE TARGET: fourth-constraint residual c3 (R=20)
+
+--- R20 : c3  (40 groups, n=68680, 863 frequencies) ---
+  T ~ Gamma(40,1): mean 40.0 sd 6.32 ; Bonferroni p<0.05 over 863 tests needs T > 67.2
+  observed: mean 40.60  max 62.62 (z=3.58)
+    beta=1867509386   T=   62.62 z= +3.58   [random]
+    beta=3142352492   T=   62.51 z= +3.56   [random]
+    beta=1085658427   T=   61.59 z= +3.41   [random]
+    beta=32           T=   59.55 z= +3.09   [beta=32]
+    beta=2936402024   T=   59.18 z= +3.03   [random]
+    beta=2016372957   T=   57.41 z= +2.75   [random]
+
+==============================================================================
+ITS TWO ADDITIVE PARTS (structure here is what could be steered)
+
+--- R20 : W3  (max table representative)  (40 groups, n=68680, 863 frequencies) ---
+  T ~ Gamma(40,1): mean 40.0 sd 6.32 ; Bonferroni p<0.05 over 863 tests needs T > 67.2
+  observed: mean 43.87  max 1655.73 (z=255.47)
+    beta=1            T= 1655.73 z=+255.47   [beta=1]
+    beta=2            T=  429.93 z=+61.65   [beta=2]
+    beta=3            T=  249.75 z=+33.16   [beta=3]
+    beta=4            T=  146.20 z=+16.79   [beta=4]
+    beta=5            T=  106.56 z=+10.52   [beta=5]
+    beta=7            T=   94.67 z= +8.64   [beta=7]
+
+--- R20 : sigma0(W4)  (40 groups, n=68680, 863 frequencies) ---
+  T ~ Gamma(40,1): mean 40.0 sd 6.32 ; Bonferroni p<0.05 over 863 tests needs T > 67.2
+  observed: mean 40.74  max 65.75 (z=4.07)
+    beta=3683185904   T=   65.75 z= +4.07   [random]
+    beta=4            T=   62.71 z= +3.59   [beta=4]
+    beta=3101169681   T=   61.82 z= +3.45   [random]
+    beta=1478373557   T=   61.61 z= +3.42   [random]
+    beta=160          T=   60.80 z= +3.29   [beta=160]
+    beta=65536        T=   60.73 z= +3.28   [low16bit j=1]
+
+--- R20 : W4  (40 groups, n=68680, 863 frequencies) ---
+  T ~ Gamma(40,1): mean 40.0 sd 6.32 ; Bonferroni p<0.05 over 863 tests needs T > 67.2
+  observed: mean 40.96  max 64.26 (z=3.84)
+    beta=179          T=   64.26 z= +3.84   [beta=179]
+    beta=1638885979   T=   61.54 z= +3.41   [random]
+    beta=2895671204   T=   60.09 z= +3.18   [random]
+    beta=917504       T=   59.92 z= +3.15   [low15bit j=7]
+    beta=2208118478   T=   59.64 z= +3.11   [random]
+    beta=14680064     T=   58.77 z= +2.97   [low11bit j=7]
+
+==============================================================================
+THE TABLE-REPRESENTATIVE BIAS, measured on R=19 (W1,W2,W3 are all maximal reps)
+
+--- R19 : W1  (60 groups, n=51268, 863 frequencies) ---
+  T ~ Gamma(60,1): mean 60.0 sd 7.75 ; Bonferroni p<0.05 over 863 tests needs T > 93.3
+  observed: mean 62.89  max 1349.61 (z=166.49)
+    beta=1            T= 1349.61 z=+166.49   [beta=1]
+    beta=2            T=  380.53 z=+41.38   [beta=2]
+    beta=3            T=  225.00 z=+21.30   [beta=3]
+    beta=4            T=  126.75 z= +8.62   [beta=4]
+    beta=5            T=  103.26 z= +5.59   [beta=5]
+    beta=6            T=  101.45 z= +5.35   [beta=6]
+
+--- R19 : W2  (60 groups, n=51268, 863 frequencies) ---
+  T ~ Gamma(60,1): mean 60.0 sd 7.75 ; Bonferroni p<0.05 over 863 tests needs T > 93.3
+  observed: mean 62.67  max 1334.37 (z=164.52)
+    beta=1            T= 1334.37 z=+164.52   [beta=1]
+    beta=2            T=  335.60 z=+35.58   [beta=2]
+    beta=3            T=  194.93 z=+17.42   [beta=3]
+    beta=4            T=  150.34 z=+11.66   [beta=4]
+    beta=5            T=  117.97 z= +7.48   [beta=5]
+    beta=6            T=  101.89 z= +5.41   [beta=6]
+
+--- R19 : W3  (60 groups, n=51268, 863 frequencies) ---
+  T ~ Gamma(60,1): mean 60.0 sd 7.75 ; Bonferroni p<0.05 over 863 tests needs T > 93.3
+  observed: mean 63.22  max 1358.03 (z=167.57)
+    beta=1            T= 1358.03 z=+167.57   [beta=1]
+    beta=2            T=  346.42 z=+36.98   [beta=2]
+    beta=3            T=  226.35 z=+21.48   [beta=3]
+    beta=4            T=  156.65 z=+12.48   [beta=4]
+    beta=5            T=  117.93 z= +7.48   [beta=5]
+    beta=7            T=   92.81 z= +4.24   [beta=7]
+
+--- R19 : W0  (60 groups, n=51268, 863 frequencies) ---
+  T ~ Gamma(60,1): mean 60.0 sd 7.75 ; Bonferroni p<0.05 over 863 tests needs T > 93.3
+  observed: mean 60.22  max 92.85 (z=4.24)
+    beta=49           T=   92.85 z= +4.24   [beta=49]
+    beta=1333888839   T=   87.80 z= +3.59   [random]
+    beta=3955995312   T=   85.83 z= +3.34   [random]
+    beta=678878986    T=   84.33 z= +3.14   [random]
+    beta=565285624    T=   83.88 z= +3.08   [random]
+    beta=826624416    T=   83.77 z= +3.07   [random]
+
+--- R19 : W4  (60 groups, n=51268, 863 frequencies) ---
+  T ~ Gamma(60,1): mean 60.0 sd 7.75 ; Bonferroni p<0.05 over 863 tests needs T > 93.3
+  observed: mean 60.54  max 87.68 (z=3.57)
+    beta=46           T=   87.68 z= +3.57   [beta=46]
+    beta=3922829259   T=   86.82 z= +3.46   [random]
+    beta=458752       T=   84.58 z= +3.17   [low16bit j=7]
+    beta=1478373557   T=   83.99 z= +3.10   [random]
+    beta=254483866    T=   83.16 z= +2.99   [random]
+    beta=2100301119   T=   80.01 z= +2.58   [random]
+
+--- R19 : a0  (60 groups, n=51268, 863 frequencies) ---
+  T ~ Gamma(60,1): mean 60.0 sd 7.75 ; Bonferroni p<0.05 over 863 tests needs T > 93.3
+  observed: mean 60.22  max 92.85 (z=4.24)
+    beta=49           T=   92.85 z= +4.24   [beta=49]
+    beta=1333888839   T=   87.80 z= +3.59   [random]
+    beta=3955995312   T=   85.83 z= +3.34   [random]
+    beta=678878986    T=   84.33 z= +3.14   [random]
+    beta=565285624    T=   83.88 z= +3.08   [random]
+    beta=826624416    T=   83.77 z= +3.07   [random]

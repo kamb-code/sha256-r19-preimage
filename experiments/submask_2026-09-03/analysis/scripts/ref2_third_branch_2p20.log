@@ -1,0 +1,8 @@
+/home/administrator/sha/publish/code/gpu_submask.py:79: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/utils/tensor_numpy.cpp:213.)
+  tbls.append(torch.from_numpy(np.asarray(arr).view(np.int32)))
+2 tables: 71 hits sub=71 [567s]; 3 tables [T1,T2,T1]: 351 hits sub=351 [1320s]
+2-table multiset == host enumeration: True (71 chains over 71 a0)
+3-table multiset == predicted 2^(#T1 levels): True (351 chains over 71 a0)
+sub relation: s3 == predicted True ; s2 == predicted True
+multiplicity histogram (3-table): [(1, 1), (2, 5), (4, 45), (8, 20)]
+RESULT: ALL OK

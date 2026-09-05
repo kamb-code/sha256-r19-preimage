@@ -1,4 +1,6 @@
-FIRST PRACTICAL 20-ROUND SHA-256 COMPRESSION-FUNCTION PREIMAGE
+20-ROUND SHA-256 COMPRESSION-FUNCTION PREIMAGE OF A SOLVER-GENERATED DIGEST
+(to our knowledge, as of September 2026, no computed preimage beyond 19 rounds
+had been published; see priority/ADJUDICATION.md)
 Found 2026-09-04 17:22:09 UTC.  Attack model: standard IV, one 512-bit block, no
 padding constraint, feed-forward kept, all 256 output bits fixed -- the same
 model as the 19-round results of this project and of Zaikin (Constraints 2026).

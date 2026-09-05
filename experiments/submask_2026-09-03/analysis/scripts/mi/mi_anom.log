@@ -1,0 +1,52 @@
+n=51268, 60 contexts, pooled sd(p)=0.00221
+
+pooled p(bit=1), and the SPREAD of the 60 per-context p values
+  (if pooled bias is real & steerable it must be consistent ACROSS contexts;
+   if the per-context values scatter far more than binomial, it is a per-context
+   effect that averages away and cannot be exploited without choosing contexts.)
+
+ a1: worst pooled bit 10 p=0.4961 z=-1.8
+   per-ctx spread inflation (obs sd / binomial sd), 32 bits: max 1.18  mean 1.03
+   bits with |pooled z|>3.9 (bit,p,z,spread-inflation): NONE
+
+ a2: worst pooled bit 25 p=0.4427 z=-26.0
+   per-ctx spread inflation (obs sd / binomial sd), 32 bits: max 9.94  mean 9.67
+   bits with |pooled z|>3.9 (bit,p,z,spread-inflation): [(0, 0.4744, -11.6, 9.65), (1, 0.4835, -7.5, 9.86), (2, 0.5131, 5.9, 9.84), (3, 0.5283, 12.8, 9.78), (4, 0.4719, -12.7, 9.61), (10, 0.5306, 13.9, 9.62), (13, 0.4881, -5.4, 9.67), (14, 0.509, 4.1, 9.65), (15, 0.4898, -4.6, 9.94), (18, 0.5167, 7.6, 9.75), (20, 0.49, -4.5, 9.51), (21, 0.4783, -9.8, 9.6), (24, 0.5177, 8.0, 9.63), (25, 0.4427, -26.0, 9.21), (27, 0.5129, 5.8, 9.75), (28, 0.5262, 11.9, 9.5), (29, 0.5552, 25.0, 9.21), (30, 0.523, 10.4, 9.49), (31, 0.5103, 4.7, 9.64)]
+   >> context-level t-test on bit 25: t=-2.79 on 59 df  (|t|>4.1 needed after 32x9 tests)
+   >> per-context p on bit 25: min 0.292 max 0.699  (binomial sd 0.0171)
+
+ a3: worst pooled bit 25 p=0.5616 z=+27.9
+   per-ctx spread inflation (obs sd / binomial sd), 32 bits: max 9.99  mean 9.74
+   bits with |pooled z|>3.9 (bit,p,z,spread-inflation): [(0, 0.5296, 13.4, 9.79), (1, 0.5217, 9.8, 9.82), (2, 0.4903, -4.4, 9.6), (3, 0.4713, -13.0, 9.53), (4, 0.5292, 13.2, 9.62), (10, 0.471, -13.2, 9.72), (11, 0.4873, -5.8, 9.73), (13, 0.5116, 5.3, 9.96), (14, 0.4881, -5.4, 9.87), (15, 0.5132, 6.0, 9.82), (18, 0.4848, -6.9, 9.65), (20, 0.5126, 5.7, 9.98), (21, 0.5207, 9.4, 9.86), (24, 0.4835, -7.5, 9.69), (25, 0.5616, 27.9, 9.0), (27, 0.4869, -5.9, 9.86), (28, 0.4738, -11.9, 9.6), (29, 0.4429, -25.9, 9.4), (30, 0.4793, -9.4, 9.84), (31, 0.4871, -5.8, 9.97)]
+   >> context-level t-test on bit 25: t=3.08 on 59 df  (|t|>4.1 needed after 32x9 tests)
+   >> per-context p on bit 25: min 0.305 max 0.701  (binomial sd 0.0171)
+
+ W1: worst pooled bit 31 p=0.6229 z=+55.7
+   per-ctx spread inflation (obs sd / binomial sd), 32 bits: max 1.22  mean 0.98
+   bits with |pooled z|>3.9 (bit,p,z,spread-inflation): [(28, 0.5148, 6.7, 1.19), (29, 0.5286, 13.0, 0.99), (30, 0.5624, 28.2, 1.08), (31, 0.6229, 55.7, 0.92)]
+   >> context-level t-test on bit 31: t=59.83 on 59 df  (|t|>4.1 needed after 32x9 tests)
+   >> per-context p on bit 31: min 0.598 max 0.668  (binomial sd 0.0171)
+
+ W2: worst pooled bit 31 p=0.6234 z=+55.9
+   per-ctx spread inflation (obs sd / binomial sd), 32 bits: max 1.18  mean 0.96
+   bits with |pooled z|>3.9 (bit,p,z,spread-inflation): [(28, 0.5167, 7.6, 1.16), (29, 0.5327, 14.8, 1.18), (30, 0.5605, 27.4, 0.85), (31, 0.6234, 55.9, 0.9)]
+   >> context-level t-test on bit 31: t=61.26 on 59 df  (|t|>4.1 needed after 32x9 tests)
+   >> per-context p on bit 31: min 0.583 max 0.655  (binomial sd 0.0171)
+
+ W3: worst pooled bit 31 p=0.6237 z=+56.0
+   per-ctx spread inflation (obs sd / binomial sd), 32 bits: max 1.20  mean 1.00
+   bits with |pooled z|>3.9 (bit,p,z,spread-inflation): [(28, 0.5158, 7.2, 1.06), (29, 0.5342, 15.5, 1.05), (30, 0.5573, 26.0, 1.02), (31, 0.6237, 56.0, 0.92)]
+   >> context-level t-test on bit 31: t=60.20 on 59 df  (|t|>4.1 needed after 32x9 tests)
+   >> per-context p on bit 31: min 0.592 max 0.664  (binomial sd 0.0171)
+
+ e1: worst pooled bit 26 p=0.5048 z=+2.2
+   per-ctx spread inflation (obs sd / binomial sd), 32 bits: max 1.18  mean 1.00
+   bits with |pooled z|>3.9 (bit,p,z,spread-inflation): NONE
+
+ e2: worst pooled bit 19 p=0.5061 z=+2.8
+   per-ctx spread inflation (obs sd / binomial sd), 32 bits: max 1.13  mean 1.00
+   bits with |pooled z|>3.9 (bit,p,z,spread-inflation): NONE
+
+ e3: worst pooled bit 3 p=0.4953 z=-2.1
+   per-ctx spread inflation (obs sd / binomial sd), 32 bits: max 1.15  mean 0.99
+   bits with |pooled z|>3.9 (bit,p,z,spread-inflation): NONE

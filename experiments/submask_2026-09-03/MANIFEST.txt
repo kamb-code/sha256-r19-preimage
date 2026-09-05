@@ -9,12 +9,14 @@ MANIFEST regenerated 2026-09-04 16:19:46 UTC after the second review; see NOTES.
 
 MANIFEST regenerated 2026-09-05 11:31:36 UTC for the second paper: adds logs/r19_fixed_targets.log, logs/frame_search.log, logs/ones_obstruction.log, scripts/ones_obstruction.py, scripts/frame_search2.py, STATE.md.
 
+MANIFEST regenerated 2026-09-05 16:21:54 UTC after the second fact-check pass: adds analysis/scripts/symdep/ (the 1,485-family symbolic search and the 21-round C3/C4 generator), gpu_run_snapshot/live/ (final mirrors of both all-ones pods), corrected R20_PREIMAGE*.txt, STATE.md, FLEET.txt, NOTES.md.
+
 sha256  path  size
-db6ad037082ae5760348348b12ea394b79bb549e164c691e71e4565a03cadee6  FLEET.txt  2863 bytes
-4047222ee82d925d8500e33433ddc5679d83b82b5aa9597cbfeb32ccd1289000  NOTES.md  2648 bytes
-302ed3d3961b8389fe598c65d00527afe7821b21f3467cb8977d0b90bb930240  R20_PREIMAGE.txt  1762 bytes
-17d7805b47f47b2853292b61b843d30dca2c89ced4358e70aa428b0bc2ea8803  R20_PREIMAGE_ALLONES.txt  2912 bytes
-f2541e4903b80357cdb6f77e6cb9bc77ad1aa50caca9c9ec8e0d999d6badbf3f  STATE.md  3880 bytes
+010ecd061ae440df95fa6a712bef9e58ed06b7c7b81f71e975dae18a91105dc9  FLEET.txt  3063 bytes
+b2af56ea926d72bf371370abe9f3664f76dce6f6f338ef47b6704a71ec988dec  NOTES.md  3073 bytes
+effe4b4b3b06609732ca1acf62111a7f9e909152b143151bb4274502772554f2  R20_PREIMAGE.txt  1904 bytes
+b81c339baa48606b21d13b04346ba83c3da5ecc354de296a3cc367958b4f5913  R20_PREIMAGE_ALLONES.txt  3020 bytes
+95e01fac3396f5e52a9171076ccafdfb4d5f63a42634d1be643658078b2dd0fa  STATE.md  1243 bytes
 e9619741d2c4f1670f252e8817a803e446b6d52d8cf7b41130038b33136fa84f  gpu_run_snapshot/a100a_runner.log  25063 bytes
 9e93bace62b578611b06b3bcafecdd985974efd3a313c766bd053665e875182d  gpu_run_snapshot/a100a_status.json  600 bytes
 2f627c248b431c7c4cebbc20c069c18396aecc2d22ddb986fd39ac2bc8dc631d  gpu_run_snapshot/a100b_runner.log  25064 bytes
@@ -25,6 +27,17 @@ a89c2cbdbdd2b473bb4e29683da3a6260ffa8c2051dc1fef2cbfcb54f2a5fb76  gpu_run_snapsh
 734bb4553db016b761fd14c037301191394cebbdf2c3b3beeafcb8f3c2ef4df6  gpu_run_snapshot/r20_hit_dev/status.json  467 bytes
 665cfc5476b2c5a4a575806f4721ccad48d0d25bae9f2e8ece88e2df34538704  gpu_run_snapshot/r20_hit_allones/run.log  1912162 bytes
 53eb49ea4172d291aa4980976d8e433a1375530f6c146dcd3feedaf6fa5a08a0  gpu_run_snapshot/r20_hit_allones/status.json  470 bytes
+402fe044b767c6657f6a6e65d805d78dbe11a11ece52c55601ab5bffbb901eeb  gpu_run_snapshot/live/t2/HIT.txt  230 bytes
+665cfc5476b2c5a4a575806f4721ccad48d0d25bae9f2e8ece88e2df34538704  gpu_run_snapshot/live/t2/run.log  1912162 bytes
+53eb49ea4172d291aa4980976d8e433a1375530f6c146dcd3feedaf6fa5a08a0  gpu_run_snapshot/live/t2/status.json  470 bytes
+a7050e709085949ff915911c17f1059ce8c4942e84a3b7627195bf4c22baebb0  gpu_run_snapshot/live/t2/stdout.log  1912318 bytes
+f3b2035f1ecc1795913114a65460448515dcbef7fcb2e8e1449561104069e11a  gpu_run_snapshot/live/dev/HIT.txt  230 bytes
+a89c2cbdbdd2b473bb4e29683da3a6260ffa8c2051dc1fef2cbfcb54f2a5fb76  gpu_run_snapshot/live/dev/run.log  272629 bytes
+734bb4553db016b761fd14c037301191394cebbdf2c3b3beeafcb8f3c2ef4df6  gpu_run_snapshot/live/dev/status.json  467 bytes
+e9523dfe7b92158764c292f84be94fc5e4905e6cbd9923c1dc11a1735e744f71  gpu_run_snapshot/live/dev/stdout.log  272785 bytes
+9416efdeaead0b286010314f4e7279e617236a929476584a6e7035c6092748cf  gpu_run_snapshot/live/t1/run.log  1891652 bytes
+eb1b77f11ee36cced88cfe749abd90834a1b8eabd5e6bfc6df0a02c79d8ce667  gpu_run_snapshot/live/t1/status.json  325 bytes
+2fa4a885d00fc5dfb5b6c5aed0ac315ff73b896ec038b4ed5fe1a36585b925f0  gpu_run_snapshot/live/t1/stdout.log  1891966 bytes
 98aa0fa2e76ea326f9b649f625351afab618e114db33b53bbbbf65bc073a9e4c  analysis/FINDINGS.md  4201 bytes
 a9a398a76a55e5958197b73f68bcc1ba6e1379ff20641b32daee412d172a6902  analysis/reports.json  168544 bytes
 b4d9db1023029175313862d4eb4128228fe821572f40c66b4d35dd37680b9194  analysis/scripts/corpus.py  7180 bytes
@@ -90,6 +103,10 @@ d4fc0f6d6f5ddc14e798266660c6000df877436b6800fd57da90293ecb902364  analysis/scrip
 2201b53f23c6a1119ca42b52125f37804239f9638de0c6a70d31c60ea0550dae  analysis/scripts/mi/mi_lin.py  1777 bytes
 35dcbd483d328355aee9cb427ea459dc45d1e0feadfde2cfcfc40a84db5c287f  analysis/scripts/mi/mi_power.log  3227 bytes
 80ebba7c0907b47f3c27ecadee72edfc1c07ea651c6b5d20130e3b49d02f579a  analysis/scripts/mi/mi_power.py  4899 bytes
+9b6961c0588399da4757266c407fbf0307b43ede57b4e308f48ac8b87e9e92a7  analysis/scripts/symdep/L5_50_symdep.py  6994 bytes
+630dcf5d6a15a8c954831a9a68225b86ff625701ed35af46dfe24b6726983ac3  analysis/scripts/symdep/L5_51_search.log  3968 bytes
+3bc8a18ac2f8795a0eeac0a5827830ba3396611fc87e8e4267274164b734f1e0  analysis/scripts/symdep/L5_60_c3c4.py  3734 bytes
+5a31d1d9a0f61dfd5bc79fed78ec766886a32aaec6696099e035ec8b12700fdf  analysis/scripts/symdep/gen.log  238 bytes
 ab632a7982f919f283d30d1e9aa5d0bc3a1df608705656e6b2172316e0bed14b  scripts/attach_pod.py  4776 bytes
 0303d0b275c21ba209af837a307ec68d51290383a1c8646b551ff81b81f4338a  scripts/c3_scaling.py  7948 bytes
 8aedd205b822632a5ce2afa9e6cf02f559b692825a35eae7e5295d16cd5e0761  scripts/c3_uniformity.py  12197 bytes
@@ -153,8 +170,6 @@ b6960c31c1186e217e3f7d9c1fee7f3eede08bc16cc7aa2dd9b44affbf6cea6d  reviewers/supe
 b530c12a7f828132ba4d893e5fc0f4ac7e01537f58145d50ce56177e5d9ea61f  reviewers/ref2/indep_attack.py  5139 bytes
 770774e571370e1d4fc7a53fa8d5731f24ee707a360f6f0cc6a0a13efab8db92  reviewers/ref2/ref_sha.py  1918 bytes
 0e0d2e8bbbb205bca1d8e9c51381482446c48ff27a9ee54e222da58514c15780  reviewers/ref2/scale.py  463 bytes
-fd36bdcfa4c7cafee63cf18d706472dd9dec318807ca0f8f182943ff420edd5d  reviewers/ref2/__pycache__/indep_attack.cpython-312.pyc  14729 bytes
-c168bddcfd0886c94cc10d749f0cb17ff110352493a223c3a951b967dfba50ba  reviewers/ref2/__pycache__/ref_sha.cpython-312.pyc  5896 bytes
 33d6f543b7ef8bc432dec705071cd32709af0452460ec412c2ad9b505dd651fe  reviewers/round2/_plant_print.log  4277 bytes
 7feb18e5d0d92953bc5b90e8e07a5e6d9c1a170a06b5a228f735460182ce2b3d  reviewers/round2/c3_ones_check.log  1692 bytes
 79ee0271a5368f77acf321789b424a7df71be18788c3a10d8cba3c645f6424a6  reviewers/round2/c3_ones_check.py  5187 bytes

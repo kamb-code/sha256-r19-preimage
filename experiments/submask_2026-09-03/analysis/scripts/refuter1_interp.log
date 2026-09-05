@@ -1,0 +1,24 @@
+/home/administrator/sha/publish/code/gpu_submask.py:79: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/utils/tensor_numpy.cpp:213.)
+  tbls.append(torch.from_numpy(np.asarray(arr).view(np.int32)))
+=== R=19, 2 root table(s) ===
+  plant 0: a0=0x9c0ec9f6 roots_stored=True kernel hits=2 sub=2 ver=2 | ref sub=2 ver=2 | found=True [2.3s] OK
+  plant 1: a0=0x73d31e14 roots_stored=False kernel hits=0 sub=0 ver=0 | ref sub=0 ver=0 | found=False [2.2s] OK
+  plant 2: a0=0x9b4fab9f roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True [2.2s] OK
+  plant 3: a0=0xe6d40a23 roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True [2.2s] OK
+  plant 4: a0=0x5aa276cd roots_stored=True kernel hits=2 sub=2 ver=2 | ref sub=2 ver=2 | found=True [2.2s] OK
+  plant 5: a0=0xb9ed3bb5 roots_stored=False kernel hits=0 sub=0 ver=0 | ref sub=0 ver=0 | found=False [2.3s] OK
+=== R=20, 2 root table(s) ===
+  plant 0: a0=0x4ebb0adb roots_stored=True kernel hits=1 sub=2 ver=1 | ref sub=2 ver=1 | found=True [4.1s] OK
+  plant 1: a0=0x22a29377 roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True [3.9s] OK
+  plant 2: a0=0xdbcc0b5e roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True [3.9s] OK
+  plant 3: a0=0xe993c266 roots_stored=True kernel hits=1 sub=3 ver=1 | ref sub=3 ver=1 | found=True [4.0s] OK
+  plant 4: a0=0x05c6a79e roots_stored=False kernel hits=0 sub=0 ver=0 | ref sub=0 ver=0 | found=False [3.9s] OK
+  plant 5: a0=0x1b7e63a4 roots_stored=True kernel hits=1 sub=1 ver=1 | ref sub=1 ver=1 | found=True [3.9s] OK
+=== wrap at 2^32 + out_cap overflow, R=19 ===
+  kernel: 9 hits, sub=9, a0 set size 9 [17.7s]
+  ref   : ver=9, sub=9, a0 set size 9
+  sets equal: True; sub equal: True
+  hits below/above wrap: 6 / 3
+  out_cap=3: returned 3 (expect 3), all in ref set: True, sub=9
+
+RESULT: ALL OK

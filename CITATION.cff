@@ -20,4 +20,4 @@ preferred-citation:
     - family-names: Basra
       given-names: Kameldip Singh
   year: 2026
-  notes: "Preprint. Companion note: The 20-Round Barrier for Table-Based Preimage Attacks on SHA-256 (same repository). ePrint identifier to be added on acceptance."
+  notes: "Preprint. Companion note: The 20-Round Barrier for Table-Based Preimage Attacks on SHA-256 (same repository). Second paper: Context Shaping for Reduced-Round SHA-256 Compression-Function Preimages (paper_submask_r20.pdf, same repository), which supersedes the cost figures of both. ePrint identifier to be added on acceptance."

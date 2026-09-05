@@ -1,0 +1,20 @@
+Are the 7 relations forced?  They are the low-bit shadow of two GLOBAL affine shifts.
+  R19: W0-a0 distinct values = 1  -> ['0x3f777b3']
+  R19: e0-a0 distinct values = 1  -> ['0x9cbf5a55']
+  R20: W0-a0 distinct values = 1  -> ['0x3f777b3']
+  R20: e0-a0 distinct values = 1  -> ['0x9cbf5a55']
+
+  Both are a SINGLE constant across all 100 contexts, because in corpus.py
+    C0c = -T2(a-1,a-2,a-3) - e-4 - S1(e-1) - Ch(e-1,e-2,e-3) - K[0]
+    Ce0 = a-4 - T2(a-1,a-2,a-3)
+  depend only on the IV and K[0]. So W0 and e0 are a0 plus a FIXED known offset;
+  the 7 GF(2) relations are just the carry-free low bits of those two additions,
+  plus one round-1 relation using Maj(a0,a-1,a-2)[0]=1 (IV bits a-1[0]=a-2[0]=1).
+  => FORCED. No new algebraic structure. Nothing beyond bit ~2 stays linear.
+
+  C0c = 0x3f777b3  (bit0=1, bit1=1 -> explains W0[0]=a0[0]^1 and the W0[1],W0[2] relations)
+  Ce0 = 0x9cbf5a55
+
+Message-block nullity 72: explained by W12..W15 being constant per context.
+  distinct (W12,W13,W14,W15) tuples = 60 over 38316 blocks; 4*32+1=129 columns
+  129 columns spanning only a 60-point set -> nullity >= 129-60 = 69 forced (found 72).

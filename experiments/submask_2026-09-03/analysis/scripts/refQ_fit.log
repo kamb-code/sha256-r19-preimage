@@ -1,0 +1,37 @@
+exact P(k) for f(u)=sigma0(u)-u  vs Poisson(1)  vs best 1-parameter fit
+  one-parameter fit: Binomial(m=119, 1/m)  [m=inf is Poisson(1)]
+    k          exact     Poisson(1)      Binom fit   exact-Pois    exact-fit
+    0    0.366327276    0.367879441    0.366328294    -1.55e-03    -1.02e-06
+    1    0.369410454    0.367879441    0.369432771    +1.53e-03    -2.23e-05
+    2    0.184754636    0.183939721    0.184716386    +8.15e-04    +3.83e-05
+    3    0.061044735    0.061313240    0.061050331    -2.69e-04    -5.60e-06
+    4    0.014996008    0.015328310    0.015003895    -3.32e-04    -7.89e-06
+    5    0.002922551    0.003065662    0.002924488    -1.43e-04    -1.94e-06
+    6    0.000470897    0.000510944    0.000470892    -4.00e-05    +4.82e-09
+    7    0.000064674    0.000072992    0.000064420    -8.32e-06    +2.54e-07
+    8    0.000007838    0.000009124    0.000007643    -1.29e-06    +1.95e-07
+  P(>=1): exact 0.633672724  Poisson 0.632120559  1-par fit 0.633671706   (exact-fit +1.02e-06,  exact-Poisson +1.55e-03)
+  P(>=2): exact 0.264262270  Poisson 0.264241118  1-par fit 0.264238934   (exact-fit +2.33e-05,  exact-Poisson +2.12e-05)
+  P(>=3): exact 0.079507635  Poisson 0.080301397  1-par fit 0.079522549   (exact-fit -1.49e-05,  exact-Poisson -7.94e-04)
+
+(2) class experiment at n=24: are dev(>=2), dev(>=3) determined by dev(>=1)?
+  n=24, 40 random invertible linear L.  random-map sd of each stat ~ 7.6e-5
+   dev(>=1): mean -0.001497 sd 0.005509
+   dev(>=2): mean +0.000301 sd 0.000593
+   dev(>=3): mean +0.000580 sd 0.002537
+   dev(>=2) = -0.0967*dev(>=1) +1.57e-04   r=-0.8982  resid sd=2.61e-04
+   dev(>=3) = -0.4602*dev(>=1) -1.09e-04   r=-0.9994  resid sd=8.90e-05
+   sigma0 at n=32 for comparison: dev(>=1)=+1.5522e-03  dev(>=2)=+2.115e-05  dev(>=3)=-7.938e-04
+   -> class slopes predict dev(>=2)=-1.50e-04, dev(>=3)=-7.14e-04
+
+(3) cost bookkeeping
+  exact      p=0.633672724  p^3=0.254446
+     max-rep : 0.254446 cand / swept a0, 2.0352 lookups / swept a0  => 7.999 lookups per candidate
+     all-root: 1.000000 cand / swept a0, 3.0000 lookups / swept a0  => 3.000 lookups per candidate
+     gain: candidates/swept-a0 x3.93011   lookups/candidate x2.66621
+  random-map p=0.632120559  p^3=0.252580
+     max-rep : 0.252580 cand / swept a0, 2.0317 lookups / swept a0  => 8.044 lookups per candidate
+     all-root: 1.000000 cand / swept a0, 3.0000 lookups / swept a0  => 3.000 lookups per candidate
+     gain: candidates/swept-a0 x3.95913   lookups/candidate x2.68125
+  effect of the anomaly itself on the all-roots gain: 3.93011 vs 3.95913  = -0.7330%
+  effect of the anomaly on 20-round cost 2^45.4: +0.01061 bits
