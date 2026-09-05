@@ -1,0 +1,1 @@
+rounds=20 hash=ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff words=0b0187bf b9aea692 b66effa5 087dca3a 0caea827 1d2f9916 739a224e a87c0eae 7f9ef4a7 b318a7de a8848c61 a7a141a4 11ac114b 952299be 97aaa67f c6acfe57
