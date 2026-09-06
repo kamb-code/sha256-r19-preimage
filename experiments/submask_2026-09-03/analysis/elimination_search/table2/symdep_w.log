@@ -1,0 +1,322 @@
+
+===== w = a4: 13122 configurations (1 Maj-pairs [(5, 6)]), 4374 legal (saturations realisable), 3402 strictly legal (DOF); 3s
+  C3 can absorb a4 (lin / one-input table, a0..a3 known) in 4374 configurations; complete 5-unknown schedules (any order, any homes): 0
+    C3 form (4374 cfgs): tab:s0+lin :: +1*u -1*s0(+u+c)
+  minimum number of non-deferrable (tab/heavy) entries of a4 into C0..C2 (a1,a2,a3 known) over all configs: 1
+   cfg eq=[] sat=[(10, '0xffffffff'), (11, '0x0'), (13, '0x0')] strictDOF=True
+      C0 <- a4 (a0..a3 known): +1*Ch[arg0:u;with a4] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      C1 <- a4 (a0..a3 known): +1*Ch[arg1:u;with a4] +1*Ch[arg2:u](nested) -1*Maj[arg1:u]
+      C2 <- a4 (a0..a3 known): -1*Maj[arg2:u]
+      C3 <- a4 (a0..a3 known): +1*u -1*s0(+u+c)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a4', ('mild2', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[] sat=[(9, '0x0')] strictDOF=True
+      C0 <- a4 (a0..a3 known): +1*Ch[arg0:u;with a4] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      C1 <- a4 (a0..a3 known): -1*Maj[arg2:u] -1*Maj[arg1:u]
+      C2 <- a4 (a0..a3 known): -1*Maj[arg2:u] +1*Ch[arg2:u]
+      C3 <- a4 (a0..a3 known): +1*u -1*s0(+u+c)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a4', ('mild2', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[] sat=[(10, '0x0'), (11, '0xffffffff'), (12, '0x0'), (13, '0x0'), (14, '0xffffffff'), (15, '0x0')] strictDOF=True
+      C0 <- a4 (a0..a3 known): +1*Ch[arg0:u;with a4] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      C1 <- a4 (a0..a3 known): +1*Ch[arg1:u;with a4] +1*Ch[arg2:u](nested) -1*Maj[arg1:u]
+      C2 <- a4 (a0..a3 known): -1*Maj[arg2:u] +1*u
+      C3 <- a4 (a0..a3 known): +1*u -1*s0(+u+c)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a4', ('mild2', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[] sat=[(9, '0x0'), (10, '0x0')] strictDOF=True
+      C0 <- a4 (a0..a3 known): +1*Ch[arg0:u;with a4] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      C1 <- a4 (a0..a3 known): -1*Maj[arg2:u] -1*Maj[arg1:u]
+      C2 <- a4 (a0..a3 known): -1*Maj[arg2:u] +1*u
+      C3 <- a4 (a0..a3 known): +1*u -1*s0(+u+c)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a4', ('mild2', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[] sat=[(9, '0xffffffff'), (10, '0xffffffff'), (11, '0xffffffff'), (12, '0xffffffff'), (13, '0x0'), (14, '0xffffffff'), (15, '0x0')] strictDOF=True
+      C0 <- a4 (a0..a3 known): +1*Ch[arg0:u;with a4] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      C1 <- a4 (a0..a3 known): +1*u -1*Maj[arg1:u]
+      C2 <- a4 (a0..a3 known): -1*Maj[arg2:u]
+      C3 <- a4 (a0..a3 known): +1*u -1*s0(+u+c)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a4', ('mild2', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+
+===== w = a5: 26244 configurations (2 Maj-pairs [(4, 6), (6, 7)]), 5832 legal (saturations realisable), 3024 strictly legal (DOF); 4s
+  C3 can absorb a5 (lin / one-input table, a0..a3 known) in 1944 configurations; complete 5-unknown schedules (any order, any homes): 0
+    C3 form (1458 cfgs): lin :: +1*u
+    C3 form (243 cfgs): lin selfdefer:mild :: +1*u -1*Maj[arg2:u]
+    C3 form (243 cfgs): lin selfdefer:mild :: -1*Maj[arg2:u] +1*u
+  minimum number of non-deferrable (tab/heavy) entries of a5 into C0..C2 (a1,a2,a3 known) over all configs: 1
+   cfg eq=[(7, 6)] sat=[(8, '0xffffffff')] strictDOF=True
+      C0 <- a5 (a0..a3 known): -1*Maj[arg1:u] +1*u
+      C1 <- a5 (a0..a3 known): +1*Ch[arg0:u;with a5] +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      C2 <- a5 (a0..a3 known): -1*Maj[arg1:u] +1*Ch[arg1:u]
+      C3 <- a5 (a0..a3 known): +1*Ch[arg2:u]
+      best schedule (1 steps, complete=False): [('C0', 'a1', 'tab:s0+lin'), ('C1', 'a2', 'tab:s0+lin', 'BLOCKED-BY', [('a5', ('mild2', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('lin', 'mildmix')), ('C0', 'a5', ('lin', 'mild')), ('C1', 'a3', ('mildmix',))]
+   cfg eq=[(7, 6)] sat=[(8, '0xffffffff'), (11, '0x0')] strictDOF=True
+      C0 <- a5 (a0..a3 known): -1*Maj[arg1:u] +1*u
+      C1 <- a5 (a0..a3 known): +1*Ch[arg0:u;with a5] +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      C2 <- a5 (a0..a3 known): -1*Maj[arg1:u] +1*Ch[arg1:u]
+      C3 <- a5 (a0..a3 known): +1*u
+      best schedule (1 steps, complete=False): [('C0', 'a1', 'tab:s0+lin'), ('C1', 'a2', 'tab:s0+lin', 'BLOCKED-BY', [('a5', ('mild2', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('lin', 'mildmix')), ('C0', 'a5', ('lin', 'mild')), ('C1', 'a3', ('mildmix',))]
+   cfg eq=[(7, 6)] sat=[(8, '0xffffffff'), (10, '0xffffffff'), (11, '0xffffffff'), (12, '0x0'), (14, '0x0'), (15, '0xffffffff')] strictDOF=False
+      C0 <- a5 (a0..a3 known): -1*Maj[arg1:u] +1*u
+      C1 <- a5 (a0..a3 known): +1*Ch[arg0:u;with a5] +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      C2 <- a5 (a0..a3 known): -1*Maj[arg1:u] +1*u
+      C3 <- a5 (a0..a3 known): none
+      best schedule (1 steps, complete=False): [('C0', 'a1', 'tab:s0+lin'), ('C1', 'a2', 'tab:s0+lin', 'BLOCKED-BY', [('a5', ('mild2', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('lin', 'mildmix')), ('C0', 'a5', ('lin', 'mild')), ('C1', 'a3', ('mildmix',))]
+   cfg eq=[(7, 6)] sat=[(8, '0xffffffff'), (11, '0xffffffff'), (12, '0xffffffff'), (13, '0x0'), (14, '0xffffffff'), (15, '0x0')] strictDOF=False
+      C0 <- a5 (a0..a3 known): -1*Maj[arg1:u] +1*u
+      C1 <- a5 (a0..a3 known): +1*Ch[arg0:u;with a5] +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      C2 <- a5 (a0..a3 known): -1*Maj[arg1:u] +1*Ch[arg1:u]
+      C3 <- a5 (a0..a3 known): none
+      best schedule (1 steps, complete=False): [('C0', 'a1', 'tab:s0+lin'), ('C1', 'a2', 'tab:s0+lin', 'BLOCKED-BY', [('a5', ('mild2', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('lin', 'mildmix')), ('C0', 'a5', ('lin', 'mild')), ('C1', 'a3', ('mildmix',))]
+   cfg eq=[(7, 6)] sat=[(8, '0xffffffff'), (10, '0xffffffff')] strictDOF=True
+      C0 <- a5 (a0..a3 known): -1*Maj[arg1:u] +1*u
+      C1 <- a5 (a0..a3 known): +1*Ch[arg0:u;with a5] +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      C2 <- a5 (a0..a3 known): -1*Maj[arg1:u] +1*u
+      C3 <- a5 (a0..a3 known): +1*Ch[arg2:u]
+      best schedule (1 steps, complete=False): [('C0', 'a1', 'tab:s0+lin'), ('C1', 'a2', 'tab:s0+lin', 'BLOCKED-BY', [('a5', ('mild2', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('lin', 'mildmix')), ('C0', 'a5', ('lin', 'mild')), ('C1', 'a3', ('mildmix',))]
+
+===== w = a6: 52488 configurations (3 Maj-pairs [(4, 5), (5, 7), (7, 8)]), 7776 legal (saturations realisable), 2304 strictly legal (DOF); 6s
+  C3 can absorb a6 (lin / one-input table, a0..a3 known) in 2592 configurations; complete 5-unknown schedules (any order, any homes): 0
+    C3 form (1944 cfgs): lin :: +1*u
+    C3 form (324 cfgs): lin selfdefer:mild :: +1*u -1*Maj[arg1:u]
+    C3 form (324 cfgs): lin selfdefer:mild :: -1*Maj[arg1:u] +1*u
+  minimum number of non-deferrable (tab/heavy) entries of a6 into C0..C2 (a1,a2,a3 known) over all configs: 2
+   cfg eq=[(7, 5), (8, 5)] sat=[(8, '0xffffffff'), (9, '0xffffffff'), (11, '0xffffffff'), (12, '0xffffffff'), (13, '0xffffffff'), (14, '0xffffffff'), (15, '0xffffffff')] strictDOF=False
+      C0 <- a6 (a0..a3 known): -1*Maj[arg0:u] ONEINPUT[s1,S0](ctx)
+      C1 <- a6 (a0..a3 known): +1*u
+      C2 <- a6 (a0..a3 known): -1*Maj[arg0:u] ONEINPUT[S1,S0](ctx)
+      C3 <- a6 (a0..a3 known): +1*u
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a6', ('mild', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('lin', 'mildmix'))]
+   cfg eq=[(7, 5), (8, 5)] sat=[(8, '0x0'), (9, '0xffffffff'), (11, '0xffffffff'), (12, '0x0')] strictDOF=False
+      C0 <- a6 (a0..a3 known): +1*u -1*s1(-u+c)
+      C1 <- a6 (a0..a3 known): +1*u
+      C2 <- a6 (a0..a3 known): -1*Maj[arg0:u] +1*Ch[arg0:u] ONEINPUT[S1,S0](ctx)
+      C3 <- a6 (a0..a3 known): +1*u
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a6', ('lin', 'tab'))])]
+      deferred: [('C0', 'a2', ('lin', 'mildmix')), ('C0', 'a3', ('mild', 'mildmix'))]
+   cfg eq=[(7, 5), (8, 5)] sat=[(8, '0x0'), (9, '0xffffffff')] strictDOF=True
+      C0 <- a6 (a0..a3 known): -1*s1(-u+c) +1*u
+      C1 <- a6 (a0..a3 known): +1*u
+      C2 <- a6 (a0..a3 known): -1*Maj[arg0:u] +1*Ch[arg0:u] ONEINPUT[S1,S0](ctx)
+      C3 <- a6 (a0..a3 known): +1*Ch[arg1:u]
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a6', ('lin', 'tab'))])]
+      deferred: [('C0', 'a2', ('lin', 'mildmix')), ('C0', 'a3', ('mild', 'mildmix'))]
+   cfg eq=[(7, 5), (8, 5)] sat=[(8, '0x0'), (9, '0xffffffff'), (11, '0x0')] strictDOF=True
+      C0 <- a6 (a0..a3 known): -1*s1(-u+c) +1*u
+      C1 <- a6 (a0..a3 known): +1*u
+      C2 <- a6 (a0..a3 known): -1*Maj[arg0:u] +1*Ch[arg0:u] ONEINPUT[S1,S0](ctx)
+      C3 <- a6 (a0..a3 known): none
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a6', ('lin', 'tab'))])]
+      deferred: [('C0', 'a2', ('lin', 'mildmix')), ('C0', 'a3', ('mild', 'mildmix'))]
+   cfg eq=[(7, 5), (8, 5)] sat=[(8, '0xffffffff'), (9, '0xffffffff')] strictDOF=True
+      C0 <- a6 (a0..a3 known): -1*Maj[arg0:u] ONEINPUT[S0,s1](ctx)
+      C1 <- a6 (a0..a3 known): +1*u
+      C2 <- a6 (a0..a3 known): -1*Maj[arg0:u] ONEINPUT[S1,S0](ctx)
+      C3 <- a6 (a0..a3 known): +1*Ch[arg1:u]
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a6', ('mild', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('lin', 'mildmix'))]
+
+===== w = a7: 104976 configurations (4 Maj-pairs [(4, 5), (5, 6), (6, 8), (8, 9)]), 5184 legal (saturations realisable), 996 strictly legal (DOF); 6s
+  C3 can absorb a7 (lin / one-input table, a0..a3 known) in 5184 configurations; complete 5-unknown schedules (any order, any homes): 0
+    C3 form (1134 cfgs): tabmulti-per-context(S0,S1) selfdefer:mild :: +1*Ch[arg0:u] ONEINPUT[S0,S1](ctx)
+    C3 form (972 cfgs): tabmulti-per-context(S0,S1) selfdefer:mild :: +1*Ch[arg0:u] -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+    C3 form (486 cfgs): tabmulti-per-context(S0,S1) selfdefer:mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) ONEINPUT[S0,S1](ctx)
+    C3 form (486 cfgs): tabmulti-per-context(S0,S1) selfdefer:mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg2:u](nested) ONEINPUT[S0,S1](ctx)
+    C3 form (405 cfgs): tabmulti-per-context(S0,S1) selfdefer:mild,mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+    C3 form (324 cfgs): tabmulti-per-context(S0,S1) selfdefer:mild :: -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+  minimum number of non-deferrable (tab/heavy) entries of a7 into C0..C2 (a1,a2,a3 known) over all configs: 2
+   cfg eq=[(8, 6), (9, 6)] sat=[(9, '0x0'), (10, '0xffffffff'), (12, '0xffffffff'), (15, '0x0')] strictDOF=False
+      C0 <- a7 (a0..a3 known): +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a7] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u
+      C1 <- a7 (a0..a3 known): -1*s1(-u+c) +1*u
+      C2 <- a7 (a0..a3 known): +1*u
+      C3 <- a7 (a0..a3 known): +1*Ch[arg0:u] -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a7', ('heavy', 'mildmix'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[(8, 6), (9, 6)] sat=[(9, '0xffffffff'), (10, '0xffffffff')] strictDOF=True
+      C0 <- a7 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a7] +1*HEAVY:S1:nonlinear-in-u
+      C1 <- a7 (a0..a3 known): -1*Maj[arg0:u] ONEINPUT[S0,s1](ctx)
+      C2 <- a7 (a0..a3 known): +1*u
+      C3 <- a7 (a0..a3 known): -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a7', ('heavy', 'mildmix'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[(6, 5), (8, 5), (9, 5)] sat=[(9, '0xffffffff'), (10, '0xffffffff')] strictDOF=True
+      C0 <- a7 (a0..a3 known): +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a7] -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:S1:nonlinear-in-u
+      C1 <- a7 (a0..a3 known): ONEINPUT[S0,s1](ctx)
+      C2 <- a7 (a0..a3 known): +1*u
+      C3 <- a7 (a0..a3 known): ONEINPUT[S0,S1](ctx)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a7', ('heavy', 'mildmix'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[(8, 6)] sat=[(9, '0x0')] strictDOF=True
+      C0 <- a7 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a7] +1*HEAVY:S1:nonlinear-in-u
+      C1 <- a7 (a0..a3 known): -1*s1(-u+c) +1*Maj[arg2:u] +1*u
+      C2 <- a7 (a0..a3 known): +1*HEAVY:S1:nonlinear-in-u +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside +1*u
+      C3 <- a7 (a0..a3 known): -1*Maj[arg0:u] +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) ONEINPUT[S0,S1](ctx)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a7', ('heavy', 'mildmix'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[(8, 6)] sat=[(9, '0xffffffff')] strictDOF=True
+      C0 <- a7 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a7] +1*HEAVY:S1:nonlinear-in-u
+      C1 <- a7 (a0..a3 known): +1*Maj[arg2:u] -1*Maj[arg0:u] ONEINPUT[S0,s1](ctx)
+      C2 <- a7 (a0..a3 known): +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside +1*HEAVY:S1:nonlinear-in-u +1*u
+      C3 <- a7 (a0..a3 known): +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a7', ('heavy', 'mildmix'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+
+===== w = a8: 104976 configurations (4 Maj-pairs [(4, 5), (6, 7), (7, 9), (9, 10)]), 1728 legal (saturations realisable), 384 strictly legal (DOF); 3s
+  C3 can absorb a8 (lin / one-input table, a0..a3 known) in 864 configurations; complete 5-unknown schedules (any order, any homes): 0
+    C3 form (324 cfgs): lin :: +1*u
+    C3 form (216 cfgs): tab:S0+lin selfdefer:mild :: +1*u -1*Maj[arg0:u] -1*S0(+u+c)
+    C3 form (216 cfgs): tab:S0+lin :: +1*u -1*S0(+u+c)
+    C3 form (54 cfgs): lin selfdefer:mild :: -1*Maj[arg1:u] +1*u
+    C3 form (54 cfgs): lin selfdefer:mild :: +1*u -1*Maj[arg1:u]
+  minimum number of non-deferrable (tab/heavy) entries of a8 into C0..C2 (a1,a2,a3 known) over all configs: 3
+   cfg eq=[(9, 7)] sat=[(10, '0x0'), (13, '0xffffffff')] strictDOF=False
+      C0 <- a8 (a0..a3 known): +1*Ch[arg0:u] -1*u +1*Maj[arg0:u] ONEINPUT[S0,s1,S1](ctx)
+      C1 <- a8 (a0..a3 known): +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a8]
+      C2 <- a8 (a0..a3 known): +1*u +1*Maj[arg2:u] -1*s1(-u+c)
+      C3 <- a8 (a0..a3 known): +1*HEAVY:S1:nonlinear-in-u +1*u +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a8', ('lin', 'mild', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[(9, 7)] sat=[(10, '0xffffffff'), (13, '0xffffffff')] strictDOF=False
+      C0 <- a8 (a0..a3 known): +1*Ch[arg0:u] -1*u +1*Maj[arg0:u] ONEINPUT[S0,S1,s1](ctx)
+      C1 <- a8 (a0..a3 known): +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a8]
+      C2 <- a8 (a0..a3 known): -1*Maj[arg0:u] +1*Maj[arg2:u] ONEINPUT[s1,S0](ctx)
+      C3 <- a8 (a0..a3 known): +1*HEAVY:S1:nonlinear-in-u +1*u +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a8', ('lin', 'mild', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[(9, 7), (10, 7)] sat=[(10, '0xffffffff'), (13, '0x0'), (14, '0xffffffff'), (15, '0x0')] strictDOF=False
+      C0 <- a8 (a0..a3 known): +1*Ch[arg0:u] -1*u +1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      C1 <- a8 (a0..a3 known): +1*HEAVY:S1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a8]
+      C2 <- a8 (a0..a3 known): -1*Maj[arg0:u] ONEINPUT[s1,S0](ctx)
+      C3 <- a8 (a0..a3 known): +1*u +1*HEAVY:Ch:F(u)-inside
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a8', ('lin', 'mild', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[(9, 7), (10, 7)] sat=[(10, '0x0'), (13, '0x0')] strictDOF=False
+      C0 <- a8 (a0..a3 known): +1*Ch[arg0:u] -1*u +1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      C1 <- a8 (a0..a3 known): +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a8]
+      C2 <- a8 (a0..a3 known): +1*u -1*s1(-u+c)
+      C3 <- a8 (a0..a3 known): +1*u +1*HEAVY:Ch:F(u)-inside
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a8', ('lin', 'mild', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[(9, 7), (10, 7)] sat=[(10, '0xffffffff'), (11, '0x0'), (13, '0x0')] strictDOF=False
+      C0 <- a8 (a0..a3 known): +1*Ch[arg0:u] -1*u +1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+      C1 <- a8 (a0..a3 known): +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a8]
+      C2 <- a8 (a0..a3 known): -1*Maj[arg0:u] ONEINPUT[s1,S0](ctx)
+      C3 <- a8 (a0..a3 known): +1*u -1*Maj[arg0:u] -1*S0(+u+c)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a8', ('lin', 'mild', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+
+===== w = a9: 104976 configurations (4 Maj-pairs [(4, 5), (7, 8), (8, 10), (10, 11)]), 1728 legal (saturations realisable), 360 strictly legal (DOF); 4s
+  C3 can absorb a9 (lin / one-input table, a0..a3 known) in 864 configurations; complete 5-unknown schedules (any order, any homes): 0
+    C3 form (180 cfgs): tab:s1+lin :: +1*u -1*s1(-u+c)
+    C3 form (144 cfgs): tab:s1+lin :: -1*s1(-u+c) +1*u
+    C3 form (90 cfgs): tabmulti-per-context(S0,s1) selfdefer:mild :: -1*Maj[arg0:u] ONEINPUT[S0,s1](ctx)
+    C3 form (90 cfgs): tabmulti-per-context(S0,s1) :: ONEINPUT[S0,s1](ctx)
+    C3 form (72 cfgs): tabmulti-per-context(s1,S0) selfdefer:mild :: -1*Maj[arg0:u] ONEINPUT[s1,S0](ctx)
+    C3 form (72 cfgs): tabmulti-per-context(s1,S0) :: ONEINPUT[s1,S0](ctx)
+  minimum number of non-deferrable (tab/heavy) entries of a9 into C0..C2 (a1,a2,a3 known) over all configs: 3
+   cfg eq=[(10, 8)] sat=[(14, '0xffffffff')] strictDOF=False
+      C0 <- a9 (a0..a3 known): -1*u -1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u] -1*Ch[arg2:u]
+      C1 <- a9 (a0..a3 known): -1*u +1*Ch[arg0:u] +1*Maj[arg0:u] ONEINPUT[S1,S0,s1](ctx)
+      C2 <- a9 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9] +1*HEAVY:S1:nonlinear-in-u
+      C3 <- a9 (a0..a3 known): -1*s1(-u+c) +1*Maj[arg2:u] +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a9]
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a9', ('heavy', 'lin', 'mild'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[(10, 8)] sat=[(11, '0x0'), (14, '0xffffffff')] strictDOF=False
+      C0 <- a9 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u -1*u +1*Maj[arg2:u] -1*Ch[arg2:u]
+      C1 <- a9 (a0..a3 known): -1*u +1*Ch[arg0:u] +1*Maj[arg0:u] ONEINPUT[S1,s1,S0](ctx)
+      C2 <- a9 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9] +1*HEAVY:S1:nonlinear-in-u
+      C3 <- a9 (a0..a3 known): -1*s1(-u+c) +1*u +1*Maj[arg2:u]
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a9', ('heavy', 'lin', 'mild'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[(10, 8)] sat=[(8, '0x0'), (11, '0xffffffff'), (14, '0xffffffff')] strictDOF=False
+      C0 <- a9 (a0..a3 known): -1*u +1*Maj[arg2:u] -1*Ch[arg2:u] -1*HEAVY:s1:nonlinear-in-u
+      C1 <- a9 (a0..a3 known): -1*u +1*Maj[arg0:u] +1*Ch[arg0:u] ONEINPUT[S1,s1,S0](ctx)
+      C2 <- a9 (a0..a3 known): +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9] -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:S1:nonlinear-in-u
+      C3 <- a9 (a0..a3 known): -1*Maj[arg0:u] +1*Maj[arg2:u] ONEINPUT[s1,S0](ctx)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a9', ('heavy', 'lin', 'mild'))])]
+      deferred: [('C0', 'a2', ('lin', 'mildmix')), ('C0', 'a3', ('mild', 'mildmix'))]
+   cfg eq=[(10, 8), (11, 8)] sat=[(8, '0xffffffff'), (11, '0xffffffff'), (12, '0xffffffff'), (14, '0xffffffff'), (15, '0xffffffff')] strictDOF=False
+      C0 <- a9 (a0..a3 known): -1*u -1*HEAVY:s1:nonlinear-in-u
+      C1 <- a9 (a0..a3 known): -1*u +1*Maj[arg0:u] +1*Ch[arg0:u] ONEINPUT[S1,s1,S0](ctx)
+      C2 <- a9 (a0..a3 known): +1*HEAVY:S1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9]
+      C3 <- a9 (a0..a3 known): -1*Maj[arg0:u] ONEINPUT[S0,s1](ctx)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a9', ('heavy', 'lin'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('lin', 'mildmix'))]
+   cfg eq=[(10, 8), (11, 8)] sat=[(14, '0x0')] strictDOF=False
+      C0 <- a9 (a0..a3 known): -1*u -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg2:u]
+      C1 <- a9 (a0..a3 known): -1*u +1*Ch[arg0:u] +1*Maj[arg0:u] ONEINPUT[S1,S0](ctx)
+      C2 <- a9 (a0..a3 known): +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u
+      C3 <- a9 (a0..a3 known): -1*s1(-u+c) +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a9]
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a9', ('heavy', 'lin', 'mild'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+
+===== w = a10: 52488 configurations (3 Maj-pairs [(4, 5), (8, 9), (9, 11)]), 432 legal (saturations realisable), 180 strictly legal (DOF); 2s
+  C3 can absorb a10 (lin / one-input table, a0..a3 known) in 0 configurations; complete 5-unknown schedules (any order, any homes): 0
+  minimum number of non-deferrable (tab/heavy) entries of a10 into C0..C2 (a1,a2,a3 known) over all configs: 3
+   cfg eq=[(11, 9)] sat=[(9, '0x0'), (15, '0xffffffff')] strictDOF=False
+      C0 <- a10 (a0..a3 known): -1*u -1*HEAVY:s1:nonlinear-in-u
+      C1 <- a10 (a0..a3 known): -1*Ch[arg2:u] -1*u +1*Maj[arg2:u] -1*HEAVY:s1:nonlinear-in-u
+      C2 <- a10 (a0..a3 known): -1*u +1*Ch[arg0:u] +1*Maj[arg0:u] ONEINPUT[s1,S1,S0](ctx)
+      C3 <- a10 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:S1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a10]
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a10', ('heavy', 'lin'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[(9, 8), (11, 8)] sat=[(8, '0x0'), (9, '0x0'), (15, '0xffffffff')] strictDOF=False
+      C0 <- a10 (a0..a3 known): -1*u -1*HEAVY:s1:nonlinear-in-u
+      C1 <- a10 (a0..a3 known): -1*u -1*Ch[arg2:u] +1*Maj[arg2:u] -1*HEAVY:s1:nonlinear-in-u
+      C2 <- a10 (a0..a3 known): -1*u ONEINPUT[s1,S0,S1](ctx)
+      C3 <- a10 (a0..a3 known): +1*HEAVY:S1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a10] -1*HEAVY:s1:nonlinear-in-u
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a10', ('heavy', 'lin'))])]
+      deferred: [('C0', 'a2', ('lin', 'mildmix')), ('C0', 'a3', ('mild', 'mildmix'))]
+   cfg eq=[] sat=[(9, '0x0')] strictDOF=True
+      C0 <- a10 (a0..a3 known): +1*Maj[arg1:u] -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg1:u;with a10] -1*Ch[arg2:u](nested)
+      C1 <- a10 (a0..a3 known): -1*u -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg2:u] +1*Maj[arg2:u]
+      C2 <- a10 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u -1*u +1*Ch[arg0:u] +1*Maj[arg0:u] ONEINPUT[S1,S0](ctx)
+      C3 <- a10 (a0..a3 known): +1*Maj[arg1:u] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a10]
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a10', ('heavy', 'mild', 'mild2', 'mildmix'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[] sat=[(9, '0x0'), (15, '0x0')] strictDOF=True
+      C0 <- a10 (a0..a3 known): +1*Maj[arg1:u] -1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u]
+      C1 <- a10 (a0..a3 known): -1*Ch[arg2:u] -1*u -1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u]
+      C2 <- a10 (a0..a3 known): -1*u +1*Ch[arg0:u] +1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u ONEINPUT[S1,S0](ctx)
+      C3 <- a10 (a0..a3 known): +1*Maj[arg1:u] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a10]
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a10', ('heavy', 'mild'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[] sat=[(9, '0x0'), (15, '0xffffffff')] strictDOF=True
+      C0 <- a10 (a0..a3 known): +1*Maj[arg1:u] -1*u -1*HEAVY:s1:nonlinear-in-u
+      C1 <- a10 (a0..a3 known): -1*u -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg2:u] +1*Maj[arg2:u]
+      C2 <- a10 (a0..a3 known): -1*u +1*Ch[arg0:u] -1*HEAVY:s1:nonlinear-in-u +1*Maj[arg0:u] ONEINPUT[S1,S0](ctx)
+      C3 <- a10 (a0..a3 known): +1*Maj[arg1:u] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a10]
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a10', ('heavy', 'lin', 'mild'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+
+===== w = a11: 26244 configurations (2 Maj-pairs [(4, 5), (9, 10)]), 108 legal (saturations realisable), 108 strictly legal (DOF); 1s
+  C3 can absorb a11 (lin / one-input table, a0..a3 known) in 0 configurations; complete 5-unknown schedules (any order, any homes): 0
+  minimum number of non-deferrable (tab/heavy) entries of a11 into C0..C2 (a1,a2,a3 known) over all configs: 4
+   cfg eq=[] sat=[] strictDOF=True
+      C0 <- a11 (a0..a3 known): +1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg0:u;with a11] -1*Ch[arg1:u](nested) -1*Ch[arg2:u](nested) ONEINPUT[S1,S0](ctx)
+      C1 <- a11 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg1:u;with a11] -1*Ch[arg2:u](nested) +1*Maj[arg1:u]
+      C2 <- a11 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u] -1*u -1*Ch[arg2:u]
+      C3 <- a11 (a0..a3 known): +1*Maj[arg0:u] +1*Ch[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*u ONEINPUT[S1,S0](ctx)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a11', ('heavy', 'mild', 'mild2', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[(10, 9)] sat=[] strictDOF=True
+      C0 <- a11 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg0:u;with a11] -1*Ch[arg1:u](nested) -1*Ch[arg2:u](nested) ONEINPUT[S1,S0](ctx)
+      C1 <- a11 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg1:u;with a11] -1*Ch[arg2:u](nested) +1*Maj[arg1:u]
+      C2 <- a11 (a0..a3 known): +1*Maj[arg2:u] -1*u -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg2:u]
+      C3 <- a11 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u +1*Ch[arg0:u] -1*u ONEINPUT[S1,S0](ctx)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a11', ('heavy', 'mild2', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]
+   cfg eq=[(10, 9)] sat=[(9, '0xffffffff'), (10, '0xffffffff')] strictDOF=True
+      C0 <- a11 (a0..a3 known): -1*Ch[arg0:u;with a11] -1*Ch[arg1:u](nested) -1*Ch[arg2:u](nested) -1*HEAVY:s1:nonlinear-in-u ONEINPUT[S1,S0](ctx)
+      C1 <- a11 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg1:u;with a11] -1*Ch[arg2:u](nested) +1*Maj[arg1:u]
+      C2 <- a11 (a0..a3 known): +1*Maj[arg2:u] -1*u -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg2:u]
+      C3 <- a11 (a0..a3 known): -1*HEAVY:s1:nonlinear-in-u -1*u ONEINPUT[S1,S0](ctx)
+      best schedule (0 steps, complete=False): [('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a11', ('heavy', 'mild2', 'mildmix', 'tabmulti'))])]
+      deferred: [('C0', 'a2', ('mildmix',)), ('C0', 'a3', ('mild2', 'mildmix'))]

@@ -1,0 +1,71 @@
+
+[submask family, base (v,a6,a7,a10 random)]  40 contexts x 32 single-bit flips of a11 = 1280 flips; family conditions held in 40/40
+   constant       changed  mean HW of change
+   KC0           1280/1280          15.80
+   KC1           1277/1280          13.16
+   KC2           1280/1280          15.14
+   collapse_v       0/1280           0.00
+   kappa3        1280/1280          14.20
+
+[decomposition of the a11-dependence of KC0]
+   KC0 = W16 - s1(W14) - W9hat;  W16 = A16 - T2(A15,A14,A13) - e12 - S1(e15) - Ch(e15,e14,e13) - K16
+   S1e15                    moved in 1280/1280 flips
+   e12                      moved in 1280/1280 flips
+   Ch15                     moved in 959/1280 flips
+   s1W14                    moved in 1279/1280 flips
+   W9hat                    moved in 0/1280 flips
+   KC0_frozen_S1e15         moved in 1280/1280 flips
+   KC0_frozen_S1e15_e12     moved in 1279/1280 flips
+
+[family + a10 = A12 (kills Maj(A12,a11,a10) in e13)]  40 contexts x 32 single-bit flips of a11 = 1280 flips; family conditions held in 40/40
+   constant       changed  mean HW of change
+   KC0           1280/1280          15.63
+   KC1           1280/1280          13.04
+   KC2           1280/1280          15.18
+   collapse_v       0/1280           0.00
+   kappa3        1280/1280          14.54
+
+[family + a10 = a9 (kills Maj(a11,a10,a9) in e12, W12)]  40 contexts x 32 single-bit flips of a11 = 1280 flips; family conditions held in 40/40
+   constant       changed  mean HW of change
+   KC0           1280/1280          15.85
+   KC1           1278/1280          12.80
+   KC2           1280/1280          15.27
+   collapse_v       0/1280           0.00
+   kappa3        1280/1280          14.57
+
+[family + e10 = -1 via a10 (kills Ch(e10,.,.) in W11, Ch(e11,e10,e9) data)]  40 contexts x 32 single-bit flips of a11 = 1280 flips; family conditions held in 40/40
+   constant       changed  mean HW of change
+   KC0           1280/1280          15.81
+   KC1           1278/1280          13.09
+   KC2           1280/1280          15.27
+   collapse_v       0/1280           0.00
+   kappa3        1280/1280          13.78
+
+[family + e14 = -1 via a10 (a10 now carries a11 through Maj(A13,A12,a11))]  40 contexts x 32 single-bit flips of a11 = 1280 flips; family conditions held in 40/40
+   constant       changed  mean HW of change
+   KC0           1280/1280          15.85
+   KC1           1198/1280           9.94
+   KC2           1280/1280          15.42
+   collapse_v       0/1280           0.00
+   kappa3        1280/1280          14.43
+
+[family + e11 = -1 via a7 (fixed point on a7; a7 now carries a11)]  20 contexts x 32 single-bit flips of a11 = 640 flips; family conditions held in 20/20
+   constant       changed  mean HW of change
+   KC0            640/640           15.72
+   KC1            640/640           12.80
+   KC2            640/640           15.36
+   collapse_v       0/640            0.00
+   kappa3         640/640           14.73
+   (fixed point on a7 found in 20/3723 attempts)
+
+[shape of kappa3(a11) at fixed everything else]
+   kappa3(a11) - kappa3(a11_0) == +/-(a11 - a11_0) in 0/256 random a11; mean HW of dkappa3 per single-bit flip = 14.56  (additive would be ~1.5, full avalanche ~16)
+
+[end-to-end candidate sets with the real table]
+   trial 0: a11 flip bit -> KC0 moved, KC1 moved, KC2 moved, kappa3 moved; candidates 533816 vs 534020, common 0; collapse-passing 48 vs 54, common 0
+   trial 1: a11 flip bit -> KC0 moved, KC1 moved, KC2 moved, kappa3 moved; candidates 534576 vs 532945, common 0; collapse-passing 63 vs 52, common 0
+   trial 2: a11 flip bit -> KC0 moved, KC1 moved, KC2 moved, kappa3 moved; candidates 533716 vs 533106, common 0; collapse-passing 40 vs 58, common 0
+   trial 3: a11 flip bit -> KC0 moved, KC1 moved, KC2 moved, kappa3 moved; candidates 532706 vs 533791, common 0; collapse-passing 55 vs 57, common 0
+   total: 0/2134814 candidates shared between the two a11 values (expected for independent sets: ~1061.1 by a0-collision with identical (a1,a2,a3) essentially 0); 0/206 collapse-passing shared
+
+done in 254s

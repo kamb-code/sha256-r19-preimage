@@ -1,0 +1,284 @@
+
+########## w = a4: 13122 configurations, 2958 legal (class-based DOF)
+  (a) status of each unknown in each constraint with all four live, counts over legal configs [absent/defer/absorb/block]:
+     C0:  a1: 0/0/2958/0   a2: 0/2958/0/0   a3: 0/2958/0/0   a4: 0/0/2958/0
+     C1:  a1: 0/0/0/2958   a2: 0/0/0/2958   a3: 0/2958/0/0   a4: 0/2958/0/0
+     C2:  a1: 0/0/0/2958   a2: 0/0/0/2958   a3: 0/0/0/2958   a4: 253/2705/0/0
+     C3:  a1: 0/0/0/2958   a2: 0/0/0/2958   a3: 0/0/0/2958   a4: 0/0/0/2958
+  (b) chain frame (C0:a1, C1:a2, C2:a3, C3:a4); non-deferrable atoms of a4:
+     C0: a4 deferrable/absent in 0/2958 configs; persistent in all: []; minimal sets: [(['oneinput[S1,S0](ctx)'], 2187), (['oneinput[S0,S1](ctx)'], 771)]
+     C1: a4 deferrable/absent in 2958/2958 configs; persistent in all: []; minimal sets: [([], 2958)]
+     C2: a4 deferrable/absent in 2958/2958 configs; persistent in all: []; minimal sets: [([], 2958)]
+     C3: a4 absorbable in 2958/2958 configs; forms: 
+          (2958) tab:s0+lin :: -1*s0(+u+c) +1*u
+  (c) chain dies at step 0: C0->a1: a4 not deferrable in C0
+      best configuration for the chain:
+      cfg eq=() sat=[]
+        symbolic C0 <- a4: +1*Ch[arg0:u;with a2,a3,a4] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u;with a2,a3] ONEINPUT[S1,S0](ctx)
+        symbolic C1 <- a4: -1*Maj[arg1:u;with a3] +1*Ch[arg1:u;with a3,a4] +1*Ch[arg2:u](nested)
+        symbolic C2 <- a4: +1*Ch[arg2:u] -1*Maj[arg2:u]
+        symbolic C3 <- a4: -1*s0(+u+c) +1*u
+        numeric dC_j per flipped bit of a4 (Hamming): C0=12.47 (moved 200/200)  C1= 1.79 (moved 149/200)  C2= 1.50 (moved 133/200)  C3= 7.95 (moved 200/200)
+        C3 in a4: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 200/200; on the context in 0/200
+
+########## w = a5: 26244 configurations, 2548 legal (class-based DOF)
+  (a) status of each unknown in each constraint with all four live, counts over legal configs [absent/defer/absorb/block]:
+     C0:  a1: 0/0/2548/0   a2: 0/2548/0/0   a3: 0/2548/0/0   a5: 0/292/292/1964
+     C1:  a1: 0/0/0/2548   a2: 0/0/0/2548   a3: 0/2548/0/0   a5: 0/0/2548/0
+     C2:  a1: 0/0/0/2548   a2: 0/0/0/2548   a3: 0/0/0/2548   a5: 15/2533/0/0
+     C3:  a1: 0/0/0/2548   a2: 0/0/0/2548   a3: 0/0/0/2548   a5: 338/2210/0/0
+  (b) chain frame (C0:a1, C1:a2, C2:a3, C3:a5); non-deferrable atoms of a5:
+     C0: a5 deferrable/absent in 292/2548 configs; persistent in all: []; minimal sets: [([], 292), (['heavy:Ch:F(u)-inside'], 506)]
+     C1: a5 deferrable/absent in 0/2548 configs; persistent in all: ['oneinput[S0,S1](ctx)']; minimal sets: [(['oneinput[S0,S1](ctx)'], 2548)]
+     C2: a5 deferrable/absent in 2548/2548 configs; persistent in all: []; minimal sets: [([], 2548)]
+     C3: a5 absorbable in 824/2548 configs; forms: 
+          (486) lin selfdefer:mild :: +1*u -1*Maj[arg2:u]
+          (338) lin :: +1*u
+  (c) chain dies at step 1: C1->a2: a5 not deferrable in C1
+      best configuration for the chain:
+      cfg eq=((7, 6),) sat=[(8, '0xffffffff')]
+        symbolic C0 <- a5: +1*u -1*Maj[arg1:u]
+        symbolic C1 <- a5: -1*Maj[arg0:u;with a3] +1*Ch[arg0:u;with a3,a5] +1*Ch[arg2:u](nested) ONEINPUT[S0,S1](ctx)
+        symbolic C2 <- a5: +1*Ch[arg1:u] -1*Maj[arg1:u]
+        symbolic C3 <- a5: +1*Ch[arg2:u]
+        numeric dC_j per flipped bit of a5 (Hamming): C0= 0.97 (moved 105/200)  C1=12.11 (moved 200/200)  C2= 1.37 (moved 130/200)  C3= 1.38 (moved 134/200)
+        C3 in a5: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+      C3 form lin selfdefer:mild :: +1*u -1*Maj[arg2:u]:
+      cfg eq=() sat=[(11, '0x0')]
+        symbolic C0 <- a5: +1*Ch[arg0:u](nested) +1*Ch[arg1:u](nested) +1*HEAVY:Ch:F(u)-inside +1*u +1*HEAVY:S1:nonlinear-in-u
+        symbolic C1 <- a5: -1*Maj[arg0:u;with a3] +1*Ch[arg0:u;with a3,a5] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) ONEINPUT[S0,S1](ctx)
+        symbolic C2 <- a5: +1*Ch[arg1:u;with a5] +1*Ch[arg2:u](nested) -1*Maj[arg1:u]
+        symbolic C3 <- a5: +1*u -1*Maj[arg2:u]
+        numeric dC_j per flipped bit of a5 (Hamming): C0= 7.71 (moved 200/200)  C1=12.51 (moved 200/200)  C2= 1.67 (moved 151/200)  C3= 1.14 (moved 111/200)
+        C3 in a5: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+      C3 form lin :: +1*u:
+      cfg eq=((7, 6),) sat=[(11, '0x0')]
+        symbolic C0 <- a5: +1*u +1*Ch[arg1:u](nested) +1*HEAVY:Ch:F(u)-inside
+        symbolic C1 <- a5: -1*Maj[arg0:u;with a3] +1*Ch[arg0:u;with a3,a5] +1*Ch[arg2:u](nested) ONEINPUT[S0,S1](ctx)
+        symbolic C2 <- a5: +1*Ch[arg1:u] -1*Maj[arg1:u]
+        symbolic C3 <- a5: +1*u
+        numeric dC_j per flipped bit of a5 (Hamming): C0= 5.07 (moved 198/200)  C1=12.06 (moved 200/200)  C2= 1.49 (moved 139/200)  C3= 1.96 (moved 200/200)
+        C3 in a5: exactly linear (dC3 = +-delta) in 200/200; dC3 depends on a0..a3 in 0/200; on the context in 0/200
+
+########## w = a6: 52488 configurations, 2434 legal (class-based DOF)
+  (a) status of each unknown in each constraint with all four live, counts over legal configs [absent/defer/absorb/block]:
+     C0:  a1: 0/0/2434/0   a2: 0/2434/0/0   a3: 0/2434/0/0   a6: 0/0/754/1680
+     C1:  a1: 0/0/0/2434   a2: 0/0/0/2434   a3: 94/2340/0/0   a6: 0/210/210/2014
+     C2:  a1: 0/0/0/2434   a2: 0/0/0/2434   a3: 0/0/0/2434   a6: 0/0/2434/0
+     C3:  a1: 0/0/0/2434   a2: 0/0/0/2434   a3: 0/0/0/2434   a6: 12/2422/0/0
+  (b) chain frame (C0:a1, C1:a2, C2:a3, C3:a6); non-deferrable atoms of a6:
+     C0: a6 deferrable/absent in 0/2434 configs; persistent in all: []; minimal sets: [(['tab:s1(-u+c)'], 377), (['oneinput[S0,s1](ctx)'], 332)]
+     C1: a6 deferrable/absent in 210/2434 configs; persistent in all: []; minimal sets: [([], 210), (['heavy:Ch:F(u)-inside'], 498)]
+     C2: a6 deferrable/absent in 0/2434 configs; persistent in all: []; minimal sets: [(['oneinput[S0,S1](ctx)'], 2329), (['oneinput[S1,S0](ctx)'], 105)]
+     C3: a6 absorbable in 506/2434 configs; forms: 
+          (338) lin :: +1*u
+          (168) lin selfdefer:mild :: +1*u -1*Maj[arg1:u]
+  (c) chain dies at step 0: C0->a1: a6 not deferrable in C0
+      best configuration for the chain:
+      cfg eq=() sat=[]
+        symbolic C0 <- a6: +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a3,a6] +1*HEAVY:S1:nonlinear-in-u +1*Maj[arg2:u] -1*s1(-u+c)
+        symbolic C1 <- a6: +1*u +1*Ch[arg0:u](nested) +1*Ch[arg1:u](nested) +1*HEAVY:Ch:F(u)-inside +1*HEAVY:S1:nonlinear-in-u
+        symbolic C2 <- a6: +1*Ch[arg0:u;with a6] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+        symbolic C3 <- a6: +1*Ch[arg1:u;with a6] +1*Ch[arg2:u](nested) -1*Maj[arg1:u]
+        numeric dC_j per flipped bit of a6 (Hamming): C0=12.05 (moved 200/200)  C1= 8.56 (moved 198/200)  C2=12.60 (moved 200/200)  C3= 1.76 (moved 151/200)
+        C3 in a6: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+      C3 form lin :: +1*u:
+      cfg eq=((7, 5),) sat=[(11, '0xffffffff')]
+        symbolic C0 <- a6: -1*s1(-u+c) +1*Maj[arg2:u] +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a3,a6]
+        symbolic C1 <- a6: +1*u +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside +1*HEAVY:S1:nonlinear-in-u
+        symbolic C2 <- a6: +1*Ch[arg0:u;with a6] +1*Ch[arg1:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+        symbolic C3 <- a6: +1*u
+        numeric dC_j per flipped bit of a6 (Hamming): C0= 9.73 (moved 200/200)  C1= 8.19 (moved 200/200)  C2=12.09 (moved 200/200)  C3= 1.89 (moved 200/200)
+        C3 in a6: exactly linear (dC3 = +-delta) in 200/200; dC3 depends on a0..a3 in 0/200; on the context in 0/200
+      C3 form lin selfdefer:mild :: +1*u -1*Maj[arg1:u]:
+      cfg eq=() sat=[(11, '0xffffffff')]
+        symbolic C0 <- a6: +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a3,a6] +1*HEAVY:S1:nonlinear-in-u +1*Maj[arg2:u] -1*s1(-u+c)
+        symbolic C1 <- a6: +1*u +1*Ch[arg0:u](nested) +1*Ch[arg1:u](nested) +1*HEAVY:Ch:F(u)-inside +1*HEAVY:S1:nonlinear-in-u
+        symbolic C2 <- a6: +1*Ch[arg0:u;with a6] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+        symbolic C3 <- a6: +1*u -1*Maj[arg1:u]
+        numeric dC_j per flipped bit of a6 (Hamming): C0=12.19 (moved 200/200)  C1= 8.04 (moved 199/200)  C2=12.21 (moved 200/200)  C3= 0.94 (moved 99/200)
+        C3 in a6: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+
+########## w = a7: 104976 configurations, 1596 legal (class-based DOF)
+  (a) status of each unknown in each constraint with all four live, counts over legal configs [absent/defer/absorb/block]:
+     C0:  a1: 0/0/1596/0   a2: 0/1596/0/0   a3: 0/1596/0/0   a7: 0/0/0/1596
+     C1:  a1: 0/0/0/1596   a2: 0/0/0/1596   a3: 123/1473/0/0   a7: 0/0/492/1104
+     C2:  a1: 0/0/0/1596   a2: 0/0/0/1596   a3: 0/0/0/1596   a7: 0/132/132/1332
+     C3:  a1: 0/0/0/1596   a2: 0/0/0/1596   a3: 0/0/0/1596   a7: 0/0/1596/0
+  (b) chain frame (C0:a1, C1:a2, C2:a3, C3:a7); non-deferrable atoms of a7:
+     C0: a7 deferrable/absent in 0/1596 configs; persistent in all: ['heavy:Ch:F(u)-inside', 'heavy:S1:nonlinear-in-u']; minimal sets: [(['heavy:Ch:F(u)-inside', 'heavy:S1:nonlinear-in-u'], 180), (['heavy:Ch:F(u)-inside', 'heavy:S1:nonlinear-in-u', 'heavy:s1:nonlinear-in-u'], 1236)]
+     C1: a7 deferrable/absent in 0/1596 configs; persistent in all: []; minimal sets: [(['tab:s1(-u+c)'], 246), (['oneinput[S0,s1](ctx)'], 168)]
+     C2: a7 deferrable/absent in 132/1596 configs; persistent in all: []; minimal sets: [([], 132), (['heavy:Ch:F(u)-inside'], 324)]
+     C3: a7 absorbable in 1596/1596 configs; forms: 
+          (324) tabmulti-per-context(S0,S1) selfdefer:mild,mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+          (198) tabmulti-per-context(S0,S1) selfdefer:mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) ONEINPUT[S0,S1](ctx)
+          (162) tabmulti-per-context(S0,S1) selfdefer:mild,mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+          (162) tabmulti-per-context(S0,S1) selfdefer:mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) ONEINPUT[S0,S1](ctx)
+          (162) tabmulti-per-context(S0,S1) selfdefer:mild,mild2,mildmix :: -1*Maj[arg0:u] +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) ONEINPUT[S0,S1](ctx)
+  (c) chain dies at step 0: C0->a1: a7 not deferrable in C0
+      best configuration for the chain:
+      cfg eq=() sat=[]
+        symbolic C0 <- a7: +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a2,a3,a7] +1*HEAVY:S1:nonlinear-in-u +1*Maj[arg1:u] -1*HEAVY:s1:nonlinear-in-u
+        symbolic C1 <- a7: +1*Maj[arg2:u] -1*s1(-u+c) +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a7] +1*HEAVY:S1:nonlinear-in-u
+        symbolic C2 <- a7: +1*HEAVY:S1:nonlinear-in-u +1*Ch[arg0:u](nested) +1*Ch[arg1:u](nested) +1*HEAVY:Ch:F(u)-inside +1*u
+        symbolic C3 <- a7: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+        numeric dC_j per flipped bit of a7 (Hamming): C0=15.72 (moved 200/200)  C1=12.26 (moved 200/200)  C2= 8.27 (moved 197/200)  C3=12.22 (moved 200/200)
+        C3 in a7: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+      C3 form tabmulti-per-context(S0,S1) selfdefer:mild,mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx):
+      cfg eq=((8, 6),) sat=[(9, '0x0')]
+        symbolic C0 <- a7: -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a2,a3,a7] +1*HEAVY:S1:nonlinear-in-u
+        symbolic C1 <- a7: +1*Maj[arg2:u] -1*s1(-u+c) +1*u
+        symbolic C2 <- a7: +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside +1*HEAVY:S1:nonlinear-in-u +1*u
+        symbolic C3 <- a7: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+        numeric dC_j per flipped bit of a7 (Hamming): C0=15.59 (moved 200/200)  C1= 7.03 (moved 200/200)  C2= 8.52 (moved 200/200)  C3=12.28 (moved 200/200)
+        C3 in a7: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+      C3 form tabmulti-per-context(S0,S1) selfdefer:mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) ONEINPUT[S0,S1](ctx):
+      cfg eq=((6, 5), (8, 5)) sat=[]
+        symbolic C0 <- a7: -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:S1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a2,a3,a7]
+        symbolic C1 <- a7: +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a7] -1*s1(-u+c) +1*Maj[arg2:u]
+        symbolic C2 <- a7: +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside +1*HEAVY:S1:nonlinear-in-u +1*u
+        symbolic C3 <- a7: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) ONEINPUT[S0,S1](ctx)
+        numeric dC_j per flipped bit of a7 (Hamming): C0=15.82 (moved 200/200)  C1= 9.99 (moved 200/200)  C2= 8.25 (moved 200/200)  C3=12.29 (moved 200/200)
+        C3 in a7: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+
+########## w = a8: 104976 configurations, 532 legal (class-based DOF)
+  (a) status of each unknown in each constraint with all four live, counts over legal configs [absent/defer/absorb/block]:
+     C0:  a1: 0/0/532/0   a2: 0/532/0/0   a3: 0/532/0/0   a8: 0/0/72/460
+     C1:  a1: 0/0/0/532   a2: 0/0/0/532   a3: 0/532/0/0   a8: 0/0/0/532
+     C2:  a1: 0/0/0/532   a2: 0/0/0/532   a3: 0/0/0/532   a8: 0/0/164/368
+     C3:  a1: 0/0/0/532   a2: 0/0/0/532   a3: 0/0/0/532   a8: 0/44/44/444
+  (b) chain frame (C0:a1, C1:a2, C2:a3, C3:a8); non-deferrable atoms of a8:
+     C0: a8 deferrable/absent in 0/532 configs; persistent in all: []; minimal sets: [(['oneinput[s1,S1,S0](ctx)'], 45), (['oneinput[s1,S0,S1](ctx)'], 18)]
+     C1: a8 deferrable/absent in 0/532 configs; persistent in all: ['heavy:Ch:F(u)-inside', 'heavy:S1:nonlinear-in-u']; minimal sets: [(['heavy:Ch:F(u)-inside', 'heavy:S1:nonlinear-in-u'], 60), (['heavy:Ch:F(u)-inside', 'heavy:S1:nonlinear-in-u', 'heavy:s1:nonlinear-in-u'], 412)]
+     C2: a8 deferrable/absent in 0/532 configs; persistent in all: []; minimal sets: [(['tab:s1(-u+c)'], 82), (['oneinput[s1,S0](ctx)'], 68)]
+     C3: a8 absorbable in 88/532 configs; forms: 
+          (24) tab:S0+lin selfdefer:mild :: +1*u -1*Maj[arg0:u] -1*S0(+u+c)
+          (20) tab:S0+lin :: +1*u -1*S0(+u+c)
+          (18) lin selfdefer:mild :: +1*u -1*Maj[arg1:u]
+          (18) lin selfdefer:mild :: -1*Maj[arg1:u] +1*u
+          (8) lin :: +1*u
+  (c) chain dies at step 0: C0->a1: a8 not deferrable in C0
+      best configuration for the chain:
+      cfg eq=() sat=[]
+        symbolic C0 <- a8: -1*u +1*Ch[arg0:u;with a2,a3] +1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u ONEINPUT[S1,S0](ctx)
+        symbolic C1 <- a8: +1*Maj[arg1:u] -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a3,a8] +1*HEAVY:S1:nonlinear-in-u
+        symbolic C2 <- a8: +1*HEAVY:S1:nonlinear-in-u +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a8] -1*s1(-u+c) +1*Maj[arg2:u]
+        symbolic C3 <- a8: +1*u +1*Ch[arg0:u](nested) +1*Ch[arg1:u](nested) +1*HEAVY:Ch:F(u)-inside +1*HEAVY:S1:nonlinear-in-u
+        numeric dC_j per flipped bit of a8 (Hamming): C0=14.20 (moved 200/200)  C1=15.41 (moved 200/200)  C2=12.01 (moved 200/200)  C3= 7.70 (moved 199/200)
+        C3 in a8: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+      C3 form tab:S0+lin selfdefer:mild :: +1*u -1*Maj[arg0:u] -1*S0(+u+c):
+      cfg eq=((10, 9),) sat=[(11, '0x0')]
+        symbolic C0 <- a8: -1*u +1*Ch[arg0:u;with a2,a3] +1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u ONEINPUT[S1,S0](ctx)
+        symbolic C1 <- a8: +1*Maj[arg1:u] +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a3,a8] -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:S1:nonlinear-in-u
+        symbolic C2 <- a8: -1*s1(-u+c) +1*HEAVY:S1:nonlinear-in-u +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a8]
+        symbolic C3 <- a8: +1*u -1*Maj[arg0:u] -1*S0(+u+c)
+        numeric dC_j per flipped bit of a8 (Hamming): C0=13.93 (moved 200/200)  C1=15.87 (moved 200/200)  C2=11.62 (moved 200/200)  C3= 6.34 (moved 200/200)
+        C3 in a8: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+      C3 form tab:S0+lin :: +1*u -1*S0(+u+c):
+      cfg eq=((7, 6), (10, 9)) sat=[(11, '0x0')]
+        symbolic C0 <- a8: -1*u -1*HEAVY:s1:nonlinear-in-u +1*Ch[arg0:u;with a2,a3] ONEINPUT[S0,S1](ctx)
+        symbolic C1 <- a8: +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a3,a8] +1*Maj[arg1:u] -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:S1:nonlinear-in-u
+        symbolic C2 <- a8: -1*s1(-u+c) +1*HEAVY:S1:nonlinear-in-u +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a8]
+        symbolic C3 <- a8: +1*u -1*S0(+u+c)
+        numeric dC_j per flipped bit of a8 (Hamming): C0=14.63 (moved 200/200)  C1=15.66 (moved 200/200)  C2=11.51 (moved 200/200)  C3= 7.04 (moved 200/200)
+        C3 in a8: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 0/200
+      C3 form lin selfdefer:mild :: +1*u -1*Maj[arg1:u]:
+      cfg eq=((10, 9),) sat=[(11, '0xffffffff')]
+        symbolic C0 <- a8: -1*u -1*HEAVY:s1:nonlinear-in-u +1*Ch[arg0:u;with a2,a3] +1*Maj[arg0:u] ONEINPUT[S1,S0](ctx)
+        symbolic C1 <- a8: +1*Maj[arg1:u] +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a3,a8] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u
+        symbolic C2 <- a8: -1*s1(-u+c) +1*HEAVY:S1:nonlinear-in-u +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a8]
+        symbolic C3 <- a8: +1*u -1*Maj[arg1:u]
+        numeric dC_j per flipped bit of a8 (Hamming): C0=14.15 (moved 200/200)  C1=15.56 (moved 200/200)  C2=11.73 (moved 200/200)  C3= 0.91 (moved 97/200)
+        C3 in a8: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+
+########## w = a9: 104976 configurations, 380 legal (class-based DOF)
+  (a) status of each unknown in each constraint with all four live, counts over legal configs [absent/defer/absorb/block]:
+     C0:  a1: 0/0/380/0   a2: 0/380/0/0   a3: 0/380/0/0   a9: 0/0/0/380
+     C1:  a1: 0/0/0/380   a2: 0/0/0/380   a3: 0/380/0/0   a9: 0/0/48/332
+     C2:  a1: 0/0/0/380   a2: 0/0/0/380   a3: 0/0/0/380   a9: 0/0/0/380
+     C3:  a1: 0/0/0/380   a2: 0/0/0/380   a3: 0/0/0/380   a9: 0/0/108/272
+  (b) chain frame (C0:a1, C1:a2, C2:a3, C3:a9); non-deferrable atoms of a9:
+     C0: a9 deferrable/absent in 0/380 configs; persistent in all: ['heavy:s1:nonlinear-in-u']; minimal sets: [(['heavy:s1:nonlinear-in-u'], 380)]
+     C1: a9 deferrable/absent in 0/380 configs; persistent in all: []; minimal sets: [(['oneinput[s1,S0,S1](ctx)'], 24), (['oneinput[S0,S1,s1](ctx)'], 12)]
+     C2: a9 deferrable/absent in 0/380 configs; persistent in all: ['heavy:Ch:F(u)-inside', 'heavy:S1:nonlinear-in-u']; minimal sets: [(['heavy:Ch:F(u)-inside', 'heavy:S1:nonlinear-in-u'], 42), (['heavy:Ch:F(u)-inside', 'heavy:S1:nonlinear-in-u', 'heavy:s1:nonlinear-in-u'], 296)]
+     C3: a9 absorbable in 108/380 configs; forms: 
+          (26) tab:s1+lin selfdefer:mild :: +1*Maj[arg2:u] -1*s1(-u+c) +1*u
+          (20) tabmulti-per-context(S0,s1) selfdefer:mild :: +1*Maj[arg2:u] -1*Maj[arg0:u] ONEINPUT[S0,s1](ctx)
+          (18) tabmulti-per-context(s1,S0) selfdefer:mild :: +1*Maj[arg2:u] -1*Maj[arg0:u] ONEINPUT[s1,S0](ctx)
+          (12) tab:s1+lin selfdefer:mild :: +1*Maj[arg2:u] +1*u -1*s1(-u+c)
+          (8) tab:s1+lin :: +1*u -1*s1(-u+c)
+  (c) chain dies at step 0: C0->a1: a9 not deferrable in C0
+      best configuration for the chain:
+      cfg eq=() sat=[]
+        symbolic C0 <- a9: +1*Maj[arg2:u] -1*HEAVY:s1:nonlinear-in-u -1*u -1*Ch[arg2:u]
+        symbolic C1 <- a9: +1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*u +1*Ch[arg0:u;with a3] ONEINPUT[S0,S1](ctx)
+        symbolic C2 <- a9: +1*HEAVY:S1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9] -1*HEAVY:s1:nonlinear-in-u +1*Maj[arg1:u]
+        symbolic C3 <- a9: +1*Maj[arg2:u] +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a9] +1*HEAVY:S1:nonlinear-in-u -1*s1(-u+c)
+        numeric dC_j per flipped bit of a9 (Hamming): C0=15.32 (moved 200/200)  C1=14.05 (moved 200/200)  C2=15.71 (moved 200/200)  C3=11.91 (moved 200/200)
+        C3 in a9: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+      C3 form tab:s1+lin selfdefer:mild :: +1*Maj[arg2:u] -1*s1(-u+c) +1*u:
+      cfg eq=((10, 8),) sat=[(11, '0x0')]
+        symbolic C0 <- a9: +1*Maj[arg2:u] -1*Ch[arg2:u] -1*u -1*HEAVY:s1:nonlinear-in-u
+        symbolic C1 <- a9: +1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*u +1*Ch[arg0:u;with a3] ONEINPUT[S0,S1](ctx)
+        symbolic C2 <- a9: +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9]
+        symbolic C3 <- a9: +1*Maj[arg2:u] -1*s1(-u+c) +1*u
+        numeric dC_j per flipped bit of a9 (Hamming): C0=15.21 (moved 200/200)  C1=14.89 (moved 200/200)  C2=15.65 (moved 200/200)  C3= 7.53 (moved 200/200)
+        C3 in a9: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+      C3 form tabmulti-per-context(S0,s1) selfdefer:mild :: +1*Maj[arg2:u] -1*Maj[arg0:u] ONEINPUT[S0,s1](ctx):
+      cfg eq=((10, 8),) sat=[(11, '0xffffffff')]
+        symbolic C0 <- a9: +1*Maj[arg2:u] -1*Ch[arg2:u] -1*HEAVY:s1:nonlinear-in-u -1*u
+        symbolic C1 <- a9: +1*Maj[arg0:u] -1*u +1*Ch[arg0:u;with a3] -1*HEAVY:s1:nonlinear-in-u ONEINPUT[S0,S1](ctx)
+        symbolic C2 <- a9: +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9]
+        symbolic C3 <- a9: +1*Maj[arg2:u] -1*Maj[arg0:u] ONEINPUT[S0,s1](ctx)
+        numeric dC_j per flipped bit of a9 (Hamming): C0=15.01 (moved 200/200)  C1=14.90 (moved 200/200)  C2=15.48 (moved 200/200)  C3=11.03 (moved 200/200)
+        C3 in a9: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+      C3 form tabmulti-per-context(s1,S0) selfdefer:mild :: +1*Maj[arg2:u] -1*Maj[arg0:u] ONEINPUT[s1,S0](ctx):
+      cfg eq=((10, 8),) sat=[(8, '0x0'), (11, '0xffffffff'), (15, '0x0')]
+        symbolic C0 <- a9: +1*Maj[arg2:u] -1*HEAVY:s1:nonlinear-in-u -2*u
+        symbolic C1 <- a9: +1*Maj[arg0:u] -1*u +1*Ch[arg0:u;with a3] -1*HEAVY:s1:nonlinear-in-u ONEINPUT[S0,S1](ctx)
+        symbolic C2 <- a9: -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9] +1*HEAVY:S1:nonlinear-in-u
+        symbolic C3 <- a9: +1*Maj[arg2:u] -1*Maj[arg0:u] ONEINPUT[s1,S0](ctx)
+        numeric dC_j per flipped bit of a9 (Hamming): C0=15.26 (moved 200/200)  C1=14.68 (moved 200/200)  C2=15.56 (moved 200/200)  C3=10.93 (moved 200/200)
+        C3 in a9: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+
+########## w = a10: 52488 configurations, 252 legal (class-based DOF)
+  (a) status of each unknown in each constraint with all four live, counts over legal configs [absent/defer/absorb/block]:
+     C0:  a1: 0/0/252/0   a2: 0/252/0/0   a3: 0/252/0/0   a10: 0/0/0/252
+     C1:  a1: 0/0/0/252   a2: 0/0/0/252   a3: 26/226/0/0   a10: 0/0/0/252
+     C2:  a1: 0/0/0/252   a2: 0/0/0/252   a3: 0/0/0/252   a10: 0/0/50/202
+     C3:  a1: 0/0/0/252   a2: 0/0/0/252   a3: 0/0/0/252   a10: 0/0/0/252
+  (b) chain frame (C0:a1, C1:a2, C2:a3, C3:a10); non-deferrable atoms of a10:
+     C0: a10 deferrable/absent in 0/252 configs; persistent in all: ['heavy:s1:nonlinear-in-u']; minimal sets: [(['heavy:s1:nonlinear-in-u'], 252)]
+     C1: a10 deferrable/absent in 0/252 configs; persistent in all: ['heavy:s1:nonlinear-in-u']; minimal sets: [(['heavy:s1:nonlinear-in-u'], 252)]
+     C2: a10 deferrable/absent in 0/252 configs; persistent in all: []; minimal sets: [(['oneinput[s1,S1,S0](ctx)'], 26), (['oneinput[S1,s1,S0](ctx)'], 24)]
+     C3: a10 absorbable in 0/252 configs; forms: 
+  (c) chain dies at step 0: C0->a1: a10 not deferrable in C0
+      best configuration for the chain:
+      cfg eq=() sat=[]
+        symbolic C0 <- a10: +1*Maj[arg1:u] -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg1:u;with a10] -1*Ch[arg2:u](nested)
+        symbolic C1 <- a10: +1*Maj[arg2:u] -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg2:u] -1*u
+        symbolic C2 <- a10: +1*Ch[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*u +1*Maj[arg0:u] ONEINPUT[S1,S0](ctx)
+        symbolic C3 <- a10: +1*Maj[arg1:u] +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a10] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u
+        numeric dC_j per flipped bit of a10 (Hamming): C0=12.71 (moved 200/200)  C1=15.64 (moved 200/200)  C2=14.49 (moved 200/200)  C3=15.52 (moved 200/200)
+        C3 in a10: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+
+########## w = a11: 26244 configurations, 96 legal (class-based DOF)
+  (a) status of each unknown in each constraint with all four live, counts over legal configs [absent/defer/absorb/block]:
+     C0:  a1: 0/0/96/0   a2: 0/96/0/0   a3: 0/96/0/0   a11: 0/0/0/96
+     C1:  a1: 0/0/0/96   a2: 0/0/0/96   a3: 14/82/0/0   a11: 0/0/0/96
+     C2:  a1: 0/0/0/96   a2: 0/0/0/96   a3: 0/0/0/96   a11: 0/0/0/96
+     C3:  a1: 0/0/0/96   a2: 0/0/0/96   a3: 0/0/0/96   a11: 0/0/0/96
+  (b) chain frame (C0:a1, C1:a2, C2:a3, C3:a11); non-deferrable atoms of a11:
+     C0: a11 deferrable/absent in 0/96 configs; persistent in all: ['heavy:s1:nonlinear-in-u', 'oneinput[S0,S1](ctx)']; minimal sets: [(['heavy:s1:nonlinear-in-u', 'oneinput[S0,S1](ctx)'], 96)]
+     C1: a11 deferrable/absent in 0/96 configs; persistent in all: ['heavy:s1:nonlinear-in-u']; minimal sets: [(['heavy:s1:nonlinear-in-u'], 96)]
+     C2: a11 deferrable/absent in 0/96 configs; persistent in all: ['heavy:s1:nonlinear-in-u']; minimal sets: [(['heavy:s1:nonlinear-in-u'], 96)]
+     C3: a11 absorbable in 0/96 configs; forms: 
+  (c) chain dies at step 0: C0->a1: a11 not deferrable in C0
+      best configuration for the chain:
+      cfg eq=() sat=[]
+        symbolic C0 <- a11: +1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg0:u;with a11] -1*Ch[arg1:u](nested) -1*Ch[arg2:u](nested) ONEINPUT[S0,S1](ctx)
+        symbolic C1 <- a11: +1*Maj[arg1:u] -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg1:u;with a11] -1*Ch[arg2:u](nested)
+        symbolic C2 <- a11: +1*Maj[arg2:u] -1*u -1*Ch[arg2:u] -1*HEAVY:s1:nonlinear-in-u
+        symbolic C3 <- a11: -1*u +1*Maj[arg0:u] +1*Ch[arg0:u] -1*HEAVY:s1:nonlinear-in-u ONEINPUT[S0,S1](ctx)
+        numeric dC_j per flipped bit of a11 (Hamming): C0=15.76 (moved 200/200)  C1=12.98 (moved 199/200)  C2=15.12 (moved 200/200)  C3=14.19 (moved 200/200)
+        C3 in a11: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200

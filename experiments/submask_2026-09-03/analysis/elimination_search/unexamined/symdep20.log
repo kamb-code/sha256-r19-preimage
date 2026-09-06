@@ -1,0 +1,58 @@
+
+=== k=4: 177147 configs, 59049 legal; min #heavy(a4 -> C0,C1,C2) = 1; 59049 configs attain it
+  eq=((6, 5),) sat(e8..e15)=['-', '-', '0xffffffff', '-', '-', '-', '-', '-']
+     a4 in C0..C3: ('heavy', 'mild', 'none', 's0lin+lin')   [a3 in C1: mild, a2 in C0: mild, a3 in C0: mild]
+  eq=((6, 5),) sat(e8..e15)=['-', '0x0', '0x0', '0x0', '0xffffffff', '0xffffffff', '-', '0xffffffff']
+     a4 in C0..C3: ('heavy', 'mild', 'lin', 's0lin+lin')   [a3 in C1: mild, a2 in C0: mild, a3 in C0: mild]
+  eq=() sat(e8..e15)=['-', '0x0', '-', '-', '0x0', '0x0', '0x0', '-']
+     a4 in C0..C3: ('heavy', 'mild', 'mild', 's0lin+lin')   [a3 in C1: mild, a2 in C0: mild, a3 in C0: mild]
+  heavy-constraint tally over the 59049 minimal configs: {'C0': 59049}
+
+=== k=5: 170586 configs, 21870 legal; min #heavy(a5 -> C0,C1,C2) = 1; 1458 configs attain it
+  eq=((7, 6),) sat(e8..e15)=['0xffffffff', '-', '0x0', '0xffffffff', '-', '-', '-', '-']
+     a5 in C0..C3: ('mild', 'heavy', 'mild', 'none')   [a3 in C1: mild, a2 in C0: mild, a3 in C0: mild]
+  eq=((7, 6),) sat(e8..e15)=['0xffffffff', '-', '0x0', '0x0', '-', '-', '-', '-']
+     a5 in C0..C3: ('mild', 'heavy', 'mild', 'lin')   [a3 in C1: mild, a2 in C0: mild, a3 in C0: mild]
+  eq=((7, 6),) sat(e8..e15)=['0xffffffff', '-', '-', '-', '-', '-', '-', '-']
+     a5 in C0..C3: ('mild', 'heavy', 'mild', 'mild')   [a3 in C1: mild, a2 in C0: mild, a3 in C0: mild]
+  heavy-constraint tally over the 1458 minimal configs: {'C1': 1458}
+
+=== k=6: 164025 configs, 7533 legal; min #heavy(a6 -> C0,C1,C2) = 2; 486 configs attain it
+  eq=((8, 7),) sat(e8..e15)=['-', '0xffffffff', '-', '0xffffffff', '0x0', '0x0', '-', '0x0']
+     a6 in C0..C3: ('heavy', 'mild', 'heavy', 'mild')   [a3 in C1: mild, a2 in C0: mild, a3 in C0: mild]
+  heavy-constraint tally over the 486 minimal configs: {'C0': 486, 'C2': 486}
+
+=== k=7: 164025 configs, 2511 legal; min #heavy(a7 -> C0,C1,C2) = 2; 162 configs attain it
+  eq=((9, 8),) sat(e8..e15)=['-', '-', '0xffffffff', '-', '-', '-', '-', '-']
+     a7 in C0..C3: ('heavy', 'heavy', 'mild', 'heavy')   [a3 in C1: mild, a2 in C0: mild, a3 in C0: mild]
+  heavy-constraint tally over the 162 minimal configs: {'C0': 162, 'C1': 162}
+
+=== k=8: 164025 configs, 837 legal; min #heavy(a8 -> C0,C1,C2) = 2; 27 configs attain it
+  eq=((9, 7),) sat(e8..e15)=['-', '-', '0x0', '-', '-', '-', '-', '-']
+     a8 in C0..C3: ('heavy', 'heavy', 'mild', 'heavy')   [a3 in C1: mild, a2 in C0: mild, a3 in C0: mild]
+  heavy-constraint tally over the 27 minimal configs: {'C0': 27, 'C1': 27}
+
+=== k=9: 164025 configs, 783 legal; min #heavy(a9 -> C0,C1,C2) = 3; 783 configs attain it
+  eq=((10, 8),) sat(e8..e15)=['-', '-', '-', '0x0', '-', '-', '-', '-']
+     a9 in C0..C3: ('heavy', 'heavy', 'heavy', 'mild')   [a3 in C1: mild, a2 in C0: mild, a3 in C0: mild]
+  eq=() sat(e8..e15)=['-', '-', '-', '-', '-', '-', '-', '-']
+     a9 in C0..C3: ('heavy', 'heavy', 'heavy', 'heavy')   [a3 in C1: mild, a2 in C0: mild, a3 in C0: mild]
+  heavy-constraint tally over the 783 minimal configs: {'C0': 783, 'C1': 783, 'C2': 783}
+
+=== k=10: 170586 configs, 756 legal; min #heavy(a10 -> C0,C1,C2) = 3; 756 configs attain it
+  eq=() sat(e8..e15)=['-', '-', '-', '-', '-', '-', '-', '-']
+     a10 in C0..C3: ('heavy', 'heavy', 'heavy', 'heavy')   [a3 in C1: mild, a2 in C0: mild, a3 in C0: mild]
+  eq=((5, 4),) sat(e8..e15)=['0xffffffff', '0xffffffff', '-', '-', '-', '-', '-', '-']
+     a10 in C0..C3: ('heavy', 'heavy', 'heavy', 'heavy')   [a3 in C1: none, a2 in C0: mild, a3 in C0: mild]
+  eq=((5, 4),) sat(e8..e15)=['-', '0x0', '-', '-', '-', '-', '-', '-']
+     a10 in C0..C3: ('heavy', 'heavy', 'heavy', 'heavy')   [a3 in C1: lin, a2 in C0: mild, a3 in C0: mild]
+  heavy-constraint tally over the 756 minimal configs: {'C0': 756, 'C1': 756, 'C2': 756}
+
+=== k=11: 177147 configs, 729 legal; min #heavy(a11 -> C0,C1,C2) = 2; 729 configs attain it
+  eq=() sat(e8..e15)=['-', '0xffffffff', '-', '-', '-', '-', '-', '-']
+     a11 in C0..C3: ('heavy', 'heavy', 'lin', 'heavy')   [a3 in C1: mild, a2 in C0: mild, a3 in C0: mild]
+  eq=((5, 4),) sat(e8..e15)=['0xffffffff', '0xffffffff', '0x0', '-', '-', '-', '-', '-']
+     a11 in C0..C3: ('heavy', 'heavy', 'lin', 'heavy')   [a3 in C1: none, a2 in C0: mild, a3 in C0: mild]
+  eq=((5, 4),) sat(e8..e15)=['0xffffffff', '0x0', '0xffffffff', '-', '-', '-', '-', '-']
+     a11 in C0..C3: ('heavy', 'heavy', 'lin', 'heavy')   [a3 in C1: lin, a2 in C0: mild, a3 in C0: mild]
+  heavy-constraint tally over the 729 minimal configs: {'C0': 729, 'C1': 729}

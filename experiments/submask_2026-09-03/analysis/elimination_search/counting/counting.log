@@ -1,0 +1,65 @@
+=== 1. expected preimages per context and per swept a0 ===
+  frame 'a4 = v context' : unknowns a0..a3 = 128 bits, constraints C0..C3 = 128 bits
+     -> expected 20-round preimages per (context, digest) = 2^0 = 1  (uniform model)
+     -> per swept a0: 2^-32
+  frame B (a4 unknown)   : unknowns a0..a4 = 160 bits -> 2^32 preimages per context
+  attack, three roots     : per a0 0.9338 * (3/4)^32 * 2^-32 = 2.184e-14 = 2^-45.38
+     -> candidates per context 402,898 (GPU counters: 402,880-402,910)
+     -> preimages per context 9.381e-05 = 2^-13.38;  cost 2^45.38 swept a0 per preimage
+  attack, one root        : cost 2^47.26
+
+  Reading: of the ~1 solution of {C0,C1,C2,C3} that exists per context, the sweep finds
+  it with probability 9.381e-05 = 2^-13.4.  That factor is NOT the C3 filter;
+  it is the fraction of solutions of {C0,C1,C2} that the triangular solve reaches, i.e. those
+  whose (a2,a3) satisfy Maj(v,a3,a2) = a3 (the provisional W9 is exact only there).
+  Per swept a0 the true system {C0,C1,C2} has ~1 solution (96 unknown bits, 96 constraint
+  bits); the lookups return the solution of {C0hat,C1,C2} instead, which coincides with a true
+  solution for a (3/4)^32 fraction of a0.  Ideal 3-lookup scheme (all solutions of C0..C2 per a0
+  in O(1)): 2^32 swept a0 per preimage.  Ideal 4-lookup scheme: 1.10 per preimage.
+
+=== 2. cost per preimage for k lookups and 4-k filters ===
+  With one swept word, n further unknowns, k absorbed by lookups, n-k additionally swept and
+  4-k constraints left as 2^-32 filters:
+     work/context = 2^{32(1+n-k)},   yield/context = 2^{32(1+n-k)} * cov * pen * 2^{-32(4-k)}
+     cost/preimage = 2^{32(4-k)} / (cov * pen)          (independent of n)
+  where pen = product of freeze penalties of the dependency edges the order has to cut.
+     k=0: floor 2^128 / cov  (pen = 1 requires an acyclic order)
+     k=1: floor 2^96 / cov  (pen = 1 requires an acyclic order)
+     k=2: floor 2^64 / cov  (pen = 1 requires an acyclic order)
+     k=3: floor 2^32 / cov  (pen = 1 requires an acyclic order)
+     k=4: floor 2^0 / cov  (pen = 1 requires an acyclic order)
+
+=== 3. exhaustive enumeration of absorption orders on the measured graph (frame B) ===
+  cheapest distinct schemes (cost per preimage in swept a0, three-root coverage):
+    2^32.10  absorb (2, 3, 4) in order (1, 2, 3, 4)  filters=1  cut edges=[]
+    2^45.38  absorb (1, 2, 3) in order (1, 2, 3, 4)  filters=1  cut edges=['(a2,a3)->C0 bitwise']
+    2^45.41  absorb (1, 2, 3, 4) in order (1, 2, 3, 4)  filters=0  cut edges=['a4->C0', '(a2,a3)->C0 bitwise']
+    2^64.07  absorb (2, 3) in order (1, 2, 3, 4)  filters=2  cut edges=[]
+    2^64.10  absorb (2, 3, 4) in order (1, 2, 4, 3)  filters=1  cut edges=['a3->C3']
+    2^64.10  absorb (2, 3, 4) in order (1, 3, 2, 4)  filters=1  cut edges=['a2->C2']
+
+  what removing single edges would buy (same enumeration with the edge deleted):
+    delete a4->C0 (S0(a4) in e5 in W9)         : best cost 2^13.41
+    delete a1->C1 (S0(a1), S1(e1) in W2)       : best cost 2^32.10
+    delete a2->C2                              : best cost 2^32.10
+    delete a3->C3                              : best cost 2^32.10
+    delete (a2,a3)->C0 bitwise                 : best cost 2^32.10
+
+=== 4. multi-context amortisation ===
+  one context: 2^32 lookups -> 402,898 candidates, each with a fixed S = s0(W4)+W3;
+  a context c' with the SAME (KC0,KC1,KC2,v) and a different kappa3 would re-use them.
+  (KC0,KC1,KC2) is a 96-bit function of the four free words (a6,a7,a10,a11) at fixed v;
+  numeric_deps.py (d): every free word moves every KC by ~16 bits, and symdep_r20.py names
+  a one-input route for each (a10: s1(W14) with W14 = ... - e10, e10 = a6 + a10 - T2(a9,a8,a7);
+  a11: S1(e15) in W16 with e15 = a11 + A15 - T2(A14,A13,A12); a6,a7: S0(a6), S0(a7) in W9hat).
+  So fibre-mates exist (2^32 per fibre generically) but must be found by collision search:
+  m-way collision on 96 bits costs ~2^(96(m-1)/m) constant evaluations; payoff m*cand*2^-32 preimages.
+    m= 2: work 2^ 48.0, preimages 1.88e-04, cost/preimage 2^ 60.4   (attack: 2^45.4)
+    m= 3: work 2^ 64.0, preimages 2.81e-04, cost/preimage 2^ 75.8   (attack: 2^45.4)
+    m= 4: work 2^ 72.0, preimages 3.75e-04, cost/preimage 2^ 83.4   (attack: 2^45.4)
+    m= 8: work 2^ 84.0, preimages 7.50e-04, cost/preimage 2^ 94.4   (attack: 2^45.4)
+    m=16: work 2^ 90.0, preimages 1.50e-03, cost/preimage 2^ 99.4   (attack: 2^45.4)
+  Even a FREE fibre enumeration (cost 0 per mate, 2^32 mates) would give at best
+  2^32 lookups per 402,898 matched candidates = 2^13.4 per preimage: exactly what
+  deleting the a4->C0 edge buys in section 3 (it is the same 32 bits, seen from the kappa side),
+  and it needs a (KC0,KC1,KC2)-invariant context motion, which no free word offers.

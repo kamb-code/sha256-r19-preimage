@@ -1,0 +1,19 @@
+=== 3. exhaustive enumeration of absorption orders on the measured graph (frame B) ===
+  cheapest distinct schemes (cost per preimage in swept a0, three-root coverage):
+    2^45.38  absorb (1, 2, 3) in order (1, 2, 3, 4)  filters=1  cut edges=['(a2,a3)->C0 bitwise']
+    2^45.38  absorb (2, 3, 4) in order (1, 2, 3, 4)  filters=1  cut edges=['(a3,a4)->C1 bitwise']
+    2^58.69  absorb (1, 2, 3, 4) in order (1, 2, 3, 4)  filters=0  cut edges=['a4->C0', '(a2,a3)->C0 bitwise', '(a3,a4)->C1 bitwise']
+    2^64.07  absorb (2, 3) in order (1, 2, 3, 4)  filters=2  cut edges=[]
+    2^77.35  absorb (1, 2) in order (1, 2, 3, 4)  filters=2  cut edges=['(a2)->C0 bitwise']
+    2^77.35  absorb (1, 3) in order (1, 2, 3, 4)  filters=2  cut edges=['(a3)->C0 bitwise']
+    2^77.35  absorb (2, 4) in order (1, 2, 3, 4)  filters=2  cut edges=['(a4)->C1 bitwise']
+
+  what deleting single edges would buy (same enumeration with the edge deleted):
+    delete a4->C0 (S0(a4) in e5 in W9)     : best 2^26.69  absorb (1, 2, 3, 4) order (1, 2, 3, 4) cuts ['(a2,a3)->C0 bitwise', '(a3,a4)->C1 bitwise']
+    delete a1->C1 (S0(a1),S1(e1) in W2)    : best 2^45.38  absorb (1, 2, 3) order (1, 2, 3, 4) cuts ['(a2,a3)->C0 bitwise']
+    delete a2->C2 (S0(a2),S1(e2) in W3)    : best 2^45.38  absorb (1, 2, 3) order (1, 2, 3, 4) cuts ['(a2,a3)->C0 bitwise']
+    delete a3->C3 (S0(a3),S1(e3) in W4)    : best 2^45.38  absorb (1, 2, 3) order (1, 2, 3, 4) cuts ['(a2,a3)->C0 bitwise']
+    delete (a2,a3)->C0 bitwise             : best 2^32.10  absorb (1, 2, 3) order (1, 2, 3, 4) cuts []
+    delete (a3,a4)->C1 bitwise             : best 2^32.10  absorb (2, 3, 4) order (1, 2, 3, 4) cuts []
+
+=== 4. multi-context amortisation ===

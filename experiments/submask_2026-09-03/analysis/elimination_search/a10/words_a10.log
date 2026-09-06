@@ -1,0 +1,26 @@
+w = a10: 1,092,281 legal configurations, 267s
+per message word of C0..C2: how often w is absent / linear / heavy
+  W9   none=  332,215  lin=   64,696  heavy=  695,370
+  W10  none=       21  lin=  332,246  heavy=  760,014
+  W11  none=        5  lin=      238  heavy=1,092,038
+  W14  none=    4,236  lin=      570  heavy=1,087,475
+  W15  none=        0  lin=        0  heavy=1,092,281
+  W16  none=   15,426  lin=   33,236  heavy=1,043,619
+  W17  none=        0  lin=        0  heavy=1,092,281
+  W18  none=        0  lin=  674,043  heavy=  418,238
+
+configurations with the fewest w-carrying words in (C0, C1, C2):
+  counts (1, 3, 2): W10:lin, W11:heavy, W14:heavy, W15:heavy, W17:heavy, W18:lin
+      defs = {5: ('sat_h', 0), 6: ('free',), 7: ('free',), 8: ('free',), 9: ('neq', 11), 11: ('sat_h', 4294967295)}
+  counts (1, 3, 2): W9:heavy, W10:heavy, W11:heavy, W15:heavy, W17:heavy, W18:lin
+      defs = {5: ('sat_h', 0), 6: ('sat_h', 4294967295), 7: ('sat_h', 4294967295), 8: ('sat_h', 4294967295), 9: ('sat_h', 0), 11: ('sat_h', 0)}
+  counts (2, 3, 3): W9:heavy, W10:heavy, W11:heavy, W15:heavy, W16:heavy, W17:heavy, W18:lin
+      defs = {5: ('sat_h', 0), 6: ('sat_h', 4294967295), 7: ('sat_h', 4294967295), 8: ('sat_h', 4294967295), 9: ('free',), 11: ('eq', 12)}
+  counts (2, 3, 3): W9:heavy, W10:heavy, W11:heavy, W15:heavy, W16:lin, W17:heavy, W18:lin
+      defs = {5: ('sat_h', 0), 6: ('sat_h', 4294967295), 7: ('sat_h', 4294967295), 8: ('sat_h', 4294967295), 9: ('sat_h', 0), 11: ('sat_h', 4294967295)}
+  counts (3, 3, 3): W9:heavy, W10:heavy, W11:heavy, W14:heavy, W15:heavy, W16:heavy, W17:heavy, W18:lin
+      defs = {5: ('sat_h', 0), 6: ('sat_h', 4294967295), 7: ('sat_h', 4294967295), 8: ('sat_h', 4294967295), 9: ('free',), 11: ('free',)}
+  counts (3, 3, 3): W9:heavy, W10:heavy, W11:heavy, W14:heavy, W15:heavy, W16:heavy, W17:heavy, W18:heavy
+      defs = {5: ('sat_h', 0), 6: ('sat_h', 4294967295), 7: ('sat_h', 4294967295), 8: ('sat_h', 4294967295), 9: ('free',), 11: ('eq', 10)}
+  counts (3, 3, 3): W9:heavy, W10:heavy, W11:heavy, W14:heavy, W15:heavy, W16:lin, W17:heavy, W18:lin
+      defs = {5: ('sat_h', 0), 6: ('sat_h', 4294967295), 7: ('sat_h', 4294967295), 8: ('sat_h', 4294967295), 9: ('free',), 11: ('sat_h', 4294967295)}

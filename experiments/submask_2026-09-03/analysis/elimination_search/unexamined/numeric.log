@@ -1,0 +1,19 @@
+(1) closed forms in the family, 2000 random contexts/targets: ALL EXACT
+    W9hat = Sigma0(v) - v + Sigma0(a6) - a7 - 1 - K9 - Sigma1(-1)
+    D     = a6 - Sigma0(v) - v - 1          (C1 constant: Sigma0(v)+v)
+    T1_7  = a7 - Sigma0(a6) - v             (C2 constant: linear in v)
+
+(2) mean Hamming change per single-bit flip, family maintained (a8,a9 recomputed), 300 trials
+     word     KC0     KC1     KC2  kappa3
+        v   16.01   12.22   15.89   14.03
+       a6   14.36   10.63   14.61   11.22
+       a7   15.61   16.14   15.82   16.19
+      a10   12.73   15.27   13.70   15.65
+      a11   15.99   12.74   15.12   14.10
+    (full avalanche ~16; a neutral word for kappa3 would show ~0 in KC0..KC2 and >0 in kappa3)
+
+(3) v flipped with a8, a9 FROZEN (family broken, e8,e9 no longer -1), 300 trials
+    KC0 9.59  KC1 12.63  KC2 2.01  kappa3 4.56   | bare Sigma0(v)-v term alone: 7.00 bits
+
+(4) per-candidate v: flip one bit of v, same a0, redo the C0 lookup (400 trials)
+    identical lookup index: 0/400;  mean Hamming change of a1 when both hit: 15.95 bits (155 pairs)

@@ -1,0 +1,981 @@
+{
+ "4": {
+  "n_cfg": 13122,
+  "n_legal": 4374,
+  "n_strict": 3402,
+  "n_c3": 4374,
+  "n_complete": 0,
+  "min_block": 1,
+  "c3_forms": {
+   "tab:s0+lin :: +1*u -1*s0(+u+c)": 4374
+  },
+  "best": [
+   {
+    "eq": [],
+    "sat": [
+     [
+      10,
+      4294967295
+     ],
+     [
+      11,
+      0
+     ],
+     [
+      13,
+      0
+     ]
+    ],
+    "strict": true,
+    "entries": {
+     "0": "+1*Ch[arg0:u;with a4] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)",
+     "1": "+1*Ch[arg1:u;with a4] +1*Ch[arg2:u](nested) -1*Maj[arg1:u]",
+     "2": "-1*Maj[arg2:u]",
+     "3": "+1*u -1*s0(+u+c)"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a4', ('mild2', 'mildmix', 'tabmulti'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [],
+    "sat": [
+     [
+      10,
+      4294967295
+     ],
+     [
+      11,
+      0
+     ],
+     [
+      13,
+      0
+     ],
+     [
+      15,
+      0
+     ]
+    ],
+    "strict": true,
+    "entries": {
+     "0": "+1*Ch[arg0:u;with a4] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)",
+     "1": "+1*Ch[arg1:u;with a4] +1*Ch[arg2:u](nested) -1*Maj[arg1:u]",
+     "2": "-1*Maj[arg2:u]",
+     "3": "+1*u -1*s0(+u+c)"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a4', ('mild2', 'mildmix', 'tabmulti'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [],
+    "sat": [
+     [
+      10,
+      4294967295
+     ],
+     [
+      11,
+      0
+     ],
+     [
+      13,
+      0
+     ],
+     [
+      15,
+      4294967295
+     ]
+    ],
+    "strict": true,
+    "entries": {
+     "0": "+1*Ch[arg0:u;with a4] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)",
+     "1": "+1*Ch[arg1:u;with a4] +1*Ch[arg2:u](nested) -1*Maj[arg1:u]",
+     "2": "-1*Maj[arg2:u]",
+     "3": "+1*u -1*s0(+u+c)"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a4', ('mild2', 'mildmix', 'tabmulti'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   }
+  ],
+  "complete_examples": []
+ },
+ "5": {
+  "n_cfg": 26244,
+  "n_legal": 5832,
+  "n_strict": 3024,
+  "n_c3": 1944,
+  "n_complete": 0,
+  "min_block": 1,
+  "c3_forms": {
+   "lin selfdefer:mild :: +1*u -1*Maj[arg2:u]": 243,
+   "lin selfdefer:mild :: -1*Maj[arg2:u] +1*u": 243,
+   "lin :: +1*u": 1458
+  },
+  "best": [
+   {
+    "eq": [
+     [
+      7,
+      6
+     ]
+    ],
+    "sat": [
+     [
+      8,
+      4294967295
+     ]
+    ],
+    "strict": true,
+    "entries": {
+     "0": "-1*Maj[arg1:u] +1*u",
+     "1": "+1*Ch[arg0:u;with a5] +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)",
+     "2": "-1*Maj[arg1:u] +1*Ch[arg1:u]",
+     "3": "+1*Ch[arg2:u]"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin')",
+     "('C1', 'a2', 'tab:s0+lin', 'BLOCKED-BY', [('a5', ('mild2', 'mildmix', 'tabmulti'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('lin', 'mildmix'))",
+     "('C0', 'a5', ('lin', 'mild'))",
+     "('C1', 'a3', ('mildmix',))"
+    ]
+   },
+   {
+    "eq": [
+     [
+      7,
+      6
+     ]
+    ],
+    "sat": [
+     [
+      8,
+      4294967295
+     ],
+     [
+      15,
+      0
+     ]
+    ],
+    "strict": true,
+    "entries": {
+     "0": "-1*Maj[arg1:u] +1*u",
+     "1": "+1*Ch[arg0:u;with a5] +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)",
+     "2": "-1*Maj[arg1:u] +1*Ch[arg1:u]",
+     "3": "+1*Ch[arg2:u]"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin')",
+     "('C1', 'a2', 'tab:s0+lin', 'BLOCKED-BY', [('a5', ('mild2', 'mildmix', 'tabmulti'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('lin', 'mildmix'))",
+     "('C0', 'a5', ('lin', 'mild'))",
+     "('C1', 'a3', ('mildmix',))"
+    ]
+   },
+   {
+    "eq": [
+     [
+      7,
+      6
+     ]
+    ],
+    "sat": [
+     [
+      8,
+      4294967295
+     ],
+     [
+      15,
+      4294967295
+     ]
+    ],
+    "strict": true,
+    "entries": {
+     "0": "-1*Maj[arg1:u] +1*u",
+     "1": "+1*Ch[arg0:u;with a5] +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)",
+     "2": "-1*Maj[arg1:u] +1*Ch[arg1:u]",
+     "3": "+1*Ch[arg2:u]"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin')",
+     "('C1', 'a2', 'tab:s0+lin', 'BLOCKED-BY', [('a5', ('mild2', 'mildmix', 'tabmulti'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('lin', 'mildmix'))",
+     "('C0', 'a5', ('lin', 'mild'))",
+     "('C1', 'a3', ('mildmix',))"
+    ]
+   }
+  ],
+  "complete_examples": []
+ },
+ "6": {
+  "n_cfg": 52488,
+  "n_legal": 7776,
+  "n_strict": 2304,
+  "n_c3": 2592,
+  "n_complete": 0,
+  "min_block": 2,
+  "c3_forms": {
+   "lin selfdefer:mild :: +1*u -1*Maj[arg1:u]": 324,
+   "lin selfdefer:mild :: -1*Maj[arg1:u] +1*u": 324,
+   "lin :: +1*u": 1944
+  },
+  "best": [
+   {
+    "eq": [
+     [
+      7,
+      5
+     ],
+     [
+      8,
+      5
+     ]
+    ],
+    "sat": [
+     [
+      8,
+      4294967295
+     ],
+     [
+      9,
+      4294967295
+     ],
+     [
+      11,
+      4294967295
+     ],
+     [
+      12,
+      4294967295
+     ],
+     [
+      13,
+      4294967295
+     ],
+     [
+      14,
+      4294967295
+     ],
+     [
+      15,
+      4294967295
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "-1*Maj[arg0:u] ONEINPUT[s1,S0](ctx)",
+     "1": "+1*u",
+     "2": "-1*Maj[arg0:u] ONEINPUT[S1,S0](ctx)",
+     "3": "+1*u"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a6', ('mild', 'tabmulti'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('lin', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [
+     [
+      7,
+      5
+     ],
+     [
+      8,
+      5
+     ]
+    ],
+    "sat": [
+     [
+      8,
+      0
+     ],
+     [
+      9,
+      4294967295
+     ],
+     [
+      11,
+      4294967295
+     ],
+     [
+      12,
+      0
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "+1*u -1*s1(-u+c)",
+     "1": "+1*u",
+     "2": "-1*Maj[arg0:u] +1*Ch[arg0:u] ONEINPUT[S1,S0](ctx)",
+     "3": "+1*u"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a6', ('lin', 'tab'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('lin', 'mildmix'))",
+     "('C0', 'a3', ('mild', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [
+     [
+      7,
+      5
+     ],
+     [
+      8,
+      5
+     ]
+    ],
+    "sat": [
+     [
+      8,
+      0
+     ],
+     [
+      9,
+      4294967295
+     ],
+     [
+      11,
+      4294967295
+     ],
+     [
+      12,
+      0
+     ],
+     [
+      15,
+      0
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "+1*u -1*s1(-u+c)",
+     "1": "+1*u",
+     "2": "-1*Maj[arg0:u] +1*Ch[arg0:u] ONEINPUT[S1,S0](ctx)",
+     "3": "+1*u"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a6', ('lin', 'tab'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('lin', 'mildmix'))",
+     "('C0', 'a3', ('mild', 'mildmix'))"
+    ]
+   }
+  ],
+  "complete_examples": []
+ },
+ "7": {
+  "n_cfg": 104976,
+  "n_legal": 5184,
+  "n_strict": 996,
+  "n_c3": 5184,
+  "n_complete": 0,
+  "min_block": 2,
+  "c3_forms": {
+   "tabmulti-per-context(S0,S1) selfdefer:mild,mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)": 162,
+   "tabmulti-per-context(S0,S1) selfdefer:mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) ONEINPUT[S0,S1](ctx)": 162,
+   "tabmulti-per-context(S0,S1) selfdefer:mild,mild2,mildmix :: -1*Maj[arg0:u] +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) ONEINPUT[S0,S1](ctx)": 216,
+   "tabmulti-per-context(S0,S1) selfdefer:mild,mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)": 405,
+   "tabmulti-per-context(S0,S1) selfdefer:mild,mild2,mildmix :: -1*Maj[arg0:u] +1*Ch[arg0:u;with a7] +1*Ch[arg2:u](nested) ONEINPUT[S0,S1](ctx)": 81,
+   "tabmulti-per-context(S0,S1) selfdefer:mild,mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)": 270,
+   "tabmulti-per-context(S0,S1) selfdefer:mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg1:u](nested) ONEINPUT[S0,S1](ctx)": 486,
+   "tabmulti-per-context(S0,S1) selfdefer:mild :: -1*Maj[arg0:u] +1*Ch[arg0:u] ONEINPUT[S0,S1](ctx)": 162,
+   "tabmulti-per-context(S0,S1) selfdefer:mild2,mildmix :: +1*Ch[arg0:u;with a7] +1*Ch[arg2:u](nested) ONEINPUT[S0,S1](ctx)": 486,
+   "tabmulti-per-context(S0,S1) selfdefer:mild :: +1*Ch[arg0:u] -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)": 972,
+   "tabmulti-per-context(S0,S1) selfdefer:mild :: -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)": 324,
+   "tabmulti-per-context(S0,S1) selfdefer:mild :: +1*Ch[arg0:u] ONEINPUT[S0,S1](ctx)": 1134,
+   "tabmulti-per-context(S0,S1) :: ONEINPUT[S0,S1](ctx)": 324
+  },
+  "best": [
+   {
+    "eq": [
+     [
+      8,
+      6
+     ],
+     [
+      9,
+      6
+     ]
+    ],
+    "sat": [
+     [
+      9,
+      0
+     ],
+     [
+      10,
+      4294967295
+     ],
+     [
+      12,
+      4294967295
+     ],
+     [
+      15,
+      0
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "+1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a7] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u",
+     "1": "-1*s1(-u+c) +1*u",
+     "2": "+1*u",
+     "3": "+1*Ch[arg0:u] -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a7', ('heavy', 'mildmix'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [
+     [
+      8,
+      6
+     ],
+     [
+      9,
+      6
+     ]
+    ],
+    "sat": [
+     [
+      9,
+      0
+     ],
+     [
+      10,
+      4294967295
+     ],
+     [
+      12,
+      4294967295
+     ],
+     [
+      15,
+      4294967295
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "+1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a7] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u",
+     "1": "-1*s1(-u+c) +1*u",
+     "2": "+1*u",
+     "3": "+1*Ch[arg0:u] -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a7', ('heavy', 'mildmix'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [
+     [
+      8,
+      6
+     ],
+     [
+      9,
+      6
+     ]
+    ],
+    "sat": [
+     [
+      9,
+      0
+     ],
+     [
+      10,
+      4294967295
+     ],
+     [
+      12,
+      4294967295
+     ],
+     [
+      14,
+      0
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "+1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a7] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u",
+     "1": "-1*s1(-u+c) +1*u",
+     "2": "+1*u",
+     "3": "+1*Ch[arg0:u] -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a7', ('heavy', 'mildmix'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   }
+  ],
+  "complete_examples": []
+ },
+ "8": {
+  "n_cfg": 104976,
+  "n_legal": 1728,
+  "n_strict": 384,
+  "n_c3": 864,
+  "n_complete": 0,
+  "min_block": 3,
+  "c3_forms": {
+   "lin selfdefer:mild :: -1*Maj[arg1:u] +1*u": 54,
+   "tab:S0+lin selfdefer:mild :: +1*u -1*Maj[arg0:u] -1*S0(+u+c)": 216,
+   "tab:S0+lin :: +1*u -1*S0(+u+c)": 216,
+   "lin selfdefer:mild :: +1*u -1*Maj[arg1:u]": 54,
+   "lin :: +1*u": 324
+  },
+  "best": [
+   {
+    "eq": [
+     [
+      9,
+      7
+     ]
+    ],
+    "sat": [
+     [
+      10,
+      0
+     ],
+     [
+      13,
+      4294967295
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "+1*Ch[arg0:u] -1*u +1*Maj[arg0:u] ONEINPUT[S0,s1,S1](ctx)",
+     "1": "+1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a8]",
+     "2": "+1*u +1*Maj[arg2:u] -1*s1(-u+c)",
+     "3": "+1*HEAVY:S1:nonlinear-in-u +1*u +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a8', ('lin', 'mild', 'mildmix', 'tabmulti'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [
+     [
+      9,
+      7
+     ]
+    ],
+    "sat": [
+     [
+      10,
+      0
+     ],
+     [
+      13,
+      4294967295
+     ],
+     [
+      15,
+      0
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "+1*Ch[arg0:u] -1*u +1*Maj[arg0:u] ONEINPUT[S0,s1,S1](ctx)",
+     "1": "+1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a8]",
+     "2": "+1*u +1*Maj[arg2:u] -1*s1(-u+c)",
+     "3": "+1*HEAVY:S1:nonlinear-in-u +1*u +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a8', ('lin', 'mild', 'mildmix', 'tabmulti'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [
+     [
+      9,
+      7
+     ]
+    ],
+    "sat": [
+     [
+      10,
+      0
+     ],
+     [
+      13,
+      4294967295
+     ],
+     [
+      15,
+      4294967295
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "+1*Ch[arg0:u] -1*u +1*Maj[arg0:u] ONEINPUT[S0,s1,S1](ctx)",
+     "1": "+1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a8]",
+     "2": "+1*u +1*Maj[arg2:u] -1*s1(-u+c)",
+     "3": "+1*HEAVY:S1:nonlinear-in-u +1*u +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a8', ('lin', 'mild', 'mildmix', 'tabmulti'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   }
+  ],
+  "complete_examples": []
+ },
+ "9": {
+  "n_cfg": 104976,
+  "n_legal": 1728,
+  "n_strict": 360,
+  "n_c3": 864,
+  "n_complete": 0,
+  "min_block": 3,
+  "c3_forms": {
+   "tab:s1+lin selfdefer:mild :: +1*u +1*Maj[arg2:u] -1*s1(-u+c)": 30,
+   "tab:s1+lin selfdefer:mild :: -1*s1(-u+c) +1*u +1*Maj[arg2:u]": 24,
+   "tabmulti-per-context(S0,s1) selfdefer:mild :: -1*Maj[arg0:u] +1*Maj[arg2:u] ONEINPUT[S0,s1](ctx)": 30,
+   "tabmulti-per-context(s1,S0) selfdefer:mild :: -1*Maj[arg0:u] +1*Maj[arg2:u] ONEINPUT[s1,S0](ctx)": 24,
+   "tab:s1+lin selfdefer:mild :: +1*Maj[arg2:u] +1*u -1*s1(-u+c)": 30,
+   "tab:s1+lin selfdefer:mild :: +1*Maj[arg2:u] -1*s1(-u+c) +1*u": 24,
+   "tabmulti-per-context(S0,s1) selfdefer:mild :: +1*Maj[arg2:u] ONEINPUT[S0,s1](ctx)": 36,
+   "tabmulti-per-context(s1,S0) selfdefer:mild :: +1*Maj[arg2:u] ONEINPUT[s1,S0](ctx)": 18,
+   "tabmulti-per-context(S0,s1) selfdefer:mild :: -1*Maj[arg0:u] ONEINPUT[S0,s1](ctx)": 90,
+   "tab:s1+lin :: -1*s1(-u+c) +1*u": 144,
+   "tab:s1+lin :: +1*u -1*s1(-u+c)": 180,
+   "tabmulti-per-context(s1,S0) selfdefer:mild :: -1*Maj[arg0:u] ONEINPUT[s1,S0](ctx)": 72,
+   "tabmulti-per-context(s1,S0) :: ONEINPUT[s1,S0](ctx)": 72,
+   "tabmulti-per-context(S0,s1) :: ONEINPUT[S0,s1](ctx)": 90
+  },
+  "best": [
+   {
+    "eq": [
+     [
+      10,
+      8
+     ]
+    ],
+    "sat": [
+     [
+      14,
+      4294967295
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "-1*u -1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u] -1*Ch[arg2:u]",
+     "1": "-1*u +1*Ch[arg0:u] +1*Maj[arg0:u] ONEINPUT[S1,S0,s1](ctx)",
+     "2": "-1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9] +1*HEAVY:S1:nonlinear-in-u",
+     "3": "-1*s1(-u+c) +1*Maj[arg2:u] +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a9]"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a9', ('heavy', 'lin', 'mild'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [
+     [
+      10,
+      8
+     ]
+    ],
+    "sat": [
+     [
+      14,
+      4294967295
+     ],
+     [
+      15,
+      0
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "-1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u] -2*u",
+     "1": "-1*u +1*Ch[arg0:u] +1*Maj[arg0:u] ONEINPUT[S1,S0,s1](ctx)",
+     "2": "+1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u",
+     "3": "-1*s1(-u+c) +1*Maj[arg2:u] +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a9]"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a9', ('heavy', 'lin', 'mild'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [
+     [
+      10,
+      8
+     ]
+    ],
+    "sat": [
+     [
+      14,
+      4294967295
+     ],
+     [
+      15,
+      4294967295
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "-1*u -1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u]",
+     "1": "-1*u +1*Ch[arg0:u] +1*Maj[arg0:u] ONEINPUT[S1,S0,s1](ctx)",
+     "2": "-1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9] +1*HEAVY:S1:nonlinear-in-u",
+     "3": "-1*s1(-u+c) +1*Maj[arg2:u] +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a9]"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a9', ('heavy', 'lin', 'mild'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   }
+  ],
+  "complete_examples": []
+ },
+ "10": {
+  "n_cfg": 52488,
+  "n_legal": 432,
+  "n_strict": 180,
+  "n_c3": 0,
+  "n_complete": 0,
+  "min_block": 3,
+  "c3_forms": {},
+  "best": [
+   {
+    "eq": [
+     [
+      11,
+      9
+     ]
+    ],
+    "sat": [
+     [
+      9,
+      0
+     ],
+     [
+      15,
+      4294967295
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "-1*u -1*HEAVY:s1:nonlinear-in-u",
+     "1": "-1*Ch[arg2:u] -1*u +1*Maj[arg2:u] -1*HEAVY:s1:nonlinear-in-u",
+     "2": "-1*u +1*Ch[arg0:u] +1*Maj[arg0:u] ONEINPUT[s1,S1,S0](ctx)",
+     "3": "-1*HEAVY:s1:nonlinear-in-u +1*HEAVY:S1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a10]"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a10', ('heavy', 'lin'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [
+     [
+      11,
+      9
+     ]
+    ],
+    "sat": [
+     [
+      9,
+      4294967295
+     ],
+     [
+      12,
+      4294967295
+     ],
+     [
+      15,
+      4294967295
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "-1*u -1*HEAVY:s1:nonlinear-in-u",
+     "1": "-1*Ch[arg2:u] -1*u +1*Maj[arg2:u] -1*HEAVY:s1:nonlinear-in-u",
+     "2": "+1*Ch[arg0:u] -1*u +1*Maj[arg0:u] ONEINPUT[S1,S0,s1](ctx)",
+     "3": "-1*HEAVY:s1:nonlinear-in-u +1*HEAVY:S1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a10]"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a10', ('heavy', 'lin'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [
+     [
+      11,
+      9
+     ]
+    ],
+    "sat": [
+     [
+      15,
+      4294967295
+     ]
+    ],
+    "strict": false,
+    "entries": {
+     "0": "-1*u -1*HEAVY:s1:nonlinear-in-u",
+     "1": "-1*Ch[arg2:u] -1*u +1*Maj[arg2:u] -1*HEAVY:s1:nonlinear-in-u",
+     "2": "-1*u +1*Maj[arg0:u] +1*Ch[arg0:u] ONEINPUT[s1,S1,S0](ctx)",
+     "3": "-1*HEAVY:s1:nonlinear-in-u +1*HEAVY:S1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a10]"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a10', ('heavy', 'lin'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   }
+  ],
+  "complete_examples": []
+ },
+ "11": {
+  "n_cfg": 26244,
+  "n_legal": 108,
+  "n_strict": 108,
+  "n_c3": 0,
+  "n_complete": 0,
+  "min_block": 4,
+  "c3_forms": {},
+  "best": [
+   {
+    "eq": [],
+    "sat": [],
+    "strict": true,
+    "entries": {
+     "0": "+1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg0:u;with a11] -1*Ch[arg1:u](nested) -1*Ch[arg2:u](nested) ONEINPUT[S1,S0](ctx)",
+     "1": "-1*HEAVY:s1:nonlinear-in-u -1*Ch[arg1:u;with a11] -1*Ch[arg2:u](nested) +1*Maj[arg1:u]",
+     "2": "-1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u] -1*u -1*Ch[arg2:u]",
+     "3": "+1*Maj[arg0:u] +1*Ch[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*u ONEINPUT[S1,S0](ctx)"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a11', ('heavy', 'mild', 'mild2', 'mildmix', 'tabmulti'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [],
+    "sat": [
+     [
+      10,
+      4294967295
+     ]
+    ],
+    "strict": true,
+    "entries": {
+     "0": "+1*Maj[arg0:u] -1*Ch[arg0:u;with a11] -1*Ch[arg1:u](nested) -1*Ch[arg2:u](nested) -1*HEAVY:s1:nonlinear-in-u ONEINPUT[S1,S0](ctx)",
+     "1": "-1*HEAVY:s1:nonlinear-in-u -1*Ch[arg1:u;with a11] -1*Ch[arg2:u](nested) +1*Maj[arg1:u]",
+     "2": "-1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u] -1*u -1*Ch[arg2:u]",
+     "3": "+1*Ch[arg0:u] +1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*u ONEINPUT[S1,S0](ctx)"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a11', ('heavy', 'mild', 'mild2', 'mildmix', 'tabmulti'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   },
+   {
+    "eq": [],
+    "sat": [
+     [
+      9,
+      0
+     ]
+    ],
+    "strict": true,
+    "entries": {
+     "0": "+1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg0:u;with a11] -1*Ch[arg1:u](nested) -1*Ch[arg2:u](nested) ONEINPUT[S1,S0](ctx)",
+     "1": "-1*HEAVY:s1:nonlinear-in-u -1*Ch[arg1:u;with a11] -1*Ch[arg2:u](nested) +1*Maj[arg1:u]",
+     "2": "-1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u] -1*u -1*Ch[arg2:u]",
+     "3": "+1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u +1*Ch[arg0:u] -1*u ONEINPUT[S1,S0](ctx)"
+    },
+    "plan": [
+     "('C0', 'a1', 'tab:s0+lin', 'BLOCKED-BY', [('a11', ('heavy', 'mild', 'mild2', 'mildmix', 'tabmulti'))])"
+    ],
+    "deferred": [
+     "('C0', 'a2', ('mildmix',))",
+     "('C0', 'a3', ('mild2', 'mildmix'))"
+    ]
+   }
+  ],
+  "complete_examples": []
+ }
+}

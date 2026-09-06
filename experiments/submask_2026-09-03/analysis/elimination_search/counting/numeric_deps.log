@@ -1,0 +1,52 @@
+/home/administrator/sha/publish/code/submask_family.py:159: RuntimeWarning: overflow encountered in scalar add
+  return (S0(a) + Maj(a, b, c_)) & (MISS if isinstance(a, np.ndarray) else M)
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/counting/numeric_deps.py:141: RuntimeWarning: overflow encountered in scalar add
+  e7 = (a3 + a7 - S0(a6) - Maj(a6, a5, A4)) & MISS
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/counting/numeric_deps.py:142: RuntimeWarning: overflow encountered in scalar add
+  e6 = (a2 + a6 - S0(a5) - Maj(a5, A4, a3)) & MISS
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/counting/numeric_deps.py:142: RuntimeWarning: overflow encountered in scalar subtract
+  e6 = (a2 + a6 - S0(a5) - Maj(a5, A4, a3)) & MISS
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/counting/numeric_deps.py:141: RuntimeWarning: overflow encountered in scalar subtract
+  e7 = (a3 + a7 - S0(a6) - Maj(a6, a5, A4)) & MISS
+(a) frame B avalanche at R=20, family-on-context (a5=v, e8=e9=-1 at a4=v)
+    mean Hamming weight of dC_j for one flipped bit of a_k, 300 trials/cell
+    base point a4 = v (e8 = -1 exactly):
+                a1     a2     a3     a4
+      C0:     8.0    0.9    0.9   13.2
+      C1:    15.3    7.9    0.0    0.9
+      C2:    16.3   15.3    7.7    4.7
+      C3:    15.7   15.8   15.2    8.3
+    base point a4 random (e8 random):
+                a1     a2     a3     a4
+      C0:     7.9    1.5    1.8   11.9
+      C1:    15.5    7.8    0.9    1.1
+      C2:    16.4   15.1    7.8    1.3
+      C3:    16.2   15.8   15.4    7.7
+
+(b) decomposition of the a4 -> C0 edge (a4 enters C0 only through W9):
+    W9 = a9 - T2(a8,a7,a6) - e5 - S1(e8) - Ch(e8,e7,e6) - K9,
+    e5 = a1 + a5 - S0(a4) - Maj(a4,a3,a2),  e8 = a4 + a8 - T2(a7,a6,a5),
+    e6 = a2 + a6 - S0(a5) - Maj(a5,a4,a3),  e7 = a3 + a7 - S0(a6) - Maj(a6,a5,a4)
+    S0(a4) in e5                  3.00 bits per flipped bit of a4
+    Maj(a4,a3,a2) in e5           0.48 bits per flipped bit of a4
+    S1(e8)                        8.99 bits per flipped bit of a4
+    Ch(e8,e7,e6) incl. e6,e7      4.35 bits per flipped bit of a4
+    all four (= dW9)             12.85 bits per flipped bit of a4
+
+(c) exhaustive a4-freeze residual in C0 (frame B: freeze a4 at v inside C0, solve, then check)
+    count of a4 in [0,2^32) with  [S0(a4)+Maj(a4,a3,a2)-S1(e8(a4))-Ch(e8(a4),e7(a4),e6(a4))]
+      == same at a4 = v      (all other words fixed).  Expect: {a4=v} + Poisson(1) coincidences.
+    trial 0: v=0x3787353c  full residual zero at a4 in ['0x3787353c']  (1 values);  S0(a4)=S0(v) at 1 value(s)   [291s]
+    trial 1: v=0xbc63b94d  full residual zero at a4 in ['0x4ccdb40d', '0x627fddd9', '0xbc63b94d', '0xca1c2470']  (4 values);  S0(a4)=S0(v) at 1 value(s)   [294s]
+    trial 2: v=0xebe86aea  full residual zero at a4 in ['0x1ac7a750', '0xebe86aea']  (2 values);  S0(a4)=S0(v) at 1 value(s)   [292s]
+    trial 3: v=0x263c8f0c  full residual zero at a4 in ['0x263c8f0c']  (1 values);  S0(a4)=S0(v) at 1 value(s)   [1526s]
+
+(d) per-context constants vs free context words (family; a8,a9 rebuilt after each flip)
+    mean Hamming weight of d(KC0,KC1,KC2,kappa3) for one flipped bit, 300 trials/cell
+             KC0    KC1    KC2  kappa3   #flips leaving (KC0,KC1,KC2) unchanged
+      v      16.1   12.3   16.0   14.5        0/300
+      a6     14.6   11.8   14.8   11.8        0/300
+      a7     15.7   16.1   16.1   15.9        0/300
+      a10    13.2   15.4   14.0   15.8        0/300
+      a11    15.8   12.8   15.0   14.4        0/300
+    (a candidate set is a function of (KC0,KC1,KC2,v) alone: attack_context uses nothing else before the c3 test)

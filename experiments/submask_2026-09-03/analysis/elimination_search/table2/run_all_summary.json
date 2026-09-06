@@ -1,0 +1,118 @@
+{
+ "10": {
+  "n_cfg": 104976,
+  "n_legal": 386,
+  "chain_depth": 0,
+  "step": "C0->a1: a10 not deferrable in C0",
+  "persistent": {
+   "0": [
+    "heavy:s1:nonlinear-in-u"
+   ],
+   "1": [
+    "heavy:s1:nonlinear-in-u"
+   ],
+   "2": []
+  },
+  "minimal": {
+   "0": [
+    [
+     [
+      "heavy:s1:nonlinear-in-u"
+     ],
+     386
+    ]
+   ],
+   "1": [
+    [
+     [
+      "heavy:s1:nonlinear-in-u"
+     ],
+     386
+    ]
+   ],
+   "2": [
+    [
+     [
+      "oneinput[S1,s1,S0](ctx)"
+     ],
+     26
+    ],
+    [
+     [
+      "oneinput[S1,S0,s1](ctx)"
+     ],
+     12
+    ]
+   ]
+  },
+  "n_c3": 0,
+  "forms": {},
+  "best": {
+   "eq": [],
+   "sat": [],
+   "desc": {
+    "0": "+1*Maj[arg1:u] -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg1:u;with a10] -1*Ch[arg2:u](nested)",
+    "1": "+1*Maj[arg2:u] -1*Ch[arg2:u] -1*u -1*HEAVY:s1:nonlinear-in-u",
+    "2": "+1*Ch[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*u +1*Maj[arg0:u] ONEINPUT[S1,S0](ctx)",
+    "3": "+1*Maj[arg1:u] -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a10] +1*HEAVY:S1:nonlinear-in-u"
+   }
+  }
+ },
+ "11": {
+  "n_cfg": 52488,
+  "n_legal": 252,
+  "chain_depth": 0,
+  "step": "C0->a1: a11 not deferrable in C0",
+  "persistent": {
+   "0": [
+    "heavy:s1:nonlinear-in-u",
+    "oneinput[S1,S0](ctx)"
+   ],
+   "1": [
+    "heavy:s1:nonlinear-in-u"
+   ],
+   "2": [
+    "heavy:s1:nonlinear-in-u"
+   ]
+  },
+  "minimal": {
+   "0": [
+    [
+     [
+      "heavy:s1:nonlinear-in-u",
+      "oneinput[S1,S0](ctx)"
+     ],
+     252
+    ]
+   ],
+   "1": [
+    [
+     [
+      "heavy:s1:nonlinear-in-u"
+     ],
+     252
+    ]
+   ],
+   "2": [
+    [
+     [
+      "heavy:s1:nonlinear-in-u"
+     ],
+     252
+    ]
+   ]
+  },
+  "n_c3": 0,
+  "forms": {},
+  "best": {
+   "eq": [],
+   "sat": [],
+   "desc": {
+    "0": "+1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg0:u;with a11] -1*Ch[arg1:u](nested) -1*Ch[arg2:u](nested) ONEINPUT[S1,S0](ctx)",
+    "1": "+1*Maj[arg1:u] -1*Ch[arg1:u;with a11] -1*Ch[arg2:u](nested) -1*HEAVY:s1:nonlinear-in-u",
+    "2": "-1*HEAVY:s1:nonlinear-in-u -1*Ch[arg2:u] -1*u +1*Maj[arg2:u]",
+    "3": "+1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u +1*Ch[arg0:u] -1*u ONEINPUT[S1,S0](ctx)"
+   }
+  }
+ }
+}

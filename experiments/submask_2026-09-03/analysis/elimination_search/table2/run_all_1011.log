@@ -1,0 +1,42 @@
+
+########## w = a10: 104976 configurations, 386 legal (class-based DOF)
+  (a) status of each unknown in each constraint with all four live, counts over legal configs [absent/defer/absorb/block]:
+     C0:  a1: 0/0/386/0   a2: 0/386/0/0   a3: 0/386/0/0   a10: 0/0/0/386
+     C1:  a1: 0/0/0/386   a2: 0/0/0/386   a3: 38/348/0/0   a10: 0/0/0/386
+     C2:  a1: 0/0/0/386   a2: 0/0/0/386   a3: 0/0/0/386   a10: 0/0/50/336
+     C3:  a1: 0/0/0/386   a2: 0/0/0/386   a3: 0/0/0/386   a10: 0/0/0/386
+  (b) chain frame (C0:a1, C1:a2, C2:a3, C3:a10); non-deferrable atoms of a10:
+     C0: a10 deferrable/absent in 0/386 configs; persistent in all: ['heavy:s1:nonlinear-in-u']; minimal sets: [(['heavy:s1:nonlinear-in-u'], 386)]
+     C1: a10 deferrable/absent in 0/386 configs; persistent in all: ['heavy:s1:nonlinear-in-u']; minimal sets: [(['heavy:s1:nonlinear-in-u'], 386)]
+     C2: a10 deferrable/absent in 0/386 configs; persistent in all: []; minimal sets: [(['oneinput[S1,s1,S0](ctx)'], 26), (['oneinput[S1,S0,s1](ctx)'], 12)]
+     C3: a10 absorbable in 0/386 configs; forms: 
+  (c) chain dies at step 0: C0->a1: a10 not deferrable in C0
+      best configuration for the chain:
+      cfg eq=() sat=[]
+        symbolic C0 <- a10: +1*Maj[arg1:u] -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg1:u;with a10] -1*Ch[arg2:u](nested)
+        symbolic C1 <- a10: +1*Maj[arg2:u] -1*Ch[arg2:u] -1*u -1*HEAVY:s1:nonlinear-in-u
+        symbolic C2 <- a10: +1*Ch[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*u +1*Maj[arg0:u] ONEINPUT[S1,S0](ctx)
+        symbolic C3 <- a10: +1*Maj[arg1:u] -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a10] +1*HEAVY:S1:nonlinear-in-u
+        numeric dC_j per flipped bit of a10 (Hamming): C0=12.71 (moved 200/200)  C1=15.64 (moved 200/200)  C2=14.49 (moved 200/200)  C3=15.52 (moved 200/200)
+        C3 in a10: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200
+
+########## w = a11: 52488 configurations, 252 legal (class-based DOF)
+  (a) status of each unknown in each constraint with all four live, counts over legal configs [absent/defer/absorb/block]:
+     C0:  a1: 0/0/252/0   a2: 0/252/0/0   a3: 0/252/0/0   a11: 0/0/0/252
+     C1:  a1: 0/0/0/252   a2: 0/0/0/252   a3: 28/224/0/0   a11: 0/0/0/252
+     C2:  a1: 0/0/0/252   a2: 0/0/0/252   a3: 0/0/0/252   a11: 0/0/0/252
+     C3:  a1: 0/0/0/252   a2: 0/0/0/252   a3: 0/0/0/252   a11: 0/0/0/252
+  (b) chain frame (C0:a1, C1:a2, C2:a3, C3:a11); non-deferrable atoms of a11:
+     C0: a11 deferrable/absent in 0/252 configs; persistent in all: ['heavy:s1:nonlinear-in-u', 'oneinput[S1,S0](ctx)']; minimal sets: [(['heavy:s1:nonlinear-in-u', 'oneinput[S1,S0](ctx)'], 252)]
+     C1: a11 deferrable/absent in 0/252 configs; persistent in all: ['heavy:s1:nonlinear-in-u']; minimal sets: [(['heavy:s1:nonlinear-in-u'], 252)]
+     C2: a11 deferrable/absent in 0/252 configs; persistent in all: ['heavy:s1:nonlinear-in-u']; minimal sets: [(['heavy:s1:nonlinear-in-u'], 252)]
+     C3: a11 absorbable in 0/252 configs; forms: 
+  (c) chain dies at step 0: C0->a1: a11 not deferrable in C0
+      best configuration for the chain:
+      cfg eq=() sat=[]
+        symbolic C0 <- a11: +1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg0:u;with a11] -1*Ch[arg1:u](nested) -1*Ch[arg2:u](nested) ONEINPUT[S1,S0](ctx)
+        symbolic C1 <- a11: +1*Maj[arg1:u] -1*Ch[arg1:u;with a11] -1*Ch[arg2:u](nested) -1*HEAVY:s1:nonlinear-in-u
+        symbolic C2 <- a11: -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg2:u] -1*u +1*Maj[arg2:u]
+        symbolic C3 <- a11: +1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u +1*Ch[arg0:u] -1*u ONEINPUT[S1,S0](ctx)
+        numeric dC_j per flipped bit of a11 (Hamming): C0=15.76 (moved 200/200)  C1=12.98 (moved 199/200)  C2=15.12 (moved 200/200)  C3=14.19 (moved 200/200)
+        C3 in a11: exactly linear (dC3 = +-delta) in 0/200; dC3 depends on a0..a3 in 0/200; on the context in 200/200

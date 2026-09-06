@@ -1,0 +1,45 @@
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/assign/heavyres.py:32: RuntimeWarning: overflow encountered in scalar add
+  E6 = (a2 + w - (S0(w) + Maj(w, A4, a3))) & MISS
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/assign/heavyres.py:33: RuntimeWarning: overflow encountered in scalar add
+  E7 = (a3 + a7 - (S0(w) + Maj(w, w, A4))) & MISS
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/assign/heavyres.py:34: RuntimeWarning: overflow encountered in scalar add
+  E8 = (A4 + a8 - (S0(a7) + Maj(a7, w, w))) & MISS
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/assign/heavyres.py:31: RuntimeWarning: overflow encountered in scalar add
+  E5 = (a1 + w - (S0(A4) + Maj(A4, a3, a2))) & MISS
+   instance 0: free bits 13, identical pairs excluded: 546
+   instance 1: free bits 16, identical pairs excluded: 56
+   instance 2: free bits 17, identical pairs excluded: 28
+   instance 3: free bits 17, identical pairs excluded: 25
+   instance 4: free bits 17, identical pairs excluded: 29
+   instance 5: free bits 16, identical pairs excluded: 87
+   instance 6: free bits 16, identical pairs excluded: 69
+   instance 7: free bits 21, identical pairs excluded: 4
+Frame B, shifted family: C0 residual r0(a4) at fixed (a0..a3, context)
+  random a4 pairs: P(r0(a4) == r0(a4') on low k bits): n = 33,554,432
+     k= 0  33,554,432  predicted  33554432.0  ratio   1.00
+     k= 4  2,097,087  predicted   2097152.0  ratio   1.00
+     k= 8    131,028  predicted    131072.0  ratio   1.00
+     k=12      8,084  predicted      8192.0  ratio   0.99
+     k=16        520  predicted       512.0  ratio   1.02
+     k=20         36  predicted        32.0  ratio   1.12
+     k=24          4  predicted         2.0  ratio   2.00
+     k=28          1  predicted         0.1  ratio   8.00
+  a4 pairs both in the admissible set (~2^16 of them): n = 33,553,588
+     k= 0  33,553,588  predicted  33553588.0  ratio   1.00
+     k= 4  2,104,062  predicted   2097099.2  ratio   1.00
+     k= 8    132,371  predicted    131068.7  ratio   1.01
+     k=12      8,111  predicted      8191.8  ratio   0.99
+     k=16        487  predicted       512.0  ratio   0.95
+     k=20         30  predicted        32.0  ratio   0.94
+     k=24          0  predicted         2.0  ratio   0.00
+
+psi(a4) = S0(a4) - S1(a4) on 2^24 random a4: 16,712,426 distinct of 16,777,216 (random map on 2^32 would give 16,744,448); xor-form S0^S1 rank = 31
+  psi(a4) - psi(a4') for random pairs: n = 16,777,216
+     k= 0  16,777,216  predicted  16777216.0  ratio   1.00
+     k= 4  1,046,917  predicted   1048576.0  ratio   1.00
+     k= 8     65,785  predicted     65536.0  ratio   1.00
+     k=12      4,168  predicted      4096.0  ratio   1.02
+     k=16        264  predicted       256.0  ratio   1.03
+     k=20         23  predicted        16.0  ratio   1.44
+     k=24          1  predicted         1.0  ratio   1.00
+     k=28          1  predicted         0.1  ratio  16.00

@@ -1,0 +1,66 @@
+w = a5: words [6, 7, 8, 9, 10, 11], menu sizes [11, 13, 15, 15, 15, 15], 7,239,375 configurations
+  ... 56,581 legal so far, 120s
+  ... 113,162 legal so far, 120s
+  ... 208,865 legal so far, 181s
+  ... 304,568 legal so far, 184s
+  ... 413,697 legal so far, 201s
+  ... 522,826 legal so far, 206s
+  ... 712,555 legal so far, 348s
+  ... 902,284 legal so far, 348s
+  ... 1,092,013 legal so far, 352s
+  ... 1,281,742 legal so far, 353s
+  ... 1,471,471 legal so far, 355s
+
+legal (acyclic) configurations: 1,471,471 of 7,239,375; 355s
+
+(C0, C1, C2, C3) occurrence class of w, triangular(a3 not in C1) -> count
+  ('heavy', 'heavy', 'heavy', 'heavy')  tri=False: 1,413,163
+  ('heavy', 'heavy', 'heavy', 'none')  tri=False: 22,842
+  ('heavy', 'heavy', 'heavy', 'lin')  tri=False: 22,418
+  ('heavy', 'heavy', 'lin', 'heavy')  tri=False: 5,127
+  ('heavy', 'heavy', 'none', 'heavy')  tri=False: 3,692
+  ('none', 'heavy', 'heavy', 'heavy')  tri=False: 1,445
+  ('lin', 'heavy', 'heavy', 'heavy')  tri=False: 1,433
+  ('heavy', 'heavy', 'lin', 'lin')  tri=False: 235
+  ('heavy', 'heavy', 'lin', 'none')  tri=False: 235
+  ('heavy', 'heavy', 'none', 'lin')  tri=False: 146
+  ('heavy', 'heavy', 'none', 'none')  tri=False: 146
+  ('lin', 'heavy', 'lin', 'heavy')  tri=False: 92
+  ('lin', 'heavy', 'none', 'heavy')  tri=False: 79
+  ('none', 'heavy', 'lin', 'heavy')  tri=False: 79
+  ('none', 'heavy', 'none', 'heavy')  tri=False: 79
+  ('none', 'heavy', 'heavy', 'lin')  tri=False: 55
+  ('none', 'heavy', 'heavy', 'none')  tri=False: 55
+  ('lin', 'heavy', 'heavy', 'lin')  tri=False: 54
+  ('lin', 'heavy', 'heavy', 'none')  tri=False: 54
+  ('lin', 'heavy', 'lin', 'lin')  tri=False: 6
+  ('lin', 'heavy', 'lin', 'none')  tri=False: 6
+  ('lin', 'heavy', 'none', 'lin')  tri=False: 5
+  ('lin', 'heavy', 'none', 'none')  tri=False: 5
+  ('none', 'heavy', 'lin', 'lin')  tri=False: 5
+  ('none', 'heavy', 'lin', 'none')  tri=False: 5
+  ('none', 'heavy', 'none', 'lin')  tri=False: 5
+  ('none', 'heavy', 'none', 'none')  tri=False: 5
+
+configurations with w absent from C0, C1 and C2: 0
+configurations with w absent from two of C0,C1,C2: 89
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('free',)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('eq', 9)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('neq', 9)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('eq', 10)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('neq', 10)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('eq', 12)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('neq', 12)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('eq', 13)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('neq', 13)})
+    (1, ('none', 'heavy', 'none', 'lin'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('sat_r', 0)})
+    (1, ('none', 'heavy', 'none', 'none'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('sat_r', 4294967295)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('sat_h', 0)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('sat_h', 4294967295)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('sat_s0', 0)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('free',), 10: ('sat_r', 4294967295), 11: ('sat_s0', 4294967295)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('eq', 7), 10: ('sat_r', 4294967295), 11: ('free',)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('eq', 7), 10: ('sat_r', 4294967295), 11: ('eq', 9)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('eq', 7), 10: ('sat_r', 4294967295), 11: ('neq', 9)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('eq', 7), 10: ('sat_r', 4294967295), 11: ('eq', 10)})
+    (1, ('none', 'heavy', 'none', 'heavy'), False, {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('eq', 7), 10: ('sat_r', 4294967295), 11: ('neq', 10)})

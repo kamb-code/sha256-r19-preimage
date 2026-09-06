@@ -1,0 +1,38 @@
+a1-carrying top-level atoms of C1 (forward edge a1 -> C1; the self term s0(W2) aside):
+   + a1
+   + s0((-Ch((-Maj(..., ..., ...) -S0(...) +IV-3 +a1), (-Maj(..., ..., ...) -S0(...) +IV-4 +a0), (+IVe-1)) -Maj((+a1), (+a0), (+IV-1)) -S0((+a1)) -S1((-Maj
+   inside s0(W2): W2 carries a1 through:
+        - S1((-Maj((+a0), (+IV-1), (+IV-2)) -S0((+a0)) +IV-3 +a1))
+        - S0((+a1))
+        - Maj((+a1), (+a0), (+IV-1))
+        - Ch((-Maj((+a0), (+IV-1), (+IV-2)) -S0((+a0)) +IV-3 +a1), (-Maj((+IV-1), (+IV-2), (+IV-3)) -S0((+IV-1)) +IV-4 +a0), (+IVe
+
+a2-carrying top-level atoms of C2 (forward edge a2 -> C2; the self term s0(W3) aside):
+   + a2
+   + s0((-Ch((-Maj(..., ..., ...) -S0(...) +IV-2 +a2), (-Maj(..., ..., ...) -S0(...) +IV-3 +a1), (-Maj(..., ..., ...) -S0(...) +IV-4 +a0)) -Maj((+a2), (+a1
+   inside s0(W3): W3 carries a2 through:
+        - Ch((-Maj((+a1), (+a0), (+IV-1)) -S0((+a1)) +IV-2 +a2), (-Maj((+a0), (+IV-1), (+IV-2)) -S0((+a0)) +IV-3 +a1), (-Maj((+IV-
+        - Maj((+a2), (+a1), (+a0))
+        - S0((+a2))
+        - S1((-Maj((+a1), (+a0), (+IV-1)) -S0((+a1)) +IV-2 +a2))
+
+a3-carrying top-level atoms of C3 (forward edge a3 -> C3; the self term s0(W4) aside):
+   + s0((-Ch((-Maj(..., ..., ...) -S0(...) +IV-1 +a3), (-Maj(..., ..., ...) -S0(...) +IV-2 +a2), (-Maj(..., ..., ...) -S0(...) +IV-3 +a1)) +Maj((+IV-1), (+
+   + a3
+   inside s0(W4): W4 carries a3 through:
+        - Ch((-Maj((+a2), (+a1), (+a0)) -S0((+a2)) +IV-1 +a3), (-Maj((+a1), (+a0), (+IV-1)) -S0((+a1)) +IV-2 +a2), (-Maj((+a0), (+
+        - S0((+a3))
+        - S1((-Maj((+a2), (+a1), (+a0)) -S0((+a2)) +IV-1 +a3))
+        - Maj((+a3), (+a2), (+a1))
+
+shifted frame check (a5 = a6 context-equal, e9 = e10 = -1; a4 unknown): a4-atoms of C1, C2
+  legal: True
+  C1:
+     - a4
+     + Maj((+a5), (+a4), (+a3))
+  C1 a3-atoms:
+     + Maj((+a5), (+a4), (+a3))
+  C2:
+  C2 a3-atoms:
+     - a3
+     + s0((-Ch((-Maj(..., ..., ...) -S0(...) +IV-2 +a2), (-Maj(..., ..., ...) -S0(...) +IV-3 +a1), (-Maj(..., ..., ...) -S0(...) +IV-4 +a0)) -Maj((+a2), (+a1

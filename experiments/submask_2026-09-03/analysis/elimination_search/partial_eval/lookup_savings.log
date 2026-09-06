@@ -1,0 +1,13 @@
+ctx 0: a0 4,194,304 lookups C0 4,194,304 C1 2,658,035 C2 1,682,633 sol 1,066,073 eps0 105 c3 0 [2s]
+ctx 1: a0 8,388,608 lookups C0 8,388,608 C1 5,316,534 C2 3,367,616 sol 2,133,135 eps0 215 c3 0 [3s]
+ctx 2: a0 12,582,912 lookups C0 12,582,912 C1 7,975,004 C2 5,052,375 sol 3,201,675 eps0 339 c3 0 [4s]
+ctx 3: a0 16,777,216 lookups C0 16,777,216 C1 10,632,251 C2 6,736,961 sol 4,269,714 eps0 451 c3 0 [6s]
+
+lookups per swept a0: C0 1.0000  C1 0.6337  C2 0.4016  total 2.0353   (model 1 + c + c^2 = 2.0352)
+triangular solutions per a0 0.2545 (model c^3 = 0.2544); collapse survivors 451 = 1.056e-04 per solution ((3/4)^32 = 1.005e-04)
+C3 == 0: 0
+pre-lookup C2 test: eligible (L>=19) 18 of 6,736,961 C2 lookups = 2.672e-06 (model 2^-19 = 1.907e-06); skipped 11 = 1.633e-06 (model 2^-19*2/3 = 1.272e-06)
+soundness: collapse survivors rejected by the pre-test = 0 (must be 0)
+trailing forced bits L (P model 2^-(L+1)): {0: '5.00e-01', 1: '2.50e-01', 2: '1.25e-01', 3: '6.24e-02', 4: '3.13e-02', 5: '1.56e-02', 6: '7.83e-03', 7: '3.95e-03', 8: '1.97e-03', 9: '9.90e-04', 10: '4.94e-04', 11: '2.43e-04', 12: '1.23e-04', 13: '6.09e-05', 14: '3.13e-05', 15: '1.74e-05', 16: '7.12e-06', 17: '3.12e-06', 18: '1.93e-06', 19: '8.91e-07', 20: '1.04e-06', 21: '4.45e-07', 22: '2.97e-07'}
+free-bit count h = popcount(a2^v) over 6736961 sampled C2 lookups: mean 16.00, P(h<=5) = 5.80e-05 (model 5.65e-05)
+c3 from forced bits only (free bits := 0), per-bit agreement with true c3 over 451 survivors: mean 0.498, min 0.437, max 0.543

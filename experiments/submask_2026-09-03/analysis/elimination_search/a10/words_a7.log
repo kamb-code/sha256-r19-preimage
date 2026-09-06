@@ -1,0 +1,18 @@
+w = a7: 1,528,367 legal configurations, 305s
+per message word of C0..C2: how often w is absent / linear / heavy
+  W9   none=    8,316  lin=   11,340  heavy=1,508,711
+  W10  none=    1,277  lin=    9,412  heavy=1,517,678
+  W11  none=      611  lin=    3,224  heavy=1,524,532
+  W14  none=   17,858  lin=   26,044  heavy=1,484,465
+  W15  none=    4,494  lin=  470,593  heavy=1,053,280
+  W16  none=  463,407  lin=  125,952  heavy=  939,008
+  W17  none=  643,495  lin=  167,252  heavy=  717,620
+  W18  none=  924,523  lin=  101,576  heavy=  502,268
+
+configurations with the fewest w-carrying words in (C0, C1, C2):
+  counts (1, 2, 1): W9:heavy, W10:heavy, W11:heavy, W15:lin
+      defs = {5: ('sat_h', 0), 6: ('free',), 8: ('eq', 9), 9: ('sat_h', 4294967295), 10: ('free',), 11: ('free',)}
+  counts (2, 2, 0): W9:heavy, W10:heavy, W14:heavy, W15:lin
+      defs = {5: ('eq', 6), 6: ('free',), 8: ('neq', 6), 9: ('eq', 8), 10: ('sat_r', 4294967295), 11: ('free',)}
+  counts (2, 2, 1): W9:heavy, W10:heavy, W11:heavy, W14:lin, W15:lin
+      defs = {5: ('eq', 6), 6: ('sat_h', 4294967295), 8: ('sat_h', 4294967295), 9: ('sat_h', 0), 10: ('neq', 12), 11: ('neq', 13)}

@@ -1,0 +1,12 @@
+arm A: random a3 (eps generic): 2000 plants (each a genuine 20-round preimage of its digest in its context)
+   eps == 0                      : 1   (predicted 0.201 in arm A, all in arm B)
+   plant's roots stored (c^3)    : 523   (predicted 508.9)
+   sweep at the planted a0 returns the plant : 1
+   returns a different triple    : 475   (of which satisfy true C0: 0)
+   table miss                    : 1524
+arm B: a3 in the submask set (eps = 0): 400 plants (each a genuine 20-round preimage of its digest in its context)
+   eps == 0                      : 400   (predicted 0.040 in arm A, all in arm B)
+   plant's roots stored (c^3)    : 94   (predicted 101.8)
+   sweep at the planted a0 returns the plant : 94
+   returns a different triple    : 177   (of which satisfy true C0: 0)
+   table miss                    : 129

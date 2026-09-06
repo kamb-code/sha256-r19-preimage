@@ -1,0 +1,79 @@
+=== Q1: frame B (unknowns a0..a4), all legal context configurations at R=20 ===
+  configurations: 486 total, 162 legal
+  classification of a4 in C0 over legal configs: {'heavy': 162}
+  atom S0(a4) present in C0 in EVERY legal config: True
+
+  a4-carrying top-level atoms of C0 (a5..a7 free, e9 = -1; e8 cannot be saturated because e8 = a4 + a8 - T2(a7,a6,a5) contains the unknown a4):
+    + Maj((+a4), (+a3), (+a2))
+    - Ch((-Maj((+a7), (+a6), (+a5)) -S0((+a7)) +a4 +a8), (-Maj((+a6), (+a5), (+a4)) -S0((+a6)) +a3 +a7), (-Maj((+a5), (+a4), (+a3)) -S0((+a5)) +a2 +a6))
+    + S0((+a4))
+    - S1((-Maj((+a7), (+a6), (+a5)) -S0((+a7)) +a4 +a8))
+  a4-carrying atoms of C1:
+    - a4
+    + Maj((+a5), (+a4), (+a3))
+  a4-carrying atoms of C2:
+    - Ch((-Maj((+a9), (+a8), (+a7)) -S0((+a9)) +a10 +a6), (+0xffffffff), (-Maj((+a7), (+a6), (+a5)) -S0((+a7)) +a4 +a8))
+    + Maj((+a6), (+a5), (+a4))
+
+  dependency classes (frame B, e9=-1):
+              a0          a1          a2          a3          a4
+  C0:      heavy   s0lin+lin       heavy       heavy       heavy
+  C1:      heavy       heavy   s0lin+lin       heavy       heavy
+  C2:      heavy       heavy       heavy   s0lin+lin       heavy
+  C3:      heavy       heavy       heavy       heavy   s0lin+lin
+  best schedule: (0, None)
+
+  control: published family (a5=a4 context, e8=e9=-1), unknowns a0..a3:
+              a0          a1          a2          a3
+  C0:      heavy   s0lin+lin       heavy       heavy
+  C1:      heavy       heavy   s0lin+lin        none
+  C2:      heavy       heavy       heavy   s0lin+lin
+  C3:      heavy       heavy       heavy       heavy
+  best schedule: (0, None)
+
+=== Q2: how each free context word reaches the constraint constants (family) ===
+
+  word a4 (a4 = v):
+    C0: occurrence tags ['heavy', 'lin']
+    C1: occurrence tags ['heavy']
+    C2: occurrence tags ['heavy', 'lin']
+    C3: occurrence tags ['heavy', 's0lin']
+    one-input-function routes into C0 (truncated): 2
+      s1((-Ch((+Maj(..., ..., ...) -Maj(..., ..., ...) +S0(...) -S0(...) +0xffffffff +A13 -a4), 
+      S0((+a4))
+
+  word a6 (a4 = v):
+    C0: occurrence tags ['heavy']
+    C1: occurrence tags ['heavy', 'lin']
+    C2: occurrence tags ['heavy']
+    C3: occurrence tags ['heavy']
+    one-input-function routes into C0 (truncated): 2
+      s1((-Ch((+Maj(..., ..., ...) -Maj(..., ..., ...) +S0(...) -S0(...) +0xffffffff +A13 -a4), 
+      S0((+a6))
+
+  word a7 (a4 = v):
+    C0: occurrence tags ['heavy', 'lin']
+    C1: occurrence tags ['heavy']
+    C2: occurrence tags ['heavy', 'lin']
+    C3: occurrence tags ['heavy']
+    one-input-function routes into C0 (truncated): 2
+      s1((-Ch((+Maj(..., ..., ...) -Maj(..., ..., ...) +S0(...) -S0(...) +0xffffffff +A13 -a4), 
+      S0((+a7))
+
+  word a10 (a4 = v):
+    C0: occurrence tags ['heavy']
+    C1: occurrence tags ['heavy', 'lin']
+    C2: occurrence tags ['heavy', 'lin']
+    C3: occurrence tags ['heavy']
+    one-input-function routes into C0 (truncated): 1
+      s1((-Ch((+Maj(..., ..., ...) -Maj(..., ..., ...) +S0(...) -S0(...) +0xffffffff +A13 -a4), 
+
+  word a11 (a4 = v):
+    C0: occurrence tags ['heavy']
+    C1: occurrence tags ['heavy']
+    C2: occurrence tags ['heavy', 'lin']
+    C3: occurrence tags ['heavy', 'lin']
+    one-input-function routes into C0 (truncated): 3
+      s1((-Ch((+Maj(..., ..., ...) -Maj(..., ..., ...) +S0(...) -S0(...) +0xffffffff +A13 -a4), 
+      S0((+a11))
+      S1((-Maj((+A14), (+A13), (+A12)) -S0((+A14)) +A15 +a11))

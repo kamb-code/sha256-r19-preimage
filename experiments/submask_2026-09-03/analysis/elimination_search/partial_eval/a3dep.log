@@ -1,0 +1,19 @@
+(1) sensitivity S[j,i] = P(c3 bit i flips | a3 bit j flips), rows j = a3 bit, cols i = c3 bit
+[[0.19 0.5  0.5  ... 0.4  0.23 0.14]
+ [0.29 0.2  0.5  ... 0.48 0.29 0.18]
+ [0.44 0.32 0.25 ... 0.42 0.32 0.23]
+ ...
+ [0.37 0.5  0.5  ... 0.26 0.5  0.5 ]
+ [0.5  0.34 0.5  ... 0.32 0.16 0.5 ]
+ [0.5  0.5  0.38 ... 0.35 0.17 0.09]]
+    min S = 0.0890 at a3 bit 31 -> c3 bit 31; entries == 0: 0 of 1024
+    mean S = 0.4759; column minima (c3 bit i least sensitive a3 bit):
+    [0.16 0.16 0.22 0.24 0.26 0.26 0.26 0.26 0.26 0.24 0.22 0.18 0.26 0.26 0.26 0.21 0.2  0.22 0.26 0.26 0.26 0.26 0.26 0.26 0.26 0.26 0.26 0.26 0.26 0.26 0.16 0.09]
+    c3 bit 0 sensitivity to each a3 bit: [0.19 0.29 0.44 0.49 0.49 0.63 0.48 0.5  0.5  0.39 0.5  0.59 0.5  0.52 0.65 0.5  0.57 0.5  0.5  0.5  0.16 0.25 0.41 0.5  0.52 0.68 0.43 0.5  0.5  0.37 0.5  0.5 ]
+    (c2 for reference) min S2 = 0.0000, zero entries 91
+(2) GF(2) rank of span{c3(a3) ^ c3(a3')} over 32768 pairs: 32 / 32
+(3) GF(2) rank of span{(c2,c3)(a3) ^ (c2,c3)(a3')} over 32768 pairs: 64 / 64
+(4) P(bit0 flips) under random a3 change: c2[0] 0.4996, c3[0] 0.4998, c2[0]^c3[0] 0.4997   (all must be > 0 for no modular-linear functional)
+(5) root-collision test: 4044 pairs (W3, W3') with sigma0(u)-u equal, same (a0,a1,a2):
+    per-bit P(c3 bit agrees) = [0.5  0.5  0.48 0.49 0.5  0.51 0.5  0.51 0.49 0.5  0.5  0.49 0.5  0.5  0.49 0.51 0.5  0.49 0.49 0.49 0.51 0.5  0.51 0.51 0.5  0.49 0.5  0.5  0.51 0.51 0.52 0.49]
+    mean 0.4991  (0.5 = c3 carries no information from the key t)

@@ -1,0 +1,31 @@
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/assign/frameshift.py:76: RuntimeWarning: overflow encountered in scalar add
+  E0 = (am4 + A0 - (S0(am1) + Maj(am1, am2, am3))) & MISS
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/assign/frameshift.py:77: RuntimeWarning: overflow encountered in scalar add
+  W0 = (A0 - (S0(am1) + Maj(am1, am2, am3)) - em4 - S1(em1) - Ch(em1, em2, em3) - u32(K[0])) & MISS
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/assign/frameshift.py:78: RuntimeWarning: overflow encountered in scalar add
+  E1 = (am3 + a1 - (S0(A0) + Maj(A0, am1, am2))) & MISS
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/assign/frameshift.py:102: RuntimeWarning: overflow encountered in scalar add
+  E5 = (a1 + w - (S0(A4) + Maj(A4, A3, A2))) & MISS
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/assign/frameshift.py:104: RuntimeWarning: overflow encountered in scalar add
+  E7 = (A3 + a7 - (S0(w) + w)) & MISS
+plant test: 40 plants, 5 with all three roots stored, 5 recovered (OK); expected stored fraction c^3 = 0.254
+
+shifted frame, 24 contexts/targets, 6,442,450,944 swept a0, 723s
+  C1 lookup hits 0.6337  C2 0.6337  C3 0.6337   (c = 0.6337 each)
+  triangular solutions per swept a0: 0.2544  (c^3 = 0.2545)
+  collapsed condition Maj(w,a4,a3)==a4: 164,665 of 1,639,228,254 = 1.0045e-04  ((3/4)^32 = 1.0045e-04)
+  candidates re-verified from the message (C1,C2,C3 exact, C0 residual matches): 12288
+  C0 residual ladder over 164,665 candidates:
+    k   observed   predicted   ratio       z
+    0    164,665   164665.00    1.00   +0.00
+    2     41,330    41166.25    1.00   +0.81
+    4     10,461    10291.56    1.02   +1.67
+    6      2,538     2572.89    0.99   -0.69
+    8        637      643.22    0.99   -0.25
+   10        150      160.81    0.93   -0.85
+   12         34       40.20    0.85   -0.98
+   14          7       10.05    0.70   -0.96
+   16          3        2.51    1.19   +0.31
+   18          0        0.63    0.00   -0.79
+   20          0        0.16    0.00   -0.40
+  per-preimage cost implied: 2^47.26 swept a0 (published frame: 2^47.3 one-root)

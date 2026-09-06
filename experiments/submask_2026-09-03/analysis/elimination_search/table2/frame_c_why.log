@@ -1,0 +1,17 @@
+mean Hamming weight of the change per flipped bit (400 random full-width states, random context):
+        C0|a4:  12.17   (nonzero in 400/400)
+         P|a4:  11.01   (nonzero in 400/400)
+         Q|a4:   1.88   (nonzero in 332/400)
+         Q|a2:   1.33   (nonzero in 251/400)
+         Q|a3:   1.61   (nonzero in 285/400)
+    C0-P-Q|a4:   0.00   (nonzero in 0/400)
+
+=> C0 = [sigma0(W1)-W1 part] + P(a4) + Q(a4;a2,a3) + const exactly (residual 0 above);
+   P is the one-input per-context map Frame C tabulated; Q moves with a2 and a3, so C0's
+   a4-dependence is a THREE-input function and no one-input table inverts it; and C0 still
+   contains a1 non-deferrably, so a table for a4 leaves a1 without a home.
+
+Frame C accounting: sweeps (a0,a1) pairs, C3 remains a 2^-32 filter.
+   if convergence were 5.34e-05 per pair (R=19 loop rate (paper)): cost = 2^46.2 pairs per preimage  [submask frame: 2^45.4 swept a0]
+   if convergence were 2.82e-06 per pair (R=19 loop rate in the frame_c_test3 harness): cost = 2^50.4 pairs per preimage  [submask frame: 2^45.4 swept a0]
+   if convergence were 3.58e-07 per pair (95% upper bound from 0 of 8,388,608 pairs): cost = 2^53.4 pairs per preimage  [submask frame: 2^45.4 swept a0]

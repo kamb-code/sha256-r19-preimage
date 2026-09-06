@@ -1,0 +1,4 @@
+C1 rhs moves with (a3,a4) exactly as Maj(v,a4,a3)-a4 : 200/200 OK
+C2 rhs moves with (a3,a4)?  changed in 200/200 trials (a3 should move it, a4 alone tested next)
+C2 rhs moves with a4 alone: 0/100 trials (expected 0 in the shifted family)
+P(Maj(v,a4,a3) - a4 == 0) over 52,428,800 random pairs: 1.015e-04  vs (3/4)^32 = 1.005e-04

@@ -1,0 +1,18 @@
+
+########## w = a4: 4374 legal configurations
+  (a) status of each unknown in each constraint, all four live; counts over configs [absent / defer / absorb / block]:
+     C0:  a1: 0/0/4374/0   a2: 0/4374/0/0   a3: 0/4374/0/0   a4: 0/0/4374/0
+     C1:  a1: 0/0/0/4374   a2: 0/0/0/4374   a3: 0/4374/0/0   a4: 0/4374/0/0
+     C2:  a1: 0/0/0/4374   a2: 0/0/0/4374   a3: 0/0/0/4374   a4: 729/3645/0/0
+     C3:  a1: 0/0/0/4374   a2: 0/0/0/4374   a3: 0/0/0/4374   a4: 0/0/0/4374
+  (b) non-deferrable atoms of a4 that survive in EVERY configuration (chain frame):
+     C0: a4 deferrable/absent in 0 configs (0 strict-DOF); persistent non-deferrable atoms: ['oneinput[S0,S1](ctx)']
+          minimal set (4374 cfgs): ['oneinput[S0,S1](ctx)']
+     C1: a4 deferrable/absent in 4374 configs (3402 strict-DOF); persistent non-deferrable atoms: {}
+     C2: a4 deferrable/absent in 4374 configs (3402 strict-DOF); persistent non-deferrable atoms: {}
+     C3: a4 absorbable in 4374 configs
+Traceback (most recent call last):
+  File "/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/elim/table2/analyze.py", line 110, in <module>
+    print(f"  (c) chain frame dies at step {best_depth}: {step}; best cfg eq={best_cfg['eq']} "
+                                                                              ~~~~~~~~^^^^^^
+TypeError: 'NoneType' object is not subscriptable

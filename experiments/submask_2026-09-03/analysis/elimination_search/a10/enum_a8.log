@@ -1,0 +1,21 @@
+w = a8: words [5, 6, 7, 9, 10, 11], menu sizes [9, 11, 13, 15, 15, 15], 4,343,625 configurations
+  ... 97,993 legal so far, 196s
+  ... 195,986 legal so far, 198s
+  ... 326,507 legal so far, 248s
+  ... 457,028 legal so far, 252s
+  ... 608,959 legal so far, 290s
+  ... 760,890 legal so far, 292s
+  ... 972,803 legal so far, 387s
+  ... 1,184,716 legal so far, 394s
+  ... 1,396,629 legal so far, 398s
+
+legal (acyclic) configurations: 1,396,629 of 4,343,625; 398s
+
+(C0, C1, C2, C3) occurrence class of w, triangular(a3 not in C1) -> count
+  ('heavy', 'heavy', 'heavy', 'heavy')  tri=False: 1,358,679
+  ('heavy', 'heavy', 'heavy', 'heavy')  tri=True: 35,910
+  ('heavy', 'heavy', 'heavy', 'lin')  tri=False: 1,626
+  ('heavy', 'heavy', 'heavy', 'none')  tri=False: 414
+
+configurations with w absent from C0, C1 and C2: 0
+configurations with w absent from two of C0,C1,C2: 0

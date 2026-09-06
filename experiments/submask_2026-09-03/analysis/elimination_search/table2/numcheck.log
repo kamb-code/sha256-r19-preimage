@@ -1,0 +1,116 @@
+
+=== w = a4: symbolic min non-deferrable entries into C0..C2 = 1; C3 absorbs in 4374 cfgs; complete schedules 0
+  cfg eq=[] sat=[(10, '0xffffffff'), (11, '0x0'), (13, '0x0')] strictDOF=True
+     symbolic C0 <- a4: +1*Ch[arg0:u;with a4] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+     symbolic C1 <- a4: +1*Ch[arg1:u;with a4] +1*Ch[arg2:u](nested) -1*Maj[arg1:u]
+     symbolic C2 <- a4: -1*Maj[arg2:u]
+     symbolic C3 <- a4: +1*u -1*s0(+u+c)
+     numeric: context not constructible by the linear-word solver (skipped)
+  cfg eq=[] sat=[(10, '0xffffffff'), (11, '0x0'), (13, '0x0'), (15, '0x0')] strictDOF=True
+     symbolic C0 <- a4: +1*Ch[arg0:u;with a4] +1*Ch[arg1:u](nested) +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+     symbolic C1 <- a4: +1*Ch[arg1:u;with a4] +1*Ch[arg2:u](nested) -1*Maj[arg1:u]
+     symbolic C2 <- a4: -1*Maj[arg2:u]
+     symbolic C3 <- a4: +1*u -1*s0(+u+c)
+     numeric: context not constructible by the linear-word solver (skipped)
+
+=== w = a5: symbolic min non-deferrable entries into C0..C2 = 1; C3 absorbs in 1944 cfgs; complete schedules 0
+  cfg eq=[(7, 6)] sat=[(8, '0xffffffff')] strictDOF=True
+     symbolic C0 <- a5: -1*Maj[arg1:u] +1*u
+     symbolic C1 <- a5: +1*Ch[arg0:u;with a5] +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+     symbolic C2 <- a5: -1*Maj[arg1:u] +1*Ch[arg1:u]
+     symbolic C3 <- a5: +1*Ch[arg2:u]
+     numeric mean Hamming weight of dC_j per flipped bit of a5: C0= 0.93 (moved 100/200)  C1=12.38 (moved 200/200)  C2= 1.46 (moved 136/200)  C3= 1.55 (moved 141/200)
+     C3 separability: dC3 depends on a0..a3 in 0/100 trials, on context in 100/100
+  cfg eq=[(7, 6)] sat=[(8, '0xffffffff'), (15, '0x0')] strictDOF=True
+     symbolic C0 <- a5: -1*Maj[arg1:u] +1*u
+     symbolic C1 <- a5: +1*Ch[arg0:u;with a5] +1*Ch[arg2:u](nested) -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+     symbolic C2 <- a5: -1*Maj[arg1:u] +1*Ch[arg1:u]
+     symbolic C3 <- a5: +1*Ch[arg2:u]
+     numeric mean Hamming weight of dC_j per flipped bit of a5: C0= 0.87 (moved 100/200)  C1=12.21 (moved 200/200)  C2= 1.54 (moved 136/200)  C3= 1.41 (moved 141/200)
+     C3 separability: dC3 depends on a0..a3 in 0/100 trials, on context in 100/100
+
+=== w = a6: symbolic min non-deferrable entries into C0..C2 = 2; C3 absorbs in 2592 cfgs; complete schedules 0
+  cfg eq=[(7, 5), (8, 5)] sat=[(8, '0xffffffff'), (9, '0xffffffff'), (11, '0xffffffff'), (12, '0xffffffff'), (13, '0xffffffff'), (14, '0xffffffff'), (15, '0xffffffff')] strictDOF=False
+     symbolic C0 <- a6: -1*Maj[arg0:u] ONEINPUT[s1,S0](ctx)
+     symbolic C1 <- a6: +1*u
+     symbolic C2 <- a6: -1*Maj[arg0:u] ONEINPUT[S1,S0](ctx)
+     symbolic C3 <- a6: +1*u
+     numeric: context not constructible by the linear-word solver (skipped)
+  cfg eq=[(7, 5), (8, 5)] sat=[(8, '0x0'), (9, '0xffffffff'), (11, '0xffffffff'), (12, '0x0')] strictDOF=False
+     symbolic C0 <- a6: +1*u -1*s1(-u+c)
+     symbolic C1 <- a6: +1*u
+     symbolic C2 <- a6: -1*Maj[arg0:u] +1*Ch[arg0:u] ONEINPUT[S1,S0](ctx)
+     symbolic C3 <- a6: +1*u
+     numeric: context not constructible by the linear-word solver (skipped)
+
+=== w = a7: symbolic min non-deferrable entries into C0..C2 = 2; C3 absorbs in 5184 cfgs; complete schedules 0
+  cfg eq=[(8, 6), (9, 6)] sat=[(9, '0x0'), (10, '0xffffffff'), (12, '0xffffffff'), (15, '0x0')] strictDOF=False
+     symbolic C0 <- a7: +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a7] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u
+     symbolic C1 <- a7: -1*s1(-u+c) +1*u
+     symbolic C2 <- a7: +1*u
+     symbolic C3 <- a7: +1*Ch[arg0:u] -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+     numeric: context not constructible by the linear-word solver (skipped)
+  cfg eq=[(8, 6), (9, 6)] sat=[(9, '0x0'), (10, '0xffffffff'), (12, '0xffffffff'), (15, '0xffffffff')] strictDOF=False
+     symbolic C0 <- a7: +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a7] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u
+     symbolic C1 <- a7: -1*s1(-u+c) +1*u
+     symbolic C2 <- a7: +1*u
+     symbolic C3 <- a7: +1*Ch[arg0:u] -1*Maj[arg0:u] ONEINPUT[S0,S1](ctx)
+     numeric: context not constructible by the linear-word solver (skipped)
+
+=== w = a8: symbolic min non-deferrable entries into C0..C2 = 3; C3 absorbs in 864 cfgs; complete schedules 0
+  cfg eq=[(9, 7)] sat=[(10, '0x0'), (13, '0xffffffff')] strictDOF=False
+     symbolic C0 <- a8: +1*Ch[arg0:u] -1*u +1*Maj[arg0:u] ONEINPUT[S0,s1,S1](ctx)
+     symbolic C1 <- a8: +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a8]
+     symbolic C2 <- a8: +1*u +1*Maj[arg2:u] -1*s1(-u+c)
+     symbolic C3 <- a8: +1*HEAVY:S1:nonlinear-in-u +1*u +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside
+     numeric: context not constructible by the linear-word solver (skipped)
+  cfg eq=[(9, 7)] sat=[(10, '0x0'), (13, '0xffffffff'), (15, '0x0')] strictDOF=False
+     symbolic C0 <- a8: +1*Ch[arg0:u] -1*u +1*Maj[arg0:u] ONEINPUT[S0,s1,S1](ctx)
+     symbolic C1 <- a8: +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a8]
+     symbolic C2 <- a8: +1*u +1*Maj[arg2:u] -1*s1(-u+c)
+     symbolic C3 <- a8: +1*HEAVY:S1:nonlinear-in-u +1*u +1*Ch[arg0:u](nested) +1*HEAVY:Ch:F(u)-inside
+     numeric: context not constructible by the linear-word solver (skipped)
+
+=== w = a9: symbolic min non-deferrable entries into C0..C2 = 3; C3 absorbs in 864 cfgs; complete schedules 0
+  cfg eq=[(10, 8)] sat=[(14, '0xffffffff')] strictDOF=False
+     symbolic C0 <- a9: -1*u -1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u] -1*Ch[arg2:u]
+     symbolic C1 <- a9: -1*u +1*Ch[arg0:u] +1*Maj[arg0:u] ONEINPUT[S1,S0,s1](ctx)
+     symbolic C2 <- a9: -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9] +1*HEAVY:S1:nonlinear-in-u
+     symbolic C3 <- a9: -1*s1(-u+c) +1*Maj[arg2:u] +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a9]
+     numeric: context not constructible by the linear-word solver (skipped)
+  cfg eq=[(10, 8)] sat=[(14, '0xffffffff'), (15, '0x0')] strictDOF=False
+     symbolic C0 <- a9: -1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u] -2*u
+     symbolic C1 <- a9: -1*u +1*Ch[arg0:u] +1*Maj[arg0:u] ONEINPUT[S1,S0,s1](ctx)
+     symbolic C2 <- a9: +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a9] +1*HEAVY:S1:nonlinear-in-u -1*HEAVY:s1:nonlinear-in-u
+     symbolic C3 <- a9: -1*s1(-u+c) +1*Maj[arg2:u] +1*HEAVY:Ch:F(u)-inside +1*Ch[arg2:u;with a9]
+     numeric: context not constructible by the linear-word solver (skipped)
+
+=== w = a10: symbolic min non-deferrable entries into C0..C2 = 3; C3 absorbs in 0 cfgs; complete schedules 0
+  cfg eq=[(11, 9)] sat=[(9, '0x0'), (15, '0xffffffff')] strictDOF=False
+     symbolic C0 <- a10: -1*u -1*HEAVY:s1:nonlinear-in-u
+     symbolic C1 <- a10: -1*Ch[arg2:u] -1*u +1*Maj[arg2:u] -1*HEAVY:s1:nonlinear-in-u
+     symbolic C2 <- a10: -1*u +1*Ch[arg0:u] +1*Maj[arg0:u] ONEINPUT[s1,S1,S0](ctx)
+     symbolic C3 <- a10: -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:S1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a10]
+     numeric: context not constructible by the linear-word solver (skipped)
+  cfg eq=[(11, 9)] sat=[(9, '0xffffffff'), (12, '0xffffffff'), (15, '0xffffffff')] strictDOF=False
+     symbolic C0 <- a10: -1*u -1*HEAVY:s1:nonlinear-in-u
+     symbolic C1 <- a10: -1*Ch[arg2:u] -1*u +1*Maj[arg2:u] -1*HEAVY:s1:nonlinear-in-u
+     symbolic C2 <- a10: +1*Ch[arg0:u] -1*u +1*Maj[arg0:u] ONEINPUT[S1,S0,s1](ctx)
+     symbolic C3 <- a10: -1*HEAVY:s1:nonlinear-in-u +1*HEAVY:S1:nonlinear-in-u +1*HEAVY:Ch:F(u)-inside +1*Ch[arg1:u;with a10]
+     numeric: context not constructible by the linear-word solver (skipped)
+
+=== w = a11: symbolic min non-deferrable entries into C0..C2 = 4; C3 absorbs in 0 cfgs; complete schedules 0
+  cfg eq=[] sat=[] strictDOF=True
+     symbolic C0 <- a11: +1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg0:u;with a11] -1*Ch[arg1:u](nested) -1*Ch[arg2:u](nested) ONEINPUT[S1,S0](ctx)
+     symbolic C1 <- a11: -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg1:u;with a11] -1*Ch[arg2:u](nested) +1*Maj[arg1:u]
+     symbolic C2 <- a11: -1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u] -1*u -1*Ch[arg2:u]
+     symbolic C3 <- a11: +1*Maj[arg0:u] +1*Ch[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*u ONEINPUT[S1,S0](ctx)
+     numeric mean Hamming weight of dC_j per flipped bit of a11: C0=15.97 (moved 200/200)  C1=12.87 (moved 199/200)  C2=15.17 (moved 200/200)  C3=14.12 (moved 200/200)
+     C3 separability: dC3 depends on a0..a3 in 0/100 trials, on context in 100/100
+  cfg eq=[] sat=[(10, '0xffffffff')] strictDOF=True
+     symbolic C0 <- a11: +1*Maj[arg0:u] -1*Ch[arg0:u;with a11] -1*Ch[arg1:u](nested) -1*Ch[arg2:u](nested) -1*HEAVY:s1:nonlinear-in-u ONEINPUT[S1,S0](ctx)
+     symbolic C1 <- a11: -1*HEAVY:s1:nonlinear-in-u -1*Ch[arg1:u;with a11] -1*Ch[arg2:u](nested) +1*Maj[arg1:u]
+     symbolic C2 <- a11: -1*HEAVY:s1:nonlinear-in-u +1*Maj[arg2:u] -1*u -1*Ch[arg2:u]
+     symbolic C3 <- a11: +1*Ch[arg0:u] +1*Maj[arg0:u] -1*HEAVY:s1:nonlinear-in-u -1*u ONEINPUT[S1,S0](ctx)
+     numeric mean Hamming weight of dC_j per flipped bit of a11: C0=15.76 (moved 200/200)  C1=12.98 (moved 200/200)  C2=15.26 (moved 200/200)  C3=14.14 (moved 200/200)
+     C3 separability: dC3 depends on a0..a3 in 0/100 trials, on context in 100/100

@@ -1,0 +1,35 @@
+w = a6: words [5, 7, 8, 9, 10, 11], menu sizes [9, 13, 15, 15, 15, 15], 5,923,125 configurations
+  ... 89,379 legal so far, 180s
+  ... 178,758 legal so far, 187s
+  ... 301,807 legal so far, 239s
+  ... 424,856 legal so far, 245s
+  ... 614,585 legal so far, 363s
+  ... 804,314 legal so far, 364s
+  ... 994,043 legal so far, 366s
+  ... 1,183,772 legal so far, 377s
+  ... 1,373,501 legal so far, 380s
+
+legal (acyclic) configurations: 1,373,501 of 5,923,125; 380s
+
+(C0, C1, C2, C3) occurrence class of w, triangular(a3 not in C1) -> count
+  ('heavy', 'heavy', 'heavy', 'heavy')  tri=False: 1,325,538
+  ('heavy', 'heavy', 'heavy', 'heavy')  tri=True: 20,047
+  ('heavy', 'heavy', 'heavy', 'lin')  tri=False: 13,501
+  ('heavy', 'heavy', 'heavy', 'none')  tri=False: 12,502
+  ('heavy', 'none', 'heavy', 'heavy')  tri=False: 714
+  ('heavy', 'lin', 'heavy', 'heavy')  tri=False: 709
+  ('heavy', 'none', 'heavy', 'heavy')  tri=True: 145
+  ('heavy', 'lin', 'heavy', 'heavy')  tri=True: 144
+  ('heavy', 'lin', 'heavy', 'lin')  tri=False: 41
+  ('heavy', 'none', 'heavy', 'lin')  tri=False: 34
+  ('heavy', 'none', 'heavy', 'none')  tri=False: 34
+  ('heavy', 'lin', 'heavy', 'none')  tri=False: 34
+  ('heavy', 'heavy', 'heavy', 'none')  tri=True: 15
+  ('heavy', 'heavy', 'heavy', 'lin')  tri=True: 14
+  ('heavy', 'lin', 'heavy', 'lin')  tri=True: 8
+  ('heavy', 'lin', 'heavy', 'none')  tri=True: 7
+  ('heavy', 'none', 'heavy', 'lin')  tri=True: 7
+  ('heavy', 'none', 'heavy', 'none')  tri=True: 7
+
+configurations with w absent from C0, C1 and C2: 0
+configurations with w absent from two of C0,C1,C2: 0

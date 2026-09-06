@@ -1,0 +1,170 @@
+R=20 submask family, a4=a5=v, e8=e9=-1 via a8,a9; free: v,a6,a7,a10,a11
+
+--- where a11 sits in the e-words and message words ---
+  e11 = -Maj(+a10,+Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)+0xffffffff-v,+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)-S0(+a10)+a11+a7
+  e12 = -Maj(+a11,+a10,+Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)+0xffffffff-v)+Maj(+a7,+a6,+v)-S0(+a11)+S0(+a7)+0xffffffff+A12-v
+  e13 = +Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)-Maj(+A12,+a11,+a10)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)-S0(+A12)+0xffffffff+A13-v
+  e14 = -Maj(+A13,+A12,+a11)-S0(+A13)+A14+a10
+  e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+  W11   :  1 path(s): lin
+  W12   :  4 path(s): S1[0]; S0[0]; Maj[0]; Ch[0]
+  W13   :  6 path(s): Maj[1]; S1[0] -> Maj[0]; S1[0] -> S0[0]; Ch[0] -> Maj[0]; Ch[0] -> S0[0]; Ch[1]
+  W14   :  6 path(s): Maj[2]; Ch[0] -> Maj[1]; Ch[1] -> Maj[0]; Ch[1] -> S0[0]; Ch[2]; S1[0] -> Maj[1]
+  W15   :  6 path(s): Ch[0] -> Maj[2]; Ch[1] -> Maj[1]; Ch[2] -> Maj[0]; Ch[2] -> S0[0]; lin; S1[0] -> Maj[2]
+  W16   :  6 path(s): S1[0]; Maj[0]; S0[0]; Ch[0]; Ch[1] -> Maj[2]; Ch[2] -> Maj[1]
+  W17   :  3 path(s): Maj[1]; Ch[1]; Ch[2] -> Maj[2]
+  W18   :  2 path(s): Ch[2]; Maj[2]
+  W19   :  1 path(s): lin
+
+=== KC0: 12 occurrence(s) of a11 ===
+  coef -1  path: a11 <- S1[arg0]   [UNCUTTABLE]
+        S1: unary, no saturation
+  coef -1  path: a11 <- Ch[arg0]   [UNCUTTABLE]
+        Ch(selector): cut iff -Maj(+A13,+A12,+a11)-S0(+A13)+A14+a10 == +Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)-Maj(+A12,+a11,+a10)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)-S0(+A12)+0xffffffff+A13-v  [DIGEST,DIGEST,DIGEST,FREE,a11 | DIGEST,DIGEST,FREE,FREE,FREE,FREE,a11]  -> not cuttable
+  coef +1  path: a11 <- Ch[arg1] -> Maj[arg2]   [UNCUTTABLE]
+        Ch(data1): cut iff selector -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11 == 0x0  [selector: DIGEST,DIGEST,DIGEST,DIGEST,a11]  -> not cuttable
+        Maj: cut iff +A13 == +A12  [siblings: DIGEST | DIGEST]  -> not cuttable
+  coef +1  path: a11 <- Ch[arg2] -> Maj[arg1]   [UNCUTTABLE]
+        Ch(data2): cut iff selector -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11 == 0xffffffff  [selector: DIGEST,DIGEST,DIGEST,DIGEST,a11]  -> not cuttable
+        Maj: cut iff +A12 == +a10  [siblings: DIGEST | FREE]  -> not cuttable
+  coef +1  path: a11 <- s1[arg0] -> Maj[arg2]   [UNCUTTABLE]
+        s1: unary, no saturation
+        Maj: cut iff +A13 == +A12  [siblings: DIGEST | DIGEST]  -> not cuttable
+  coef -1  path: a11 <- s1[arg0] -> Ch[arg0] -> Maj[arg1]   [UNCUTTABLE]
+        s1: unary, no saturation
+        Ch(selector): cut iff -Maj(+a11,+a10,+Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)+0xffffffff-v)+Maj(+a7,+a6,+v)-S0(+a11)+S0(+a7)+0xffffffff+A12-v == -Maj(+a10,+Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)+0xffffffff-v,+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)-S0(+a10)+a11+a7  [DIGEST,FREE,FREE,FREE,FREE,a11 | FREE,FREE,FREE,FREE,a11]  -> not cuttable
+        Maj: cut iff +A12 == +a10  [siblings: DIGEST | FREE]  -> not cuttable
+  coef -1  path: a11 <- s1[arg0] -> Ch[arg1] -> Maj[arg0]   [cuttable by a saturation]
+        s1: unary, no saturation
+        Ch(data1): cut iff selector +Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)-Maj(+A12,+a11,+a10)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)-S0(+A12)+0xffffffff+A13-v == 0x0  [selector: DIGEST,DIGEST,FREE,FREE,FREE,FREE,a11]  -> not cuttable
+        Maj: cut iff +a10 == +Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)+0xffffffff-v  [siblings: FREE | FREE,FREE,FREE]  -> CUTTABLE
+  coef -1  path: a11 <- s1[arg0] -> Ch[arg1] -> S0[arg0]   [UNCUTTABLE]
+        s1: unary, no saturation
+        Ch(data1): cut iff selector +Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)-Maj(+A12,+a11,+a10)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)-S0(+A12)+0xffffffff+A13-v == 0x0  [selector: DIGEST,DIGEST,FREE,FREE,FREE,FREE,a11]  -> not cuttable
+        S0: unary, no saturation
+  coef +1  path: a11 <- s1[arg0] -> Ch[arg2]   [UNCUTTABLE]
+        s1: unary, no saturation
+        Ch(data2): cut iff selector +Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)-Maj(+A12,+a11,+a10)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)-S0(+A12)+0xffffffff+A13-v == 0xffffffff  [selector: DIGEST,DIGEST,FREE,FREE,FREE,FREE,a11]  -> not cuttable
+  coef -1  path: a11 <- s1[arg0] -> S1[arg0] -> Maj[arg1]   [UNCUTTABLE]
+        s1: unary, no saturation
+        S1: unary, no saturation
+        Maj: cut iff +A12 == +a10  [siblings: DIGEST | FREE]  -> not cuttable
+  coef +1  path: a11 <- S0[arg0]   [UNCUTTABLE]
+        S0: unary, no saturation
+  coef +1  path: a11 <- Maj[arg0]   [cuttable by a saturation]
+        Maj: cut iff +a10 == +Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)+0xffffffff-v  [siblings: FREE | FREE,FREE,FREE]  -> CUTTABLE
+  => 10 uncuttable path(s) of 12
+
+=== KC1: 9 occurrence(s) of a11 ===
+  coef +1  path: a11 <- Maj[arg1]   [UNCUTTABLE]
+        Maj: cut iff +A12 == +a10  [siblings: DIGEST | FREE]  -> not cuttable
+  coef -1  path: a11 <- s1[arg0] -> Ch[arg0] -> Maj[arg2]   [UNCUTTABLE]
+        s1: unary, no saturation
+        Ch(selector): cut iff +Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)-Maj(+A12,+a11,+a10)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)-S0(+A12)+0xffffffff+A13-v == -Maj(+a11,+a10,+Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)+0xffffffff-v)+Maj(+a7,+a6,+v)-S0(+a11)+S0(+a7)+0xffffffff+A12-v  [DIGEST,DIGEST,FREE,FREE,FREE,FREE,a11 | DIGEST,FREE,FREE,FREE,FREE,a11]  -> not cuttable
+        Maj: cut iff +A13 == +A12  [siblings: DIGEST | DIGEST]  -> not cuttable
+  coef -1  path: a11 <- s1[arg0] -> Ch[arg1] -> Maj[arg1]   [UNCUTTABLE]
+        s1: unary, no saturation
+        Ch(data1): cut iff selector -Maj(+A13,+A12,+a11)-S0(+A13)+A14+a10 == 0x0  [selector: DIGEST,DIGEST,DIGEST,FREE,a11]  -> not cuttable
+        Maj: cut iff +A12 == +a10  [siblings: DIGEST | FREE]  -> not cuttable
+  coef -1  path: a11 <- s1[arg0] -> Ch[arg2] -> Maj[arg0]   [cuttable by a saturation]
+        s1: unary, no saturation
+        Ch(data2): cut iff selector -Maj(+A13,+A12,+a11)-S0(+A13)+A14+a10 == 0xffffffff  [selector: DIGEST,DIGEST,DIGEST,FREE,a11]  -> not cuttable
+        Maj: cut iff +a10 == +Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)+0xffffffff-v  [siblings: FREE | FREE,FREE,FREE]  -> CUTTABLE
+  coef -1  path: a11 <- s1[arg0] -> Ch[arg2] -> S0[arg0]   [UNCUTTABLE]
+        s1: unary, no saturation
+        Ch(data2): cut iff selector -Maj(+A13,+A12,+a11)-S0(+A13)+A14+a10 == 0xffffffff  [selector: DIGEST,DIGEST,DIGEST,FREE,a11]  -> not cuttable
+        S0: unary, no saturation
+  coef +1  path: a11 <- s1[arg0]   [UNCUTTABLE]
+        s1: unary, no saturation
+  coef -1  path: a11 <- s1[arg0] -> S1[arg0] -> Maj[arg2]   [UNCUTTABLE]
+        s1: unary, no saturation
+        S1: unary, no saturation
+        Maj: cut iff +A13 == +A12  [siblings: DIGEST | DIGEST]  -> not cuttable
+  coef -1  path: a11 <- Ch[arg1]   [UNCUTTABLE]
+        Ch(data1): cut iff selector +E16 == 0x0  [selector: DIGEST]  -> not cuttable
+  coef +1  path: a11 <- Ch[arg2] -> Maj[arg2]   [UNCUTTABLE]
+        Ch(data2): cut iff selector +E16 == 0xffffffff  [selector: DIGEST]  -> not cuttable
+        Maj: cut iff +A13 == +A12  [siblings: DIGEST | DIGEST]  -> not cuttable
+  => 8 uncuttable path(s) of 9
+
+=== KC2: 9 occurrence(s) of a11 ===
+  coef -1  path: a11 <- Ch[arg2]   [UNCUTTABLE]
+        Ch(data2): cut iff selector +E17 == 0xffffffff  [selector: DIGEST]  -> not cuttable
+  coef +1  path: a11 <- Maj[arg2]   [UNCUTTABLE]
+        Maj: cut iff +A13 == +A12  [siblings: DIGEST | DIGEST]  -> not cuttable
+  coef +1  path: a11 <- s1[arg0] -> S1[arg0]   [UNCUTTABLE]
+        s1: unary, no saturation
+        S1: unary, no saturation
+  coef -1  path: a11 <- s1[arg0] -> Maj[arg0]   [cuttable by a saturation]
+        s1: unary, no saturation
+        Maj: cut iff +a10 == +Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)+0xffffffff-v  [siblings: FREE | FREE,FREE,FREE]  -> CUTTABLE
+  coef -1  path: a11 <- s1[arg0] -> S0[arg0]   [UNCUTTABLE]
+        s1: unary, no saturation
+        S0: unary, no saturation
+  coef +1  path: a11 <- s1[arg0] -> Ch[arg0]   [UNCUTTABLE]
+        s1: unary, no saturation
+        Ch(selector): cut iff -Maj(+A13,+A12,+a11)-S0(+A13)+A14+a10 == +Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)-Maj(+A12,+a11,+a10)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)-S0(+A12)+0xffffffff+A13-v  [DIGEST,DIGEST,DIGEST,FREE,a11 | DIGEST,DIGEST,FREE,FREE,FREE,FREE,a11]  -> not cuttable
+  coef -1  path: a11 <- s1[arg0] -> Ch[arg1] -> Maj[arg2]   [UNCUTTABLE]
+        s1: unary, no saturation
+        Ch(data1): cut iff selector -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11 == 0x0  [selector: DIGEST,DIGEST,DIGEST,DIGEST,a11]  -> not cuttable
+        Maj: cut iff +A13 == +A12  [siblings: DIGEST | DIGEST]  -> not cuttable
+  coef -1  path: a11 <- s1[arg0] -> Ch[arg2] -> Maj[arg1]   [UNCUTTABLE]
+        s1: unary, no saturation
+        Ch(data2): cut iff selector -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11 == 0xffffffff  [selector: DIGEST,DIGEST,DIGEST,DIGEST,a11]  -> not cuttable
+        Maj: cut iff +A12 == +a10  [siblings: DIGEST | FREE]  -> not cuttable
+  coef -1  path: a11 <- (linear)   [UNCUTTABLE]
+  => 8 uncuttable path(s) of 9
+
+=== collapse: 0 occurrence(s) of a11 ===
+   a11-FREE
+
+=== kappa3: 8 occurrence(s) of a11 ===
+  coef +1  path: a11 <- Maj[arg0]   [cuttable by a saturation]
+        Maj: cut iff +a10 == +Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)+0xffffffff-v  [siblings: FREE | FREE,FREE,FREE]  -> CUTTABLE
+  coef +1  path: a11 <- S0[arg0]   [UNCUTTABLE]
+        S0: unary, no saturation
+  coef +1  path: a11 <- Ch[arg0]   [cuttable by a saturation]
+        Ch(selector): cut iff -Maj(+Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)+0xffffffff-v,+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7)-S0(+Maj(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v,+a7,+a6)+S0(+Maj(+a7,+a6,+v)+S0(+a7)+0xffffffff-v)+0xffffffff-v)+a10+a6 == 0xffffffff  [FREE,FREE,FREE,FREE | const]  -> CUTTABLE
+  coef -1  path: a11 <- (linear)   [UNCUTTABLE]
+  coef -1  path: a11 <- s1[arg0] -> Maj[arg1]   [UNCUTTABLE]
+        s1: unary, no saturation
+        Maj: cut iff +A12 == +a10  [siblings: DIGEST | FREE]  -> not cuttable
+  coef +1  path: a11 <- s1[arg0] -> Ch[arg1]   [UNCUTTABLE]
+        s1: unary, no saturation
+        Ch(data1): cut iff selector +E16 == 0x0  [selector: DIGEST]  -> not cuttable
+  coef -1  path: a11 <- s1[arg0] -> Ch[arg2] -> Maj[arg2]   [UNCUTTABLE]
+        s1: unary, no saturation
+        Ch(data2): cut iff selector +E16 == 0xffffffff  [selector: DIGEST]  -> not cuttable
+        Maj: cut iff +A13 == +A12  [siblings: DIGEST | DIGEST]  -> not cuttable
+  coef +1  path: a11 <- S1[arg0]   [UNCUTTABLE]
+        S1: unary, no saturation
+  => 6 uncuttable path(s) of 8
+
+
+######## RE-TRACE UNDER EXTRA SATURATIONS ########
+
+a10 choice         a7 choice        | KC0 paths(uncut)  KC1  KC2  collapse  kappa3 | KC0 has S1(e15)?
+none               none             |           12(10) 9(8) 9(8)      0(0)    8(6) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+none               e11=-1 via a7    |           14(10) 9(7) 10(8)      0(0)    7(5) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+none               e11=0 via a7     |           14(10) 9(7) 10(8)      0(0)    6(5) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+a10=A12            none             |             9(9) 7(7) 8(8)      0(0)    7(7) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+a10=A12            e11=-1 via a7    |            11(9) 7(6) 9(8)      0(0)    6(5) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+a10=A12            e11=0 via a7     |            11(9) 7(6) 9(8)      0(0)    6(5) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+a10=a9             none             |           10(10) 8(8) 8(8)      0(0)    7(6) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+a10=a9             e11=-1 via a7    |           12(10) 8(7) 9(8)      0(0)    6(5) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+a10=a9             e11=0 via a7     |           12(10) 8(7) 9(8)      0(0)    6(5) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+a10=a11            none             |           16(15) 13(12) 13(12)      0(0)  12(10) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+a10=a11            e11=-1 via a7    |           16(13) 13(11) 14(12)      0(0)   11(8) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+a10=a11            e11=0 via a7     |           16(13) 13(11) 14(12)      0(0)   11(8) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+e10=-1 via a10     none             |           12(10) 9(8) 9(8)      0(0)    7(6) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+e10=-1 via a10     e11=-1 via a7    |           21(12) 16(8) 15(9)      0(0)   11(6) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+e10=-1 via a10     e11=0 via a7     |           21(12) 16(8) 15(9)      0(0)   11(6) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+e10=0 via a10      none             |           12(10) 9(8) 9(8)      0(0)    8(7) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+e10=0 via a10      e11=-1 via a7    |           21(12) 16(8) 15(9)      0(0)   13(6) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+e10=0 via a10      e11=0 via a7     |           21(12) 16(8) 15(9)      0(0)   13(6) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+e14=-1 via a10     none             |           18(17) 9(8) 12(11)      0(0)  14(12) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+e14=-1 via a10     e11=-1 via a7    |           20(17) 9(7) 13(11)      0(0)  13(10) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+e14=-1 via a10     e11=0 via a7     |           20(17) 9(7) 13(11)      0(0)  13(10) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+e14=0 via a10      none             |           18(17) 10(9) 12(11)      0(0)  14(12) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+e14=0 via a10      e11=-1 via a7    |           20(17) 10(8) 13(11)      0(0)  13(10) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
+e14=0 via a10      e11=0 via a7     |           20(17) 10(8) 13(11)      0(0)  13(10) | yes   e15 = -Maj(+A14,+A13,+A12)-S0(+A14)+A15+a11
