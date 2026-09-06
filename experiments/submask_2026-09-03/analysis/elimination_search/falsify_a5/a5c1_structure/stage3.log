@@ -1,0 +1,102 @@
+=== A: best-C1 config (a6=a4, a7=a6, e8=-1, e9=a5+0) ===
+defs = {6: ('eq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('hoff', 0)} legal: True
+closed form idxC1 = const - S0(a5) - Maj(a5,a4,a3) + S1(a5+c9) + Ch(a5+c9,e8,e7(a5)): EXACT on 16384 states
+  e8 takes 1 value(s): 0xffffffff
+  sensitivity matrix: mean 0.343 (x32 = 10.99 bits/flip); deterministic cells 108/1024; always-flip cells 30; never 78
+  output bits whose sensitivity to every input bit is deterministic (GF(2)-affine bits): []
+  input bits with fully deterministic effect: []
+  GF(2) rank of majority Jacobian (S>0.5): 31; of the always-flip part: 9
+  distinct additive differences f(a5^e_i)-f(a5) over 16384 states, per input bit: min 96 median 192 max 192  (bitwise/borrow-free map would give <= 2)
+  GF(2)-linearity: P[whole-word derivative independent of base point] = 0.00e+00; per-bit agreement: min 0.529 bit0 1.000
+  S (rows: flipped a5 bit i = 0..31; cols: idxC1 bit j), rounded:
+/home/administrator/sha/publish/code/submask_family.py:159: RuntimeWarning: overflow encountered in scalar add
+  return (S0(a) + Maj(a, b, c_)) & (MISS if isinstance(a, np.ndarray) else M)
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py:149: RuntimeWarning: overflow encountered in scalar subtract
+  e8 = int((g(4) + g(8) - T2(g(7), g(6), g(5))) & MM)
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py:153: RuntimeWarning: overflow encountered in scalar subtract
+  p['const'] = int((U(f0) - fast_f(p, np.zeros(1, dtype=U))[0]) & MM)
+  scan#0 a5p=0x7d6412c6: #rho=0: 1 (bijection: 1)   #rho=0 mod 2^8: 16777216 (2^24=16777216)  mod 2^16: 65286 (2^16=65536)  mod 2^24: 260 (2^8=256)   #popcount(rho)<=4: 41046 (uniform: 41449)   411s
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py:149: RuntimeWarning: overflow encountered in scalar add
+  e8 = int((g(4) + g(8) - T2(g(7), g(6), g(5))) & MM)
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py:150: RuntimeWarning: overflow encountered in scalar add
+  c7 = int((g(3) + g(7) - S0(g(6))) & MM)
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py:150: RuntimeWarning: overflow encountered in scalar subtract
+  c7 = int((g(3) + g(7) - S0(g(6))) & MM)
+  scan#1 a5p=0xfe61b96b: #rho=0: 2 (bijection: 1)   #rho=0 mod 2^8: 16777216 (2^24=16777216)  mod 2^16: 66389 (2^16=65536)  mod 2^24: 263 (2^8=256)   #popcount(rho)<=4: 41616 (uniform: 41449)   397s
+  scan (a5p=0) a5p=0x00000000: #rho=0: 2 (bijection: 1)   #rho=0 mod 2^8: 16777216 (2^24=16777216)  mod 2^16: 65398 (2^16=65536)  mod 2^24: 252 (2^8=256)   #popcount(rho)<=4: 41511 (uniform: 41449)   410s
+  scan (a5p=-1) a5p=0xffffffff: #rho=0: 2 (bijection: 1)   #rho=0 mod 2^8: 16777216 (2^24=16777216)  mod 2^16: 65536 (2^16=65536)  mod 2^24: 270 (2^8=256)   #popcount(rho)<=4: 41311 (uniform: 41449)   387s
+  histogram: f computed over 2^32 a5 in 277s; sorting ...
+  sorted in 667s
+  distinct values 2715821704 = 0.632327 x 2^32 (bijection 1.0, random map 0.632); max multiplicity 12; sum n_v^2 = 8585113588 = 1.9989 x 2^32 (bijection 1, random map 2); E_a5p P(rho=0) = 4.654e-10 = 1.999 x 2^-32
+=== B: best standard-menu config (a6=~a4, a7=a6, e8=-1, e10=-1, e11=0) ===
+defs = {6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 10: ('sat_r', 4294967295), 11: ('sat_r', 0)} legal: True
+closed form idxC1 = const - S0(a5) - Maj(a5,a4,a3) + S1(a5+c9) + Ch(a5+c9,e8,e7(a5)): EXACT on 16384 states
+  e8 takes 1 value(s): 0xffffffff
+  sensitivity matrix: mean 0.379 (x32 = 12.13 bits/flip); deterministic cells 28/1024; always-flip cells 7; never 21
+  output bits whose sensitivity to every input bit is deterministic (GF(2)-affine bits): []
+  input bits with fully deterministic effect: []
+  GF(2) rank of majority Jacobian (S>0.5): 31; of the always-flip part: 7
+  distinct additive differences f(a5^e_i)-f(a5) over 16384 states, per input bit: min 128 median 6925 max 7130  (bitwise/borrow-free map would give <= 2)
+  GF(2)-linearity: P[whole-word derivative independent of base point] = 0.00e+00; per-bit agreement: min 0.491 bit0 0.539
+  S (rows: flipped a5 bit i = 0..31; cols: idxC1 bit j), rounded:
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py:148: RuntimeWarning: overflow encountered in scalar subtract
+  c9 = int((g(9) - T2(g(8), g(7), g(6))) & MM)
+/home/administrator/sha/publish/code/submask_family.py:159: RuntimeWarning: overflow encountered in scalar add
+  return (S0(a) + Maj(a, b, c_)) & (MISS if isinstance(a, np.ndarray) else M)
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py:149: RuntimeWarning: overflow encountered in scalar subtract
+  e8 = int((g(4) + g(8) - T2(g(7), g(6), g(5))) & MM)
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py:153: RuntimeWarning: overflow encountered in scalar subtract
+  p['const'] = int((U(f0) - fast_f(p, np.zeros(1, dtype=U))[0]) & MM)
+  scan#0 a5p=0x7d6412c6: #rho=0: 3 (bijection: 1)   #rho=0 mod 2^8: 16777213 (2^24=16777216)  mod 2^16: 65306 (2^16=65536)  mod 2^24: 243 (2^8=256)   #popcount(rho)<=4: 41465 (uniform: 41449)   460s
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py:150: RuntimeWarning: overflow encountered in scalar add
+  c7 = int((g(3) + g(7) - S0(g(6))) & MM)
+  scan#1 a5p=0xfe61b96b: #rho=0: 2 (bijection: 1)   #rho=0 mod 2^8: 16777196 (2^24=16777216)  mod 2^16: 65279 (2^16=65536)  mod 2^24: 246 (2^8=256)   #popcount(rho)<=4: 41421 (uniform: 41449)   446s
+  histogram: f computed over 2^32 a5 in 308s; sorting ...
+  sorted in 753s
+  distinct values 2714984411 = 0.632132 x 2^32 (bijection 1.0, random map 0.632); max multiplicity 11; sum n_v^2 = 8589665940 = 1.9999 x 2^32 (bijection 1, random map 2); E_a5p P(rho=0) = 4.656e-10 = 2.000 x 2^-32
+=== C: a6=a4^2^31, a7=a6, e8=-1, e9=a5 ===
+defs = {6: ('xor', 4, 2147483648), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('hoff', 0)} legal: True
+closed form idxC1 = const - S0(a5) - Maj(a5,a4,a3) + S1(a5+c9) + Ch(a5+c9,e8,e7(a5)): EXACT on 16384 states
+  e8 takes 1 value(s): 0xffffffff
+  sensitivity matrix: mean 0.343 (x32 = 10.97 bits/flip); deterministic cells 108/1024; always-flip cells 30; never 78
+  output bits whose sensitivity to every input bit is deterministic (GF(2)-affine bits): []
+  input bits with fully deterministic effect: []
+  GF(2) rank of majority Jacobian (S>0.5): 31; of the always-flip part: 9
+  distinct additive differences f(a5^e_i)-f(a5) over 16384 states, per input bit: min 96 median 192 max 192  (bitwise/borrow-free map would give <= 2)
+  GF(2)-linearity: P[whole-word derivative independent of base point] = 0.00e+00; per-bit agreement: min 0.529 bit0 1.000
+  S (rows: flipped a5 bit i = 0..31; cols: idxC1 bit j), rounded:
+/home/administrator/sha/publish/code/submask_family.py:159: RuntimeWarning: overflow encountered in scalar add
+  return (S0(a) + Maj(a, b, c_)) & (MISS if isinstance(a, np.ndarray) else M)
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py:149: RuntimeWarning: overflow encountered in scalar add
+  e8 = int((g(4) + g(8) - T2(g(7), g(6), g(5))) & MM)
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py:149: RuntimeWarning: overflow encountered in scalar subtract
+  e8 = int((g(4) + g(8) - T2(g(7), g(6), g(5))) & MM)
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py:150: RuntimeWarning: overflow encountered in scalar add
+  c7 = int((g(3) + g(7) - S0(g(6))) & MM)
+  scan#0 a5p=0x7d6412c6: #rho=0: 3 (bijection: 1)   #rho=0 mod 2^8: 16777216 (2^24=16777216)  mod 2^16: 65536 (2^16=65536)  mod 2^24: 241 (2^8=256)   #popcount(rho)<=4: 41304 (uniform: 41449)   398s
+=== D: random context (no conditions) ===
+defs = {} legal: True
+closed form idxC1 = const - S0(a5) - Maj(a5,a4,a3) + S1(a5+c9) + Ch(a5+c9,e8,e7(a5)): EXACT on 16384 states
+  e8 takes 16384 value(s)
+  sensitivity matrix: mean 0.385 (x32 = 12.31 bits/flip); deterministic cells 31/1024; always-flip cells 9; never 22
+  output bits whose sensitivity to every input bit is deterministic (GF(2)-affine bits): []
+  input bits with fully deterministic effect: []
+  GF(2) rank of majority Jacobian (S>0.5): 30; of the always-flip part: 7
+  distinct additive differences f(a5^e_i)-f(a5) over 16384 states, per input bit: min 128 median 7345 max 7540  (bitwise/borrow-free map would give <= 2)
+  GF(2)-linearity: P[whole-word derivative independent of base point] = 0.00e+00; per-bit agreement: min 0.490 bit0 0.542
+  S (rows: flipped a5 bit i = 0..31; cols: idxC1 bit j), rounded:
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py:148: RuntimeWarning: overflow encountered in scalar subtract
+  c9 = int((g(9) - T2(g(8), g(7), g(6))) & MM)
+/home/administrator/sha/publish/code/submask_family.py:159: RuntimeWarning: overflow encountered in scalar add
+  return (S0(a) + Maj(a, b, c_)) & (MISS if isinstance(a, np.ndarray) else M)
+Traceback (most recent call last):
+  File "/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py", line 257, in <module>
+    scan(defs, rng, tag=f"#{s}")
+  File "/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py", line 184, in scan
+    p = fast_params(a, rng)
+        ^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/falsify/a5c1_structure/stage3_structure.py", line 155, in fast_params
+    assert np.array_equal(fast_f(p, x), idx_c1_vec(a, x)), "closed form mismatch"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: closed form mismatch
+STAGE3_DONE

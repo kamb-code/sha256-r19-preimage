@@ -1,0 +1,61 @@
+== a5 as the unknown, base 'closest miss' context (a7 = a6, e8 = -1) ==
+defs={7: ('eq', 6), 8: ('sat_r', 4294967295)}
+  T0 <- a5: -1*Maj(arg1: a5 linear (coeff 1)); +1*a5
+  T1 <- a5: +1*S1(arg0: a5 linear (coeff 1)); +1*Ch(arg0: a5 linear (coeff 1) | arg2: [Maj(arg1: a5 linear (coeff 1))]); -1*Maj(arg0: a5 linear (coeff 1)); -1*S0(arg0: a5 linear (coeff 1))
+  T2 <- a5: +1*Ch(arg1: a5 linear (coeff 1)); -1*Maj(arg1: a5 linear (coeff 1))
+  T3 <- a5: +1*Ch(arg2: a5 linear (coeff 1))
+
+  which message words of C1 = {W1, W2, W10, W15, W17} carry a5:
+    W1: none
+    W2: none
+    W10: heavy
+    W15: none
+    W17: none
+  W10 atoms containing a5:
+    +1 * Maj(arg0: a5 linear (coeff 1))
+    +1 * S0(arg0: a5 linear (coeff 1))
+    -1 * S1(arg0: a5 linear (coeff 1))
+    -1 * Ch(arg0: a5 linear (coeff 1) | arg2: [Maj(arg1: a5 linear (coeff 1))])
+
+== e9 - a5 fixed to a constant through a9 (legal, new kind sat_off) ==
+defs={7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('sat_off', 0)}
+  T0 <- a5: -1*Maj(arg1: a5 linear (coeff 1)); +1*a5
+  T1 <- a5: +1*Ch(arg0: a5 linear (coeff 1) | arg2: [Maj(arg1: a5 linear (coeff 1))]); +1*S1(arg0: a5 linear (coeff 1)); -1*Maj(arg0: a5 linear (coeff 1)); -1*S0(arg0: a5 linear (coeff 1))
+  T2 <- a5: -1*Maj(arg1: a5 linear (coeff 1)); +1*Ch(arg1: a5 linear (coeff 1))
+  T3 <- a5: +1*Ch(arg2: a5 linear (coeff 1))
+
+== plus a6 = a4 (kills Maj(a6,a5,a4) in e7) and e11 = 0 (C3 linear) ==
+defs={6: ('eq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('sat_off', 0), 11: ('sat_r', 0)}
+  T0 <- a5: +1*a5
+  T1 <- a5: +1*Ch(arg0: a5 linear (coeff 1)); +1*S1(arg0: a5 linear (coeff 1)); -1*Maj(arg0: a5 linear (coeff 1)); -1*S0(arg0: a5 linear (coeff 1))
+  T2 <- a5: +1*Ch(arg1: a5 linear (coeff 1))
+  T3 <- a5: +1*a5
+
+== rotational tie a6 = rotr(a4, 13), a7 = rotr(a6, 2) ==
+defs={6: ('rot', 4, 13), 7: ('rot', 6, 2), 9: ('sat_off', 0)}
+  T0 <- a5: +1*S1(arg0: [Maj(arg2: a5 linear (coeff 1))]); +1*Ch(arg0: [Maj(arg2: a5 linear (coeff 1))] | arg1: [Maj(arg1: a5 linear (coeff 1))] | arg2: [Maj(arg0: a5 linear (coeff 1)); S0(arg0: a5 linear (coeff 1))]); +1*a5
+  T1 <- a5: +1*Ch(arg0: a5 linear (coeff 1) | arg1: [Maj(arg2: a5 linear (coeff 1))] | arg2: [Maj(arg1: a5 linear (coeff 1))]); +1*S1(arg0: a5 linear (coeff 1)); -1*Maj(arg0: a5 linear (coeff 1)); -1*S0(arg0: a5 linear (coeff 1))
+  T2 <- a5: -1*Maj(arg1: a5 linear (coeff 1)); +1*Ch(arg1: a5 linear (coeff 1) | arg2: [Maj(arg2: a5 linear (coeff 1))])
+  T3 <- a5: +1*Ch(arg2: a5 linear (coeff 1)); -1*Maj(arg2: a5 linear (coeff 1))
+
+== ILLEGAL: e9 = -1 solved through a9 (a9 becomes a function of a5) ==
+  rejected: context word a9 references unknown a5
+  non-strict view (a9 tracks a5): T1 atoms containing a5:
+    -1 * s1(arg0: [Ch(arg1: a5 linear (coeff -1) | arg2: [Maj(arg2: a5 linear (coeff -1))]); Maj(arg1: a5 linear (coeff -1))])
+    +1 * Maj(arg0: a5 linear (coeff -1))
+    -1 * Maj(arg0: a5 linear (coeff 1))
+    +1 * S0(arg0: a5 linear (coeff -1))
+    -1 * S0(arg0: a5 linear (coeff 1))
+    +1 * a5
+
+== ILLEGAL: a4 = a5 (a4 a function of the unknown) ==
+  rejected: context word a4 references unknown a5
+  non-strict T0 <- a5: -1*Maj(arg0: a5 linear (coeff 1)); +1*S0(arg0: a5 linear (coeff -1)); -1*s1(arg0: [Ch(arg1: a5 linear (coeff -1) | arg2: [Maj(arg2: a5 linear (coeff -1))]); Maj(arg1: a5 linear (coeff -1))]); -1*S0(arg0: a5 linear (coeff 1)); +1*a5
+  non-strict T1 <- a5: +1*Ch(arg0: [S0(arg0: a5 linear (coeff -1))] | arg2: a5 linear (coeff -1)); +1*Maj(arg1: a5 linear (coeff -1)); -1*s1(arg0: [Maj(arg2: a5 linear (coeff -1)); Ch(arg2: a5 linear (coeff -1))]); +1*S1(arg0: [S0(arg0: a5 linear (coeff -1))]); -1*a5; -1*S0(arg0: a5 linear (coeff 1))
+  non-strict T2 <- a5: +1*Ch(arg0: [Maj(arg1: a5 linear (coeff -1))] | arg1: [S0(arg0: a5 linear (coeff -1))]); +1*S1(arg0: [Maj(arg1: a5 linear (coeff -1))]); -1*s1(arg0: a5 linear (coeff 1)); -1*a5; +1*Maj(arg2: a5 linear (coeff -1))
+  non-strict T3 <- a5: +1*S1(arg0: [Maj(arg2: a5 linear (coeff -1))]); +1*Ch(arg0: [Maj(arg2: a5 linear (coeff -1))] | arg1: [Maj(arg1: a5 linear (coeff -1))] | arg2: [S0(arg0: a5 linear (coeff -1))])
+defs={6: ('neq', 4), 7: ('eq', 6), 8: ('sat_r', 4294967295), 9: ('sat_off', 0), 10: ('sat_r', 4294967295), 11: ('sat_r', 0)}
+  T0 <- a5: none
+  T1 <- a5: -1*S0(arg0: a5 linear (coeff 1)); +1*Ch(arg0: a5 linear (coeff 1) | arg2: a5 linear (coeff -1)); +1*S1(arg0: a5 linear (coeff 1)); -1*Maj(arg0: a5 linear (coeff 1))
+  T2 <- a5: none
+  T3 <- a5: +1*a5

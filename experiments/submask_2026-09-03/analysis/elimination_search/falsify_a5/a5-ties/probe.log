@@ -1,0 +1,86 @@
+kernel k(x) = S1(x + c9) - S0(x)   [e9 = x + c9 unsaturated]
+   c9=0x00000000: 10.36 bits/flip
+   c9=0xffffffff: 10.41 bits/flip
+   c9=0x00000001: 10.41 bits/flip
+   c9=0x80000000: 10.36 bits/flip
+   c9=0x7fffffff: 10.42 bits/flip
+   c9=0xb8abff22: 10.91 bits/flip
+   c9=0xdca7a4b0: 11.05 bits/flip
+   c9=0x25956710: 11.05 bits/flip
+   c9=0xa6f681dc: 10.93 bits/flip
+   c9=0x440dd4a8: 10.92 bits/flip
+kernel k(x) = S0(c' - x) - S0(x)    [e9 saturated through a9 = c' - x]
+   c'=0x00000000:  3.23 bits/flip
+   c'=0xffffffff:  2.91 bits/flip   (S0(~x) = ~S0(x): k = -1 - 2 S0(x))
+   c'=0x00000001:  3.16 bits/flip
+   c'=0x80000000:  3.22 bits/flip
+   c'=0x7fffffff:  2.91 bits/flip
+   c'=0xfffffffe:  3.22 bits/flip
+   c'=0xaf80f0a1:  4.04 bits/flip
+   c'=0x7fb1698e:  4.32 bits/flip
+   c'=0x44ce9413:  4.27 bits/flip
+   c'=0x5dad5379:  4.36 bits/flip
+   c'=0x3dd73752:  4.45 bits/flip
+for reference: S0(x) alone  3.00   2*S0(x)  2.91   x alone  1.00
+
+--- decomposition T_1 = k(a5) + mild, per condition ---
+a7=a6, e8=-1                                                 a5->C1 12.04 = kernel 10.97 + residual  1.56
+a7=a6, e8=-1, e11=0                                          a5->C1 12.05 = kernel 10.97 + residual  1.54
+random context                                               a5->C1 12.39 = kernel 10.95 + residual  1.94
+a7=a6, e8=e9=-1 (a9 = -1 - a5 + T2)                          a5->C1  8.35 = kernel  4.23 + residual  6.25  [ctx depends on a5]
+a7=a6, e8=-1, e9=0                                           a5->C1  8.52 = kernel  4.26 + residual  6.39  [ctx depends on a5]
+a7=ROTR^11(a6), e8=-1                                        a5->C1 13.92 = kernel 13.43 + residual  5.42  [ctx depends on a5]
+a6=S0(a4), a7=a6, e8=-1                                      a5->C1 12.04 = kernel 10.91 + residual  1.56
+
+--- arbitrary fixed values of e8, e10, e11 (random t), with a7 = a6 ---
+   e8 = t via a8: a5->C1 min 12.04 mean 12.21 max 12.29 over 16 values of t
+   e10 = t via a10: a5->C1 min 12.15 mean 12.22 max 12.31 over 16 values of t
+   e11 = t via a11: a5->C1 min 12.14 mean 12.20 max 12.25 over 16 values of t
+   e8=0x00000000 e9=0x9e663db1 via a8,a9: a5->C1  8.66  C0 16.13 C2 15.95 C3 12.71
+   e8=0x00000000 e9=0xaa460e0f via a8,a9: a5->C1  8.53  C0 16.10 C2 15.81 C3 12.63
+   e8=0x00000000 e9=0xe2e8f394 via a8,a9: a5->C1  8.55  C0 16.17 C2 15.87 C3 12.66
+   e8=0x00000000 e9=0x0ef1fe41 via a8,a9: a5->C1  8.56  C0 16.07 C2 15.85 C3 12.69
+   e8=0x00000000 e9=0xb913896e via a8,a9: a5->C1  8.59  C0 16.12 C2 15.83 C3 12.55
+   e8=0x00000000 e9=0x3b1ee4b4 via a8,a9: a5->C1  8.59  C0 16.11 C2 15.88 C3 12.56
+   e8=0x00000000 e9=0x00000000 via a8,a9: a5->C1  8.49  C0 16.17 C2 15.49 C3 12.53
+   e8=0x00000000 e9=0xffffffff via a8,a9: a5->C1  8.43  C0 16.10 C2 16.07 C3 12.44
+   e8=0xffffffff e9=0x360e2c8a via a8,a9: a5->C1  8.55  C0 15.47 C2 15.98 C3 12.50
+   e8=0xffffffff e9=0x597f72d7 via a8,a9: a5->C1  8.57  C0 15.42 C2 15.76 C3 12.63
+   e8=0xffffffff e9=0x8e01737d via a8,a9: a5->C1  8.52  C0 15.40 C2 15.88 C3 12.51
+   e8=0xffffffff e9=0x04ccb353 via a8,a9: a5->C1  8.65  C0 15.40 C2 16.00 C3 12.50
+   e8=0xffffffff e9=0x8fce7916 via a8,a9: a5->C1  8.61  C0 15.34 C2 15.87 C3 12.66
+   e8=0xffffffff e9=0xd1b17bc0 via a8,a9: a5->C1  8.59  C0 15.39 C2 15.88 C3 12.65
+   e8=0xffffffff e9=0x00000000 via a8,a9: a5->C1  8.52  C0 15.39 C2 16.14 C3 12.56
+   e8=0xffffffff e9=0xffffffff via a8,a9: a5->C1  8.35  C0 15.44 C2 15.56 C3 12.62
+   e8=0x25246854 e9=0x02ea62a7 via a8,a9: a5->C1  8.50  C0 15.87 C2 15.92 C3 12.51
+   e8=0x25246854 e9=0xdfc99ede via a8,a9: a5->C1  8.59  C0 15.98 C2 15.97 C3 12.60
+   e8=0x25246854 e9=0x21c1472b via a8,a9: a5->C1  8.58  C0 15.93 C2 15.89 C3 12.51
+   e8=0x25246854 e9=0xd535e744 via a8,a9: a5->C1  8.51  C0 15.88 C2 15.84 C3 12.57
+   e8=0x25246854 e9=0x5c06eb6b via a8,a9: a5->C1  8.56  C0 15.92 C2 15.92 C3 12.54
+   e8=0x25246854 e9=0x5ce49e43 via a8,a9: a5->C1  8.60  C0 15.89 C2 15.94 C3 12.59
+   e8=0x25246854 e9=0x00000000 via a8,a9: a5->C1  8.47  C0 16.01 C2 15.82 C3 12.48
+   e8=0x25246854 e9=0xffffffff via a8,a9: a5->C1  8.33  C0 15.99 C2 15.98 C3 12.59
+   e8=0x6b8bbb18 e9=0x2d925d33 via a8,a9: a5->C1  8.64  C0 15.80 C2 15.85 C3 12.50
+   e8=0x6b8bbb18 e9=0x8f4f4046 via a8,a9: a5->C1  8.63  C0 15.77 C2 15.91 C3 12.46
+   e8=0x6b8bbb18 e9=0x3cbd4814 via a8,a9: a5->C1  8.59  C0 15.79 C2 15.93 C3 12.61
+   e8=0x6b8bbb18 e9=0x32a5854b via a8,a9: a5->C1  8.60  C0 15.76 C2 15.90 C3 12.60
+   e8=0x6b8bbb18 e9=0xad15a9fd via a8,a9: a5->C1  8.48  C0 15.78 C2 15.89 C3 12.55
+   e8=0x6b8bbb18 e9=0xba5482f5 via a8,a9: a5->C1  8.55  C0 15.78 C2 15.96 C3 12.66
+   e8=0x6b8bbb18 e9=0x00000000 via a8,a9: a5->C1  8.54  C0 15.76 C2 15.93 C3 12.54
+   e8=0x6b8bbb18 e9=0xffffffff via a8,a9: a5->C1  8.43  C0 15.73 C2 15.86 C3 12.50
+   e8=0x61dbda94 e9=0xf617b732 via a8,a9: a5->C1  8.63  C0 15.85 C2 15.93 C3 12.67
+   e8=0x61dbda94 e9=0x8b4eab06 via a8,a9: a5->C1  8.57  C0 15.86 C2 15.83 C3 12.60
+   e8=0x61dbda94 e9=0x754373cf via a8,a9: a5->C1  8.55  C0 15.81 C2 15.84 C3 12.62
+   e8=0x61dbda94 e9=0xb31c534f via a8,a9: a5->C1  8.59  C0 15.85 C2 15.97 C3 12.57
+   e8=0x61dbda94 e9=0xa564bb67 via a8,a9: a5->C1  8.56  C0 15.88 C2 15.92 C3 12.57
+   e8=0x61dbda94 e9=0xeafd79ec via a8,a9: a5->C1  8.58  C0 15.82 C2 15.94 C3 12.55
+   e8=0x61dbda94 e9=0x00000000 via a8,a9: a5->C1  8.54  C0 15.80 C2 15.95 C3 12.59
+   e8=0x61dbda94 e9=0xffffffff via a8,a9: a5->C1  8.46  C0 15.88 C2 15.86 C3 12.56
+
+--- a9 = ~a5 explicitly (S0(a9) = ~S0(a5)), the only exact one-input identity ---
+a9=~a5                                                       a5->C1  9.45 = kernel  5.68 + residual 10.12  [ctx depends on a5]
+a7=a6, e8=-1, a9=~a5                                         a5->C1  9.20 = kernel  5.98 + residual  9.97  [ctx depends on a5]
+... + a10=a8 (Maj(a10,a9,a8) collapses)                      a5->C1  9.78 = kernel  5.98 + residual 10.38  [ctx depends on a5]
+... + e10=0 via a10                                          a5->C1 16.06 = kernel  5.98 + residual 16.03  [ctx depends on a5]
+... + e10=-1, e11=0                                          a5->C1 16.01 = kernel  5.98 + residual 16.04  [ctx depends on a5]
+a7=a6, e8=-1, a9=a5 (illegal: equality with the unknown)     a5->C1 10.85 = kernel 10.50 + residual 10.57  [ctx depends on a5]

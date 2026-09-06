@@ -1,0 +1,50 @@
+mode lit w=5: 33,554,432 contexts in 8192 chunks
+  chunk 0/8192: n=4,096 min 2.210 mean 2.574 max 2.977 below2=0 32s
+  chunk 500/8192: n=2,052,096 min 2.144 mean 2.573 max 3.052 below2=0 213s
+  chunk 1000/8192: n=4,100,096 min 2.144 mean 2.573 max 3.056 below2=0 389s
+  chunk 1500/8192: n=6,148,096 min 2.144 mean 2.573 max 3.090 below2=0 573s
+  chunk 2000/8192: n=8,196,096 min 2.144 mean 2.573 max 3.090 below2=0 722s
+  chunk 2500/8192: n=10,244,096 min 2.144 mean 2.573 max 3.090 below2=0 924s
+  chunk 3000/8192: n=12,292,096 min 2.144 mean 2.573 max 3.090 below2=0 1080s
+  chunk 3500/8192: n=14,340,096 min 2.133 mean 2.573 max 3.090 below2=0 1274s
+  chunk 4000/8192: n=16,388,096 min 2.133 mean 2.573 max 3.090 below2=0 1454s
+  chunk 4500/8192: n=18,436,096 min 2.133 mean 2.573 max 3.090 below2=0 1624s
+  chunk 5000/8192: n=20,484,096 min 2.133 mean 2.573 max 3.090 below2=0 1785s
+  chunk 5500/8192: n=22,532,096 min 2.133 mean 2.573 max 3.090 below2=0 1877s
+  chunk 6000/8192: n=24,580,096 min 2.133 mean 2.573 max 3.090 below2=0 1977s
+  chunk 6500/8192: n=26,628,096 min 2.133 mean 2.573 max 3.090 below2=0 2078s
+  chunk 7000/8192: n=28,676,096 min 2.133 mean 2.573 max 3.090 below2=0 2172s
+  chunk 7500/8192: n=30,724,096 min 2.133 mean 2.573 max 3.090 below2=0 2268s
+  chunk 8000/8192: n=32,772,096 min 2.133 mean 2.573 max 3.090 below2=0 2362s
+
+DONE mode lit w=5: 33,554,432 contexts, 2390s
+  weight (bits per flipped bit of a5 into C1): min 2.1330  mean 2.5732  sd 0.1252  max 3.0898
+  fraction below 0.5: 0/33554432 = 0.000e+00
+  fraction below 1.0: 0/33554432 = 0.000e+00
+  fraction below 1.5: 0/33554432 = 0.000e+00
+  fraction below 2.0: 0/33554432 = 0.000e+00
+  fraction below 2.5: 8366836/33554432 = 2.494e-01
+  fraction below 3.0: 33552936/33554432 = 1.000e+00
+  lowest-weight contexts [mean, image size, max fibre, params]:
+    2.1330  img   17  fibre   6  (a4, a6, a7, c8, c9) = ['0xb', '0x19', '0xd', '0x1', '0xa']
+    2.1352  img   15  fibre   6  (a4, a6, a7, c8, c9) = ['0xd', '0x1d', '0x12', '0x1d', '0x16']
+    2.1367  img   17  fibre   7  (a4, a6, a7, c8, c9) = ['0x19', '0x9', '0x1f', '0x9', '0x16']
+    2.1420  img   17  fibre   5  (a4, a6, a7, c8, c9) = ['0x1b', '0xb', '0x17', '0x11', '0x16']
+    2.1443  img   17  fibre   6  (a4, a6, a7, c8, c9) = ['0x1', '0x1b', '0xb', '0x15', '0xa']
+    2.1465  img   16  fibre   5  (a4, a6, a7, c8, c9) = ['0x3', '0xb', '0x1f', '0x9', '0x16']
+    2.1475  img   17  fibre   5  (a4, a6, a7, c8, c9) = ['0x7', '0x7', '0x1', '0xb', '0xa']
+    2.1492  img   15  fibre   6  (a4, a6, a7, c8, c9) = ['0x1d', '0x1d', '0x2', '0xd', '0x16']
+    2.1496  img   18  fibre   7  (a4, a6, a7, c8, c9) = ['0xd', '0x1f', '0xc', '0x1b', '0xa']
+    2.1502  img   17  fibre   6  (a4, a6, a7, c8, c9) = ['0x11', '0x1', '0x6', '0x1d', '0xa']
+    2.1504  img   16  fibre   5  (a4, a6, a7, c8, c9) = ['0x11', '0x3', '0xc', '0x13', '0xa']
+    2.1504  img   17  fibre   5  (a4, a6, a7, c8, c9) = ['0x7', '0xf', '0x0', '0xb', '0xa']
+  smallest images [image size, max fibre, mean weight, params]:
+    img   10  fibre   5  w 2.7268  (a4, a6, a7, c8, c9) = ['0x19', '0x1a', '0x11', '0x14', '0x10']
+    img   10  fibre   5  w 2.7359  (a4, a6, a7, c8, c9) = ['0x19', '0x1a', '0x1', '0x14', '0x10']
+    img   10  fibre   5  w 2.7387  (a4, a6, a7, c8, c9) = ['0x9', '0x1a', '0x1', '0x4', '0x10']
+    img   10  fibre   5  w 2.7436  (a4, a6, a7, c8, c9) = ['0x9', '0x1a', '0x11', '0x4', '0x10']
+    img   10  fibre   6  w 2.7723  (a4, a6, a7, c8, c9) = ['0xe', '0xd', '0x6', '0x8', '0x10']
+    img   10  fibre   6  w 2.7826  (a4, a6, a7, c8, c9) = ['0x1e', '0xd', '0x6', '0x8', '0x10']
+    img   10  fibre   6  w 2.7859  (a4, a6, a7, c8, c9) = ['0xe', '0xd', '0x16', '0x18', '0x10']
+    img   10  fibre   6  w 2.7916  (a4, a6, a7, c8, c9) = ['0x1e', '0xd', '0x16', '0x18', '0x10']
+  histogram (bin lower edge in bits: count): {'2.10': 9, '2.15': 5828, '2.20': 157839, '2.25': 651310, '2.30': 930370, '2.35': 1436667, '2.40': 2048096, '2.45': 3136717, '2.50': 4395037, '2.55': 6487462, '2.60': 6817032, '2.65': 3378598, '2.70': 1319447, '2.75': 1076618, '2.80': 1157594, '2.85': 447646, '2.90': 90095, '2.95': 16571, '3.00': 1431, '3.05': 65}

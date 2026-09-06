@@ -1,0 +1,3 @@
+defs = {11: ('eq', 10), 9: ('sat_r', 0)}
+a5 -> C0 15.69  C1  8.12  C2 15.98  C3 12.38   bits per flipped bit (200 states x 32 bits)   [context depends on a5]
+a4 -> C0 12.33  C1  1.41  C2  1.39  C3  1.93   (control)

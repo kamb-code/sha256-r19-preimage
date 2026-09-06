@@ -1,0 +1,105 @@
+sweep_w8.jsonl: 136185 legal configurations
+a5->C1: min 3.028 mean 3.648 max 4.127
+a5->C0: min 0.000 mean 3.737 max 4.555
+a5->C2: min 0.000 mean 2.941 max 4.141
+a5->C3: min 0.000 mean 2.869 max 4.136
+
+per saturation pattern of (a8,a9,a10,a11)  [F free, R e_i via a_i, H e_{i+4} via a_i, S e_{i+1} via S0(a_i)]:
+pattern         n  C1 min  C1 mean  C1 max |  C0 min  C0 mean | min C1 config
+R,F,H,H      3264   3.028    3.584   4.070 |   0.000    3.465 | a6=a7=a4 | e8=0xff,free,e14=0x20|a10,e15=0x20|a11  C0=1.73
+R,H,F,H      3264   3.038    3.585   4.109 |   0.000    3.459 | a6=a7=a4 | e8=0xff,e13=0x20|a9,free,e15=0x0|a11  C0=1.74
+R,F,F,H       816   3.039    3.586   4.065 |   0.000    3.464 | a6=a7=a4 | e8=0xff,free,free,e15=0x20|a11  C0=1.80
+R,H,H,H     13056   3.043    3.584   4.115 |   0.000    3.458 | a6=a7=a4 | e8=0xff,e13=0x0|a9,e14=0x36|a10,e15=0xff|a11  C0=1.76
+R,F,R,F       816   3.054    3.584   4.055 |   0.000    3.517 | a6=a7=a4 | e8=0xff,free,e10=0x0,free  C0=1.67
+R,H,H,F      3264   3.059    3.584   4.084 |   0.000    3.458 | a6=a7=a4 | e8=0xff,e13=0x36|a9,e14=0x20|a10,free  C0=1.76
+R,F,R,H      3264   3.067    3.582   4.081 |   0.000    3.516 | a6=a7=a4 | e8=0xff,free,e10=0x36,e15=0x20|a11  C0=1.75
+R,F,H,F       816   3.072    3.584   4.061 |   0.000    3.466 | a6=a7=a4 | e8=0xff,free,e14=0x0|a10,free  C0=1.74
+F,F,H,H       816   3.077    3.279   3.409 |   2.906    3.466 | a6=a7=a4 | free,free,e14=0x36|a10,e15=0x0|a11  C0=3.34
+H,H,H,H     13056   3.086    3.279   3.429 |   2.854    3.466 | a6=a7=a4 | e12=0x0|a8,e13=0xff|a9,e14=0x20|a10,e15=0x36|a11  C0=3.34
+R,F,R,R      3264   3.090    3.581   4.068 |   0.000    3.532 | a6=a7=a4 | e8=0xff,free,e10=0xff,e11=0x0  C0=1.73
+R,H,F,F       816   3.095    3.584   4.063 |   0.000    3.458 | a6=a7=a4 | e8=0xff,e13=0x20|a9,free,free  C0=1.77
+H,F,H,F       816   3.103    3.280   3.406 |   2.893    3.466 | a6=a7=a4 | e12=0x36|a8,free,e14=0xff|a10,free  C0=3.33
+R,F,F,R       816   3.105    3.582   4.070 |   0.000    3.504 | a7=a6,a4=0xff | e8=0xff,free,free,e11=0x20  C0=0.89
+F,H,F,F       204   3.111    3.274   3.374 |   2.986    3.469 | a6=a7=a4 | free,e13=0x0|a9,free,free  C0=3.41
+R,F,F,F       204   3.118    3.586   4.072 |   0.000    3.464 | a6=a7=a4 | e8=0xff,free,free,free  C0=1.77
+F,F,R,H       816   3.119    3.279   3.405 |   2.930    3.465 | a7=a6 | free,free,e10=0x20,e15=0x0|a11  C0=3.19
+F,F,R,R       816   3.120    3.280   3.395 |   2.925    3.465 | a6=a7=a4 | free,free,e10=0xff,e11=0x0  C0=3.38
+F,H,H,H      3264   3.121    3.280   3.408 |   2.909    3.466 | a6=a7=a4 | free,e13=0x20|a9,e14=0x36|a10,e15=0x0|a11  C0=3.30
+H,H,F,F       816   3.125    3.279   3.395 |   2.955    3.464 | a6=a7=a4 | e12=0x20|a8,e13=0x20|a9,free,free  C0=3.41
+F,H,F,H       816   3.127    3.278   3.408 |   2.941    3.466 | a6=a7=a4 | free,e13=0x0|a9,free,e15=0x20|a11  C0=3.34
+H,H,F,H      3264   3.128    3.279   3.408 |   2.896    3.466 | a6=a7=a4 | e12=0x36|a8,e13=0x20|a9,free,e15=0xff|a11  C0=3.31
+H,F,H,H      3264   3.129    3.280   3.420 |   2.855    3.466 | a6=a7=a4 | e12=0xff|a8,free,e14=0x36|a10,e15=0xff|a11  C0=3.39
+H,H,H,F      3264   3.131    3.280   3.411 |   2.910    3.466 | a6=a7=a4 | e12=0xff|a8,e13=0x20|a9,e14=0x0|a10,free  C0=3.37
+F,F,F,F        51   3.135    3.279   3.408 |   3.100    3.475 | a6=a7=a4 | free,free,free,free  C0=3.41
+F,H,H,F       816   3.135    3.279   3.391 |   2.891    3.465 | a6=a7=a4 | free,e13=0x0|a9,e14=0xff|a10,free  C0=3.37
+F,F,H,F       204   3.138    3.277   3.377 |   3.012    3.469 | a6=a7=a4 | free,free,e14=0x36|a10,free  C0=3.40
+F,F,F,R       204   3.145    3.278   3.391 |   2.923    3.460 | a6=a7=a4 | free,free,free,e11=0x0  C0=3.35
+H,F,F,F       204   3.148    3.282   3.396 |   2.914    3.467 | a6=a7=a4 | e12=0x20|a8,free,free,free  C0=3.44
+F,F,F,H       204   3.160    3.279   3.364 |   2.977    3.463 | a7=a6 | free,free,free,e15=0xff|a11  C0=3.17
+F,F,R,F       204   3.162    3.280   3.393 |   3.005    3.466 | a6=a7=a4 | free,free,e10=0x20,free  C0=3.38
+F,R,H,H      3264   3.164    3.470   3.645 |   3.900    3.998 | a6=a7=a4 | free,e9=0x0,e14=0xff|a10,e15=0x36|a11  C0=4.02
+R,R,H,H     13056   3.165    3.693   4.115 |   3.842    4.003 | a6=a7=a4 | e8=0xff,e9=0x0,e14=0xff|a10,e15=0x36|a11  C0=3.95
+H,F,F,H       816   3.179    3.280   3.387 |   2.892    3.465 | a6=a7=a4 | e12=0x0|a8,free,free,e15=0x36|a11  C0=3.44
+R,R,H,F      3264   3.195    3.693   4.066 |   3.859    4.004 | a7=a6=0xff | e8=0x36,e9=0xff,e14=0xff|a10,free  C0=4.04
+F,R,H,F       816   3.206    3.470   3.653 |   3.907    3.999 | a7=a6,a4=0x0 | free,e9=0xff,e14=0xff|a10,free  C0=4.01
+R,R,F,F       816   3.333    3.715   4.054 |   3.894    4.004 | a6=a7=a4 | e8=0xff,e9=0x36,free,free  C0=3.90
+F,R,F,H       816   3.351    3.504   3.621 |   3.913    3.998 | a7=~a6,a6=a4 | free,e9=0x0,free,e15=0x0|a11  C0=4.01
+R,R,F,H      3264   3.375    3.713   4.071 |   3.840    4.003 | a6=a7=a4 | e8=0x20,e9=0x0,free,e15=0x36|a11  C0=4.02
+F,R,F,F       204   3.399    3.505   3.600 |   3.921    3.999 | a7=a6 | free,e9=0xff,free,free  C0=3.92
+R,R,F,R      3264   3.660    3.873   4.076 |   3.884    4.002 | a7=a6=0x0 | e8=0x20,e9=0xff,free,e11=0x36  C0=4.03
+F,R,F,R       816   3.685    3.780   3.877 |   3.916    3.998 | a7=0xff | free,e9=0xff,free,e11=0x20  C0=4.03
+R,R,R,R     13056   3.875    4.000   4.101 |   3.873    4.000 | a6=rotr(a4,4) | e8=0xff,e9=0x0,e10=0x20,e11=0xff  C0=4.01
+F,R,R,R      3264   3.882    4.000   4.127 |   3.906    4.001 | a7=a6,a4=0xff | free,e9=0xff,e10=0xff,e11=0xff  C0=4.03
+S,H,H,H       896   3.887    4.009   4.109 |   3.901    3.998 | a7=a6=0x0 | e9=0xff|S0a8,e13=0x36|a9,e14=0xff|a10,e15=0x36|a11  C0=4.03
+R,R,R,F      3264   3.893    4.000   4.108 |   3.900    4.000 | a7=A13 | e8=0x36,e9=0x0,e10=0xff,free  C0=3.99
+R,R,R,H     13056   3.893    4.000   4.116 |   3.890    4.000 | a4=0xff | e8=0x0,e9=0x20,e10=0xff,e15=0x0|a11  C0=3.97
+S,F,H,H       224   3.901    4.009   4.119 |   3.928    3.997 | a7=a6 | e9=0xff|S0a8,free,e14=0x0|a10,e15=0x20|a11  C0=4.00
+S,H,H,F       224   3.907    4.007   4.094 |   3.926    3.997 | a7=a6 | e9=0xff|S0a8,e13=0x20|a9,e14=0x0|a10,free  C0=4.01
+S,H,F,H       224   3.908    4.001   4.104 |   3.927    4.000 | a7=a6=0xff | e9=0xff|S0a8,e13=0x0|a9,free,e15=0x20|a11  C0=3.93
+F,R,R,H      3264   3.908    4.000   4.117 |   3.885    3.999 | a7=~a6 | free,e9=0xff,e10=0xff,e15=0xff|a11  C0=3.97
+S,F,F,H        56   3.913    3.999   4.090 |   3.942    3.998 | a7=a6,a4=0x0 | e9=0xff|S0a8,free,free,e15=0x36|a11  C0=3.99
+F,R,R,F       816   3.914    4.000   4.091 |   3.897    3.998 | a6=rotr(a4,2) | free,e9=0x0,e10=0x0,free  C0=3.97
+S,F,H,F        56   3.919    4.004   4.079 |   3.935    3.997 | a7=a6,a4=0x0 | e9=0xff|S0a8,free,e14=0x0|a10,free  C0=3.98
+S,F,F,R        56   3.920    3.999   4.082 |   3.923    3.999 | a7=a6,a4=0x0 | e9=0xff|S0a8,free,free,e11=0x0  C0=4.02
+S,F,R,R       224   3.925    3.998   4.076 |   3.925    3.997 | a7=a6=0xff | e9=0x0|S0a8,free,e10=0x36,e11=0x0  C0=3.93
+S,F,R,H       224   3.928    4.007   4.077 |   3.925    4.001 | a7=a6=0x0 | e9=0xff|S0a8,free,e10=0x36,e15=0x0|a11  C0=4.02
+S,H,F,F        56   3.931    4.014   4.101 |   3.930    3.995 | a7=a6,a4=0xff | e9=0xff|S0a8,e13=0xff|a9,free,free  C0=4.06
+S,F,R,F        56   3.944    4.006   4.072 |   3.939    3.992 | a7=a6=0x0 | e9=0xff|S0a8,free,e10=0x20,free  C0=3.97
+S,F,F,F        14   3.952    3.999   4.066 |   3.945    4.000 | a6=a7=a4 | e9=0xff|S0a8,free,free,free  C0=4.00
+
+20 lowest a5->C1 configurations:
+  C1 3.028 (zero 0.04, min-state 1.62)  C0 1.73  C2 1.17  C3 1.20   a6=a7=a4 | e8=0xff,free,e14=0x20|a10,e15=0x20|a11
+  C1 3.038 (zero 0.04, min-state 1.50)  C0 1.74  C2 1.20  C3 1.14   a6=a7=a4 | e8=0xff,e13=0x20|a9,free,e15=0x0|a11
+  C1 3.039 (zero 0.04, min-state 1.62)  C0 1.80  C2 1.24  C3 1.18   a6=a7=a4 | e8=0xff,free,free,e15=0x20|a11
+  C1 3.043 (zero 0.04, min-state 1.50)  C0 1.76  C2 1.19  C3 1.22   a6=a7=a4 | e8=0xff,e13=0x0|a9,e14=0x36|a10,e15=0xff|a11
+  C1 3.043 (zero 0.04, min-state 1.62)  C0 1.74  C2 1.21  C3 1.20   a6=a7=a4 | e8=0xff,e13=0x0|a9,e14=0x36|a10,e15=0x36|a11
+  C1 3.053 (zero 0.04, min-state 1.75)  C0 1.74  C2 1.21  C3 1.20   a6=a7=a4 | e8=0xff,e13=0x0|a9,e14=0x20|a10,e15=0xff|a11
+  C1 3.054 (zero 0.04, min-state 1.50)  C0 1.67  C2 0.00  C3 1.14   a6=a7=a4 | e8=0xff,free,e10=0x0,free
+  C1 3.059 (zero 0.04, min-state 1.38)  C0 1.76  C2 1.11  C3 1.19   a6=a7=a4 | e8=0xff,e13=0x36|a9,e14=0x20|a10,free
+  C1 3.064 (zero 0.03, min-state 1.62)  C0 1.79  C2 1.17  C3 1.25   a6=a7=a4 | e8=0xff,e13=0x36|a9,e14=0x0|a10,e15=0x0|a11
+  C1 3.067 (zero 0.04, min-state 1.50)  C0 1.75  C2 1.34  C3 1.21   a6=a7=a4 | e8=0xff,free,e10=0x36,e15=0x20|a11
+  C1 3.067 (zero 0.04, min-state 1.62)  C0 1.73  C2 1.27  C3 1.18   a6=a7=a4 | e8=0xff,e13=0x20|a9,e14=0x36|a10,e15=0x0|a11
+  C1 3.070 (zero 0.03, min-state 1.50)  C0 0.87  C2 1.18  C3 1.12   a7=a6,a4=0xff | e8=0xff,e13=0x20|a9,e14=0x0|a10,e15=0x36|a11
+  C1 3.072 (zero 0.04, min-state 1.75)  C0 1.74  C2 1.21  C3 1.20   a6=a7=a4 | e8=0xff,free,e14=0x0|a10,free
+  C1 3.073 (zero 0.04, min-state 1.62)  C0 1.72  C2 1.20  C3 1.21   a6=a7=a4 | e8=0xff,e13=0x0|a9,e14=0xff|a10,e15=0x20|a11
+  C1 3.074 (zero 0.04, min-state 1.75)  C0 1.80  C2 1.20  C3 1.15   a6=a7=a4 | e8=0xff,free,e14=0x36|a10,e15=0x20|a11
+  C1 3.075 (zero 0.04, min-state 1.38)  C0 1.79  C2 1.20  C3 1.21   a6=a7=a4 | e8=0xff,free,e14=0x0|a10,e15=0xff|a11
+  C1 3.076 (zero 0.04, min-state 1.38)  C0 1.71  C2 1.23  C3 1.13   a6=a7=a4 | e8=0xff,e13=0x20|a9,e14=0x0|a10,free
+  C1 3.076 (zero 0.04, min-state 1.50)  C0 1.74  C2 1.18  C3 1.20   a6=a7=a4 | e8=0xff,e13=0x36|a9,e14=0xff|a10,e15=0x0|a11
+  C1 3.077 (zero 0.03, min-state 1.75)  C0 3.34  C2 1.15  C3 1.15   a6=a7=a4 | free,free,e14=0x36|a10,e15=0x0|a11
+  C1 3.077 (zero 0.04, min-state 1.50)  C0 1.73  C2 1.19  C3 1.18   a6=a7=a4 | e8=0xff,e13=0x0|a9,e14=0x20|a10,e15=0x0|a11
+
+configurations with C1 below 2.5 AND C0 below 2.5 (both edges mild):
+  0
+
+lowest C1 with C0 mild (< 2.0):
+  C1 3.028 C0 1.73 C2 1.17 C3 1.20  a6=a7=a4 | e8=0xff,free,e14=0x20|a10,e15=0x20|a11
+  C1 3.038 C0 1.74 C2 1.20 C3 1.14  a6=a7=a4 | e8=0xff,e13=0x20|a9,free,e15=0x0|a11
+  C1 3.039 C0 1.80 C2 1.24 C3 1.18  a6=a7=a4 | e8=0xff,free,free,e15=0x20|a11
+  C1 3.043 C0 1.76 C2 1.19 C3 1.22  a6=a7=a4 | e8=0xff,e13=0x0|a9,e14=0x36|a10,e15=0xff|a11
+  C1 3.043 C0 1.74 C2 1.21 C3 1.20  a6=a7=a4 | e8=0xff,e13=0x0|a9,e14=0x36|a10,e15=0x36|a11
+  C1 3.053 C0 1.74 C2 1.21 C3 1.20  a6=a7=a4 | e8=0xff,e13=0x0|a9,e14=0x20|a10,e15=0xff|a11
+  C1 3.054 C0 1.67 C2 0.00 C3 1.14  a6=a7=a4 | e8=0xff,free,e10=0x0,free
+  C1 3.059 C0 1.76 C2 1.11 C3 1.19  a6=a7=a4 | e8=0xff,e13=0x36|a9,e14=0x20|a10,free
+  C1 3.064 C0 1.79 C2 1.17 C3 1.25  a6=a7=a4 | e8=0xff,e13=0x36|a9,e14=0x0|a10,e15=0x0|a11
+  C1 3.067 C0 1.75 C2 1.34 C3 1.21  a6=a7=a4 | e8=0xff,free,e10=0x36,e15=0x20|a11

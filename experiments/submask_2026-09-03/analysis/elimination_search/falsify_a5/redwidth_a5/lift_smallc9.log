@@ -1,0 +1,69 @@
+--- w=8  (heavy control ~3.1; linear ref ~1.8; S0-only ref 4.3)
+  c9=         0x4 c8-v=  0x9: a5->C0..C3 [3.95, 2.79, 1.02, 1.14]  image 144/256 fibre max 5
+  c9=         0x4 c8-v=  0xb: a5->C0..C3 [3.51, 2.74, 1.04, 0.96]  image 145/256 fibre max 5
+  c9=         0x4 c8-v=    r: a5->C0..C3 [3.54, 2.93, 1.11, 1.01]  image 147/256 fibre max 4
+  c9=         0x2 c8-v=  0x9: a5->C0..C3 [3.94, 2.79, 1.04, 0.99]  image 140/256 fibre max 10
+  c9=         0x2 c8-v=  0xb: a5->C0..C3 [3.55, 2.79, 0.95, 0.9]  image 140/256 fibre max 7
+  c9=         0x2 c8-v=    r: a5->C0..C3 [3.44, 2.89, 1.05, 1.13]  image 148/256 fibre max 7
+  c9=        0xfc c8-v=  0x9: a5->C0..C3 [3.97, 2.74, 1.03, 1.12]  image 142/256 fibre max 6
+  c9=        0xfc c8-v=  0xb: a5->C0..C3 [3.57, 2.75, 1.11, 1.01]  image 144/256 fibre max 4
+  c9=        0xfc c8-v=    r: a5->C0..C3 [3.27, 2.86, 1.08, 1.18]  image 145/256 fibre max 6
+  c9=        0xfe c8-v=  0x9: a5->C0..C3 [3.96, 2.81, 1.12, 1.16]  image 141/256 fibre max 6
+  c9=        0xfe c8-v=  0xb: a5->C0..C3 [3.53, 2.77, 1.01, 1.17]  image 141/256 fibre max 5
+  c9=        0xfe c8-v=    r: a5->C0..C3 [3.57, 2.91, 1.18, 1.06]  image 150/256 fibre max 6
+  c9=         0x0 c8-v=  0x9: a5->C0..C3 [4.02, 2.81, 0.73, 0.9]  image 156/256 fibre max 5
+  c9=         0x0 c8-v=  0xb: a5->C0..C3 [3.53, 2.78, 0.79, 1.07]  image 160/256 fibre max 4
+  c9=         0x0 c8-v=    r: a5->C0..C3 [3.32, 2.83, 1.04, 0.91]  image 161/256 fibre max 4
+  c9=        0x80 c8-v=  0x9: a5->C0..C3 [3.93, 2.84, 0.83, 0.83]  image 157/256 fibre max 5
+  c9=        0x80 c8-v=  0xb: a5->C0..C3 [3.57, 2.77, 0.83, 0.87]  image 157/256 fibre max 4
+  c9=        0x80 c8-v=    r: a5->C0..C3 [3.55, 2.87, 0.83, 0.84]  image 158/256 fibre max 5
+  c9=           r c8-v=  0x9: a5->C0..C3 [4.03, 3.13, 1.23, 1.22]  image 153/256 fibre max 6
+  c9=           r c8-v=  0xb: a5->C0..C3 [3.55, 3.15, 1.2, 1.19]  image 150/256 fibre max 4
+  c9=           r c8-v=    r: a5->C0..C3 [3.51, 3.22, 1.29, 1.13]  image 147/256 fibre max 7
+  min C1 at w=8: 2.739
+--- w=12  (heavy control ~4.7; linear ref ~1.8; S0-only ref 5.1)
+  c9=         0x4 c8-v=  0x9: a5->C0..C3 [4.96, 6.53, 1.06, 1.09]  image 2593/4096 fibre max 3
+  c9=         0x4 c8-v=  0xb: a5->C0..C3 [4.74, 6.54, 1.11, 1.15]  image 2605/4096 fibre max 5
+  c9=         0x4 c8-v=    r: a5->C0..C3 [4.22, 6.47, 1.1, 1.07]  image 2593/4096 fibre max 4
+  c9=         0x2 c8-v=  0x9: a5->C0..C3 [5.02, 6.47, 1.09, 1.09]  image 2612/4096 fibre max 4
+  c9=         0x2 c8-v=  0xb: a5->C0..C3 [4.66, 6.49, 1.14, 1.15]  image 2604/4096 fibre max 4
+  c9=         0x2 c8-v=    r: a5->C0..C3 [4.29, 6.36, 1.11, 1.03]  image 2587/4096 fibre max 4
+  c9=       0xffc c8-v=  0x9: a5->C0..C3 [4.98, 6.55, 1.07, 0.99]  image 2578/4096 fibre max 4
+  c9=       0xffc c8-v=  0xb: a5->C0..C3 [4.65, 6.54, 1.13, 1.07]  image 2603/4096 fibre max 3
+  c9=       0xffc c8-v=    r: a5->C0..C3 [4.1, 6.44, 0.93, 1.08]  image 2595/4096 fibre max 4
+  c9=       0xffe c8-v=  0x9: a5->C0..C3 [5.0, 6.45, 1.06, 0.99]  image 2598/4096 fibre max 3
+  c9=       0xffe c8-v=  0xb: a5->C0..C3 [4.66, 6.48, 1.22, 1.11]  image 2607/4096 fibre max 4
+  c9=       0xffe c8-v=    r: a5->C0..C3 [4.12, 6.39, 1.13, 1.09]  image 2597/4096 fibre max 3
+  c9=         0x0 c8-v=  0x9: a5->C0..C3 [5.02, 6.55, 1.03, 0.87]  image 2586/4096 fibre max 4
+  c9=         0x0 c8-v=  0xb: a5->C0..C3 [4.72, 6.53, 0.96, 1.02]  image 2594/4096 fibre max 4
+  c9=         0x0 c8-v=    r: a5->C0..C3 [4.28, 6.5, 0.91, 0.86]  image 2605/4096 fibre max 5
+  c9=       0x800 c8-v=  0x9: a5->C0..C3 [5.03, 6.54, 0.86, 0.89]  image 2610/4096 fibre max 4
+  c9=       0x800 c8-v=  0xb: a5->C0..C3 [4.7, 6.56, 0.85, 0.87]  image 2588/4096 fibre max 6
+  c9=       0x800 c8-v=    r: a5->C0..C3 [4.2, 6.45, 0.96, 0.96]  image 2609/4096 fibre max 5
+  c9=           r c8-v=  0x9: a5->C0..C3 [5.03, 6.41, 1.24, 1.35]  image 2593/4096 fibre max 4
+  c9=           r c8-v=  0xb: a5->C0..C3 [4.63, 6.43, 1.23, 1.29]  image 2599/4096 fibre max 4
+  c9=           r c8-v=    r: a5->C0..C3 [4.12, 6.38, 1.37, 1.29]  image 2592/4096 fibre max 4
+  min C1 at w=12: 6.355
+--- w=32  (heavy control ~12.5; linear ref ~1.8; S0-only ref 5.8)
+  c9=         0x4 c8-v=  0x9: a5->C0..C3 [6.38, 11.38, 1.0, 0.99]
+  c9=         0x4 c8-v=  0xb: a5->C0..C3 [6.24, 11.51, 1.07, 0.98]
+  c9=         0x4 c8-v=    r: a5->C0..C3 [5.18, 11.17, 1.06, 0.99]
+  c9=         0x2 c8-v=  0x9: a5->C0..C3 [6.44, 11.51, 0.98, 1.04]
+  c9=         0x2 c8-v=  0xb: a5->C0..C3 [6.23, 11.39, 1.06, 1.08]
+  c9=         0x2 c8-v=    r: a5->C0..C3 [5.51, 11.21, 1.0, 1.01]
+  c9=  0xfffffffc c8-v=  0x9: a5->C0..C3 [6.16, 11.51, 1.07, 1.03]
+  c9=  0xfffffffc c8-v=  0xb: a5->C0..C3 [6.18, 11.26, 1.01, 1.02]
+  c9=  0xfffffffc c8-v=    r: a5->C0..C3 [5.38, 11.38, 1.01, 0.99]
+  c9=  0xfffffffe c8-v=  0x9: a5->C0..C3 [6.44, 11.61, 1.07, 1.06]
+  c9=  0xfffffffe c8-v=  0xb: a5->C0..C3 [6.21, 11.59, 1.02, 1.09]
+  c9=  0xfffffffe c8-v=    r: a5->C0..C3 [5.39, 11.16, 1.02, 0.99]
+  c9=         0x0 c8-v=  0x9: a5->C0..C3 [6.34, 11.33, 0.97, 0.97]
+  c9=         0x0 c8-v=  0xb: a5->C0..C3 [6.34, 11.43, 0.94, 0.98]
+  c9=         0x0 c8-v=    r: a5->C0..C3 [5.61, 11.13, 0.98, 0.99]
+  c9=  0x80000000 c8-v=  0x9: a5->C0..C3 [6.32, 11.43, 0.95, 0.96]
+  c9=  0x80000000 c8-v=  0xb: a5->C0..C3 [6.07, 11.44, 0.97, 0.96]
+  c9=  0x80000000 c8-v=    r: a5->C0..C3 [5.35, 11.36, 1.0, 1.07]
+  c9=           r c8-v=  0x9: a5->C0..C3 [6.12, 12.15, 1.43, 1.53]
+  c9=           r c8-v=  0xb: a5->C0..C3 [6.14, 12.0, 1.44, 1.31]
+  c9=           r c8-v=    r: a5->C0..C3 [5.61, 12.19, 1.46, 1.43]
+  min C1 at w=32: 11.130

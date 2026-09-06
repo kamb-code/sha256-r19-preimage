@@ -1,0 +1,31 @@
+A. closed-form atoms of the C1 a5-dependence (mean bits changed per single-bit flip, 2000 states x 32 bits)
+  Sigma0(x)                              : 3.00   (exactly 3 in XOR; it is a 3-bit XOR change, no carries)
+  Sigma1(x + c), random c                : 5.69
+  Sigma1(x)  (c9 = 0)                    : 3.00
+  Sigma1(x + c) - Sigma0(x), random c    : 10.94
+  Sigma1(x) - Sigma0(x)      (c9 = 0)    : 10.36
+  Sigma1(x) ^ Sigma0(x)      (XOR, ref)  : 6.00   (GF(2)-linear, rank 31: exactly 6 or fewer)
+  -Sigma0(x) - Maj(x,a4,a3)              : 6.43
+  full D, random c9, random e8,e7        : 12.08
+  full D, c9 = 0                         : 11.15
+  full D, c9 = 0, e8 = -1, a4 = a3 (Maj->a4, Ch->x|e7): 10.97
+  full D, c9 = 0, e8 = 0, Maj killed (Ch-> ~x&e7)      : 10.97
+  full D, c9 = 0, e8 = e7 = const (Ch const), Maj killed: 10.35
+
+   full-state confirmation: freeze e9 (illegal diagnostic) in the closest-miss context
+   context fixed, nothing frozen        a5 -> C0: 1.95 [ 1.0, 2.2]  C1:11.93 [10.8,12.7]  C2: 1.43 [ 0.5, 1.7]  C3: 1.93 [ 1.0, 2.1]
+   e9 frozen at -1 (Sigma0 atom alone)  a5 -> C0: 1.95 [ 1.0, 2.2]  C1: 6.42 [ 5.3, 6.9]  C2: 0.00 [ 0.0, 0.0]  C3: 0.00 [ 0.0, 0.0]
+   e9 frozen at 0                       a5 -> C0: 1.95 [ 1.0, 2.2]  C1: 6.46 [ 5.6, 7.0]  C2: 0.00 [ 0.0, 0.0]  C3: 0.00 [ 0.0, 0.0]
+   e9 - a5 = 0 through a9 (LEGAL)       a5 -> C0: 1.96 [ 1.0, 2.3]  C1:10.91 [10.1,11.7]  C2: 0.98 [ 0.5, 1.4]  C3: 1.98 [ 1.0, 2.2]
+
+B. illegal ties, illegal frame (context re-solved after every flip of a5)
+   a9 tracks a5 so that e9 = -1 (plus a7=a6, e8=-1, a6=a4, e11=0)
+      a5 -> C0:15.75 [14.8,16.3]  C1:12.45 [ 9.5,13.5]  C2:15.77 [15.2,16.1]  C3: 9.78 [ 7.2,11.0]
+   a9 tracks a5 so that e9 = 0
+      a5 -> C0:15.68 [14.6,16.4]  C1:12.42 [ 9.3,13.5]  C2:15.98 [15.5,16.4]  C3: 9.75 [ 7.2,10.8]
+   a4 = a5 (the submask family with a5 as the unknown), e8 = e9 = -1
+      a5 -> C0:16.09 [15.7,16.5]  C1:12.15 [10.2,13.2]  C2:15.84 [15.2,16.3]  C3:14.29 [13.3,14.9]
+   a4 = ~a5, e8 = e9 = -1
+      a5 -> C0:15.98 [15.6,16.4]  C1:15.65 [10.1,16.3]  C2:16.02 [15.5,16.5]  C3:15.87 [13.2,16.3]
+   a4 = rotr(a5, 13)
+      a5 -> C0: 8.30 [ 5.5, 9.3]  C1:16.26 [15.8,16.6]  C2:12.34 [ 9.7,13.0]  C3:10.22 [ 7.6,10.9]

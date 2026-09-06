@@ -1,0 +1,6 @@
+[closest-miss frame (a7=a6, e8=-1, e11=0)] exact=True invariant(a10,a11,digest)=True  wt: T1 12.07 = f 11.95; S0 3.43 S1 5.67 S1-S0 10.94 (modular diff popcount 15.24); Maj 0.55 Ch 1.15 Maj+Ch 1.49
+[random context] exact=True invariant(a10,a11,digest)=True  wt: T1 12.34 = f 12.27; S0 3.34 S1 5.65 S1-S0 10.95 (modular diff popcount 15.09); Maj 0.57 Ch 1.28 Maj+Ch 1.88
+[grid minimum (a6=a4, a7=a6, e8=-1, c9=0, e10=0, e11=-1)] exact=True invariant(a10,a11,digest)=True  wt: T1 11.03 = f 11.00; S0 3.39 S1 3.00 S1-S0 10.43 (modular diff popcount 15.17); Maj 0.56 Ch 0.50 Maj+Ch 0.89
+[c9 = 0] exact=True invariant(a10,a11,digest)=True  wt: T1 11.16 = f 11.16; S0 3.36 S1 3.00 S1-S0 10.39 (modular diff popcount 15.03); Maj 0.57 Ch 0.74 Maj+Ch 1.09
+[c9 = 2^31] exact=True invariant(a10,a11,digest)=True  wt: T1 11.25 = f 11.14; S0 3.40 S1 3.00 S1-S0 10.36 (modular diff popcount 15.12); Maj 0.56 Ch 0.71 Maj+Ch 1.09
+[c9 = -1] exact=True invariant(a10,a11,digest)=True  wt: T1 11.25 = f 11.23; S0 3.47 S1 3.35 S1-S0 10.44 (modular diff popcount 15.22); Maj 0.57 Ch 0.78 Maj+Ch 1.24

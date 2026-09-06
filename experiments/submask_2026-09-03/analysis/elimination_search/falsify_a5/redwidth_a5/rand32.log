@@ -1,0 +1,6 @@
+w=32 rand      : 262,144 contexts x 64 states x 32 flips: a5->C1 min 11.672 mean 12.311 max 12.805; below 4 bits: 0; argmin ctx ['0xab98d8ae', '0x3fec24aa', '0x26aa647e', '0x34e777f5', '0x5e3fc010']
+w=32 famA      : 65,536 contexts x 64 states x 32 flips: a5->C1 min 11.400 mean 12.072 max 12.530; below 4 bits: 0; argmin ctx ['0x44048d2a', '0x44048d2a', '0x44048d2a', '0x9e92e2d3', '0x87ffc03b']
+w=32 famB      : 65,536 contexts x 64 states x 32 flips: a5->C1 min 11.551 mean 12.137 max 12.565; below 4 bits: 0; argmin ctx ['0x1c61cb04', '0xe39e34fb', '0xe39e34fb', '0xe39e34fa', '0x1e1800']
+w=32 smallc9   : 65,536 contexts x 64 states x 32 flips: a5->C1 min 11.089 mean 11.675 max 12.126; below 4 bits: 0; argmin ctx ['0x949f1845', '0xb5fb8520', '0x5ef83bd', '0x13a7790e', '0x0']
+w=32 famBsmall : 65,536 contexts x 64 states x 32 flips: a5->C1 min 10.988 mean 11.479 max 11.989; below 4 bits: 0; argmin ctx ['0x1758820a', '0xe8a77df5', '0xe8a77df5', '0xe8a77df4', '0x0']
+278s

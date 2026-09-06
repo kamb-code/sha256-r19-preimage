@@ -1,0 +1,127 @@
+menu size per word: 2527  (groups: base=2, struct=23, single=60, rot2=0, rot4=8, rot8=236, rot16=198, random=2000)
+[grid01] 1215 conditions, 459 legal, 756 illegal (reference a5); 1s
+   a5->C1 weight: min 10.920  mean 11.758  max 12.614   (#below 4 bits: 0, below 2: 0)
+   best: {'a6': 'eq4', 'a7': 'eq6', 'e8': 4294967295, 'c9': 0, 'e10': 0, 'e11': 4294967295}  C0 1.93 C1 10.92 C2 0.00 C3 0.00  a4->C0 13.07
+   a5->C0: min 0.000 mean 6.003 max 11.061
+   a5->C2: min 0.000 mean 1.163 max 2.433
+   a5->C3: min 0.000 mean 1.025 max 1.988
+   control a4->C0: min 12.203 mean 12.669 max 13.215
+[sweep_e8] 2527 conditions, 2527 legal, 0 illegal (reference a5); 2s
+   a5->C1 weight: min 11.971  mean 12.195  max 12.376   (#below 4 bits: 0, below 2: 0)
+   best: {'a7': 'eq6', 'e8': 4261281277, 'e11': 0}  C0 2.50 C1 11.97 C2 1.42 C3 1.92  a4->C0 12.48
+   a5->C0: min 0.974 mean 5.168 max 6.576
+   a5->C2: min 1.329 mean 1.423 max 1.505
+   a5->C3: min 1.873 mean 1.938 max 2.019
+   control a4->C0: min 11.702 mean 12.322 max 13.096
+[sweep_c9] 2527 conditions, 2527 legal, 0 illegal (reference a5); 2s
+   a5->C1 weight: min 11.185  mean 12.006  max 12.342   (#below 4 bits: 0, below 2: 0)
+   best: {'a7': 'eq6', 'e8': 4294967295, 'e11': 0, 'c9': 2147483648}  C0 0.94 C1 11.19 C2 0.96 C3 1.92  a4->C0 13.05
+   a5->C0: min 0.905 mean 0.969 max 1.035
+   a5->C2: min 0.952 mean 1.413 max 1.619
+   a5->C3: min 1.871 mean 1.938 max 2.007
+   control a4->C0: min 12.889 mean 13.073 max 13.268
+[sweep_e10] 2527 conditions, 2527 legal, 0 illegal (reference a5); 3s
+   a5->C1 weight: min 11.866  mean 12.023  max 12.175   (#below 4 bits: 0, below 2: 0)
+   best: {'a7': 'eq6', 'e8': 4294967295, 'e11': 0, 'e10': 1549556828}  C0 0.93 C1 11.87 C2 1.47 C3 1.97  a4->C0 13.12
+   a5->C0: min 0.889 mean 0.968 max 1.034
+   a5->C2: min 0.932 mean 1.412 max 1.691
+   a5->C3: min 1.877 mean 1.938 max 2.003
+   control a4->C0: min 12.884 mean 13.075 max 13.223
+[sweep_e11] 2527 conditions, 2527 legal, 0 illegal (reference a5); 2s
+   a5->C1 weight: min 11.869  mean 12.023  max 12.215   (#below 4 bits: 0, below 2: 0)
+   best: {'a7': 'eq6', 'e8': 4294967295, 'e11': 342648136}  C0 0.95 C1 11.87 C2 1.42 C3 1.69  a4->C0 13.16
+   a5->C0: min 0.910 mean 0.969 max 1.031
+   a5->C2: min 1.343 mean 1.422 max 1.501
+   a5->C3: min 0.000 mean 1.415 max 1.988
+   control a4->C0: min 12.898 mean 13.074 max 13.235
+[sweep_a6a7const] 2527 conditions, 2527 legal, 0 illegal (reference a5); 2s
+   a5->C1 weight: min 11.865  mean 12.024  max 12.220   (#below 4 bits: 0, below 2: 0)
+   best: {'a7': 'eq6', 'e8': 4294967295, 'e11': 0, 'a6': 2944286270}  C0 0.96 C1 11.87 C2 1.40 C3 1.93  a4->C0 13.10
+   a5->C0: min 0.912 mean 0.969 max 1.030
+   a5->C2: min 1.330 mean 1.421 max 1.511
+   a5->C3: min 1.864 mean 1.937 max 2.015
+   control a4->C0: min 12.900 mean 13.075 max 13.236
+[sweep_a6const_a7free] 2527 conditions, 2527 legal, 0 illegal (reference a5); 2s
+   a5->C1 weight: min 12.162  mean 12.310  max 12.467   (#below 4 bits: 0, below 2: 0)
+   best: {'a6': 1983236230, 'e11': 0}  C0 7.96 C1 12.16 C2 1.61 C3 0.99  a4->C0 12.28
+   a5->C0: min 7.830 mean 8.055 max 8.318
+   a5->C2: min 1.566 mean 1.649 max 1.733
+   a5->C3: min 0.908 mean 0.969 max 1.024
+   control a4->C0: min 12.162 mean 12.311 max 12.468
+[sweep_a7const_a6free] 2527 conditions, 2527 legal, 0 illegal (reference a5); 1s
+   a5->C1 weight: min 12.166  mean 12.311  max 12.475   (#below 4 bits: 0, below 2: 0)
+   best: {'a7': 3928291219, 'e11': 0}  C0 8.03 C1 12.17 C2 1.66 C3 0.98  a4->C0 12.22
+   a5->C0: min 7.797 mean 8.056 max 8.300
+   a5->C2: min 1.562 mean 1.648 max 1.753
+   a5->C3: min 0.912 mean 0.970 max 1.031
+   control a4->C0: min 12.138 mean 12.310 max 12.447
+[sweep_vconst] 2527 conditions, 2527 legal, 0 illegal (reference a5); 2s
+   a5->C1 weight: min 11.850  mean 12.023  max 12.182   (#below 4 bits: 0, below 2: 0)
+   best: {'a7': 'eq6', 'e8': 4294967295, 'e11': 0, 'v': 3115432369}  C0 0.97 C1 11.85 C2 1.40 C3 1.95  a4->C0 13.01
+   a5->C0: min 0.904 mean 0.969 max 1.029
+   a5->C2: min 1.330 mean 1.421 max 1.517
+   a5->C3: min 1.876 mean 1.938 max 2.003
+   control a4->C0: min 11.155 mean 13.082 max 14.827
+[sweep_vconst_a6eq4] 2527 conditions, 2527 legal, 0 illegal (reference a5); 2s
+   a5->C1 weight: min 11.567  mean 11.912  max 12.346   (#below 4 bits: 0, below 2: 0)
+   best: {'a7': 'eq6', 'e8': 4294967295, 'e11': 0, 'v': 4294967295, 'a6': 'eq4'}  C0 1.92 C1 11.57 C2 1.38 C3 1.89  a4->C0 11.14
+   a5->C0: min 1.865 mean 1.938 max 2.012
+   a5->C2: min 1.337 mean 1.421 max 1.512
+   a5->C3: min 1.868 mean 1.938 max 2.005
+   control a4->C0: min 11.145 mean 13.082 max 14.712
+[combo16] 16 conditions, 16 legal, 0 illegal (reference a5); 0s
+   a5->C1 weight: min 11.099  mean 11.419  max 11.703   (#below 4 bits: 0, below 2: 0)
+   best: {'a7': 'eq6', 'e8': 4294967295, 'c9': 0, 'e10': 4294967295, 'e11': 4294967295}  C0 0.98 C1 11.10 C2 0.97 C3 0.00  a4->C0 13.08
+   a5->C0: min 0.958 mean 3.704 max 6.490
+   a5->C2: min 0.932 mean 0.965 max 0.997
+   a5->C3: min 0.000 mean 0.966 max 1.958
+   control a4->C0: min 13.006 mean 13.090 max 13.146
+[struct4] 456976 conditions, 456976 legal, 0 illegal (reference a5); 1821s
+   a5->C1 weight: min 10.992  mean 11.847  max 12.659   (#below 4 bits: 0, below 2: 0)
+   best: {'a7': 'eq6', 'e8': 4294967294, 'c9': 0, 'e10': 268439552, 'e11': 858993459}  C0 1.15 C1 10.99 C2 0.98 C3 0.96  a4->C0 13.09
+   a5->C0: min 0.898 mean 4.991 max 6.772
+   a5->C2: min 0.893 mean 1.096 max 2.031
+   a5->C3: min 0.000 mean 1.282 max 2.177
+   control a4->C0: min 11.580 mean 12.566 max 13.283
+[pair_e8c9_small] 8649 conditions, 8649 legal, 0 illegal (reference a5); 37s
+   a5->C1 weight: min 11.068  mean 11.662  max 12.629   (#below 4 bits: 0, below 2: 0)
+   best: {'a7': 'eq6', 'e8': 4227858431, 'c9': 0, 'e11': 0}  C0 1.35 C1 11.07 C2 0.98 C3 1.95  a4->C0 12.73
+   a5->C0: min 0.927 mean 4.290 max 6.756
+   a5->C2: min 0.922 mean 1.134 max 1.643
+   a5->C3: min 1.873 mean 1.938 max 2.025
+   control a4->C0: min 11.604 mean 12.636 max 13.225
+[triple_e8c9v_struct] 17576 conditions, 17576 legal, 0 illegal (reference a5); 66s
+   a5->C1 weight: min 11.052  mean 11.850  max 12.677   (#below 4 bits: 0, below 2: 0)
+   best: {'a7': 'eq6', 'e8': 4294967295, 'c9': 2147483648, 'e11': 0, 'v': 4294967295}  C0 0.97 C1 11.05 C2 0.98 C3 1.96  a4->C0 11.15
+   a5->C0: min 0.922 mean 5.090 max 6.758
+   a5->C2: min 0.903 mean 1.220 max 1.652
+   a5->C3: min 1.858 mean 1.938 max 2.025
+   control a4->C0: min 11.109 mean 12.496 max 14.779
+[rand4_e8c9e10e11] 2000 conditions, 2000 legal, 0 illegal (reference a5); 9s
+   a5->C1 weight: min 11.747  mean 12.199  max 12.467   (#below 4 bits: 0, below 2: 0)
+   best: {'a7': 'eq6', 'e8': 2023038424, 'c9': 2281644016, 'e10': 2490272066, 'e11': 1736657977}  C0 5.10 C1 11.75 C2 1.25 C3 1.24  a4->C0 12.24
+   a5->C0: min 2.738 mean 5.210 max 6.477
+   a5->C2: min 1.082 mean 1.419 max 1.682
+   a5->C3: min 0.613 mean 1.424 max 1.920
+   control a4->C0: min 11.970 mean 12.311 max 12.792
+[rand6_allconst] 2000 conditions, 2000 legal, 0 illegal (reference a5); 9s
+   a5->C1 weight: min 11.692  mean 12.196  max 12.536   (#below 4 bits: 0, below 2: 0)
+   best: {'v': 2214101095, 'a6': 1248538748, 'a7': 'eq6', 'e8': 4004326286, 'c9': 4286722560, 'e10': 2637585079, 'e11': 4173977374}  C0 5.04 C1 11.69 C2 1.28 C3 1.15  a4->C0 12.41
+   a5->C0: min 2.746 mean 5.192 max 6.553
+   a5->C2: min 0.801 mean 1.428 max 1.938
+   a5->C3: min 0.610 mean 1.432 max 1.960
+   control a4->C0: min 11.723 mean 12.308 max 13.230
+[rand6_a7free_const] 2000 conditions, 2000 legal, 0 illegal (reference a5); 6s
+   a5->C1 weight: min 11.879  mean 12.312  max 12.577   (#below 4 bits: 0, below 2: 0)
+   best: {'v': 1046774024, 'a6': 4224219118, 'a7': 2525395162, 'c9': 2281586816, 'e10': 1270685205, 'e11': 3402429683}  C0 7.97 C1 11.88 C2 1.49 C3 1.08  a4->C0 12.26
+   a5->C0: min 6.401 mean 8.061 max 9.776
+   a5->C2: min 1.101 mean 1.646 max 2.104
+   a5->C3: min 0.849 mean 1.419 max 1.956
+   control a4->C0: min 12.166 mean 12.311 max 12.462
+[rand4_a6a7e10e11] 2000 conditions, 2000 legal, 0 illegal (reference a5); 6s
+   a5->C1 weight: min 12.158  mean 12.310  max 12.478   (#below 4 bits: 0, below 2: 0)
+   best: {'a6': 372433635, 'a7': 809427111, 'e10': 3692602617, 'e11': 1272596872}  C0 6.55 C1 12.16 C2 1.45 C3 1.44  a4->C0 12.23
+   a5->C0: min 6.549 mean 8.060 max 9.908
+   a5->C2: min 1.331 mean 1.650 max 1.928
+   a5->C3: min 0.859 mean 1.421 max 1.907
+   control a4->C0: min 12.147 mean 12.311 max 12.457

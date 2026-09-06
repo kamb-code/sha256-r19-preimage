@@ -1,0 +1,38 @@
+mode rand w=12: 262,144 contexts in 2048 chunks
+  chunk 0/2048: n=128 min 6.240 mean 6.403 max 6.638 below2=0 20s
+  chunk 500/2048: n=64,128 min 6.128 mean 6.396 max 6.651 below2=0 115s
+  chunk 1000/2048: n=128,128 min 6.128 mean 6.396 max 6.651 below2=0 178s
+  chunk 1500/2048: n=192,128 min 6.128 mean 6.396 max 6.651 below2=0 236s
+  chunk 2000/2048: n=256,128 min 6.128 mean 6.396 max 6.651 below2=0 290s
+
+DONE mode rand w=12: 262,144 contexts, 291s
+  weight (bits per flipped bit of a5 into C1): min 6.1283  mean 6.3960  sd 0.0640  max 6.6510
+  fraction below 0.5: 0/262144 = 0.000e+00
+  fraction below 1.0: 0/262144 = 0.000e+00
+  fraction below 1.5: 0/262144 = 0.000e+00
+  fraction below 2.0: 0/262144 = 0.000e+00
+  fraction below 2.5: 0/262144 = 0.000e+00
+  fraction below 3.0: 0/262144 = 0.000e+00
+  lowest-weight contexts [mean, image size, max fibre, params]:
+    6.1283  img 2574  fibre   7  (a4, a6, a7, c8, c9) = ['0xaa1', '0x1b9', '0xdb3', '0x888', '0x312']
+    6.1403  img 2586  fibre   7  (a4, a6, a7, c8, c9) = ['0xebe', '0xf7e', '0x56a', '0xb5b', '0x30e']
+    6.1450  img 2569  fibre   6  (a4, a6, a7, c8, c9) = ['0x115', '0xa55', '0x2d5', '0xf4c', '0x302']
+    6.1494  img 2574  fibre   6  (a4, a6, a7, c8, c9) = ['0x6fc', '0x642', '0xe07', '0x8fb', '0xcee']
+    6.1504  img 2553  fibre   7  (a4, a6, a7, c8, c9) = ['0xa45', '0x45', '0x205', '0x54a', '0x12e']
+    6.1535  img 2580  fibre   8  (a4, a6, a7, c8, c9) = ['0xf01', '0xe73', '0x8f1', '0x7ce', '0xcf2']
+    6.1571  img 2581  fibre   8  (a4, a6, a7, c8, c9) = ['0x12b', '0xc33', '0x8e5', '0xcee', '0xd2e']
+    6.1572  img 2568  fibre   6  (a4, a6, a7, c8, c9) = ['0x42d', '0x6af', '0x6d1', '0x9ce', '0x4ee']
+    6.1586  img 2561  fibre   6  (a4, a6, a7, c8, c9) = ['0x6e1', '0xbed', '0x7bf', '0x182', '0x722']
+    6.1615  img 2568  fibre   7  (a4, a6, a7, c8, c9) = ['0x13a', '0xdea', '0xaea', '0x1db', '0x112']
+    6.1622  img 2573  fibre   7  (a4, a6, a7, c8, c9) = ['0xea', '0xe4a', '0x7d8', '0x671', '0x51e']
+    6.1640  img 2552  fibre   7  (a4, a6, a7, c8, c9) = ['0x832', '0x53e', '0xf12', '0xca3', '0x6f2']
+  smallest images [image size, max fibre, mean weight, params]:
+    img 2480  fibre   7  w 6.3722  (a4, a6, a7, c8, c9) = ['0x5b1', '0xdfb', '0xd3a', '0x6d4', '0x2']
+    img 2481  fibre   8  w 6.4929  (a4, a6, a7, c8, c9) = ['0xbb9', '0xe79', '0x50', '0xb9f', '0xc80']
+    img 2484  fibre   6  w 6.3132  (a4, a6, a7, c8, c9) = ['0x67b', '0x67b', '0xf3b', '0xd9c', '0xc04']
+    img 2485  fibre   8  w 6.3573  (a4, a6, a7, c8, c9) = ['0xe6d', '0xff8', '0xc3a', '0x807', '0x4fc']
+    img 2490  fibre   9  w 6.4771  (a4, a6, a7, c8, c9) = ['0xe4c', '0x178', '0x14c', '0x5e6', '0xc00']
+    img 2491  fibre   8  w 6.3904  (a4, a6, a7, c8, c9) = ['0x347', '0x95b', '0x2df', '0x284', '0xd78']
+    img 2493  fibre   7  w 6.3916  (a4, a6, a7, c8, c9) = ['0x868', '0x78d', '0x4a5', '0x6c', '0x85b']
+    img 2494  fibre   7  w 6.4048  (a4, a6, a7, c8, c9) = ['0xedc', '0x186', '0xe5c', '0xf26', '0xe44']
+  histogram (bin lower edge in bits: count): {'6.10': 4, '6.15': 264, '6.20': 2640, '6.25': 12684, '6.30': 44584, '6.35': 80774, '6.40': 73749, '6.45': 31565, '6.50': 11957, '6.55': 3595, '6.60': 327, '6.65': 1}

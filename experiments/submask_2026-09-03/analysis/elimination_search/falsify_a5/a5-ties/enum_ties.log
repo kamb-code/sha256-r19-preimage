@@ -1,0 +1,17 @@
+145645 conditions
+  10000 done, 147s, best a5->C1 so far 8.35 rot a7=ROTR^n(a4) {'7': ['rotr', 4, 4], '9': ['sat_r', 0]}
+  20000 done, 292s, best a5->C1 so far 8.32 add a6=a4+c {'6': ['add', 4, 4294967295], '9': ['sat_r', 0]}
+  30000 done, 438s, best a5->C1 so far 8.32 add a6=a4+c {'6': ['add', 4, 4294967295], '9': ['sat_r', 0]}
+  40000 done, 579s, best a5->C1 so far 8.32 add a6=a4+c {'6': ['add', 4, 4294967295], '9': ['sat_r', 0]}
+  50000 done, 717s, best a5->C1 so far 8.32 add a6=a4+c {'6': ['add', 4, 4294967295], '9': ['sat_r', 0]}
+  60000 done, 837s, best a5->C1 so far 8.32 add a6=a4+c {'6': ['add', 4, 4294967295], '9': ['sat_r', 0]}
+  70000 done, 956s, best a5->C1 so far 8.32 add a6=a4+c {'6': ['add', 4, 4294967295], '9': ['sat_r', 0]}
+  80000 done, 1070s, best a5->C1 so far 8.21 rot a8=ROTR^n(a7) {'8': ['rotr', 7, 0], '9': ['sat_r', 4294967295]}
+  90000 done, 1182s, best a5->C1 so far 8.19 rot a11=ROTR^n(a8) {'11': ['rotr', 8, 0], '9': ['sat_r', 4294967295]}
+  100000 done, 1291s, best a5->C1 so far 8.13 rot a11=ROTR^n(a10) {'11': ['rotr', 10, 0], '9': ['sat_r', 0]}
+  110000 done, 1428s, best a5->C1 so far 8.13 rot a11=ROTR^n(a10) {'11': ['rotr', 10, 0], '9': ['sat_r', 0]}
+  120000 done, 1559s, best a5->C1 so far 8.13 rot a11=ROTR^n(a10) {'11': ['rotr', 10, 0], '9': ['sat_r', 0]}
+  130000 done, 1672s, best a5->C1 so far 8.13 rot a11=ROTR^n(a10) {'11': ['rotr', 10, 0], '9': ['sat_r', 0]}
+  140000 done, 1775s, best a5->C1 so far 8.13 rot a11=ROTR^n(a10) {'11': ['rotr', 10, 0], '9': ['sat_r', 0]}
+145645 measured in 1855s
+best a5->C1: {'idx': 95312, 'cls': 'rot a11=ROTR^n(a10)', 'defs': {'11': ['rotr', 10, 0], '9': ['sat_r', 0]}, 'a5': [15.76375, 8.13203125, 15.99328125, 12.40609375], 'a5_moved': [1.0, 0.98953125, 1.0, 1.0], 'a5_min': [6, 0, 7, 2], 'strict': False, 'a4C0': 12.22890625, 'a4ctxdep': False}

@@ -1,0 +1,38 @@
+mode rand w=6: 16,777,216 contexts in 2048 chunks
+  chunk 0/2048: n=8,192 min 2.422 mean 2.830 max 3.177 below2=0 4s
+  chunk 500/2048: n=4,104,192 min 2.344 mean 2.829 max 3.292 below2=0 20s
+  chunk 1000/2048: n=8,200,192 min 2.323 mean 2.829 max 3.292 below2=0 39s
+  chunk 1500/2048: n=12,296,192 min 2.312 mean 2.829 max 3.292 below2=0 57s
+  chunk 2000/2048: n=16,392,192 min 2.312 mean 2.829 max 3.292 below2=0 74s
+
+DONE mode rand w=6: 16,777,216 contexts, 74s
+  weight (bits per flipped bit of a5 into C1): min 2.3125  mean 2.8291  sd 0.1112  max 3.2917
+  fraction below 0.5: 0/16777216 = 0.000e+00
+  fraction below 1.0: 0/16777216 = 0.000e+00
+  fraction below 1.5: 0/16777216 = 0.000e+00
+  fraction below 2.0: 0/16777216 = 0.000e+00
+  fraction below 2.5: 35351/16777216 = 2.107e-03
+  fraction below 3.0: 15656118/16777216 = 9.332e-01
+  lowest-weight contexts [mean, image size, max fibre, params]:
+    2.3125  img   39  fibre   5  (a4, a6, a7, c8, c9) = ['0x27', '0x23', '0x37', '0x2c', '0x32']
+    2.3229  img   37  fibre   5  (a4, a6, a7, c8, c9) = ['0x1e', '0x1a', '0x1f', '0x24', '0xe']
+    2.3281  img   36  fibre   5  (a4, a6, a7, c8, c9) = ['0x1d', '0x9', '0x23', '0x10', '0xe']
+    2.3281  img   36  fibre   5  (a4, a6, a7, c8, c9) = ['0x3d', '0x3e', '0xa', '0x3e', '0x32']
+    2.3438  img   36  fibre   5  (a4, a6, a7, c8, c9) = ['0x2b', '0x18', '0x15', '0x1f', '0x32']
+    2.3438  img   37  fibre   5  (a4, a6, a7, c8, c9) = ['0x10', '0x34', '0x3d', '0x7', '0x32']
+    2.3438  img   40  fibre   6  (a4, a6, a7, c8, c9) = ['0x2c', '0x32', '0x28', '0x4', '0xe']
+    2.3490  img   36  fibre   7  (a4, a6, a7, c8, c9) = ['0x37', '0x3e', '0x3c', '0x1e', '0x32']
+    2.3490  img   38  fibre   7  (a4, a6, a7, c8, c9) = ['0x16', '0x12', '0x1c', '0x3e', '0xe']
+    2.3542  img   31  fibre   6  (a4, a6, a7, c8, c9) = ['0x34', '0x36', '0x32', '0x27', '0x32']
+    2.3542  img   34  fibre   5  (a4, a6, a7, c8, c9) = ['0x3c', '0x17', '0x28', '0xd', '0x32']
+    2.3542  img   39  fibre   6  (a4, a6, a7, c8, c9) = ['0x3c', '0x37', '0xb', '0x2', '0x32']
+  smallest images [image size, max fibre, mean weight, params]:
+    img   23  fibre   5  w 2.8854  (a4, a6, a7, c8, c9) = ['0x28', '0x18', '0x1f', '0x1f', '0x0']
+    img   23  fibre   5  w 2.9010  (a4, a6, a7, c8, c9) = ['0x26', '0x15', '0x25', '0x1f', '0x0']
+    img   23  fibre   5  w 2.9062  (a4, a6, a7, c8, c9) = ['0x10', '0x10', '0x35', '0x35', '0x0']
+    img   23  fibre   5  w 2.9323  (a4, a6, a7, c8, c9) = ['0x3a', '0xe', '0x37', '0x31', '0x0']
+    img   23  fibre   5  w 2.9427  (a4, a6, a7, c8, c9) = ['0x15', '0x7', '0x36', '0x29', '0x0']
+    img   23  fibre   5  w 2.9479  (a4, a6, a7, c8, c9) = ['0x26', '0x32', '0x1b', '0x3d', '0x0']
+    img   23  fibre   5  w 2.9635  (a4, a6, a7, c8, c9) = ['0x3', '0x31', '0x14', '0x1f', '0x0']
+    img   23  fibre   5  w 2.9635  (a4, a6, a7, c8, c9) = ['0xa', '0x37', '0x35', '0x1f', '0x0']
+  histogram (bin lower edge in bits: count): {'2.30': 9, '2.35': 225, '2.40': 4320, '2.45': 30797, '2.50': 133698, '2.55': 307954, '2.60': 563256, '2.65': 1164516, '2.70': 1472368, '2.75': 2304328, '2.80': 3483354, '2.85': 3193247, '2.90': 2105437, '2.95': 892609, '3.00': 690620, '3.05': 352651, '3.10': 70097, '3.15': 7477, '3.20': 248, '3.25': 5}

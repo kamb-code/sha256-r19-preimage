@@ -1,0 +1,15 @@
+117504 configs
+117504 legal; a5->C1 min 3.343 mean 3.884 max 4.122; C0 min 3.838; 1102s
+per e9 constant: min C1 over ties/e8/e10 (lowest 10):
+[(3.343, '0xff'), (3.362, '0x11'), (3.362, '0x7f'), (3.363, '0x69'), (3.365, '0x37'), (3.365, '0x51'), (3.371, '0x78'), (3.375, '0x2e'), (3.375, '0x3f'), (3.375, '0x77')]
+lowest 10 configs:
+  C1 3.343 C0 4.10 C2 4.04 C3 3.99  a7=a6,a4=0xff | e8=0x0,e9=0xff,e10=free,free
+  C1 3.362 C0 4.04 C2 4.06 C3 3.94  a6=a7=a4 | e8=0x0,e9=0x7f,e10=free,free
+  C1 3.362 C0 4.03 C2 4.01 C3 3.97  a6=a7=a4 | e8=0x0,e9=0x11,e10=free,free
+  C1 3.363 C0 3.95 C2 3.98 C3 3.88  a6=a7=a4 | e8=0xff,e9=0x69,e10=free,free
+  C1 3.365 C0 3.94 C2 4.01 C3 3.91  a6=a7=a4 | e8=0xff,e9=0x51,e10=free,free
+  C1 3.365 C0 3.96 C2 3.98 C3 4.01  a6=a7=a4 | e8=free,e9=0x37,e10=free,free
+  C1 3.371 C0 4.01 C2 3.97 C3 3.94  a6=a7=a4 | e8=0x0,e9=0x78,e10=free,free
+  C1 3.375 C0 4.03 C2 4.01 C3 3.98  a7=a6=0x0 | e8=free,e9=0x2e,e10=free,free
+  C1 3.375 C0 3.93 C2 3.97 C3 3.92  a7=a6 | e8=0xff,e9=0x77,e10=free,free
+  C1 3.375 C0 4.07 C2 4.05 C3 3.95  a6=a7=a4 | e8=0x0,e9=0x3f,e10=free,free

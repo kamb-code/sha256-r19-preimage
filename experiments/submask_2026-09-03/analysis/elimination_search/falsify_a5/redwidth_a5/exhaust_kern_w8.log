@@ -1,0 +1,50 @@
+mode kern w=8: 16,777,216 contexts in 8192 chunks
+  chunk 0/8192: n=2,048 min 2.371 mean 3.033 max 3.447 below2=0 3s
+  chunk 500/8192: n=1,026,048 min 2.316 mean 3.138 max 3.635 below2=0 27s
+  chunk 1000/8192: n=2,050,048 min 2.316 mean 3.140 max 3.639 below2=0 49s
+  chunk 1500/8192: n=3,074,048 min 2.316 mean 3.140 max 3.648 below2=0 66s
+  chunk 2000/8192: n=4,098,048 min 2.316 mean 3.141 max 3.648 below2=0 75s
+  chunk 2500/8192: n=5,122,048 min 2.316 mean 3.140 max 3.648 below2=0 84s
+  chunk 3000/8192: n=6,146,048 min 2.316 mean 3.141 max 3.650 below2=0 93s
+  chunk 3500/8192: n=7,170,048 min 2.316 mean 3.141 max 3.650 below2=0 105s
+  chunk 4000/8192: n=8,194,048 min 2.316 mean 3.141 max 3.650 below2=0 121s
+  chunk 4500/8192: n=9,218,048 min 2.316 mean 3.140 max 3.650 below2=0 138s
+  chunk 5000/8192: n=10,242,048 min 2.316 mean 3.141 max 3.650 below2=0 154s
+  chunk 5500/8192: n=11,266,048 min 2.316 mean 3.141 max 3.650 below2=0 170s
+  chunk 6000/8192: n=12,290,048 min 2.316 mean 3.141 max 3.650 below2=0 186s
+  chunk 6500/8192: n=13,314,048 min 2.316 mean 3.141 max 3.650 below2=0 202s
+  chunk 7000/8192: n=14,338,048 min 2.316 mean 3.141 max 3.650 below2=0 218s
+  chunk 7500/8192: n=15,362,048 min 2.316 mean 3.141 max 3.650 below2=0 235s
+  chunk 8000/8192: n=16,386,048 min 2.316 mean 3.141 max 3.650 below2=0 252s
+
+DONE mode kern w=8: 16,777,216 contexts, 257s
+  weight (bits per flipped bit of a5 into C1): min 2.3164  mean 3.1406  sd 0.1859  max 3.6504
+  fraction below 0.5: 0/16777216 = 0.000e+00
+  fraction below 1.0: 0/16777216 = 0.000e+00
+  fraction below 1.5: 0/16777216 = 0.000e+00
+  fraction below 2.0: 0/16777216 = 0.000e+00
+  fraction below 2.5: 10070/16777216 = 6.002e-04
+  fraction below 3.0: 3731652/16777216 = 2.224e-01
+  lowest-weight contexts [mean, image size, max fibre, params]:
+    2.3164  img  126  fibre   7  (c9, X, Y) = ['0x4', '0x9', '0xb']
+    2.3164  img  126  fibre   7  (c9, X, Y) = ['0x4', '0x89', '0x8b']
+    2.3184  img  129  fibre   7  (c9, X, Y) = ['0x4', '0xb', '0xb']
+    2.3184  img  129  fibre   7  (c9, X, Y) = ['0x4', '0x8b', '0x8b']
+    2.3184  img  129  fibre   7  (c9, X, Y) = ['0xfc', '0x76', '0x76']
+    2.3184  img  129  fibre   7  (c9, X, Y) = ['0xfc', '0xf6', '0xf6']
+    2.3184  img  132  fibre   6  (c9, X, Y) = ['0x2', '0x45', '0xc5']
+    2.3184  img  132  fibre   6  (c9, X, Y) = ['0x2', '0xc5', '0x45']
+    2.3184  img  132  fibre   6  (c9, X, Y) = ['0xfe', '0x3c', '0xbc']
+    2.3184  img  132  fibre   6  (c9, X, Y) = ['0xfe', '0xbc', '0x3c']
+    2.3203  img  131  fibre   6  (c9, X, Y) = ['0x2', '0x45', '0x45']
+    2.3203  img  131  fibre   6  (c9, X, Y) = ['0x2', '0x47', '0x47']
+  smallest images [image size, max fibre, mean weight, params]:
+    img  111  fibre   8  w 2.3965  (c9, X, Y) = ['0x74', '0x9', '0xb']
+    img  111  fibre   8  w 2.3965  (c9, X, Y) = ['0x74', '0x89', '0x8b']
+    img  111  fibre   8  w 2.4121  (c9, X, Y) = ['0x74', '0x19', '0x1b']
+    img  111  fibre   8  w 2.4121  (c9, X, Y) = ['0x74', '0x99', '0x9b']
+    img  111  fibre   8  w 2.4238  (c9, X, Y) = ['0x74', '0x15', '0x17']
+    img  111  fibre   8  w 2.4238  (c9, X, Y) = ['0x74', '0x95', '0x97']
+    img  111  fibre   8  w 2.4277  (c9, X, Y) = ['0x74', '0x49', '0x4b']
+    img  111  fibre   8  w 2.4277  (c9, X, Y) = ['0x74', '0xc9', '0xcb']
+  histogram (bin lower edge in bits: count): {'2.30': 166, '2.35': 1096, '2.40': 2926, '2.45': 5882, '2.50': 16938, '2.55': 42670, '2.60': 82670, '2.65': 144714, '2.70': 203984, '2.75': 303872, '2.80': 435346, '2.85': 597090, '2.90': 853022, '2.95': 1041276, '3.00': 1276848, '3.05': 1427536, '3.10': 1528026, '3.15': 1795470, '3.20': 1824392, '3.25': 1762710, '3.30': 1410906, '3.35': 955106, '3.40': 631730, '3.45': 312776, '3.50': 103312, '3.55': 15852, '3.60': 898, '3.65': 2}

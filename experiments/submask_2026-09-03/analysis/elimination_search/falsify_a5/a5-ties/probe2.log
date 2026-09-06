@@ -1,0 +1,15 @@
+a7=a6, e8=e9=-1 (baseline non-strict)                        a5->C1  8.35 = kernel  4.23 + residual  6.25  [ctx depends on a5]
+      full a5 row: a5: C0=15.44 C1= 8.35 C2=15.56 C3=12.62  moved=1.00/0.99/1.00/1.00  ctx-depends-on-a5
++ a10=a8                                                     a5->C1  8.68 = kernel  4.23 + residual  6.59  [ctx depends on a5]
+      full a5 row: a5: C0=15.35 C1= 8.68 C2=15.52 C3= 9.80  moved=1.00/0.99/1.00/1.00  ctx-depends-on-a5
+a7=a6, e14=0 via a10, a8=a10, e8=-1 via a4, e9=-1 via a9     a5->C1  7.43 = kernel  4.26 + residual  5.07  [ctx depends on a5]
+      full a5 row: a5: C0=15.35 C1= 7.43 C2=15.54 C3= 9.80  moved=1.00/0.98/1.00/1.00  ctx-depends-on-a5
+same with e9=0                                               a5->C1  7.58 = kernel  4.26 + residual  5.19  [ctx depends on a5]
+      full a5 row: a5: C0=15.35 C1= 7.58 C2=16.10 C3= 9.77  moved=1.00/0.99/1.00/1.00  ctx-depends-on-a5
+same with a9=~a5 (c'=-1: kernel -1-2*S0(a5))                 a5->C1  8.02 = kernel  2.91 + residual  3.87  [ctx depends on a5]
+      full a5 row: a5: C0=15.17 C1= 8.02 C2=15.63 C3= 9.26  moved=1.00/1.00/1.00/1.00  ctx-depends-on-a5
+a9=~a5 variant, e8=0 via a4                                  a5->C1  8.07 = kernel  2.91 + residual  3.89  [ctx depends on a5]
+      full a5 row: a5: C0=16.08 C1= 8.07 C2=15.57 C3= 9.24  moved=1.00/1.00/1.00/1.00  ctx-depends-on-a5
+   seed 11: a5: C0=15.41 C1= 7.39 C2=15.50 C3= 9.78  moved=1.00/0.98/1.00/1.00  ctx-depends-on-a5
+   seed 12: a5: C0=15.41 C1= 7.36 C2=15.55 C3= 9.85  moved=1.00/0.98/1.00/1.00  ctx-depends-on-a5
+   seed 13: a5: C0=15.35 C1= 7.34 C2=15.51 C3= 9.81  moved=1.00/0.98/1.00/1.00  ctx-depends-on-a5

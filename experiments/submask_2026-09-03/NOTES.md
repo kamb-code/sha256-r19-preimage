@@ -39,3 +39,5 @@ printed by them or made in the project log are WRONG and are corrected here:
 * The second all-ones pod's final exposure is 12,075 contexts / 5.186e13 a0 / 16.3 h (gpu_run_snapshot/live/t1/status.json), not the 12,016 / 5.161e13 counted at the moment of the hit.
 
 * 2026-09-06: elimination search at C3 (analysis/elimination_search/): seven angles, all excluded, 0 bits. The structural statement is the "offset law": a_k enters W_{k+5} through Sigma0(a_k) (one input, nothing to saturate) and a1/a2/a3 have forced homes C0/C1/C2, so no fifth word can be absorbed at R=20; the (3/4)^32 collapse is the cheapest cut of the resulting cycle. Closest miss: a5 (deferrable in C0, linear in C3, blocked only by Sigma0(a5) in e6 -> C1).
+
+* 2026-09-06: falsification test of the a5->C1 edge under a widened condition menu (analysis/elimination_search/falsify_a5/): ~1.59M legal full-width conditions + ~105M reduced-width assignments; global legal minimum 10.86 bits per flipped bit (threshold for absorption 2); zero below 4. Side result: a5 can be made exactly absent from C0 and C2 and exactly linear in C3, so the whole 20-round obstruction is this single edge.

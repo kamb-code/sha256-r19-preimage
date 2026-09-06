@@ -1,0 +1,7 @@
+w=8: 555747 configurations, N=300 states
+  20000/555747 legal 5094 best C1 so far 3.080 [a7=a6 | e8=0xff,free,e14=0x0|a10,e15=0x20|a11] 51s
+  100000/555747 legal 25217 best C1 so far 3.028 [a6=a7=a4 | e8=0xff,free,e14=0x20|a10,e15=0x20|a11] 156s
+  140000/555747 legal 34946 best C1 so far 3.028 [a6=a7=a4 | e8=0xff,free,e14=0x20|a10,e15=0x20|a11] 209s
+  260000/555747 legal 63808 best C1 so far 3.028 [a6=a7=a4 | e8=0xff,free,e14=0x20|a10,e15=0x20|a11] 412s
+  300000/555747 legal 73727 best C1 so far 3.028 [a6=a7=a4 | e8=0xff,free,e14=0x20|a10,e15=0x20|a11] 480s
+done: 136185 legal of 555747; best C1 = 3.028 at a6=a7=a4 | e8=0xff,free,e14=0x20|a10,e15=0x20|a11; 926s
