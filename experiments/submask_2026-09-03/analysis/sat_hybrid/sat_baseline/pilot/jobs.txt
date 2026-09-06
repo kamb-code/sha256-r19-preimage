@@ -1,0 +1,4 @@
+16 rand 1 cadical195 1
+16 rand 1 kissat 1
+17 ones 0 kissat 1
+17 ones 0 cadical195 1

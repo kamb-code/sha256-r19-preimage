@@ -1,0 +1,90 @@
+17 none 1 kissat 600
+17 none 1 cadical195 600
+17 family 1 kissat 600
+17 family 1 cadical195 600
+17 collapse 1 kissat 600
+17 collapse 1 cadical195 600
+17 context 1 kissat 600
+17 context 1 cadical195 600
+17 none 2 kissat 600
+17 none 2 cadical195 600
+17 family 2 kissat 600
+17 family 2 cadical195 600
+17 collapse 2 kissat 600
+17 collapse 2 cadical195 600
+17 context 2 kissat 600
+17 context 2 cadical195 600
+17 none 3 kissat 600
+17 none 3 cadical195 600
+17 family 3 kissat 600
+17 family 3 cadical195 600
+17 collapse 3 kissat 600
+17 collapse 3 cadical195 600
+17 context 3 kissat 600
+17 context 3 cadical195 600
+17 none 4 kissat 600
+17 none 4 cadical195 600
+17 family 4 kissat 600
+17 family 4 cadical195 600
+17 collapse 4 kissat 600
+17 collapse 4 cadical195 600
+17 context 4 kissat 600
+17 context 4 cadical195 600
+17 none 5 kissat 600
+17 none 5 cadical195 600
+17 family 5 kissat 600
+17 family 5 cadical195 600
+17 collapse 5 kissat 600
+17 collapse 5 cadical195 600
+17 context 5 kissat 600
+17 context 5 cadical195 600
+18 none 1 kissat 1500
+18 none 1 cadical195 1500
+18 family 1 kissat 1500
+18 family 1 cadical195 1500
+18 collapse 1 kissat 1500
+18 collapse 1 cadical195 1500
+18 context 1 kissat 1500
+18 context 1 cadical195 1500
+18 none 2 kissat 1500
+18 none 2 cadical195 1500
+18 family 2 kissat 1500
+18 family 2 cadical195 1500
+18 collapse 2 kissat 1500
+18 collapse 2 cadical195 1500
+18 context 2 kissat 1500
+18 context 2 cadical195 1500
+18 none 3 kissat 1500
+18 none 3 cadical195 1500
+18 family 3 kissat 1500
+18 family 3 cadical195 1500
+18 collapse 3 kissat 1500
+18 collapse 3 cadical195 1500
+18 context 3 kissat 1500
+18 context 3 cadical195 1500
+18 none 4 kissat 1500
+18 none 4 cadical195 1500
+18 family 4 kissat 1500
+18 family 4 cadical195 1500
+18 collapse 4 kissat 1500
+18 collapse 4 cadical195 1500
+18 context 4 kissat 1500
+18 context 4 cadical195 1500
+18 none 5 kissat 1500
+18 none 5 cadical195 1500
+18 family 5 kissat 1500
+18 family 5 cadical195 1500
+18 collapse 5 kissat 1500
+18 collapse 5 cadical195 1500
+18 context 5 kissat 1500
+18 context 5 cadical195 1500
+19 context 1 kissat 600 --fix-a0
+19 context 1 cadical195 600 --fix-a0
+19 context 2 kissat 600 --fix-a0
+19 context 2 cadical195 600 --fix-a0
+19 context 3 kissat 600 --fix-a0
+19 context 3 cadical195 600 --fix-a0
+19 context 4 kissat 600 --fix-a0
+19 context 4 cadical195 600 --fix-a0
+19 context 5 kissat 600 --fix-a0
+19 context 5 cadical195 600 --fix-a0

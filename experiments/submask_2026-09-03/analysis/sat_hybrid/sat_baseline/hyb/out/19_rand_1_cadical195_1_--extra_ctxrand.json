@@ -1,0 +1,1 @@
+{"R": 19, "kind": "rand", "tseed": 1, "solver": "cadical195", "sseed": 1, "extra": "ctxrand", "status": "timeout", "t_solve": 1800.0, "wall": 1830.0166010856628, "stderr": ""}

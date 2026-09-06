@@ -1,0 +1,1 @@
+{"R": 20, "kind": "rand", "tseed": 2, "solver": "kissat", "sseed": 2, "extra": "ctx", "extra_arg": null, "target": "e3090b0c8a3018900cc93e3d49c2985b98dfdf0d960fb73df49d889522ffa12f", "nvars": 12171, "nclauses": 75926, "t_build": 0.05400178208947182, "status": "timeout", "t_solve": 1800.1290627401322, "verified": null, "words": null}

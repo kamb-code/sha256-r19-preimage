@@ -1,0 +1,28 @@
+[   1830s] 19_rand_1_cadical195_1_--extra_family: timeout after 1830s
+[   1830s] 19_rand_1_cadical195_1_--extra_ctx: timeout after 1830s
+[   1830s] 19_rand_1_cadical195_1_--extra_ctxrand: timeout after 1830s
+[   1830s] 19_rand_1_kissat_1_--extra_family: {"R": 19, "kind": "rand", "tseed": 1, "solver": "kissat", "sseed": 1, "extra": "family", "status": "timeout", "t_solve": 1800.189315956086, "verified": null}
+[   1830s] 19_rand_1_kissat_1_--extra_ctx: {"R": 19, "kind": "rand", "tseed": 1, "solver": "kissat", "sseed": 1, "extra": "ctx", "status": "timeout", "t_solve": 1800.1895915530622, "verified": null}
+[   1830s] 19_rand_1_kissat_1_--extra_ctxrand: {"R": 19, "kind": "rand", "tseed": 1, "solver": "kissat", "sseed": 1, "extra": "ctxrand", "status": "timeout", "t_solve": 1800.1913565490395, "verified": null}
+[   1830s] 19_rand_2_cadical195_2_--extra_family: timeout after 1830s
+[   3630s] 19_rand_2_cadical195_2_--extra_ctx: timeout after 1830s
+[   3630s] 19_rand_2_cadical195_2_--extra_ctxrand: timeout after 1830s
+[   3630s] 19_rand_2_kissat_2_--extra_family: {"R": 19, "kind": "rand", "tseed": 2, "solver": "kissat", "sseed": 2, "extra": "family", "status": "timeout", "t_solve": 1800.190925406292, "verified": null}
+[   3630s] 19_rand_2_kissat_2_--extra_ctx: {"R": 19, "kind": "rand", "tseed": 2, "solver": "kissat", "sseed": 2, "extra": "ctx", "status": "timeout", "t_solve": 1800.1472099851817, "verified": null}
+[   3630s] 19_rand_2_kissat_2_--extra_ctxrand: {"R": 19, "kind": "rand", "tseed": 2, "solver": "kissat", "sseed": 2, "extra": "ctxrand", "status": "timeout", "t_solve": 1800.1082891765982, "verified": null}
+[   3660s] 20_rand_1_cadical195_1_--extra_ctx: timeout after 1830s
+[   3660s] 20_rand_1_cadical195_1_--extra_ctxrand: timeout after 1830s
+[   5431s] 20_rand_1_cadical195_1_--extra_family: timeout after 1830s
+[   5431s] 20_rand_1_kissat_1_--extra_ctx: {"R": 20, "kind": "rand", "tseed": 1, "solver": "kissat", "sseed": 1, "extra": "ctx", "status": "timeout", "t_solve": 1800.1950346715748, "verified": null}
+[   5431s] 20_rand_1_kissat_1_--extra_ctxrand: {"R": 20, "kind": "rand", "tseed": 1, "solver": "kissat", "sseed": 1, "extra": "ctxrand", "status": "timeout", "t_solve": 1800.188377512619, "verified": null}
+[   5431s] 20_rand_1_kissat_1_--extra_family: {"R": 20, "kind": "rand", "tseed": 1, "solver": "kissat", "sseed": 1, "extra": "family", "status": "timeout", "t_solve": 1800.1658272054046, "verified": null}
+[   5460s] 20_rand_2_cadical195_2_--extra_ctx: timeout after 1830s
+[   5490s] 20_rand_2_cadical195_2_--extra_ctxrand: timeout after 1830s
+[   5490s] 20_rand_2_cadical195_2_--extra_family: timeout after 1830s
+[   7231s] 20_rand_2_kissat_2_--extra_ctx: {"R": 20, "kind": "rand", "tseed": 2, "solver": "kissat", "sseed": 2, "extra": "ctx", "status": "timeout", "t_solve": 1800.1290627401322, "verified": null}
+[   7231s] 20_rand_2_kissat_2_--extra_ctxrand: {"R": 20, "kind": "rand", "tseed": 2, "solver": "kissat", "sseed": 2, "extra": "ctxrand", "status": "timeout", "t_solve": 1800.1970772482455, "verified": null}
+[   7231s] 20_rand_2_kissat_2_--extra_family: {"R": 20, "kind": "rand", "tseed": 2, "solver": "kissat", "sseed": 2, "extra": "family", "status": "timeout", "t_solve": 1800.1349488664418, "verified": null}
+[   7261s] 19_ones_0_cadical195_1_--extra_ctx: timeout after 1830s
+[   7290s] 19_ones_0_cadical195_1_--extra_family: timeout after 1830s
+[   7290s] 19_ones_0_kissat_1_--extra_ctx: {"R": 19, "kind": "ones", "tseed": 0, "solver": "kissat", "sseed": 1, "extra": "ctx", "status": "timeout", "t_solve": 1800.1876702886075, "verified": null}
+[   7290s] 19_ones_0_kissat_1_--extra_family: {"R": 19, "kind": "ones", "tseed": 0, "solver": "kissat", "sseed": 1, "extra": "family", "status": "timeout", "t_solve": 1800.1042353119701, "verified": null}
