@@ -15,7 +15,7 @@
   22. The target was never obstructed, which the preimage independently settles.
 
 ## The second paper
-`paper_submask_r20.tex` / `.pdf` (14 pp) is committed at the repository root
-with `SUBMISSION.md`. Two independent fact-check passes were applied before
+`paper_submask_r20.tex` / `.pdf` (16 pp) is committed at the repository root
+with `SUBMISSION.md`; the first paper (19 pp) with `RESUBMISSION_R19.md`. Two independent fact-check passes were applied before
 filing; their working files lived in the session scratchpad and are not part of
 the record. The paper's evidence map is its Appendix B. Both papers were submitted to ePrint on 2026-09-06 (submission ids 111557 and 111558, pending). When the 2026/NNNN report numbers arrive: update cross-citations, CITATION.cff and README, and file minor revisions.
