@@ -782,7 +782,33 @@ measured here excludes one; it does say that any such trick is a statement
 about carries between rotation--XOR maps, which is where \S\ref{sec:leftnull}
 found only a $2^{-15.8}$ bias.
 
+\paragraph{Note added, September 2026.}
+A later paper~\cite{Basra2026Submask} chooses the context rather than drawing
+it at random ($a_4=a_5$, $e_8=e_9=\mathtt{0xFFFFFFFF}$), which removes the
+fixed-point iteration and collapses the consistency check to a bitwise
+condition; it reaches 20 rounds at about $2^{45.4}$ swept $a_0$ per preimage
+and reports two computed 20-round preimages.  The factor $2^{32}$ for the
+fourth constraint identified here stands.  That paper also sharpens the
+location of the obstruction: in the frame where $a_5$ is the word to be
+absorbed by the fourth constraint, every path from $a_5$ into $C_0$, $C_2$
+and $C_3$ can be cut or made linear by context conditions, and the single
+remaining path, $a_5\to C_1$ through $\Sigma_0(a_5)$ inside $e_6$ in $W_{10}$,
+changes at least $10.86$ bits of the $C_1$ lookup target per flipped bit of
+$a_5$ under every one of about $1.6\times10^{6}$ legal context conditions
+tested, against a 2-bit threshold for absorption.  The obstruction is that
+one edge, heavy for the same reason as the $a_4\to C_0$ edge of \S3:
+$\Sigma_0$ of the unknown itself.  Evidence and scripts:
+\texttt{experiments/submask\_2026-09-03/analysis/elimination\_search/} in the
+repository.
+
 \begin{thebibliography}{10}
+
+\bibitem{Basra2026Submask}
+K.~S.~Basra.
+\newblock Context shaping for reduced-round {SHA-256} compression-function
+  preimages: nineteen rounds in milliseconds, and computed preimages at
+  twenty rounds.
+\newblock Manuscript, 2026.  Same repository.
 
 \bibitem{Basra2026R19}
 K.~S.~Basra.

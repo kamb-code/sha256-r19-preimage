@@ -777,6 +777,51 @@ $\Maj(a_5,a_4,a_3)$.  Either way a non-maskable path remains.  A symbolic search
 tighter families (collapse rates $1.016\times10^{-4}$ and
 $0.987\times10^{-4}$, \texttt{logs/frame\_search.log}), so they cost nothing but also gain nothing.
 
+\paragraph{The obstruction is a single edge.}
+The statement can be made sharper than Table~\ref{tab:frames}.  Two general
+facts hold at 20 rounds (\path{analysis/elimination_search/}).  First, an
+\emph{offset law}: every state word $a_k$ enters the recovered message word
+$W_{k+5}$ through $\Sig0(a_k)$, carried by the term
+$e_{k+1}=a_{k-3}+a_{k+1}-\Sig0(a_k)-\Maj(a_k,a_{k-1},a_{k-2})$ subtracted
+inside~\eqref{eq:recW}, and through $\Sig1(e_{k+4})$ with $e_{k+4}=a_k+\text{const}$;
+both are one-input functions of $a_k$ itself, so no context word can saturate
+them.  Second, $a_1$, $a_2$ and $a_3$ have forced homes: in every one of
+$11{,}086$ legal context configurations examined, $a_1$ is heavy in $C_1$, $C_2$
+and $C_3$ and can be absorbed only by $C_0$, and likewise $a_2$ only by $C_1$
+and $a_3$ only by $C_2$.  Hence a fourth absorbed word must be light in
+$C_0$, $C_1$ and $C_2$ and absorbable by $C_3$, and the offset law puts
+$\Sig0(a_k)$ heavily into at least one of $C_0$, $C_1$, $C_2$ for every
+$k=4,\dots,11$.
+
+The closest miss is $a_5$, and it localises the barrier to one wire.  With
+$a_6=\neg a_4$, $a_7=a_6$ and $e_8=\hex{0xFFFFFFFF}$ the word $a_5$ is
+\emph{exactly} absent from $C_0$ and from $C_2$, and with $e_{11}=0$ it enters
+$C_3$ exactly linearly; every path but one is cut.  The one that remains is
+$a_5\to C_1$ through $-\Sig0(a_5)$ inside $e_6=a_2+a_6-\Sig0(a_5)-\Maj(a_5,a_4,a_3)$
+in $W_{10}$.  With $a_0,\dots,a_3$ fixed, the $C_1$ lookup target depends on
+$a_5$ through exactly four atoms,
+$-\Sig0(a_5)-\Maj(a_5,a_4,a_3)+\Sig1(a_5+c_9)+\Ch(a_5+c_9,e_8,e_7)$, where
+$c_9=a_9-T_2^{(9)}$ is the only context lever besides flattening the
+$\Maj$ and $\Ch$ terms (worth one to two bits).  The kernel
+$\Sig1(x+c_9)-\Sig0(x)$ changes at least $10.3$ bits per flipped bit of $x$
+for every $c_9$ in a scan of $201{,}058$ values including every sparse one.
+A falsification test over about $1.6\times10^{6}$ legal context conditions
+outside the standard menu (arbitrary constants for $e_8,\dots,e_{11}$ and the
+context words; rotational, XOR, additive, $\Sigma$ and GF(2)-linear ties;
+a symbolic search for a cancelling second occurrence; a full $2^{32}$ scan of
+the frozen-$a_5$ residual; and a reduced-width model exhaustive over all
+$2^{25}$ contexts at five bits and checked at 6, 8, 12 and 32) found a global
+minimum of $10.86$ bits per flipped bit, against the 2-bit threshold at which
+absorption becomes possible and a control of $12.3$--$13.1$ bits on the
+$a_4\to C_0$ edge; the frozen residual is a random 32-bit map
+($P(\text{residual}=0)=2\cdot2^{-32}$, no affine output bit)
+(\path{analysis/elimination_search/falsify_a5/}).  The obstruction to a fourth
+absorption at 20 rounds is therefore not a web of dependencies but this single
+edge, and it is heavy for the same reason as the $a_4\to C_0$ edge of
+\cite{Basra2026R20}: $\Sig0$ of the unknown itself.  We state this for this
+construction and its menu of context conditions; it is not a claim about
+attacks that are not table-based.
+
 \paragraph{Independence of the fourth and fifth constraints.}
 On 214{,}583 freshly generated 21-round candidates (84 targets,
 $8.4\times10^{9}$ swept $a_0$; \path{analysis/scripts/symdep/gen.log})

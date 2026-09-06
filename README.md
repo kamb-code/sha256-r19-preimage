@@ -14,7 +14,7 @@ of two documents, kept deliberately separate.
 
 > **Companion note** — "The 20-Round Barrier for Table-Based Preimage Attacks
 > on SHA-256"
-> `paper_r20_barrier.pdf` / `paper_r20_barrier.tex` (10 pp)
+> `paper_r20_barrier.pdf` / `paper_r20_barrier.tex` (11 pp)
 >
 > Why the same construction does not reach 20 rounds. **Exploratory and
 > largely negative**: an inventory of which absorptions admit a global table
@@ -29,7 +29,7 @@ of two documents, kept deliberately separate.
 > **Second paper** — "Context Shaping for Reduced-Round SHA-256
 > Compression-Function Preimages: Nineteen Rounds in Milliseconds, and
 > Computed Preimages at Twenty Rounds"
-> `paper_submask_r20.pdf` / `paper_submask_r20.tex` (15 pp), filing package
+> `paper_submask_r20.pdf` / `paper_submask_r20.tex` (16 pp), filing package
 > `SUBMISSION.md`
 >
 > Choosing the context so that a4 = a5 and e8 = e9 = 0xFFFFFFFF removes the
@@ -256,8 +256,8 @@ publish/
   RESUBMISSION_R19.md        — ePrint filing package for the main paper
   data_screening_validation.json, data_screening_280.txt,
   data_screening_notes_20260808.md — archived screening runs behind §5.7
-  paper_r20_barrier.pdf/.tex — companion note (10 pages)
-  paper_submask_r20.pdf/.tex — second paper (15 pages); supersedes the cost
+  paper_r20_barrier.pdf/.tex — companion note (11 pages)
+  paper_submask_r20.pdf/.tex — second paper (16 pages); supersedes the cost
                                figures of the two documents above
   SUBMISSION.md              — ePrint filing package for the second paper
   experiments/submask_2026-09-03/ — the second paper's evidence: as-run scripts,
