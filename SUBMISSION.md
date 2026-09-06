@@ -53,8 +53,8 @@ iteration, and collapses the consistency residual to $\mathrm{Maj}(a_4,a_3,a_2)-
 modulo $2^{32}$, whose vanishing is a bitwise condition of probability exactly
 $(3/4)^{32}$ rather than $2^{-32}$. The measured cost of a 19-round preimage
 falls from about $2^{38.3}$ swept values of $a_0$ to about $2^{15.25}$, within
-one per cent of the derived $39{,}124$: about 12 milliseconds of one CPU core.
-We exhibit 13,840 verified preimages produced in 152 seconds, and 108
+one per cent of the derived $39{,}124$: about 12 milliseconds of one CPU core
+after a reusable one-time table precomputation. We exhibit 13,840 verified preimages produced in 152 seconds, and 108
 preimages of the all-ones digest that Zaikin inverted at 19 rounds in 18 hours
 33 minutes on 192 cores.
 
@@ -70,8 +70,9 @@ preimage). To
 our knowledge, and after a search of the IACR ePrint archive, dblp, OpenAlex,
 arXiv and the SAT, CP and AI venues as of September 2026, no computed preimage
 of the SHA-256 compression function beyond 19 rounds has been published. We
-also show that, for this construction, 21 rounds costs the full additional
-$2^{64}$: the fourth and fifth constraints are independent, and the dependency
+also give evidence that, for this construction, 21 rounds costs the full
+additional $2^{64}$: the fourth and fifth constraints are measured to be
+independent, and the dependency
 that blocks a further collapse passes through $\Sigma_0$ of the unknown itself,
 which no context word can saturate. Neither lever is new on its own; the
 contribution is their combination and the bitwise collapse. Nothing here
