@@ -128,6 +128,39 @@ correctly reproduced as a positive control.  The only message-domain absorbers
 are the last few message words, which the backward chain already peels free,
 and they run out at 20 rounds.
 
+## Why lattice reduction fails, stated properly
+
+The expected diagnosis was that SHA-256 cannot be encoded in a lattice.  That is
+**wrong**, and finding it wrong is the most useful thing the lattice study
+produced (`lattice_3d/`).  The encoding is exact and cheap: `a + b + c = x + 2m`
+with `x, m` in `{0,1}` defines XOR and `Maj` simultaneously, so every primitive
+of SHA-256 (`Sigma`/`sigma`, `Maj`, `Ch`, and addition mod `2^32`) is exactly
+Z-linear in 0/1 variables.
+
+The failure is geometric, and it is absolute rather than a matter of reduction
+quality.  Each carry gadget adds `2w` variables against `w` equations, so the
+dimension is always about half the variable count, the determinant per dimension
+tends to 2.5, and the ratio of the target vector's norm to the Gaussian
+heuristic is `sqrt(4*pi*e)/2.5 = 2.34` at **every** width and for **every**
+subsystem (verified analytically, which is why the same constant appears in all
+twelve measured cells).  Lattice reduction succeeds only when that ratio is
+below 1, calibrated here against subset-sum instances that succeed at 0.40 and
+fail at 1.01, and truncated linear congruential generators that succeed at 4
+truncated bits and fail at 16, through the same code path.  So **a perfect
+shortest-vector oracle would also fail**: about `2^76` lattice points are at
+least as short as the solution for a single inversion, and about `2^2891` for
+the full system.  Measured: 0 successes in 50 LLL runs, 0 in 15 BKZ-20 runs,
+0 at full width, and 0 even when handed 30 of the 32 unknown bits.
+
+The information-theoretic root cause is worth stating because it generalises.
+Lattices break truncated congruential generators, low-density knapsacks and
+Coppersmith instances because those problems **give redundancy away for free**.
+In a preimage the equations *are* the goal: 128 unknown bits against 128
+constraint bits, density exactly 1.  Buying the density a lattice would need
+costs `2^77` contexts to manufacture one solvable instance, so the `2^32` you
+wanted to remove reappears as the price of the redundancy.  This is the offset
+law seen from the information side.
+
 ## The observation itself, kept for the record
 
 `Sigma0` and `sigma0` are GF(2)-linear, so an exclusive-or difference passes

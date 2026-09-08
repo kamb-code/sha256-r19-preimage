@@ -21,9 +21,11 @@ MANIFEST regenerated 2026-09-08 11:56:03 UTC: adds analysis/lattice_3d/, analysi
 
 MANIFEST regenerated 2026-09-08 13:27:31 UTC: adds analysis/STATUS_AND_STOPPING_POINT.md.
 
+MANIFEST regenerated 2026-09-08 13:38:49 UTC: adds the lattice synthesis, lattice_3d/CORRECTIONS.md and the proper lattice diagnosis in WHAT_WOULD_BE_NEEDED.md.
+
 sha256  path  size
 010ecd061ae440df95fa6a712bef9e58ed06b7c7b81f71e975dae18a91105dc9  FLEET.txt  3063 bytes
-4c0501369d56704b589fd1915ac91fcda9f3c65682cab7a80969fd21722c8cf8  NOTES.md  5521 bytes
+41b4933ea4e151dd0f0954a6bb2bdf35d7465e00323b488b4538e75f8fe62e52  NOTES.md  6035 bytes
 effe4b4b3b06609732ca1acf62111a7f9e909152b143151bb4274502772554f2  R20_PREIMAGE.txt  1904 bytes
 b81c339baa48606b21d13b04346ba83c3da5ecc354de296a3cc367958b4f5913  R20_PREIMAGE_ALLONES.txt  3020 bytes
 108a4ebd729b93205b2607aa2cf3a019329d12c7740e20ae36b4c3ddae4a1f09  STATE.md  1484 bytes
@@ -50,7 +52,7 @@ eb1b77f11ee36cced88cfe749abd90834a1b8eabd5e6bfc6df0a02c79d8ce667  gpu_run_snapsh
 2fa4a885d00fc5dfb5b6c5aed0ac315ff73b896ec038b4ed5fe1a36585b925f0  gpu_run_snapshot/live/t1/stdout.log  1891966 bytes
 98aa0fa2e76ea326f9b649f625351afab618e114db33b53bbbbf65bc073a9e4c  analysis/FINDINGS.md  4201 bytes
 e42dc1c418c422489008f8aebcce37c9ea43c66f0d7c2cf99ec9c3c9ca7f7893  analysis/STATUS_AND_STOPPING_POINT.md  4348 bytes
-98dcae0fef68b5733556cdf9990602b80c3630e4f9ca173c1930659284669413  analysis/WHAT_WOULD_BE_NEEDED.md  9062 bytes
+b87b26a127f0a0b91d36062614d7c125653edd55a9d0f8519c8c1c6058bc9df4  analysis/WHAT_WOULD_BE_NEEDED.md  11185 bytes
 a9a398a76a55e5958197b73f68bcc1ba6e1379ff20641b32daee412d172a6902  analysis/reports.json  168544 bytes
 52f028b3264dda704ebfc9fda4aa7275537d26c9d13620dc91126e82f2f80909  analysis/differential_wdomain/reports.json  66663 bytes
 67b5160e488df59e284bc7d3a2ae130574ef39d326c089a2ea267367425ab6ad  analysis/differential_wdomain/synth/dep.py  1244 bytes
@@ -69,7 +71,9 @@ a53163a95d9df2c6fdd179310f282673cac3d4c103370792c7f33110d032154e  analysis/diffe
 ccf2b18e121494037291bedb567f0f3a6c66733438e0b97ae587074d70b32ccc  analysis/differential_wdomain/wdomain/offset_tie.py  4577 bytes
 fee68bb52d19763b2c3f0f19fbf988038672ce4a7d52fe8faa7193a35ab58eb5  analysis/differential_wdomain/wdomain/redw.py  11512 bytes
 0ebda5ed40d7119c73f9156b7bfce564590b9a13cd8ac646aef3a9e31a941e68  analysis/differential_wdomain/wdomain/wdom.py  11820 bytes
-026b6cd9770240e403daac2d52d59e3a1b6b837cabf612d92a52ca54d9173807  analysis/lattice_3d/reports.json  42686 bytes
+4be0b8580c5b756df9edc8ec6914491b1d6f63a0885daba5a6fdaa58ae090d18  analysis/lattice_3d/CORRECTIONS.md  3075 bytes
+a1583cffb48df5acae7cf50fc0451f89e9bebbbb2cabf515b373deee5d9c8942  analysis/lattice_3d/reports.json  77530 bytes
+056aca77f7ba02dab10472653811d56fb376b565e7c338e302a7d1b4a32cfc22  analysis/lattice_3d/synthesis.json  21471 bytes
 11db5de51544a806248134cc0f19c50ae1ce55f4eeee4e9e6ff438ae363d371a  analysis/lattice_3d/mdtable/t10_frames.py  3182 bytes
 dfabfe4cfa268075b0022979c2f6b1a21fbfd194685783d10de435dec05ce4ec  analysis/lattice_3d/mdtable/t11_grid.py  1471 bytes
 8e4c52e3b4718bf227e37509c446d754192432fa84a7c0bbbbd3150f43a3a491  analysis/lattice_3d/mdtable/t12_sens.py  1760 bytes
