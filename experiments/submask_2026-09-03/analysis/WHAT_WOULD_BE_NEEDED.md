@@ -55,9 +55,12 @@ SHA-256 in general.
 
 A technique that beats 20 rounds in this framework must satisfy **all** of:
 
-* **(R1)** It must not require inverting `Sigma0` or `sigma0` *of an unknown*
-  jointly with modular addition.  Every blocked path in every search reduces to
-  exactly that operation.
+* **(R1)** It must remove at least one of the two value filters, and the only
+  known way to remove the `2^-32` one is to absorb a fourth unknown with `C3`.
+  Every search that tried reduces to the same blocked operation: solving one of
+  `C0`, `C1`, `C2` for a word that enters it through `Sigma0` *of itself*
+  jointly with modular addition.  (Inverting `sigma0(u) - u` is not itself the
+  difficulty; the table does that in one lookup.  See the correction below.)
 * **(R2)** If it beats a 32-bit filter by factorisation, its residual must be
   built from bitwise atoms alone (fact 4).  Otherwise it needs a mechanism
   that is not per-bit factorisation at all.
