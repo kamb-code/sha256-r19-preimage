@@ -1,0 +1,30 @@
+component      g=1      g=2      g=3      g=8      g=16     g=31     
+Sigma0        1.00000  1.00000  1.00000  1.00000  1.00000  1.00000  
+Sigma1        1.00000  1.00000  1.00000  1.00000  1.00000  1.00000  
+sigma0        0.24989  0.06245  0.01569  0.01563  0.01562  0.24988  
+sigma1        0.25016  0.06262  0.01563  0.00002  0.00000  0.24980  
+Ch            1.00000  1.00000  1.00000  1.00000  1.00000  1.00000  
+Maj           1.00000  1.00000  1.00000  1.00000  1.00000  1.00000  
+XOR           1.00000  1.00000  1.00000  1.00000  1.00000  1.00000  
+ADD mod 2^32  0.37519  0.31244  0.28137  0.25081  0.24995  0.37477  
+ADD 3-term    0.16656  0.05213  0.03908  0.02808  0.02774  0.16672  
+
+Daum/KN prediction for ADD, p(g) = (1/4)(1 + 2^(g-32) + 2^(-g) + 2^(-32)):
+  g= 1  predicted 0.375000   measured 0.375188
+  g= 2  predicted 0.312500   measured 0.312441
+  g= 3  predicted 0.281250   measured 0.281369
+  g= 8  predicted 0.250977   measured 0.250809
+  g=16  predicted 0.250008   measured 0.249947
+  g=31  predicted 0.375000   measured 0.374773
+
+Exact defect of the SHR terms:  (x>>s) <<< g   vs   (x <<< g) >> s
+  sigma0 SHR3 g= 1: differing positions  2 (mask 20000001), P[equal] = 0.249894 (2^-2 = 2.500e-01)
+  sigma0 SHR3 g= 2: differing positions  4 (mask 60000003), P[equal] = 0.062445 (2^-4 = 6.250e-02)
+  sigma0 SHR3 g= 8: differing positions  6 (mask e00000e0), P[equal] = 0.015634 (2^-6 = 1.562e-02)
+  sigma0 SHR3 g=16: differing positions  6 (mask e000e000), P[equal] = 0.015624 (2^-6 = 1.562e-02)
+  sigma0 SHR3 g=31: differing positions  2 (mask 90000000), P[equal] = 0.249884 (2^-2 = 2.500e-01)
+  sigma1 SHR10 g= 1: differing positions  2 (mask 00400001), P[equal] = 0.250162 (2^-2 = 2.500e-01)
+  sigma1 SHR10 g= 2: differing positions  4 (mask 00c00003), P[equal] = 0.062622 (2^-4 = 6.250e-02)
+  sigma1 SHR10 g= 8: differing positions 16 (mask 3fc000ff), P[equal] = 0.000016 (2^-16 = 1.526e-05)
+  sigma1 SHR10 g=16: differing positions 20 (mask ffc0ffc0), P[equal] = 0.000001 (2^-20 = 9.537e-07)
+  sigma1 SHR10 g=31: differing positions  2 (mask 80200000), P[equal] = 0.249802 (2^-2 = 2.500e-01)

@@ -1,0 +1,37 @@
+=== (1) is the family closed under a bit rotation of the state? ===
+build a family context (a4=a5=v, e8=e9=-1), rotate all its words by g,
+and ask whether the rotated words still satisfy the family conditions.
+  g= 1: rotated context has e8=-1 in 9.998e-02, e9=-1 in 1.664e-01, both 2.141e-02   (a4=a5 always survives)
+  g= 2: rotated context has e8=-1 in 2.803e-02, e9=-1 in 5.217e-02, both 3.821e-03   (a4=a5 always survives)
+  g= 8: rotated context has e8=-1 in 1.026e-02, e9=-1 in 2.811e-02, both 1.493e-03   (a4=a5 always survives)
+  g=16: rotated context has e8=-1 in 1.000e-02, e9=-1 in 2.799e-02, both 1.461e-03   (a4=a5 always survives)
+  g=31: rotated context has e8=-1 in 1.001e-01, e9=-1 in 1.669e-01, both 2.154e-02   (a4=a5 always survives)
+
+=== (2) which pieces ARE rotation-covariant ===
+  g= 1: collapsed condition Maj(v,a3,a2)==a3 covariant on 1.000000 of samples (bitwise -> exactly 1.0 expected)
+  g= 5: collapsed condition Maj(v,a3,a2)==a3 covariant on 1.000000 of samples (bitwise -> exactly 1.0 expected)
+  g=16: collapsed condition Maj(v,a3,a2)==a3 covariant on 1.000000 of samples (bitwise -> exactly 1.0 expected)
+  0xFFFFFFFF is rotation-invariant: True; so e8=e9=-1 is a symmetric state
+  a4 = a5 is an equality between words: covariant under any word map: True
+
+=== (3) the fourth constraint c3 = sigma0(W4) + W3 - kappa3 ===
+  g= 1: P[ rot(sigma0(W4)+W3) == sigma0(rot W4)+rot W3 ] = 1.875081e-01
+  g= 2: P[ rot(sigma0(W4)+W3) == sigma0(rot W4)+rot W3 ] = 3.905988e-02
+  g=16: P[ rot(sigma0(W4)+W3) == sigma0(rot W4)+rot W3 ] = 3.884554e-03
+  g=31: P[ rot(sigma0(W4)+W3) == sigma0(rot W4)+rot W3 ] = 1.873100e-01
+  (kappa3 is a fixed constant, so it contributes a further deterministic
+   mismatch rot(kappa3) != kappa3 unless kappa3 is rotation-invariant.)
+
+=== (4) slide / translation along the round axis ===
+  pairs with K_r == K_(r+d), d=1..20: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  (all zero -> the round function is never self-similar under a shift)
+  distinct K_r among the 20 used at R=20: 20 of 20
+  message EXPANSION is a constant-coefficient recurrence, hence exactly
+  translation-covariant: W'_i = W_(i+d) is again a valid schedule.
+  So the only obstructions to a slide are K_r and the IV alignment.
+  IV alignment for a slide by d=1 (state after round 1 == IV) forces
+    IV0==IV1 False, IV1==IV2 False, IV2==IV3 False,
+    IV4==IV5 False, IV5==IV6 False, IV6==IV7 False
+    -> 6 word equalities required, 0 hold: a d=1 slide is IMPOSSIBLE, not rare.
+  for d>=4 all eight state words are message-dependent: 8 x 32 = 256 bit
+  conditions, i.e. finding a slid pair is itself a 2^256 problem, and even
+  then it relates preimages of two DIFFERENT digests.

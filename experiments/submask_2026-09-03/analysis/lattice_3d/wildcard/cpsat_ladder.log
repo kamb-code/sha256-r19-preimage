@@ -1,0 +1,27 @@
+CP-SAT on the context-fixed R=20 family instance, planted solution, 240.0s cap, 16 workers
+ w   trial   status        seconds    branches    conflicts   solved?
+  4      0   OPTIMAL           0.24        1566         142   YES
+  4      1   OPTIMAL           0.51        8633        1780   YES
+  4      2   OPTIMAL           0.28        3066         593   YES
+  4      3   OPTIMAL           0.24        2700         164   YES
+  4      4   OPTIMAL           0.31        5719         922   YES
+  5      0   OPTIMAL           1.18       25098        9609   YES
+  5      1   OPTIMAL           0.11        2202         377   YES
+  5      2   OPTIMAL           0.49       10068        2646   YES
+  5      3   OPTIMAL           1.70       30152       10739   YES
+  5      4   OPTIMAL           0.95        8241         332   YES
+  6      0   OPTIMAL           2.98       60892       26095   YES
+  6      1   OPTIMAL           0.19        4329         553   YES
+  6      2   OPTIMAL           1.11       12081        5908   YES
+  6      3   OPTIMAL           1.39       24535        6315   YES
+  6      4   OPTIMAL           7.02       83277       36741   YES
+  7      0   OPTIMAL         124.12     1139414      492429   YES
+  7      1   OPTIMAL          18.64      166965       75384   YES
+  7      2   OPTIMAL         102.23      835669      385756   YES
+  7      3   OPTIMAL          17.00      142660       54713   YES
+  7      4   OPTIMAL          10.60       79974       33994   YES
+  8      0   UNKNOWN         240.11     1587963       11209   -
+  8      1   UNKNOWN         240.11     1713530       11206   -
+  8      2   OPTIMAL          25.85      270648      117760   YES
+  8      3   UNKNOWN         240.10     2063878       12249   -
+  8      4   OPTIMAL          78.13      763029      336123   YES

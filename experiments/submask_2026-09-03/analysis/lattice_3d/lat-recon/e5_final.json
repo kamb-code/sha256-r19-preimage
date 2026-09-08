@@ -1,0 +1,88 @@
+[
+ {
+  "check": "w=32 model vs 16GB table",
+  "probed": 200000,
+  "stored_fraction": 1.0,
+  "all_roots_valid": true
+ },
+ {
+  "w": 8,
+  "enc": "B",
+  "known_high": 0,
+  "trials": 15,
+  "success": 0,
+  "rate": 0.0,
+  "secs": 1.0,
+  "dim_L": 33,
+  "dim_L0": 17,
+  "target_norm": 5.744562646538029,
+  "gh": 2.4951621618829716,
+  "ratio": 2.3023091685739656,
+  "log2_count": 20.452232930332478,
+  "L0_shortest": 2.4494897427831783,
+  "reduction": "LLL"
+ },
+ {
+  "w": 8,
+  "enc": "B",
+  "known_high": 0,
+  "trials": 15,
+  "success": 0,
+  "rate": 0.0,
+  "secs": 5.9,
+  "dim_L": 33,
+  "dim_L0": 17,
+  "target_norm": 5.744562646538029,
+  "gh": 2.4951621618829716,
+  "ratio": 2.3023091685739656,
+  "log2_count": 20.452232930332478,
+  "L0_shortest": 2.4494897427831783,
+  "reduction": "BKZ-20"
+ },
+ {
+  "w": 12,
+  "enc": "B",
+  "known_high": 0,
+  "trials": 15,
+  "success": 0,
+  "rate": 0.0,
+  "secs": 1.8,
+  "dim_L": 49,
+  "dim_L0": 25,
+  "target_norm": 7.0,
+  "gh": 3.0706894020101245,
+  "ratio": 2.2796555843230646,
+  "log2_count": 29.720102657580274,
+  "L0_shortest": 2.4494897427831783,
+  "reduction": "LLL"
+ },
+ {
+  "w": 12,
+  "enc": "B",
+  "known_high": 0,
+  "trials": 15,
+  "success": 0,
+  "rate": 0.0,
+  "secs": 12.3,
+  "dim_L": 49,
+  "dim_L0": 25,
+  "target_norm": 7.0,
+  "gh": 3.070689402010124,
+  "ratio": 2.2796555843230646,
+  "log2_count": 29.720102657580274,
+  "L0_shortest": 2.4494897427831783,
+  "reduction": "BKZ-20"
+ },
+ {
+  "check": "lattice points with norm <= target, w=8",
+  "target_norm2": 33,
+  "counts": [
+   225582,
+   232050,
+   206896,
+   209982,
+   243164
+  ],
+  "capped_at": 400000
+ }
+]

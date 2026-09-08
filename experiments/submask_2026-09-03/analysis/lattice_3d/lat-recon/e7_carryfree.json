@@ -1,0 +1,30 @@
+[
+ {
+  "w": 8,
+  "count": 18,
+  "bits": 4.17,
+  "bits_per_word_bit": 0.5212,
+  "fraction": 0.0703125
+ },
+ {
+  "w": 12,
+  "count": 56,
+  "bits": 5.807,
+  "bits_per_word_bit": 0.4839,
+  "fraction": 0.013671875
+ },
+ {
+  "w": 16,
+  "count": 246,
+  "bits": 7.943,
+  "bits_per_word_bit": 0.4964,
+  "fraction": 0.003753662109375
+ },
+ {
+  "w": 32,
+  "count": 62129,
+  "bits": 15.923,
+  "bits_per_word_bit": 0.4976,
+  "fraction": 1.4465535059571266e-05
+ }
+]

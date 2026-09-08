@@ -68,34 +68,78 @@ A technique that beats 20 rounds in this framework must satisfy **all** of:
   orders of magnitude worse on the identical instance, and imposing our
   structure as clauses makes it worse still.
 
-## What that leaves, and the one observation worth acting on
+## Correction: where the barrier actually sits
 
-`Sigma0` and `sigma0` are **GF(2)-linear** (each is an exclusive-or of
-rotations and shifts).  Our attack is blocked by them because it must invert
-them *on values*, simultaneously with modular addition.  But an exclusive-or
-difference passes through a GF(2)-linear map exactly and for free:
-`Sigma0(x XOR d) = Sigma0(x) XOR Sigma0(d)`.
+An earlier revision of this note said the attack is blocked by having to invert
+`Sigma0`/`sigma0` of an unknown.  That is wrong as stated, and the differential
+study (`differential_wdomain/`) found the error.  The 16 GB table inverts
+`sigma0(u) - u` in **one lookup**; inversion is not the cost.  The cost is two
+pure **value filters**: the collapsed consistency condition (`(3/4)^32`) and the
+fourth schedule constraint (`2^-32`), together `2^45.4` at 20 rounds.  The offset
+law matters because it is what stops a fourth unknown being absorbed, which is
+the only way to remove the `2^-32`.  The distinction is not pedantic: it is
+exactly why the direction this note previously recommended does not work.
 
-So the precise operation that blocks this attack is **transparent to a
-difference-based technique**, and conversely what our table handles for free,
-the modular additions, is what carries make hard for differences.  The two
-approaches have complementary difficulty profiles.  That does not mean a
-differential or rebound attack reaches 21 rounds; it means the barrier proved
-here is a barrier to *value-based table absorption* specifically, and says
-nothing against the one family of techniques whose difficulty is arranged the
-other way round.  Nothing in this project has tested that family.
+## The two gaps of the previous revision, now closed
 
-One further structural gap: every frame tried so far parameterises the attack
-by state words (`a`-words, and the `e`-word duals, which fail because the
-branch coupling is one-directional).  An attack parameterised in the
-**message-word domain** has a different dependency graph and has not been
-examined.
+**Difference-based techniques buy nothing, for a reason the earlier note missed.**
+The complementary-difficulty observation below is arithmetically true and
+strategically irrelevant: a differential relates a *pair* and imposes no
+condition on an output *value*, while a preimage fixes the value and has no
+pair.  Three independent measurements agree.
+
+* Chunk-separated meet-in-the-middle has an exact cost ladder here, not an
+  extrapolation: `2^96` at 19 rounds, `2^128` at 20, `2^160` at 21, reaching
+  `2^256` at 24 where chunk separation dies (which is where Isobe-Shibutani had
+  to switch technique, the model's own control).  At 21 rounds that is **83 bits
+  worse** than this attack's `2^77`.  The cap is structural: the message
+  schedule couples 13 of 16 words, leaving neutral sets `{6,7,8}` at 21 rounds
+  (confirmed: perturbing those three changed `W16..W20` in 0 of 3,000 trials),
+  and beating `2^77` would need at least 5.6 disjoint neutral words per side.
+  Published biclique dimension on SHA-256 is 1 to 3 bits, so amplifiers cannot
+  close it.
+* The best characteristic reachable in the frame where the linear maps are free
+  costs `2^-2889` at 21 rounds against a `2^-77` bar, because the charged
+  modular additions outnumber the free linear maps 3 to 1 (162 against 52 per
+  21 rounds).  Modular addition costs exactly the Hamming weight of the
+  difference below the top bit; `Ch` and `Maj` cost a bit at six of eight input
+  patterns.
+* Applied directly to the five witnesses this project owns, **13,981,848**
+  nonzero message differences produced **0** second preimages (95% bound
+  `p <= 2^-22.2`).  With a fixed initial value, any preimage-to-preimage
+  difference is exactly a fixed-IV collision.
+* Rebound attacks give 0 by construction, for the same reason: a characteristic
+  constrains a pair's difference and says nothing about the output value.
+
+**The message-word domain is not a second frame at all.**  The map from the 16
+message words to the state words is a prefix-triangular bijection (verified
+300/300 in both directions), so fixing a message-word prefix *is* fixing a
+state-word prefix, and the counting is identical rather than merely comparable.
+Where the two domains differ, the message domain is strictly worse: the
+absorber exists because `a_k` enters `W_k` with `+1` and `W_{k+8}` with `-1`,
+forming the `sigma0(u) - u` atom the table inverts, whereas `W_i` enters
+`W_{i+7}` and `W_{i+16}` both with `+1`, so no such atom can form.  Measured: 0
+of 128 exact `+/-1` cells at 20 and 21 rounds, minimum edge weight 7.69 bits,
+and 0 absorbable cells at four reduced widths with the state-domain diagonal
+correctly reproduced as a positive control.  The only message-domain absorbers
+are the last few message words, which the backward chain already peels free,
+and they run out at 20 rounds.
+
+## The observation itself, kept for the record
+
+`Sigma0` and `sigma0` are GF(2)-linear, so an exclusive-or difference passes
+through them exactly and for free (0 violations in 1,048,576 trials each),
+while modular addition destroys such differences.  The profiles really are
+complementary.  What the measurements above establish is that this buys nothing
+for a *preimage*, because the technique whose difficulty is arranged the other
+way round is a technique about pairs, and a preimage is about a value.
 
 ## How to use this
 
 For a referee or a reader, this is the honest statement of scope: the barrier
-is sharp, single-edged and measured, and it is a barrier to a named family of
-techniques rather than to the problem.  For anyone continuing the work, R1--R5
-are the filter to apply to a new idea *before* spending compute on it: if a
-proposal does not say how it avoids inverting a one-input function of an
-unknown, it will terminate where the previous six searches did.
+is sharp, single-edged and measured, and every named alternative now has a
+number against it rather than an absence of evidence.  For anyone continuing
+the work, R1--R5 are the filter to apply to a new idea *before* spending
+compute: a proposal must say which of the two `2^-32` value filters it removes
+and how, given that no fourth unknown can be absorbed while the offset law
+holds.  Six searches have now terminated at that same point.

@@ -1,0 +1,37 @@
+=== sanity: the two published 20-round preimages verify ===
+  solver digest  recomputed digest == published target: True
+  all-ones       recomputed digest == published target: True
+
+=== stabiliser of a target under a bit-rotation of the state ===
+required: s_i = h_i - IV_i is invariant under rot_g, for all 8 words
+  solver digest   : s = ['6f58e3c9', 'a7f7ecef', '6ffd98a0', '9e51b495', '2f002f3d', '6aec6a58', 'e7e0ece1', '1d7ea66f']
+                    nontrivial g fixing the target: []  -> stabiliser size 1
+  all-ones ff..ff : s = ['95f61998', '4498517a', 'c3910c8d', '5ab00ac5', 'aef1ad80', '64fa9773', 'e07c2654', 'a41f32e6']
+                    nontrivial g fixing the target: []  -> stabiliser size 1
+
+  For the all-ones digest s_i = ~IV_i.  Is any ~IV_i rotation-invariant?
+    ~IV[0] = 95f61998: nontrivial rotational periods []
+    ~IV[1] = 4498517a: nontrivial rotational periods []
+    ~IV[2] = c3910c8d: nontrivial rotational periods []
+    ~IV[3] = 5ab00ac5: nontrivial rotational periods []
+    ~IV[4] = aef1ad80: nontrivial rotational periods []
+    ~IV[5] = 64fa9773: nontrivial rotational periods []
+    ~IV[6] = e07c2654: nontrivial rotational periods []
+    ~IV[7] = a41f32e6: nontrivial rotational periods []
+
+=== how many targets have a nontrivial rotational stabiliser? ===
+  g= 1: period gcd(g,32)=1; each s_i has 2^1 choices; fraction of digests fixed = 2^-248
+  g= 2: period gcd(g,32)=2; each s_i has 2^2 choices; fraction of digests fixed = 2^-240
+  g= 4: period gcd(g,32)=4; each s_i has 2^4 choices; fraction of digests fixed = 2^-224
+  g= 8: period gcd(g,32)=8; each s_i has 2^8 choices; fraction of digests fixed = 2^-192
+  g=16: period gcd(g,32)=16; each s_i has 2^16 choices; fraction of digests fixed = 2^-128
+
+=== concrete: rotate a published preimage and count surviving constraints ===
+  solver digest:
+    g= 1: expanded words matching rot: 0/4;  state words matching rot: 0/40;  digest == rotated target: False
+    g=16: expanded words matching rot: 0/4;  state words matching rot: 0/40;  digest == rotated target: False
+    g=31: expanded words matching rot: 1/4;  state words matching rot: 0/40;  digest == rotated target: False
+  all-ones:
+    g= 1: expanded words matching rot: 0/4;  state words matching rot: 0/40;  digest == rotated target: False
+    g=16: expanded words matching rot: 0/4;  state words matching rot: 0/40;  digest == rotated target: False
+    g=31: expanded words matching rot: 0/4;  state words matching rot: 0/40;  digest == rotated target: False

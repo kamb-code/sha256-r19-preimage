@@ -1,0 +1,16 @@
+[A] natural variables: exact ANF of c3 as a function of (a2,a3) at w=8  (16 variables)
+    degree per output bit: min 15 max 16 mean 15.58   (maximum possible 16)
+    ANF density: mean 0.4999 of all 65536 monomials (a random function gives 0.5)
+    -> at w=32 with 4 unknown words the same behaviour gives ~2^127 monomials per equation; the polynomial cannot even be written down.
+
+[B] carry-augmented quadratic Boolean system for the context-fixed R=20 instance (unknowns a0..a3):
+  w    bool vars n   quad eqs m   modular adds   Maj   Ch
+   8          787         1043           61     4     8
+  16         1635         2147           61     4     8
+  32         3331         4355           61     4     8
+
+  at w=32: n = 3331 variables, m = 4355 quadratic equations (m/n = 1.31)
+  full carry-augmented system: n=3331 m=4355 -> d_reg = 257, F4/F5 cost ~ binom(n,d_reg)^2 = 2^2601
+  only the 128 unknown bits, if the equations were quadratic (they are not): n=128 m=128 -> d_reg = 17, F4/F5 cost ~ binom(n,d_reg)^2 = 2^138
+
+  brute force over the 128 unknown bits for comparison: 2^128; the published attack: 2^45.4

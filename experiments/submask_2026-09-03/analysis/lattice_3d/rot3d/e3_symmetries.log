@@ -1,0 +1,40 @@
+=== (1) rotation of the bit axis, full compression, R = 20 ===
+A rotational pair needs W' = W<<<g AND a rotated IV (IV<<<g) AND, with
+constants on, K_r<<<g == K_r.  Per-round survival, measured:
+/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/lattice/rot3d/e3_symmetries.py:53: RuntimeWarning: overflow encountered in scalar add
+  T1 = (e[r - 4] + S1(e[r - 1]) + Ch(e[r - 1], e[r - 2], e[r - 3]) + kk + W[r]) & M
+  K removed, IV rotated, g=1: alive after rounds 0.. = [471017, 7328, 0] (N=4,194,304) -> dies at round 2
+  K removed, IV rotated, g=31: alive after rounds 0.. = [0] (N=4,194,304) -> dies at round 0
+  real K, IV rotated, g=1: alive after rounds 0.. = [0] (N=4,194,304) -> dies at round 0
+  real K, IV rotated, g=31: alive after rounds 0.. = [0] (N=4,194,304) -> dies at round 0
+
+=== (2) complementation x -> ~x ===
+  Sigma0(~x) == ~Sigma0(x)        : 1.000000
+  Sigma1(~x) == ~Sigma1(x)        : 1.000000
+  sigma0(~x) ^ ~sigma0(x)         : constant? True value e0000000
+  sigma1(~x) ^ ~sigma1(x)         : constant? True value ffc00000
+  Maj(~a,~b,~c) == ~Maj(a,b,c)    : 1.000000
+  Ch(~e,~f,~g) == ~Ch(e,f,g)      : 0.000000e+00
+  Ch(~e,f,g)   == Ch(e,g,f)       : 1.000000
+  ~x + ~y == ~(x+y) - 1  (exact)  : 1.000000
+  per-bit rate of Ch complementation: 4/8  -> word rate 2^-32 = 2.328e-10
+
+=== (3) symmetric states: words of bit-period d | 32 ===
+The period-d subspace is closed under Sigma0/Sigma1 (rotations), Ch, Maj;
+sigma0/sigma1 leave it (shifts); addition leaves it unless carries agree.
+  d= 1: P[x+y period-d]=0.7497  P[sigma0(x) period-d]=0.4993  P[sigma1(x) period-d]=0.4993  Sigma0=1.0000  Ch=1.0000
+  d= 2: P[x+y period-d]=0.6254  P[sigma0(x) period-d]=0.2495  P[sigma1(x) period-d]=0.2495  Sigma0=1.0000  Ch=1.0000
+  d= 4: P[x+y period-d]=0.5303  P[sigma0(x) period-d]=0.1253  P[sigma1(x) period-d]=0.0625  Sigma0=1.0000  Ch=1.0000
+  d= 8: P[x+y period-d]=0.5012  P[sigma0(x) period-d]=0.1246  P[sigma1(x) period-d]=0.0039  Sigma0=1.0000  Ch=1.0000
+  d=16: P[x+y period-d]=0.4998  P[sigma0(x) period-d]=0.1254  P[sigma1(x) period-d]=0.0010  Sigma0=1.0000  Ch=1.0000
+
+=== (4) the constants ===
+  K_r with any nontrivial rotational symmetry: 0 of 64
+  K_r with a nontrivial bit-period d|32: 0 of 64*5 tests -> []
+  K_r self-complementary: 0
+  IV_i with any nontrivial rotational symmetry: 0
+  adjacent equal round constants K_r == K_(r+1): 0 of 63 (slide needs all)
+  distinct K_r among the first 20: 20
+
+  IV equalities a slide by one round would require (state after round 1 == IV):
+   a_-1==a_-2:False, a_-2==a_-3:False, a_-3==a_-4:False, e_-1==e_-2:False, e_-2==e_-3:False, e_-3==e_-4:False  -> 0/6 hold

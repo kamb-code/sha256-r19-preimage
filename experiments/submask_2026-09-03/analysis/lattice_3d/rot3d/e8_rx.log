@@ -1,0 +1,8 @@
+w=6 g=1: best RX probability over all 262,144 difference triples = 0.38671875 = 2^-1.3706 at (d1,d2,d3)=(0, 0, 0); zero-difference (plain rotational) value = 0.38671875  ZERO IS OPTIMAL
+w=6 g=2: best RX probability over all 262,144 difference triples = 0.33203125 = 2^-1.5906 at (d1,d2,d3)=(0, 0, 0); zero-difference (plain rotational) value = 0.33203125  ZERO IS OPTIMAL
+w=7 g=1: best RX probability over all 2,097,152 difference triples = 0.38085938 = 2^-1.3927 at (d1,d2,d3)=(0, 0, 0); zero-difference (plain rotational) value = 0.38085938  ZERO IS OPTIMAL
+w=7 g=2: best RX probability over all 2,097,152 difference triples = 0.32226562 = 2^-1.6337 at (d1,d2,d3)=(0, 0, 0); zero-difference (plain rotational) value = 0.32226562  ZERO IS OPTIMAL
+w=8 g=1: best RX probability over all 16,777,216 difference triples = 0.37792969 = 2^-1.4038 at (d1,d2,d3)=(0, 0, 0); zero-difference (plain rotational) value = 0.37792969  ZERO IS OPTIMAL
+w=8 g=2: best RX probability over all 16,777,216 difference triples = 0.31738281 = 2^-1.6557 at (d1,d2,d3)=(0, 0, 0); zero-difference (plain rotational) value = 0.31738281  ZERO IS OPTIMAL
+
+[exited with code 0]

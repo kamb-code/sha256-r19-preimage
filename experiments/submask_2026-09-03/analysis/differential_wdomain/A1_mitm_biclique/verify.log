@@ -1,0 +1,23 @@
+R=19: W16..W18 depend on 9/16 base words; NOT touched: [4, 5, 6, 7, 8, 12, 13] -> max forward-neutral df = 224 bits -> MITM floor 2^32
+R=20: W16..W19 depend on 11/16 base words; NOT touched: [5, 6, 7, 8, 13] -> max forward-neutral df = 160 bits -> MITM floor 2^96
+R=21: W16..W20 depend on 13/16 base words; NOT touched: [6, 7, 8] -> max forward-neutral df = 96 bits -> MITM floor 2^160
+R=22: W16..W21 depend on 14/16 base words; NOT touched: [7, 8] -> max forward-neutral df = 64 bits -> MITM floor 2^192
+R=23: W16..W22 depend on 15/16 base words; NOT touched: [8] -> max forward-neutral df = 32 bits -> MITM floor 2^224
+R=24: W16..W23 depend on 16/16 base words; NOT touched: [] -> max forward-neutral df = 0 bits -> MITM floor 2^256
+R=21 numeric: perturbing W6,W7,W8 changed W16..W20 in 0 of 3000 trials
+  W0: single-bit flip changes W16..W20 in 200/200 trials
+  W1: single-bit flip changes W16..W20 in 200/200 trials
+  W2: single-bit flip changes W16..W20 in 200/200 trials
+  W3: single-bit flip changes W16..W20 in 200/200 trials
+  W4: single-bit flip changes W16..W20 in 200/200 trials
+  W5: single-bit flip changes W16..W20 in 200/200 trials
+  W6: single-bit flip changes W16..W20 in 0/200 trials
+  W7: single-bit flip changes W16..W20 in 0/200 trials
+  W8: single-bit flip changes W16..W20 in 0/200 trials
+  W9: single-bit flip changes W16..W20 in 200/200 trials
+  W10: single-bit flip changes W16..W20 in 200/200 trials
+  W11: single-bit flip changes W16..W20 in 200/200 trials
+  W12: single-bit flip changes W16..W20 in 200/200 trials
+  W13: single-bit flip changes W16..W20 in 200/200 trials
+  W14: single-bit flip changes W16..W20 in 200/200 trials
+  W15: single-bit flip changes W16..W20 in 200/200 trials

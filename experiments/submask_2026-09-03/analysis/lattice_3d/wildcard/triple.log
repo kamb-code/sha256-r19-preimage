@@ -1,0 +1,7 @@
+w=8, 5 instances, exhaustive over 2^24 assignments per cell
+uniform prediction for a 1-word condition on 3 free words: 65536
+positive control eps (a product-set condition on (a2,a3), free a1): mean 1679616 = 25.629 x uniform [(3/2)^8 x 1 = 25.63]
+216 (triple, lambda) cells with lam3 != 0:
+  best  1.0041 x uniform  ((0, 2, 3), (1, -1, 1, 1))
+  worst 0.9958 x uniform ((1, 2, 3), (-1, -1, 1, -1))
+  mean 0.9999  sd 0.0018  (a per-bit collapse would show >= 1.5^8 = 25.6)

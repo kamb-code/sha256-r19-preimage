@@ -1,0 +1,43 @@
+exact max |corr| over all 2^20-1 input masks, per output bit of c3, mean of 4 instances
+noise floor (expected max for a random function) = 0.00514
+  c3 bit  0: 0.02710  (  5.3x floor) best mask 0xbdc3e  ######
+  c3 bit  1: 0.02908  (  5.7x floor) best mask 0x3db70  #######
+  c3 bit  2: 0.02371  (  4.6x floor) best mask 0x721d1  #####
+  c3 bit  3: 0.02486  (  4.8x floor) best mask 0x78fc4  ######
+  c3 bit  4: 0.01874  (  3.6x floor) best mask 0x6ea0c  ####
+  c3 bit  5: 0.02158  (  4.2x floor) best mask 0xeeb02  #####
+  c3 bit  6: 0.01564  (  3.0x floor) best mask 0xe4002  ###
+  c3 bit  7: 0.01935  (  3.8x floor) best mask 0x55347  ####
+  c3 bit  8: 0.02086  (  4.1x floor) best mask 0x12043  #####
+  c3 bit  9: 0.02747  (  5.3x floor) best mask 0x26c05  ######
+  c3 bit 10: 0.02325  (  4.5x floor) best mask 0xa930e  #####
+  c3 bit 11: 0.02929  (  5.7x floor) best mask 0x1461c  #######
+  c3 bit 12: 0.03266  (  6.4x floor) best mask 0x78128  ########
+  c3 bit 13: 0.03624  (  7.0x floor) best mask 0x41860  #########
+  c3 bit 14: 0.07016  ( 13.6x floor) best mask 0x014c3  #################
+  c3 bit 15: 0.04574  (  8.9x floor) best mask 0x409c3  ###########
+  c3 bit 16: 0.03831  (  7.5x floor) best mask 0x84309  #########
+  c3 bit 17: 0.02923  (  5.7x floor) best mask 0x98497  #######
+  c3 bit 18: 0.03450  (  6.7x floor) best mask 0xa0a27  ########
+  c3 bit 19: 0.02618  (  5.1x floor) best mask 0x2987b  ######
+  c3 bit 20: 0.02332  (  4.5x floor) best mask 0xd281c  #####
+  c3 bit 21: 0.02765  (  5.4x floor) best mask 0x070ed  ######
+  c3 bit 22: 0.03610  (  7.0x floor) best mask 0x8a27d  #########
+  c3 bit 23: 0.04049  (  7.9x floor) best mask 0x102f4  ##########
+  c3 bit 24: 0.02599  (  5.1x floor) best mask 0x30579  ######
+  c3 bit 25: 0.03039  (  5.9x floor) best mask 0x702b0  #######
+  c3 bit 26: 0.02454  (  4.8x floor) best mask 0xe3d70  ######
+  c3 bit 27: 0.02922  (  5.7x floor) best mask 0x423e1  #######
+  c3 bit 28: 0.02419  (  4.7x floor) best mask 0x89e95  ######
+  c3 bit 29: 0.04826  (  9.4x floor) best mask 0x10760  ############
+  c3 bit 30: 0.05961  ( 11.6x floor) best mask 0x38e80  ##############
+  c3 bit 31: 0.07013  ( 13.6x floor) best mask 0x31fc0  #################
+
+control (uniform random words, same subcube): max |corr| mean 0.00489 max 0.00518
+
+information in the best approximations:
+  c3 bit 0: corr 0.0271 -> 0.00053 bits
+  c3 bit 1: corr 0.0291 -> 0.00061 bits
+  c3 bit 2: corr 0.0237 -> 0.00041 bits
+  c3 bit 3: corr 0.0249 -> 0.00045 bits
+  sum over all 32 output bits (an upper bound that ignores that the masks are not independent): 0.0282 bits

@@ -1,0 +1,26 @@
+CP-SAT linearization_level sweep (0 = no LP, 1 = default, 2 = full LP at every node)
+ w  trial  level   status      seconds   branches   conflicts
+  6     0      0   OPTIMAL         4.09      49761      18707
+  6     0      1   OPTIMAL         2.27      24133      10467
+  6     0      2   OPTIMAL         1.47      18149       7247
+  6     1      0   OPTIMAL         1.59      23412       7602
+  6     1      1   OPTIMAL         6.19      73973      31797
+  6     1      2   OPTIMAL         2.76      38254      13778
+  6     2      0   OPTIMAL        10.77     110512      50355
+  6     2      1   OPTIMAL         2.68       7537       2392
+  6     2      2   OPTIMAL         3.75      11854       1617
+  6     3      0   OPTIMAL         4.14      47281      17947
+  6     3      1   OPTIMAL         3.23      43692      15586
+  6     3      2   OPTIMAL        15.82     173646      64405
+  7     0      0   OPTIMAL        73.09     617113     285521
+  7     0      1   OPTIMAL        52.59     348979     171479
+  7     0      2   OPTIMAL        41.39     392071     183393
+  7     1      0   OPTIMAL        81.06     906595     379294
+  7     1      1   OPTIMAL        48.44     728351     346282
+  7     1      2   OPTIMAL        10.78     118397      50527
+  7     2      0   OPTIMAL        10.89     120800      46886
+  7     2      1   OPTIMAL        14.19     145345      62790
+  7     2      2   OPTIMAL        41.57     377180     166749
+  7     3      0   OPTIMAL        80.21     900611     378201
+  7     3      1   OPTIMAL        33.77     117861       4941
+  7     3      2   OPTIMAL        35.38     585713     271300

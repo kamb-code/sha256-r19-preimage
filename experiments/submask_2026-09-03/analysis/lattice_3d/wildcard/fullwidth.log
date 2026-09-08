@@ -1,0 +1,7 @@
+candidates (triangular, eps=0) from 8 contexts x 8,388,608 swept a0: 1683
+  candidates with c0 != 0 or c1 != 0 or c2 != 0: 0
+  c3: 0 zeros of 1683 (uniform predicts 3.92e-07)
+  low  4 bits zero:       99 observed,      105.2 expected, z = -0.60
+  low  8 bits zero:        4 observed,        6.6 expected, z = -1.00
+  low 12 bits zero:        0 observed,        0.4 expected, z = -0.64
+  low 16 bits zero:        0 observed,        0.0 expected, z = -0.16

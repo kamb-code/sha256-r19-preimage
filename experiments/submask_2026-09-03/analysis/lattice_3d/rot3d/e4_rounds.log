@@ -1,0 +1,22 @@
+N = 16,777,216 rotational pairs, R = 20
+
+--- arm A: rotate the whole spec: IV<<<g, K<<<g, W<<<g ---
+  g= 1: schedule W16..W19 ok 21/16,777,216 (1.252e-06); state alive after r=0,1,..: ['260358', '5223', '0'] -> extinct at round 2
+  g=31: schedule W16..W19 ok 36/16,777,216 (2.146e-06); state alive after r=0,1,..: ['0'] -> extinct at round 0
+  g= 2: schedule W16..W19 ok 0/16,777,216 (0.000e+00); state alive after r=0,1,..: ['0'] -> extinct at round 0
+  g=16: schedule W16..W19 ok 0/16,777,216 (0.000e+00); state alive after r=0,1,..: ['0'] -> extinct at round 0
+
+--- arm B: K = 0, random chaining value (rotated), W<<<g ---
+  g= 1: schedule W16..W19 ok 38/16,777,216 (2.265e-06); state alive after r=0,1,..: ['372087', '13515', '443', '15', '1', '0'] -> extinct at round 5
+  g=31: schedule W16..W19 ok 26/16,777,216 (1.550e-06); state alive after r=0,1,..: ['370799', '13691', '456', '12', '1', '0'] -> extinct at round 5
+  g= 2: schedule W16..W19 ok 0/16,777,216 (0.000e+00); state alive after r=0,1,..: ['1272', '0'] -> extinct at round 1
+  g=16: schedule W16..W19 ok 0/16,777,216 (0.000e+00); state alive after r=0,1,..: ['6', '0'] -> extinct at round 1
+
+--- arm C: real IV and K, only W rotated (the true function) ---
+  g= 1: schedule W16..W19 ok 24/16,777,216 (1.431e-06); state alive after r=0,1,..: ['0'] -> extinct at round 0
+  g=31: schedule W16..W19 ok 28/16,777,216 (1.669e-06); state alive after r=0,1,..: ['0'] -> extinct at round 0
+  g= 2: schedule W16..W19 ok 0/16,777,216 (0.000e+00); state alive after r=0,1,..: ['0'] -> extinct at round 0
+  g=16: schedule W16..W19 ok 0/16,777,216 (0.000e+00); state alive after r=0,1,..: ['0'] -> extinct at round 0
+
+
+[exited with code 0]

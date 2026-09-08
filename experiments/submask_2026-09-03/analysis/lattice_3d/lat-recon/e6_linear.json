@@ -1,0 +1,69 @@
+[
+ {
+  "w": 8,
+  "min_arc_sigma0": 238,
+  "best_alpha_sigma0": 55,
+  "bits_sigma0": 7.89,
+  "min_arc_sigma0_minus_u": 238,
+  "best_alpha_su": 54,
+  "bits_sigma0_minus_u": 7.89,
+  "full_width_bits": 8
+ },
+ {
+  "max_corr_sigma0": 0.31818284325211005,
+  "argmax_sigma0": 200,
+  "max_corr_sigma0_minus_u": 0.31818284325211005,
+  "argmax_sigma0_minus_u": 199,
+  "noise_floor_2^-w/2": 0.0625,
+  "expected_max_of_2^w_gaussians": 0.14717625281443433,
+  "w": 8
+ },
+ {
+  "w": 12,
+  "min_arc_sigma0": 4039,
+  "best_alpha_sigma0": 2056,
+  "bits_sigma0": 11.98,
+  "min_arc_sigma0_minus_u": 4039,
+  "best_alpha_su": 2055,
+  "bits_sigma0_minus_u": 11.98,
+  "full_width_bits": 12
+ },
+ {
+  "max_corr_sigma0": 0.28078187866467147,
+  "argmax_sigma0": 3616,
+  "max_corr_sigma0_minus_u": 0.28078187866467147,
+  "argmax_sigma0_minus_u": 3615,
+  "noise_floor_2^-w/2": 0.015625,
+  "expected_max_of_2^w_gaussians": 0.04506334020627759,
+  "w": 12
+ },
+ {
+  "w": 16,
+  "min_arc_sigma0": 65494,
+  "best_alpha_sigma0": 26069,
+  "bits_sigma0": 16.0,
+  "min_arc_sigma0_minus_u": 65494,
+  "best_alpha_su": 26068,
+  "bits_sigma0_minus_u": 16.0,
+  "full_width_bits": 16
+ },
+ {
+  "max_corr_sigma0": 0.36967061640746435,
+  "argmax_sigma0": 3968,
+  "max_corr_sigma0_minus_u": 0.3696706164074644,
+  "argmax_sigma0_minus_u": 3967,
+  "noise_floor_2^-w/2": 0.00390625,
+  "expected_max_of_2^w_gaussians": 0.013008665799339026,
+  "w": 16
+ },
+ {
+  "w": 32,
+  "sampled_alphas": 20006,
+  "x_sample": 1048576,
+  "min_arc_sigma0": 4294788972,
+  "bits_sigma0": 32.0,
+  "min_arc_sigma0_minus_u": 4294867638,
+  "bits_sigma0_minus_u": 32.0,
+  "full_width_bits": 32
+ }
+]
