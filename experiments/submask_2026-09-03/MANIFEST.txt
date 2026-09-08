@@ -19,6 +19,8 @@ MANIFEST regenerated 2026-09-06 20:59:00 UTC: adds analysis/sat_hybrid/ (SAT bas
 
 MANIFEST regenerated 2026-09-08 11:56:03 UTC: adds analysis/lattice_3d/, analysis/differential_wdomain/ and the corrected WHAT_WOULD_BE_NEEDED.md.
 
+MANIFEST regenerated 2026-09-08 13:27:31 UTC: adds analysis/STATUS_AND_STOPPING_POINT.md.
+
 sha256  path  size
 010ecd061ae440df95fa6a712bef9e58ed06b7c7b81f71e975dae18a91105dc9  FLEET.txt  3063 bytes
 4c0501369d56704b589fd1915ac91fcda9f3c65682cab7a80969fd21722c8cf8  NOTES.md  5521 bytes
@@ -47,6 +49,7 @@ e9523dfe7b92158764c292f84be94fc5e4905e6cbd9923c1dc11a1735e744f71  gpu_run_snapsh
 eb1b77f11ee36cced88cfe749abd90834a1b8eabd5e6bfc6df0a02c79d8ce667  gpu_run_snapshot/live/t1/status.json  325 bytes
 2fa4a885d00fc5dfb5b6c5aed0ac315ff73b896ec038b4ed5fe1a36585b925f0  gpu_run_snapshot/live/t1/stdout.log  1891966 bytes
 98aa0fa2e76ea326f9b649f625351afab618e114db33b53bbbbf65bc073a9e4c  analysis/FINDINGS.md  4201 bytes
+e42dc1c418c422489008f8aebcce37c9ea43c66f0d7c2cf99ec9c3c9ca7f7893  analysis/STATUS_AND_STOPPING_POINT.md  4348 bytes
 98dcae0fef68b5733556cdf9990602b80c3630e4f9ca173c1930659284669413  analysis/WHAT_WOULD_BE_NEEDED.md  9062 bytes
 a9a398a76a55e5958197b73f68bcc1ba6e1379ff20641b32daee412d172a6902  analysis/reports.json  168544 bytes
 52f028b3264dda704ebfc9fda4aa7275537d26c9d13620dc91126e82f2f80909  analysis/differential_wdomain/reports.json  66663 bytes
