@@ -47,3 +47,11 @@ printed by them or made in the project log are WRONG and are corrected here:
 * 2026-09-07: SAT baseline + algebra/SAT hybrid (analysis/sat_hybrid/): 28 jobs at R=19,20 with family conditions / fixed family context / random-context control, CaDiCaL and kissat, 1800 s cap -> 0 solved, all timed out; structured instances are slower than unstructured. On the identical fixed-context instance the table attack takes ~12 ms and the solvers >1800 s (>10^5 gap). The two methods do not compose. Symmetry angle untested (session limit).
 
 * 2026-09-08: lattice/3D readings (analysis/lattice_3d/) and differential + message-word domain (analysis/differential_wdomain/), all 0 bits. Notable: (a) the barrier is NOT "cannot invert Sigma0" (the table does that in one lookup) but TWO pure 2^-32 value filters; WHAT_WOULD_BE_NEEDED.md corrected accordingly. (b) chunk-separated MITM has an exact ladder 2^96/2^128/2^160 at R=19/20/21, 83 bits worse than ours at 21. (c) 13,981,848 message differences on our five witnesses gave 0 second preimages. (d) the W-domain is a prefix-triangular re-coordinatisation of the a-domain, not a new frame. (e) symmetry is capped at 10.3 bits by a counting argument before any code runs.
+
+* 2026-09-08: **INDEPENDENT EXTERNAL VERIFICATION.** Oleg Zaikin (Matrosov
+  Institute; author of the Constraints 2026 paper whose all-ones digest is the
+  target) wrote to say he had verified the 20-round preimage with his own
+  implementation: "The preimage is correct! Excellent result!" He is reading
+  both papers and asked how the methods arose and whether they will be
+  submitted to a peer-reviewed journal. This is the first confirmation of the
+  20-round result by a third party using independent code.
