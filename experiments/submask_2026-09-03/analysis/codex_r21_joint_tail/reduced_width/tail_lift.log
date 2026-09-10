@@ -1,0 +1,26 @@
+=== positive control: tail-lift identities on TRUE solutions ===
+  w= 6: C_j identities 200/200   W4,W5 recovered 200/200   a4,a5 recovered 200/200
+  w= 8: C_j identities 200/200   W4,W5 recovered 200/200   a4,a5 recovered 200/200
+  w=10: C_j identities 200/200   W4,W5 recovered 200/200   a4,a5 recovered 200/200
+  w=12: C_j identities 200/200   W4,W5 recovered 200/200   a4,a5 recovered 200/200
+  w=16: C_j identities 200/200   W4,W5 recovered 200/200   a4,a5 recovered 200/200
+
+=== does the cycle exist? (K3p/K4p dependence on a4, a5) ===
+  w= 8: K3p_on_a4 400/400  K3p_on_a5 276/400  K4p_on_a4 0/400  K4p_on_a5 400/400
+  w=12: K3p_on_a4 400/400  K3p_on_a5 265/400  K4p_on_a4 0/400  K4p_on_a5 400/400
+
+=== frame 2's new condition: P(tail-derived a4,a5 == assumed) ===
+    w   trials   a4 hit   a5 hit   both  -log2(P both)  2w (no gain)
+    5   400000    12425    12401    407           9.94            10
+    6   400000     6160     6166    102          11.94            12
+Traceback (most recent call last):
+  File "/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/tail/tail_lift.py", line 125, in <module>
+    h4, h5, hb, t = consistency_residual(w, trials=n)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/tail/tail_lift.py", line 98, in consistency_residual
+    W4 = m.s0_inv((K3p - Wr(3)) & m.M)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-1000/-home-administrator-sha/bc6b4995-3384-44e4-9203-a490e2389533/scratchpad/tail/model.py", line 114, in s0_inv
+    for i, col in enumerate(self._inv):
+                  ^^^^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not iterable

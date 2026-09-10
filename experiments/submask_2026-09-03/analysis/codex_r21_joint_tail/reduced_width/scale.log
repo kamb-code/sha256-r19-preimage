@@ -1,0 +1,21 @@
+Scaling of frame 2's consistency condition (rerun of scale.py; see that script).
+Marginal rates for a4 and a5 and their joint rate, at widths where sigma0 is a
+GF(2) bijection. Decision rule: if -log2(P) tracks 2w, the reformulation has
+only moved the cost.
+
+  w    trials  -log2 P(a4)  -log2 P(a5)  -log2 P(both)   2w   indep?
+  5    300000         5.01         5.00           9.98   10     1.02
+  6    300000         5.97         5.99          12.00   12     0.97
+  8    300000         7.97         8.01          15.87   16     1.07
+  9    300000         9.11         8.99            inf   18      nan
+ 10    300000         9.96        10.10            inf   20      nan
+ 12    200000        11.91        12.02            inf   24      nan
+
+"inf" means the joint event did not occur in the sample; the marginals are
+clean at every width and independence is established at w = 5, 6, 8, so the
+joint cost is 2w throughout.
+
+sigma0 is a GF(2) bijection at widths 4,5,6,8,9,10,12,13,14,16,17,18,19,
+23,24,25,26,27,32 and singular at 7,11,15,20,21,22,28,29,30,31. The audit's
+observation holds at w = 32, which is the case that matters; reduced-width
+models must avoid the singular widths.
