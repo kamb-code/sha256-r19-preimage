@@ -13,6 +13,7 @@
 \usepackage{geometry}
 \geometry{margin=1in}
 \usepackage[protrusion=true,expansion=false]{microtype}
+\usepackage{array}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}
@@ -46,28 +47,30 @@
 
 %-----------------------------------------------------------------------
 \begin{abstract}
-We present a practical preimage attack on the compression function of
-SHA-256 reduced to 19 of its 64 rounds, in the standard setting: the
-chaining value is the fixed initial value, the target is an arbitrary
-256-bit digest, and the attacker chooses the 512-bit message block.  The
-attack combines a backward chain that fixes eight state words from the
-target, a precomputed $16$\,GB table inverting $u\mapsto\sigma_0(u)-u$, and
-a two-stage fixed-point iteration over the three schedule-consistency
-constraints.  Each attempt sweeps one $32$-bit variable, costs $O(2^{32})$
-table lookups, and runs in about $25$\,s on one NVIDIA H100 with a single seed chain ($89$\,s with the four chains used in the campaign).  Seven preimages were found and independently verified.  Six are of digests of random messages: three from dedicated runs that succeeded in their 4th, 21st and 35th contexts, and three from a preregistered campaign of 240 attempts that gives a direct estimate of the per-attempt success rate, $\hat\mu = 3/240 =
-1.25\times10^{-2}$ (95\% Poisson interval $[2.6\times10^{-3},\,
-3.7\times10^{-2}]$; all three events fell in the screened arm and the
-control arm gave $0/120$).  Attempts are far from interchangeable: in a
-paired campaign with matched exposure, a screening pass costing $1/4096$ of
-an attempt raised the yield of the intermediate 16-bit filter by $3.41\times$ (95\% CI $[2.13, 5.82]$, target-blocked bootstrap; counted per converged trajectory, with identity-level deduplication bounding it within $[2.42\times, 3.44\times]$), helping on 31 of 40 targets and hurting on 9; its effect on the final success rate is not established.
+We present an algebraic candidate-generation method for SHA-256 compression
+reduced to 19 of 64 rounds.  The standard initial value and feed-forward are
+retained, all 256 target bits are fixed, and the input is an unrestricted
+512-bit block rather than a padded message.  From the target, a backward chain
+fixes eight state words.  Each attempt chooses seven context words, sweeps one
+32-bit state word, and enforces three message-schedule constraints with a
+reusable 16-GiB table for $u\mapsto\sigma_0(u)-u$.  Two constraints form a
+fixed-point iteration; an exact final test checks the provisional treatment
+of $W_9$.  A complete sweep took about 25 seconds on one NVIDIA H100 with one
+initial chain and about 89 seconds with the four chains used in the campaign.
 
-SAT-based cryptanalysis inverts 17 and 18 rounds in seconds on one core,
-and Zaikin has recently inverted the 19-round compression function for a
-fixed all-ones digest with a parameterized Cube-and-Conquer solver, in
-$18.5$ hours on 192 CPU cores.  Priority at 19 rounds is his.  The
-contribution here is a different route to the same round count, algebraic
-rather than search-based, that reaches an arbitrary digest in about two hours of one GPU at the pooled campaign rate (one attempt in eighty; the unscreened control arm gave $0/120$, so the figure for a uniformly random context is nearer three hours), did so for his target in 84 attempts ($123$ minutes; the seventh preimage, and a second preimage of that digest) after a first run of 14 attempts had produced a match that a since-fixed bug discarded, and comes with complete artefacts.  A companion note explains why the fourth schedule constraint costs this construction a further factor of $2^{32}$ at 20 rounds; a note added at the end points to a later chosen-context variant that pays that factor and reaches 20 rounds.  Full SHA-256 is not affected by any of
-these results.
+We publish seven forward-verified examples: six for digests generated from
+random messages and one for the fixed all-ones benchmark.  Zaikin's SAT-based
+19-round result on that benchmark predates this work.  Three dedicated runs
+succeeded in their 4th, 21st and 35th contexts.  A preregistered stratified
+campaign processed 240 full contexts: 3 of 120 selected by a cheap screening
+rule produced a preimage, while 0 of 120 controls did.  Pooling the arms gives
+3/240, but does not estimate a uniformly sampled context.  Screening raised
+an intermediate low-16-bit counter by a trajectory-counted factor 3.41
+(identity-level bounds 2.42--3.44); its effect on final success remains
+unresolved.  With only three campaign events, the data do not determine a
+mean runtime.  A newer chosen-context paper supersedes these performance
+figures and gives computed 20-round examples.  Neither paper
+affects full SHA-256.
 
 \medskip
 \noindent\textbf{Keywords:} SHA-256, preimage attack, step-reduced,
@@ -85,12 +88,12 @@ the full function is usually assessed through attacks on step-reduced
 variants.
 
 \paragraph{Attack model.}
-Let $\mathrm{compress}_R$ denote the SHA-256 compression function
-restricted to its first $R$ rounds and let $\mathrm{IV}$ be the standard
-initial value.  Given a 256-bit digest $h$, a \emph{preimage} is a 512-bit
-block $(W_0,\ldots,W_{15})$ with
+Let $F_R$ denote the eight-word state after the first $R$ SHA-256 rounds,
+before feed-forward, and let $\mathrm{IV}$ be the standard initial value.
+Given a 256-bit digest $h$, a \emph{preimage} in this paper is a 512-bit block
+$(W_0,\ldots,W_{15})$ with
 \[
-  h \;=\; \mathrm{IV} + \mathrm{compress}_R(\mathrm{IV},\,W_0,\ldots,W_{15}) .
+  h \;=\; \mathrm{IV} + F_R(\mathrm{IV},\,W_0,\ldots,W_{15}) .
 \]
 This is the standard preimage setting for the compression function: the
 chaining value is fixed, nothing about any original message is known, and
@@ -98,10 +101,10 @@ only the digest is given.  It is not a pseudo-preimage or free-start
 setting, in which the attacker would also choose the chaining value.  The
 16 words of the block are unconstrained, so the result concerns the
 compression function and not the length-padded hash.  For a single-block
-55-byte message the padding fixes $W_{14}$, $W_{15}$ and the low byte of
-$W_{13}$; those three conditions can be met by choosing three of the
-attack's context words in closed form (\texttt{padded\_preimage.py} in the
-artefacts), but a 167-attempt run produced no padded preimage where one to two were expected at the projected $6\times10^{-3}$ and at the pooled campaign rate ($P(0)$ between $0.12$ and $0.37$), so the run neither confirms nor excludes the padded variant and we claim only the compression-function result.
+55-byte message the padding would constrain parts of
+$W_{13},W_{14},W_{15}$.  Although the repository contains an exploratory
+closed-form way to impose those word values, no padded preimage was obtained;
+we make no padded-hash claim.
 
 \paragraph{Prior work.}
 Theoretical preimage attacks on step-reduced SHA-256 reach far beyond 19
@@ -121,7 +124,7 @@ reports that the resulting parallel Cube-and-Conquer solver inverted the
 29-step MD5, 24-round SHA-1 and 19-round SHA-256 compression functions for
 the first time.  For SHA-256 the target is one fixed digest, the all-ones
 string, with all 256 bits fixed, in the same model as here: compression
-function, standard IV, no padding, feed-forward kept.  The 19-round
+function, standard IV, no padding, feed-forward retained.  The 19-round
 instance itself was not solved within seven days on 192 cores; the preimage
 was obtained from the intermediate problem between rounds 18 and 19 whose
 solutions are 19-round preimages with probability $1/8$, in
@@ -132,11 +135,17 @@ Priority at 19 rounds is Zaikin's and we claim none.
 
 \paragraph{This work.}
 We give an algebraic, table-based preimage attack on the 19-round
-compression function.  Its cost profile is explicit and low: after a
-one-time $16$\,GB precomputation, each attempt is a single $2^{32}$ sweep
-on one GPU, $25$ to $89$ seconds on an NVIDIA H100 depending on the number
-of seed chains, and in the campaign of \S\ref{sec:screening} (four chains)
-about one attempt in eighty succeeded when the two arms are pooled ($3/240$; 95\% interval $[2.6\times10^{-3},\,3.7\times10^{-2}]$), which at $89$\,s per attempt is about two GPU-hours per preimage.  That pooled figure is the headline cost quoted in this paper, but it mixes a screened arm ($3/120$, about one GPU-hour) with a control arm of unscreened contexts that gave $0/120$; the screened arm was the top $30\%$ of a screening pool, so the population-weighted point estimate for a uniformly random context is $0.3\times3/120+0.7\times0/120=7.5\times10^{-3}$ per attempt, about $3.3$ GPU-hours.  Three events cannot separate these figures: the pooled interval spans a factor of 14 and contains all of them.  The ingredients are:
+compression function.  After a one-time 16-GiB precomputation, each attempt
+is a single $2^{32}$ sweep on one GPU: about 25 seconds on the recorded H100
+with one seed chain, or 89 seconds with the four chains used in the campaign.
+The campaign was stratified.  Its selected arm produced $3/120$ successes and
+its control arm $0/120$; the pooled $3/240$ rate describes that campaign but
+not a uniform draw from the context population.  A plug-in
+population-weighted point estimate,
+$0.3(3/120)+0.7(0/120)=7.5\times10^{-3}$, corresponds to about 3.3 GPU-hours,
+but only three total events make this estimate highly uncertain.  We therefore
+report observed work and rates rather than a precise mean runtime.  The
+ingredients are:
 \begin{enumerate}
   \item a backward chain that recovers the eight state words
     $a_{11},\ldots,a_{18}$ from the digest alone (\S\ref{sec:structure});
@@ -148,16 +157,19 @@ about one attempt in eighty succeeded when the two arms are pooled ($3/240$; 95\
     unknowns are provisionally fixed (\S\ref{sec:attack}); the provisional
     assignment is closed by a fixed-point iteration and tested exactly by a
     32-bit consistency check;
-  \item seven independently verified preimages: six of digests of random
+  \item seven forward-verified preimages: six of digests of random
     messages, three from dedicated runs and three from a preregistered
-    240-attempt campaign that also measures the success rate directly, and
+    240-attempt campaign that records arm-specific success counts, and
     one of the all-ones digest that Zaikin attacked, found in 84 attempts
     (\S\ref{sec:experiments}, \S\ref{sec:comparison});
   \item a measured, preregistered account of how much a cheap screening
     pass improves the intermediate yield, and of what it does not establish
     (\S\ref{sec:screening}).
 \end{enumerate}
-A companion note~\cite{Basra2026R20} explains why the same construction does not reach 20 rounds at the 19-round cost (see the note added at the end of this paper).  Appendix~\ref{app:ninestep} records an exact
+A companion note~\cite{Basra2026R20} records finite negative results for a
+direct 20-round extension.  A later chosen-context construction
+\cite{Basra2026Submask} supersedes this paper's performance figures and gives
+two computed 20-round examples; see the note added at the end.  Appendix~\ref{app:ninestep} records an exact
 cancellation identity in the message schedule found along the way,
 together with the reason the search experiments built on it are not
 claimed as results.
@@ -296,18 +308,30 @@ of $2^{32}$ 32-bit entries:
 \]
 where $u$ is a representative satisfying $\sig{0}(u) - u \equiv v
 \pmod{2^{32}}$, or a sentinel $\perp$ if no such $u$ exists.
-When multiple $u$ share the same $v$, the published table stores the largest such $u$ (verified exhaustively).  The GPU build used for the runs (\texttt{build\_table} in \texttt{h100\_extended.py}) writes the roots in ascending order of $u$ with a CUDA scatter whose choice among repeated indices PyTorch does not specify, so its representative of a multi-root $v$ is a root of $v$ but is not guaranteed to be the largest; \S\ref{sec:complexity} (E3) shows the measured rates are insensitive to the policy.  On disk the table is an \texttt{int32} array with sentinel $-1$; the single value $v=\mathtt{0x20000000}$, whose only root is $u=\mathtt{0xFFFFFFFF}$, then coincides with the sentinel, one entry in $2.7\times10^{9}$.  The GPU build uses the \texttt{int32} minimum as sentinel and has no such collision.
+When multiple $u$ share the same $v$, the deterministic on-disk table stores
+the largest such $u$.  The GPU build used for the runs
+(\texttt{build\_table} in \texttt{h100\_extended.py}) writes roots in
+ascending chunks with a CUDA scatter whose winner at repeated indices PyTorch
+does not specify; it stores a valid root but not necessarily the largest.
+Experiment E3 compares smallest- and largest-root policies on one matched
+sample and detects no resolved difference there; it does not establish policy
+invariance in general.  On disk the table is an \texttt{int32} array with
+sentinel $-1$; the value $v=\mathtt{0x20000000}$, whose only root is
+$u=\mathtt{0xFFFFFFFF}$, is consequently treated as a miss.  The GPU sentinel
+is the \texttt{int32} minimum and can analogously obscure that bit pattern if
+it is the selected representative.  Either format can lose at most one stored
+domain representative, which is negligible for the reported rates.
 \end{definition}
 
 \paragraph{Construction.}
 $\mathcal{T}$ is built in a single pass: for each $u \in [0, 2^{32})$,
 compute $v = (\sig{0}(u) - u) \bmod 2^{32}$ and write $u$ to
 $\mathcal{T}[v]$.  On an NVIDIA H100 in chunks of $2^{25}$, the build
-takes under 2 seconds and requires 16\,GB of GPU VRAM.
+takes under 2 seconds on the recorded H100 and requires 16\,GiB of GPU memory.
 
 \paragraph{Coverage.}
 The function $f(u) = \sig{0}(u) - u \bmod 2^{32}$ is not injective.
-Empirically, $2{,}721{,}603{,}628$ of the $2^{32}$ possible values
+An exhaustive construction finds $2{,}721{,}603{,}628$ of the $2^{32}$ possible values
 $v$ have at least one preimage, corresponding to \textbf{63.37\%}
 coverage.
 
@@ -670,9 +694,9 @@ Repeat-count inflation factor & $5.5$--$5.9\times$ (pilots), $6.35\times$ (campa
 \midrule
 $\mu$ (original model: measured lo count $\times$ & \\
 \quad uniform conditional hi) & $\approx 5\times 10^{-4}$ \\
-$\mu$ (directly measured, 240 ctx) & $1.25\times10^{-2}$\ \ CI $[2.6{\cdot}10^{-3},3.7{\cdot}10^{-2}]$ \\
+$\mu$ (mixed campaign arms, 240 ctx) & $1.25\times10^{-2}$\ \ Garwood CI $[2.6{\cdot}10^{-3},3.7{\cdot}10^{-2}]$ \\
 \quad screened arm (120 ctx, $N_{LH}=3$) & $2.50\times10^{-2}$ \\
-\quad control arm (120 ctx, $N_{LH}=0$) & $<3.1\times10^{-2}$ (exact Poisson, 95\%) \\
+\quad control arm (120 ctx, $N_{LH}=0$) & $<3.1\times10^{-2}$ (Garwood, 95\%) \\
 $\mu$ (independence-derived projection) & $6\times10^{-3}$--$1.3\times10^{-2}$ \\
 Observed contexts (P3, P2, P1) & 4,\ 21,\ 35\ \ (mean 20) \\
 Wall time per context (H100), $K_{\mathrm{seeds}}{=}0$ & $\approx 25\;\mathrm{s}$ \\
@@ -686,7 +710,7 @@ Neither half of the $W_9$ filter is uniform.  Both enhancements arise because
 the C1/C2 fixed-point iteration, started from $W_9$-lo-consistent seed pairs,
 preferentially converges to fixed points that also satisfy the $W_9$
 constraint---an effect that acts on the full 32-bit residual, not only on the
-low half.  Experiment \textbf{E2}, an independent CPU reimplementation
+low half.  Experiment \textbf{E2}, a separately written CPU reimplementation
 measuring over $2.2\times10^{9}$ swept $a_0$ values per configuration, gives:
 
 \begin{itemize}\itemsep2pt
@@ -709,13 +733,14 @@ headline dataset}, since it is deduplicated and feeds the $\mu$ projection.
 Neither E1 nor E2 measures the success rate; the preregistered campaign
 below does.
 
-These rates are not artefacts of the lookup table's representative policy.
-A third experiment (\textbf{E3}) repeated the measurement on byte-identical
+To test sensitivity to the lookup table's representative policy, a third
+experiment (\textbf{E3}) repeated the measurement on byte-identical
 contexts with a table built to keep the \emph{smallest} rather than the
 \emph{largest} preimage of each target: lo enhancement $30.0\times$
 (smallest) against $28.5\times$ (largest), and hi $11.1\times$ against
 $6.9\times$, agreeing within Poisson error on the $8$ and $13$ hi events
-observed.  E3 used its own contexts and sample, which is why its lo figure
+observed.  This matched sample detects no resolved policy effect, but does not
+establish that all representative policies are equivalent.  E3 used its own contexts and sample, which is why its lo figure
 sits below E1's range.  Direct tests of lo/hi independence at reduced filter widths give
 $D = P(\text{both})/[P(\text{lo})P(\text{hi})] = 1.00\pm0.03$ at $4$ bits and
 $1.06\pm0.10$ at $6$ bits, consistent with independence at the widths where
@@ -742,19 +767,20 @@ recorded $N_{LH}=3$ complete 32-bit matches, all of which verified as
 preimages, giving
 \[
   \hat\mu \;=\; \frac{3}{240} \;=\; 1.25\times10^{-2}\ \text{per context},
-  \qquad 95\%\ \text{CI}\ [2.58\times10^{-3},\ 3.65\times10^{-2}].
+  \qquad 95\%\ \text{Garwood interval}\
+  [2.58\times10^{-3},\ 3.65\times10^{-2}].
 \]
 Split by arm, the screened half gave $3/120 = 2.50\times10^{-2}$ and the
 control half $0/120$, i.e.\ $\mu < 3.1\times10^{-2}$ (upper limit of the
-exact two-sided 95\% Poisson interval for zero events in 120 contexts).  Two cautions apply.  The pooled figure mixes the two arms and the
+two-sided 95\% Garwood interval under a Poisson count model).  Two cautions
+apply.  The pooled figure mixes the two arms and the
 screened half is enriched by construction, so it is not an estimate for
 uniformly sampled contexts; the control arm is the closer analogue and it
 produced no events.  And three events give an interval spanning a factor of
-$14$, so this bounds the rate rather than pinning it.  What it does settle is
-that the rate is not pathologically below the projection: the measured
-$1.25\times10^{-2}$ falls inside the $6\times10^{-3}$--$1.3\times10^{-2}$ band
-projected before the campaign was run, which is a genuine out-of-sample
-check on the independence-derived model rather than a fit to it.
+$14$, so this bounds the mixed-arm rate rather than pinning it.  The result is
+numerically compatible with the $6\times10^{-3}$--$1.3\times10^{-2}$ band
+projected before the campaign, but the stratified design and three events do
+not support a stronger validation claim.
 The projections themselves remain unstable.  After adopting
 global fixed-point deduplication, the independence-derived projection was
 $1.31\times10^{-2}$ in a $0.20$ context-equivalent pilot and
@@ -769,39 +795,29 @@ $\mu$ if left uncorrected.  A converged lane remains at its fixed point for
 every subsequent iteration, so counting convergences per iteration overcounts
 each fixed point---measured at $5.5$--$5.9\times$ in the CPU pilots and $6.35\times$ over the 240 campaign contexts (the \texttt{fp\_replay} and \texttt{fp\_trajectories} columns of the campaign data).  And
 convergences tallied per seed chain rather than per context understate the
-per-context count by the number of chains.  All figures above are globally
-deduplicated on the fixed-point identity $(a_0,a_1,a_2,a_3)$ within a context.
+per-context count by the number of chains.  The E1 fixed-point figures above
+are globally deduplicated on $(a_0,a_1,a_2,a_3)$ within a context.  The
+campaign's downstream counters are trajectory-counted and treated separately
+in Section~\ref{sec:screening}.
 
 \paragraph{What the three dedicated finds do and do not establish.}
-The three dedicated runs found preimages in their 4th, 21st and 35th contexts (solver indices 3, 20 and 34): three successes over 60 attempted contexts, $\hat p = 0.050$ with an exact 95\% interval of $[0.010,\,0.139]$.  The $6\times10^{-3}$ projection lies \emph{below} that interval. Under $p=0.006$, observing three or more successes in 60 contexts has probability $0.006$, so either the historical runs were unusually favourable
-or the projection is low.  Two very small samples are in tension here, and
-neither settles the rate.  The observation is, however, not compatible with the uniform-filter model: at
-$p\approx5\times10^{-4}$ the same observation has probability $4\times10^{-6}$,
-so the finds do falsify the uniform model even though they cannot pin the true
-rate.  We therefore present them as demonstrations of feasibility, not as a
-runtime estimator.  Three observations cannot support an expected-value claim,
-and the per-context success probability $\Pr(N_{LH}\ge1)$---which governs time
-to first preimage---is not in general $\mu$ itself if successful fixed points
-cluster in favourable contexts.  The preregistered multi-target campaign of \S\ref{sec:screening} reports both:
-over 240 fully attacked contexts, $\hat\mu = 3/240 = 1.25\times10^{-2}$ and
-$\widehat{\Pr}(N_{LH}\ge1) = 3/240$ also, no context having produced more than
-one match.  With three events these coincide and neither is tightly
-determined.  The combined search time for the
-three was $1{,}464$\,s on the H100 (871.6, 511.1 and 81.7\,s), i.e.\
-${\approx}25.7$\,s per full sweep (57 complete sweeps preceded the three hits) with the single $(0,0)$ start.  We note for
-comparison that the screening campaign (\S\ref{sec:screening}), which uses
-$K_{\mathrm{seeds}}{=}4$ and therefore runs four seed chains per context,
-measured $89$\,s per context over 240 contexts.  The ratio $3.5$ is consistent
-with the $4\times$ increase in inner-loop work and not with any difference in
-the sweep itself; per-context time was flat in the fixed-point count
-($90.2$\,s in the screened arm against $88.3$\,s in the control arm despite
-$8.1\times$ the fixed points), confirming the cost is the $2^{32}$ sweep rather
-than the downstream bookkeeping.
+The dedicated runs found preimages in their 4th, 21st and 35th contexts
+(solver indices 3, 20 and 34), three successes in 60 attempted contexts.  We
+present these as demonstrations on separate targets, not as a runtime
+estimator: three observations cannot determine the mean, and context
+heterogeneity means that the mean number of matches per context need not equal
+the probability of at least one match.  Their recorded solving times were
+81.7, 511.1 and 871.6 seconds, for 1{,}464 seconds combined with the single
+$(0,0)$ seed.  Across 57 completed sweeps and the three partial winning
+sweeps, the average was about 25.7 seconds per full-sweep equivalent.  The
+four-seed campaign measured 89 seconds per context; these are separate
+configurations and both timings are retained.
 
 \subsection{Context Screening}
 \label{sec:screening}
 
-The clustering just hypothesised is real and is large enough to exploit.  The
+The clustering just hypothesised is visible and predictive for the
+intermediate fixed-point counter.  The
 attack samples a context and then sweeps $a_0$ over $2^{32}$, giving every
 context the same budget; that is optimal only if contexts are interchangeable.
 Over 280 contexts, each scored on a $2^{21}$ sample of $a_0$, the deduplicated C1/C2 fixed-point count had mean $63.4$ and variance $97{,}082$, a variance-to-mean ratio of
@@ -826,9 +842,14 @@ $31.93\times$ between runs---so the top-decile figure ($4.98\times$ and $6.79\ti
 The score counts C1/C2 fixed points, so the lift above is in the first place a
 fixed-point lift.  Whether it survives to the events that actually determine
 attack cost is a separate question, and we settled it with a preregistered
-paired campaign (\texttt{campaign\_screening.py}, seed 20260810; the run manifest in \texttt{data\_campaign\_screening.json} records the command, seeds and software versions; it records the code commit as ``unknown'', identifies the 40 targets by index and a truncated digest, and does not store the random messages that generated them, so the campaign is reproducible from the recorded seed and command but not from the manifest alone) rather than by assuming proportionality.
+paired campaign (\path{campaign_screening.py}, seed 20260810).  The run
+manifest in \path{data_campaign_screening.json} records the command, seed
+and software versions, but the code commit is ``unknown'', target digests are
+truncated, and the random source messages were not saved.  The aggregate rows
+and the three hit blocks are preserved, but the campaign cannot be replayed
+byte for byte from the archive.  We use it rather than assuming proportionality.
 
-\emph{Design, fixed before the run.}  40 independent targets; 10 contexts
+\emph{Design, fixed before the run.}  40 independently generated targets; 10 contexts
 generated per target; every context scored on an identical cheap $2^{20}$ $a_0$
 sample; the top $30\%$ by score forming the \textsc{screened} arm and an equal
 number drawn at random from the remainder forming the \textsc{control} arm;
@@ -876,9 +897,18 @@ so all three doing so has $p = 1/8 = 0.125$ (one-sided): suggestive and
 report no lift for the full-match or preimage counters.  Establishing one would
 require of order $10^2$ GPU-hours, which we did not spend.
 
+The selected arm represents three of ten generated contexts per target.  A
+plug-in population estimate using the two observed strata is therefore
+$0.3(3/120)+0.7(0/120)=7.5\times10^{-3}$ per full context, corresponding to
+about 3.3 hours at the recorded 89-second four-seed rate.  With no control-arm
+events and only three overall, this is a descriptive point estimate with very
+wide uncertainty, not an established mean.
+
 \emph{Summary of the claim.}  Screening costs $1/4096$ of a context's budget
-and delivers a measured $3.41\times$ ($95\%$ CI $[2.13, 5.82]$) improvement in
-lo-pass yield per attacked context.  It is \textbf{not} the $12.99\times$
+and delivers a trajectory-counted $3.41\times$ (target-blocked bootstrap 95\%
+interval $[2.13, 5.82]$ before identity-level correction) improvement in
+lo-pass yield per attacked context; the available row aggregates bound the
+identity-deduplicated point within $[2.42,3.44]$.  It is \textbf{not} the $12.99\times$
 figure quoted for fixed points, which we retain above only as a statement about
 fixed points; and it is not yet established as a speedup in time-to-preimage.
 
@@ -892,7 +922,7 @@ fixed points; and it is not yet established as a speedup in time-to-preimage.
 All GPU experiments were run on NVIDIA H100 SXM5 80\,GB HBM3 via RunPod
 cloud compute; the E1 and E2 pilots ran on CPU.  The attack code uses
 PyTorch~2.x on CUDA, with the C0 sweep vectorised in batches of $2^{24}$
-elements.  The 16\,GB $\sigma_0$-difference table is held in GPU memory
+elements.  The 16\,GiB $\sigma_0$-difference table is held in GPU memory
 throughout the
 sweep; table lookups are implemented as indexed tensor reads.
 
@@ -905,7 +935,7 @@ sweep; table lookups are implemented as indexed tensor reads.
 \S\ref{sec:screening} ($K_{\mathrm{seeds}}{=}4$; target and context number
 given).  P7 is a preimage of the all-ones digest, the target of
 Zaikin~\cite{Zaikin2026} (\S\ref{sec:comparison}), found in a dedicated run
-with $K_{\mathrm{seeds}}{=}4$.  Only the target digest was supplied to the solver; the six random targets are 19-round digests of random 55-byte messages, so a preimage was known to exist, whereas the all-ones digest is the structured target of~\cite{Zaikin2026}, not known in advance to have one.  All values are hexadecimal.  Context numbers are the solver's zero-based indices.  $^\dagger$Found 6\,s into the fourth context (index 3).  $^\ddagger$Found 20\,s into the 84th context; 7{,}373\,s is the
+with $K_{\mathrm{seeds}}{=}4$.  Only the target digest was supplied to the solver; the six generated targets are 19-round digests of random 55-byte messages, so a preimage was known to exist, whereas the all-ones digest is the structured target of~\cite{Zaikin2026}, not known in advance to have one.  All values are hexadecimal.  Context numbers are the solver's zero-based indices.  $^\dagger$Found 6\,s into the fourth context (index 3).  $^\ddagger$Found 20\,s into the 84th context; 7{,}373\,s is the
 whole run.}
 \label{tab:preimages}
 \footnotesize
@@ -965,7 +995,7 @@ P7 & \texttt{ffffffff ffffffff ffffffff ffffffff} & 7{,}373\,s \\
 \end{tabular}
 \end{table}
 
-Each row of Table~\ref{tab:preimages} was independently verified by
+Each row of Table~\ref{tab:preimages} was forward-verified by
 the following procedure:
 \begin{enumerate}
   \item Parse the 16 words $W_0,\ldots,W_{15}$ as a 512-bit block.
@@ -1015,7 +1045,9 @@ residual resolution.
 least one preimage was computed and verified.}
 \label{tab:comparison}
 \footnotesize
-\begin{tabular}{@{}lllll@{}}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.0cm}c
+  >{\raggedright\arraybackslash}p{3.3cm}
+  >{\raggedright\arraybackslash}p{3.5cm}c@{}}
 \toprule
 Reference & Rounds & Cost & Target & Concrete \\
 \midrule
@@ -1027,7 +1059,7 @@ Davydov et al.~\cite{Davydov2025} & 17, 18 & SAT, seconds & zero digest & yes \\
 Davydov et al.~\cite{Davydov2025} & 19 & SAT, unsolved$^{a}$ & zero digest & partial \\
 Zaikin~\cite{Zaikin2026} & 19 & $18$\,h\,$33$\,min on 192 CPU cores$^{b}$ & all-ones digest & yes (one) \\
 \midrule
-\textbf{This work} & \textbf{19} & ${\approx}80$ attempts of $2^{32}$ (${\approx}2$\,h, one H100)$^{c}$ & random (six); all-ones & \textbf{seven} \\
+\textbf{This work} & \textbf{19} & mixed campaign: $3/240$ at $89$\,s per attempt$^{c}$ & generated digests (six); all-ones & \textbf{seven} \\
 \bottomrule
 \end{tabular}
 
@@ -1035,7 +1067,14 @@ Zaikin~\cite{Zaikin2026} & 19 & $18$\,h\,$33$\,min on 192 CPU cores$^{b}$ & all-
 \begin{minipage}{0.92\linewidth}\footnotesize
 $^{a}$\,Reached only in a weakened form that constrains at most 31 of the
 256 output bits.\quad
-$^{b}$\,One run.  Parameterized Kissat inside Cube-and-Conquer, via an intermediate problem between rounds 18 and 19 whose solutions are 19-round preimages with probability $1/8$ by his account, so the expected cost of that route is about eight times this figure (see text).\quad $^{c}$\,Pooled rate of the 240-attempt campaign of \S\ref{sec:screening}: screened arm $3/120$, control arm $0/120$; 95\% interval $[2.6\times10^{-3},3.7\times10^{-2}]$ per attempt.  The six random targets are digests of random messages, so a preimage was known to exist.
+$^{b}$\,One successful run.  Parameterized Kissat inside Cube-and-Conquer,
+via an intermediate problem between rounds 18 and 19 whose solutions are
+19-round preimages with probability $1/8$ by his account; that acceptance
+probability alone does not determine a mean runtime.\quad
+$^{c}$\,Screened arm $3/120$, control arm $0/120$.  Pooling gives about two
+GPU-hours per observed event, but is not a random-context estimate; the
+population-weighted plug-in estimate is about 3.3 hours and is highly
+uncertain.  The six generated targets are image-derived.
 \end{minipage}
 \end{table}
 
@@ -1057,32 +1096,28 @@ the tuned Kissat.  Direct attempts on the 19-round instance found nothing
 in seven days on 192 cores; the preimage came from the intermediate problem between rounds 18 and 19 that keeps 29 of the 32 bits of the message word entering round 19 and fixes the other three to constants, whose solutions are full 19-round preimages with probability $1/8$,
 after $18$\,h\,$33$\,min on 192 CPU cores, about $3{,}560$ core-hours (his
 Tables~8 and~9), against $25$\,s and $1$\,s on one core for 18 and 17
-rounds.  Eight off-the-shelf parallel SAT solvers, seven from the SAT Competition 2024 and ALIAS, found nothing.  Since,
-by his account, a solution of that intermediate problem is a 19-round
-preimage with probability $1/8$ and the solutions found at $20$, $24$ and
-$28$ kept bits were not, the reported time is a single favourable draw;
-taken as an expectation his route costs about eight times that figure, and
-there is no second success to estimate the spread.  Our rate, by contrast, is measured over $240$ preregistered attempts with an interval (\S\ref{sec:complexity}), and the $98$ further attempts on his target (two full matches, one of them discarded by the bug described below) and the $60$ of the three dedicated runs ($3/60$, interval $[0.010, 0.139]$) do not contradict it, the intervals overlapping.  The attack model is the same as ours (his published preimage, Table~7 of~\cite{Zaikin2026}, verifies under \texttt{verify\_r19.py} at 19 rounds).  What the present work adds is a
-different method with a different cost profile: after a one-time $16$\,GB
-precomputation, each attempt is one $2^{32}$ sweep on a single GPU, about $25$\,s with a single seed chain and $89$\,s with the four chains used in the campaign of \S\ref{sec:screening}, where about one attempt in eighty succeeded when both arms are pooled ($3/120$ screened, $0/120$ control), so a preimage of an arbitrary digest costs about two hours of one H100 at that pooled rate, within a 95\% interval spanning a factor of 14, and seven preimages, six of random digests and one of the all-ones digest, are published together with the code that found them.  We do not convert
-between GPU-hours and CPU core-hours; the two figures are simply stated.
+rounds.  Eight off-the-shelf parallel SAT solvers, seven from the SAT
+Competition 2024 and ALIAS, found nothing.  Zaikin's 18~h~33~min is one
+successful duration; neither it nor the stated $1/8$ acceptance probability
+alone establishes a repeated-run mean.  The attack model is the same as ours
+(his published preimage, Table~7 of~\cite{Zaikin2026}, verifies under
+\texttt{verify\_r19.py} at 19 rounds).  What the present work adds is a
+different method and seven published witnesses.  After a reusable 16-GiB
+precomputation, one $2^{32}$ attempt took about 25 seconds with a single seed
+chain and 89 seconds with the four chains used in the campaign.  That campaign
+gave $3/120$ successes in its selected arm and $0/120$ in its control arm.
+The pooled two-hour figure and the population-weighted 3.3-hour plug-in figure
+describe that small stratified sample; neither is a precise mean.  We do not
+convert between GPU-hours and CPU core-hours.
 
 \paragraph{Head-to-head on the same target.}
-After reading~\cite{Zaikin2026} we ran the attack on its target, the
-all-ones digest, with the campaign configuration ($K_{\mathrm{seeds}}{=}4$)
-on one H100.  A first run produced a full 32-bit $W_9$ match at its 14th
-context that the candidate-assembly code then discarded by crashing: it
-indexed the compacted list of full matches with a position from the longer
-list of lo-passes, which is correct only when the winner is first in its
-batch, as all six earlier preimages had happened to be.  The bug is fixed
-in the artefacts and the published counts are unaffected, since a crash
-would have aborted the campaign.  The rerun with the fixed code found a
-preimage 20\,s into its 84th context, after $7{,}373$\,s ($122.9$\,min) of
-solving; it is P7 in Table~\ref{tab:preimages}, verified like the others,
-and it differs from the preimage in Zaikin's Table~7, so it is also a
-second preimage of that digest.  Counting the discarded match, the target
-gave two full matches in 98 contexts, in line with the campaign rate.  The
-raw log is \texttt{data\_ones\_target\_run.txt}.
+After reading~\cite{Zaikin2026} we ran the corrected solver on its fixed
+all-ones target with the four-seed campaign configuration.  It found P7
+20 seconds into its 84th context, after 7{,}373 seconds (122.9 minutes) of
+solving on one H100.  P7 differs from Zaikin's Table~7 block and is therefore
+a second preimage of that reduced-round target.  The complete run is archived
+in \texttt{data\_ones\_target\_run.txt}; an earlier aborted debugging run is
+not included in the rate calculation.
 
 \paragraph{Attack scope.}
 The attack covers 19 of 64 rounds and targets the compression function
@@ -1098,26 +1133,29 @@ on its security margin.
 Three cancellation identities in the SHA-256 round and schedule equations,
 together with a provisional assignment for the part of $W_9$ that depends
 on $a_2,a_3$, reduce the recovery of a 19-round preimage to one $2^{32}$
-sweep of table lookups per attempt.  Six preimages of random digests and
+sweep of table lookups per attempt.  Six preimages of generated digests and
 one of the all-ones digest attacked by Zaikin~\cite{Zaikin2026} were found
-and verified, and a preregistered 240-attempt campaign measured the
-success rate directly, $\hat\mu = 1.25\times10^{-2}$ per attempt with a
-wide interval.  A cheap screening pass improves the intermediate yield by
-a measured $3.41\times$; whether that survives to the final success rate
-is not established.
+and forward-verified.  A preregistered stratified campaign then recorded
+three successes in 120 screened attempts and none in 120 controls.  The
+pooled value $3/240$ is a description of that campaign, not a
+random-context success rate; the population-weighted plug-in estimate is
+about 3.3 GPU-hours per event and has substantial sampling uncertainty.  A
+cheap screening pass improved the trajectory-counted intermediate yield by
+$3.41\times$ (identity-level deduplication bounds it between $2.42\times$
+and $3.44\times$).  The campaign does not establish that this intermediate
+improvement reduces final-preimage time.
 
-The same construction does not reach 20 rounds at the 19-round cost.  The fourth schedule
-constraint adds a 32-bit condition, and the companion
-note~\cite{Basra2026R20} shows why no rearrangement of this attack family
-absorbs it: the full-avalanche dependency graph among the absorbed state
-words acquires its first cycle at exactly 20 rounds, through the term
-$\Sigma_0(a_4)$ entering $W_9$, so the 32-bit iteration that closes the
-19-round system has no cheap counterpart.  We do not claim that this is
-fundamental.
+The later context-shaped construction~\cite{Basra2026Submask} removes the
+fixed-point iteration and supersedes this paper's performance figures.  It
+also reports computed 20-round examples under an explicitly conditional
+model for the extra schedule constraint.  The earlier barrier
+note~\cite{Basra2026R20} records why the finite representations and update
+orders tested there did not absorb that constraint; it is not an
+impossibility result for other decompositions.
 
 \paragraph{Artefacts.}
 Solver, table construction, campaign driver, raw campaign data and an
-independent verifier are available at
+standalone verifier are available at
 \url{https://github.com/kamb-code/sha256-r19-preimage}.
 Any of the seven preimages (Table~\ref{tab:preimages}) can be checked with
 \begin{center}
@@ -1175,26 +1213,38 @@ difference, and one-word equalities occurred at the uniform rate of $2^{-32}$ pe
 completeness.
 
 %-----------------------------------------------------------------------
-\paragraph{Note added, September 2026.}  After this paper was written, a chosen-context variant of the attack~\cite{Basra2026Submask} imposed three conditions on the context ($a_4=a_5$, and for the derived words $e_8=e_9=\mathtt{0xFFFFFFFF}$), which removes the fixed-point iteration and collapses the consistency check to a bitwise condition.  It reduces the cost of a 19-round preimage from about $2^{38.3}$ swept $a_0$ (80 attempts at the pooled campaign rate) to about $2^{15.3}$ and reaches 20 rounds, where the fourth constraint remains an exact $2^{-32}$ filter, giving about $2^{45.4}$ swept $a_0$ per preimage (about 15 hours on one A100); two computed 20-round preimages are reported there, one of the all-ones digest.  That paper supersedes the cost figures here, and the screening result of \S\ref{sec:screening} is of historical interest only for the attack it was measured on.  The figures in this paper are those of the random-context attack and remain correct for it.
+\paragraph{Note added, September 2026.}  After this paper was written, a
+context-shaped variant~\cite{Basra2026Submask} imposed $a_4=a_5$ and, for
+the derived words, $e_8=e_9=\mathtt{0xFFFFFFFF}$.  Those conditions remove
+the fixed-point iteration and collapse the consistency check to a bitwise
+condition.  The observed 19-round cost falls to about $2^{15.25}$ swept
+$a_0$ values.  At 20 rounds a fourth exact equality remains; treating its
+measured residual as uniform at exact zero gives the paper's conditional
+estimate of about $2^{45.4}$ swept values and about 15 A100-hours.  Two
+computed 20-round examples are reported there, including one for the
+all-ones digest.  That paper supersedes the cost estimates here.  The
+campaign measurements and screening result in this paper remain evidence
+about the original construction, but the small stratified campaign does not
+provide a precise random-context mean.
 
 \section*{Acknowledgements and disclosure}
-The derivations, code, experiments, verification and text of this paper, and
-the corrections made for this resubmission, were developed with substantial
-assistance from an AI system (Anthropic's Claude, used through Claude Code)
-operating under the author's direction.  The fact-checking passes that
-preceded resubmission, in which every number was recomputed from the archived
-data and every citation resolved against its source, were likewise carried out
-by separate AI-agent sessions working from fresh implementations, not by human
-referees; their reports are in the repository under
-\path{experiments/submask_2026-09-03/reviewers/}.  All results were verified by
-code that shares nothing with the attack implementation and can be reproduced
-from the repository.
+The derivations, code, experiments and original text were developed with
+substantial assistance from Anthropic's Claude, used through Claude Code under
+the author's direction.  OpenAI Codex assisted with this revision by auditing
+claims against the archived records, checking references, editing the
+manuscript and rebuilding the publication files.  The repository also records
+separate AI-agent verification passes.  Three of those passes implemented the
+reduced-round compression function separately from the specification and
+forward-checked supplied witnesses; other passes reviewed shared source,
+manifests or logs.  They are automated checks, not human peer review.  The
+author selected the claims and remains responsible for the manuscript.
 
 \begin{thebibliography}{10}
 
 \bibitem{Basra2026Submask}
 K.~S.~Basra.
-\newblock Context shaping for reduced-round {SHA-256} compression-function preimages: nineteen rounds in milliseconds, and computed preimages at twenty rounds.
+\newblock Context shaping for 19- and 20-round {SHA-256} compression
+  preimages.
 \newblock Manuscript, 2026.  Source, code and witnesses at \url{https://github.com/kamb-code/sha256-r19-preimage}.
 
 \bibitem{Basra2026R20}
@@ -1282,4 +1332,3 @@ O.~Zaikin.
 
 \end{thebibliography}
 \end{document}
-

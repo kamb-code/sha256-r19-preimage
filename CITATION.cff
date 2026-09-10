@@ -1,23 +1,47 @@
 cff-version: 1.2.0
-message: "If you use this code or these results, please cite the paper below."
-title: "A Practical Preimage Attack on the 19-Round SHA-256 Compression Function via a Global sigma0-Difference Table"
+message: "Please cite the manuscript most relevant to the result you use."
+type: software
+title: "Reproducibility Package for Reduced-Round SHA-256 Compression Preimages"
 authors:
   - family-names: Basra
     given-names: Kameldip Singh
     orcid: "https://orcid.org/0009-0001-0977-4614"
-date-released: 2026-09-05
+version: "2026-09-10"
+date-released: 2026-09-10
 repository-code: "https://github.com/kamb-code/sha256-r19-preimage"
+url: "https://github.com/kamb-code/sha256-r19-preimage"
 license: MIT
 keywords:
   - SHA-256
-  - preimage attack
-  - step-reduced
-  - cryptanalysis
+  - reduced-round compression function
+  - preimage analysis
+  - message schedule
+  - table lookup
 preferred-citation:
   type: unpublished
-  title: "A Practical Preimage Attack on the 19-Round SHA-256 Compression Function via a Global sigma0-Difference Table"
+  title: "Context Shaping for 19- and 20-Round SHA-256 Compression Preimages"
   authors:
     - family-names: Basra
       given-names: Kameldip Singh
+      orcid: "https://orcid.org/0009-0001-0977-4614"
   year: 2026
-  notes: "Preprint. Companion note: The 20-Round Barrier for Table-Based Preimage Attacks on SHA-256 (same repository). Second paper: Context Shaping for Reduced-Round SHA-256 Compression-Function Preimages (paper_submask_r20.pdf, same repository), which supersedes the cost figures of both. ePrint identifier to be added on acceptance."
+  url: "https://github.com/kamb-code/sha256-r19-preimage/blob/main/paper_submask_r20.pdf"
+  notes: "Revised manuscript; no ePrint report number or DOI has been assigned."
+references:
+  - type: unpublished
+    title: "A Practical Preimage Attack on the 19-Round SHA-256 Compression Function via a Global sigma0-Difference Table"
+    authors:
+      - family-names: Basra
+        given-names: Kameldip Singh
+        orcid: "https://orcid.org/0009-0001-0977-4614"
+    year: 2026
+    url: "https://github.com/kamb-code/sha256-r19-preimage/blob/main/paper_r19_final.pdf"
+    notes: "Original 19-round construction; its performance figures are superseded by the preferred citation."
+  - type: unpublished
+    title: "The 20-Round Barrier for Table-Based Preimage Attacks on SHA-256"
+    authors:
+      - family-names: Basra
+        given-names: Kameldip Singh
+    year: 2026
+    url: "https://github.com/kamb-code/sha256-r19-preimage/blob/main/paper_r20_barrier.pdf"
+    notes: "Historical companion recording finite negative experiments; not an impossibility result."

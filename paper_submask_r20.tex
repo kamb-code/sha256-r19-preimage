@@ -1,7 +1,7 @@
 % Second paper: the submask context family, the collapse of the 19-round cost,
 % and the computed 20-round preimages.  Companion to paper_r19_final.tex
-% (the base attack) and paper_r20_barrier.tex (the barrier note), both of which
-% are left unchanged; this paper supersedes their cost figures where stated.
+% (the base attack) and paper_r20_barrier.tex (the historical barrier note).
+% This paper supersedes their cost figures where stated.
 %
 % Every number in this paper is traceable to a file under
 % experiments/submask_2026-09-03/ in the repository; see Appendix B.
@@ -12,7 +12,8 @@
 \usepackage{booktabs}
 \usepackage{xcolor}
 \usepackage[hidelinks]{hyperref}
-\hypersetup{pdftitle={Context Shaping for Reduced-Round SHA-256 Compression-Function Preimages},
+\Urlmuskip=0mu plus 1mu\relax
+\hypersetup{pdftitle={Context Shaping for 19- and 20-Round SHA-256 Compression Preimages},
             pdfauthor={Kameldip Singh Basra},
             pdfkeywords={SHA-256, preimage attack, reduced-round, compression function, cryptanalysis}}
 \usepackage{geometry}
@@ -31,14 +32,15 @@
 \newcommand{\sig}[1]{\sigma_{#1}}
 \newcommand{\Maj}{\mathrm{Maj}}
 \newcommand{\Ch}{\mathrm{Ch}}
+\newcommand{\ROTR}{\mathrm{ROTR}}
+\newcommand{\SHR}{\mathrm{SHR}}
 \newcommand{\mmod}{\bmod\,2^{32}}
 \newcommand{\hex}[1]{\texttt{#1}}
 
 \begin{document}
 
-\title{\textbf{Context Shaping for Reduced-Round SHA-256\\
-       Compression-Function Preimages: Nineteen Rounds in\\
-       Milliseconds, and Computed Preimages at Twenty Rounds}}
+\title{\textbf{Context Shaping for 19- and 20-Round\\
+       SHA-256 Compression Preimages}}
 
 \author{Kameldip Singh Basra \\[4pt]
         \small Independent Researcher \\
@@ -51,39 +53,35 @@
 
 \begin{abstract}
 \noindent
-The table-based preimage attack of~\cite{Basra2026R19} on the 19-round
-SHA-256 compression function chooses seven internal state words, the
-\emph{context}, at random, and then pays twice: a fixed-point iteration that
-converges for about one $C_0$ survivor in $2^{16}$, and an exact 32-bit consistency
-check on a provisional value of the message word $W_9$.  We show that both
-costs vanish on a large subfamily of contexts.  Choosing the context so that
-$a_4=a_5$ and two derived words satisfy $e_8=e_9=\hex{0xFFFFFFFF}$ makes the
-three schedule constraints solve triangularly in three table lookups per
-attempt, with no iteration, and collapses the consistency residual to
-$\Maj(a_4,a_3,a_2)-a_3 \mmod$, whose vanishing is a bitwise condition of
-probability exactly $(3/4)^{32}$ rather than $2^{-32}$.  The measured cost of a
-19-round preimage falls from about $2^{38.3}$ swept values of $a_0$ to about
-$2^{15.25}$, within one per cent of the derived
-$1/(c^3(3/4)^{32})=39{,}124$: about 12 milliseconds of one CPU core after a reusable one-time table precomputation.  We
-exhibit 13{,}840 verified preimages produced in 152 seconds, and 108 preimages
-of the all-ones digest that Zaikin~\cite{Zaikin2026} inverted at 19 rounds in
-18~h~33~min on 192 cores.
+We study one-block SHA-256 compression reduced to 19 or 20 rounds, with the
+standard initial value, feed-forward retained, all 256 output bits fixed, and
+an unrestricted 512-bit input block.  A global table for
+$u\mapsto\sigma_0(u)-u$ underlies an earlier 19-round construction.  We show
+that choosing internal context words so that $a_4=a_5$ and
+$e_8=e_9=\hex{0xFFFFFFFF}$ makes its three schedule constraints triangular:
+three table lookups replace a fixed-point iteration.  The same conditions
+reduce the remaining consistency test to
+$\Maj(a_4,a_3,a_2)=a_3$, which holds for exactly $3^{32}$ of the $2^{64}$
+pairs $(a_2,a_3)$.  Under an explicit lookup-distribution model this predicts
+one 19-round preimage per 39{,}124 swept values; three recorded runs give one
+per 38{,}878.  A 64-target run produced 13{,}840 forward-verified preimages in
+151.7 seconds.  The often-quoted 12 ms figure is a marginal estimate obtained
+from measured single-core throughput and yield after a reusable 16-GiB table
+has been built, not a cold-start latency.
 
-At 20 rounds the fourth schedule constraint remains an exact 32-bit filter.  We
-measure its residual to be uniform to 24 bits and find, by a
-characteristic-function analysis with a validated positive control, no bias
-that a table representative policy or a context choice could exploit: the
-first-harmonic contribution is below $10^{-3}$ bits at our sample size.  The
-cost is therefore $2^{45.4}$ swept $a_0$ with three-root tables.  With a fused GPU kernel this is about 15 hours on one
-NVIDIA A100.  We report two computed and verified 20-round preimages, one for the all-ones digest, found after 16~h on one of two A100s searching
-it (about \$26 on that GPU, \$52 for the pair, against an expected 15~h and
-\$24 per preimage).  To our knowledge, and after the search described in
-Section~\ref{sec:priority} (as of September 2026, covering the IACR ePrint
-archive, dblp, OpenAlex, arXiv and the SAT, CP and AI venues), no computed
-preimage of the SHA-256 compression function beyond 19 rounds has been
-published.  We also give evidence that, for this construction, 21 rounds costs the full additional $2^{64}$: the fourth and fifth constraints are measured to be independent, and the dependency that blocks a further collapse passes through $\Sig0$ of the unknown itself, which no context word can saturate.  Neither lever is new on its own; the
-contribution is their combination and the bitwise collapse.  Nothing here
-affects full SHA-256.
+At 20 rounds, candidates must also satisfy an exact fourth schedule
+constraint.  Existing residual tests are consistent with the working model
+that this condition contributes a factor $2^{-32}$; they do not prove
+uniformity at exact zero or rule out all alternative policies.  With three
+stored roots per table value, the model predicts a mean cost of about
+$2^{45.4}$ swept values, or about 15 hours at the measured A100 production
+rate.  We report two computed, forward-verified examples: one
+for a solver-generated target after 2.45 GPU-hours and one for the fixed
+all-ones target after 16.16 GPU-hours.  The six recorded production runs total
+about 71.7 GPU-hours.  The method combines known choice- and
+majority-function degeneracies.  Our negative 21-round observations apply
+only to the tested construction and do not establish a lower bound.  These
+results concern reduced-round compression, not padded or full SHA-256.
 \end{abstract}
 
 \section{Introduction}
@@ -92,10 +90,13 @@ affects full SHA-256.
 A \emph{preimage} of the SHA-256 compression function reduced to $R$ rounds is
 a 512-bit block $W_0,\dots,W_{15}$ such that the $R$-round compression of the
 standard initial value with that block, plus the feed-forward, equals a given
-256-bit digest.  We keep the feed-forward and drop the padding constraint, the
+256-bit digest.  We retain feed-forward but impose no SHA-256 padding format on
+the block.  Thus the object is the one-block reduced-round compression
+function, not the standard padded hash function.  The fixed initial value also
+distinguishes it from a free-start or pseudo-preimage problem.  All target bits
+are fixed; this is not a partial-output or collision problem.  This is the
 model used by Zaikin~\cite{Zaikin2026} and by our earlier
-paper~\cite{Basra2026R19}; a preimage in this model is strictly stronger than
-a pseudo-preimage, in which the initial value is free.
+paper~\cite{Basra2026R19}.
 
 Two lines of work address this problem.  The meet-in-the-middle line reaches
 high step counts at costs just below brute force: 43 steps at $2^{254.9}$
@@ -111,31 +112,33 @@ Zaikin~\cite{Zaikin2026} inverted the all-ones digest in 18~h~33~min on 192
 CPU cores and wrote that ``it is likely that additional effective algorithmic
 techniques are required to invert \ldots\ 20-round SHA-256 compression
 functions'' (\cite{Zaikin2026}, \S8).  Our earlier paper~\cite{Basra2026R19} reached 19 rounds by a
-different, algebraic route, at about two GPU-hours per preimage of an
-arbitrary digest, and a companion note~\cite{Basra2026R20} put the cost of the
-same family at 20 rounds at $2^{64}$ per context-equivalent, $2^{32}$ times
-the 19-round per-context cost, about $2^{71}$ in total at the 19-round rate
-measured there.
+different, algebraic route.  Its screened/control campaign gave a pooled
+point estimate of about two GPU-hours per success, with substantial sampling
+uncertainty and no events in its random-context control arm.  A companion
+note~\cite{Basra2026R20} modelled the 20-round extension as a further
+$2^{-32}$ schedule filter.
 
-This paper corrects both of our own figures downward by large factors, and
-reports two computed and verified preimages of the 20-round SHA-256
-compression function.  To our knowledge, and after the search described in
-Section~\ref{sec:priority} (as of September 2026), no computed preimage of
-that function beyond 19 rounds had previously been published.
+This paper supersedes the performance estimates of our earlier manuscripts
+for this chosen-context family and reports two computed and verified preimages
+of the 20-round SHA-256 compression function.  To our knowledge, after the
+dated and scoped literature search described in Section~\ref{sec:priority}, no
+published work had exhibited such a full-output witness beyond 19 rounds.
 
 \paragraph{What the base attack does.}
 The attack of~\cite{Basra2026R19} fixes the last eight state words from the
 digest by a backward chain, chooses the seven state words $a_4,\dots,a_{10}$
 at random (the \emph{context}), sweeps $a_0$ over all $2^{32}$ values, and
 recovers $a_1,a_2,a_3$ from the three message-schedule constraints on
-$W_{16},W_{17},W_{18}$ using a 16~GB table that inverts $u\mapsto\sig0(u)-u$.
+$W_{16},W_{17},W_{18}$ using a 16-GiB table that inverts $u\mapsto\sig0(u)-u$.
 Two things make it expensive.  The constraints on $W_{17}$ and $W_{18}$ are
 coupled through the round function, so $a_2$ and $a_3$ are found by a
 fixed-point iteration that converges for roughly one $C_0$ survivor in
 $2^{16}$ ($1.3$--$1.9\times10^{-5}$ per survivor in~\cite{Basra2026R19}).  And the constraint on $W_{16}$ needs $W_9$, which depends on the
 still-unknown $a_2,a_3$; the attack freezes them at zero, solves, and
-afterwards tests that the true $W_9$ equals the provisional one, a 32-bit
-condition that holds for about one converged candidate in $2^{22}$.
+afterwards tests that the true $W_9$ equals the provisional one.  The archived
+experiments measure substantial, context-dependent enrichment in this final
+condition; the earlier paper reports the resulting campaign rates rather than
+treating the residual as uniform.
 
 \paragraph{What this paper does.}
 We choose the context instead of drawing it at random.  Three conditions, $a_4=a_5$ together with $e_8=e_9=\hex{0xFFFFFFFF}$ (the
@@ -145,39 +148,40 @@ have two consequences
 disappears: the constraint on $W_{17}$ loses its dependence on $a_3$, so
 $a_1,a_2,a_3$ are obtained by three table lookups.  And the consistency
 residual collapses to $\Maj(a_4,a_3,a_2)-a_3$, a difference of two bitwise
-functions that is borrow-free, so its vanishing is the per-bit condition
+functions whose equality is a per-bit condition
 $\Maj(a_4,a_3,a_2)=a_3$, satisfied by exactly $3^{32}$ of the $2^{64}$ pairs.
 
 \paragraph{Results.}
 \begin{itemize}
 \item At 19 rounds the cost per preimage is about $2^{15.25}$ swept $a_0$,
   pooled over $1.14\times10^{9}$ swept values and $29{,}398$ verified
-  preimages in three runs, against $2^{38.3}$ for the random-context attack:
-  a factor of about $2^{23}$, with an interval of $2^{21.5}$ to $2^{25.3}$
-  inherited from the baseline's own uncertainty (Section~\ref{sec:r19}).  The
-  independently derived value is $1/(0.633673^3\cdot(3/4)^{32}) = 39{,}124$;
-  the three-run pooled value is $38{,}878$ ($1{,}142{,}947{,}840$ swept $a_0$ over $29{,}398$ preimages), and the largest single independent replication (Table~\ref{tab:r19}, 24 contexts) alone gives $39{,}123$.  One CPU core produces a preimage
-  of an arbitrary digest in about 12~ms.  The all-ones digest of~\cite{Zaikin2026}
+  preimages in three runs.  The historical random-context campaign reported
+  $2^{38.3}$ swept values per preimage when its screened and control arms were
+  pooled, but that mixed-arm number is not an estimate for uniformly sampled
+  contexts; we retain it only as a description of the earlier implementation
+  (Section~\ref{sec:r19}).  The
+  model-derived value is $1/(0.633673^3\cdot(3/4)^{32}) = 39{,}124$;
+  the three-run pooled value is $38{,}878$ ($1{,}142{,}947{,}840$ swept $a_0$ over $29{,}398$ preimages), and the largest separate replication (Table~\ref{tab:r19}, 24 contexts) alone gives $39{,}123$.  One CPU core produces a preimage
+  at a marginal modelled time of about 12~ms, derived from measured throughput
+  and yield after table construction.  The all-ones digest of~\cite{Zaikin2026}
   and the all-zero benchmark of~\cite{Davydov2025} each yield about a hundred
   preimages per second.
 \item At 20 rounds the fourth schedule constraint is an exact 32-bit filter in which we find no bias that a table policy or a
-  context choice could exploit (Section~\ref{sec:r20}).  With
-  three-root tables and a fused GPU kernel the cost is $2^{45.4}$ swept $a_0$,
-  about 15~hours on one A100.  We computed two 20-round preimages: one for a
+  context choice could exploit in the tested distributions and statistics
+  (Section~\ref{sec:r20}).  Assuming its exact-zero rate is $2^{-32}$, three-root
+  tables and a fused GPU kernel give a modelled mean cost of $2^{45.4}$ swept
+  $a_0$, about 15~hours at the measured A100 production rate.  We computed two 20-round preimages: one for a
   digest generated by the solver, after 2.45~h on one A100, and one for the
-  all-ones digest, after 16.2~h on one of two A100s searching that digest (about \$26 on
-  that GPU, \$52 for the pair).  To our knowledge, and
+  all-ones digest, after 16.2~h on one of two A100s searching that digest.  To our knowledge, and
   after the search described in Section~\ref{sec:priority} (as of September
   2026), no computed preimage of the SHA-256 compression function beyond 19
   rounds had previously been published.
-\item Twenty-one rounds costs this construction the full additional $2^{64}$
-  (Section~\ref{sec:barrier}).  On 214{,}583 freshly generated 21-round
-  candidates the fourth and fifth constraint residuals are uniform and
-  independent, and a symbolic search over 1{,}485 context families finds no
-  further collapse.  The reason is structural: the technique clears a
-  dependency only when it passes through $\Maj$ or $\Ch$, which a context word
-  can saturate, and the dependency that survives passes through
-  $\Sig0(a_4)$, where there is no context word to set.
+\item At 21 rounds two additional exact 32-bit constraints remain.  Under the
+  explicitly stated model that their residuals are uniform and independent,
+  they contribute a factor $2^{64}$ relative to 19 rounds.  Measurements on
+  214{,}583 candidates and searches over a finite menu of context families are
+  consistent with that model but do not prove it or exclude other
+  representations (Section~\ref{sec:barrier}).
 \end{itemize}
 
 \paragraph{What is and is not new.}
@@ -195,28 +199,47 @@ words together and costs nothing per candidate, its application to the
 constraint that carries the iteration, and the observation that the same
 choice turns a 32-bit modular consistency check into a bitwise one.  We have
 found no precedent for that last effect.  The barrier argument
-of~\cite{Basra2026R20} was correct about where the wall stands and about its
-height relative to the 19-round cost, a factor $2^{32}$; what it did not
-anticipate is that the 19-round cost itself could fall by $2^{23}$.
-Section~\ref{sec:relation} reconciles the two.
+of~\cite{Basra2026R20} identified the remaining residual and modelled its
+cost as a factor $2^{32}$ relative to the 19-round generator; what it did not
+anticipate is that the 19-round generator itself could become about $2^{23}$
+cheaper.
+Section~\ref{sec:relation} reconciles the two manuscripts.  The individual
+choice- and majority-function identities are prior art; the claimed
+contribution is their particular joint use here and the resulting residual
+factorisation.
 
 \paragraph{Scope.}
 Nineteen and twenty of SHA-256's 64 rounds.  Nothing in this paper bears on
 full SHA-256; on full SHA-224, which shares the compression function but uses
 a different initial value and truncates its output; on SHA-512, for which the
-table would need $2^{64}$ entries; or on any deployed system.
+table would need $2^{64}$ entries; or on any deployed system.  The two
+20-round targets are respectively image-derived and fixed all-ones.  Their
+existence does not prove that every 256-bit target is attainable or that the
+modelled mean applies uniformly to every target.
 
 \section{Preliminaries}
 \label{sec:prelim}
 
 \paragraph{Notation.}
 All words are 32-bit and arithmetic is modulo $2^{32}$ unless stated.
-$\Sig0,\Sig1,\sig0,\sig1$ are the SHA-256 functions of FIPS
-180-4~\cite{FIPS180}, $\Ch(e,f,g)=(e\wedge f)\oplus(\neg e\wedge g)$ and
+$\ROTR^n(x)$ denotes a right rotation and $\SHR^n(x)$ a logical right shift.
+The SHA-256 functions of FIPS 180-4~\cite{FIPS180} are
+\begin{align*}
+\Sig0(x)&=\ROTR^2(x)\oplus\ROTR^{13}(x)\oplus\ROTR^{22}(x),\\
+\Sig1(x)&=\ROTR^6(x)\oplus\ROTR^{11}(x)\oplus\ROTR^{25}(x),\\
+\sig0(x)&=\ROTR^7(x)\oplus\ROTR^{18}(x)\oplus\SHR^3(x),\\
+\sig1(x)&=\ROTR^{17}(x)\oplus\ROTR^{19}(x)\oplus\SHR^{10}(x).
+\end{align*}
+Also, $\Ch(e,f,g)=(e\wedge f)\oplus(\neg e\wedge g)$ and
 $\Maj(a,b,c)=(a\wedge b)\oplus(a\wedge c)\oplus(b\wedge c)$.  Following
 \cite{Basra2026R19}, the state after round $r$ is written $a_r$ and $e_r$,
 with $a_{-1},\dots,a_{-4}$ and $e_{-1},\dots,e_{-4}$ the eight words of the
-initial value.  Round $r$ consumes $W_r$:
+standard initial value, in order
+\[
+\hex{6a09e667},\ \hex{bb67ae85},\ \hex{3c6ef372},\ \hex{a54ff53a},\
+\ \hex{510e527f},\ \hex{9b05688c},\ \hex{1f83d9ab},\ \hex{5be0cd19}.
+\]
+Round $r$ consumes $W_r$ and the standard constant $K_r$:
 \begin{align*}
 T_1^{(r)} &= e_{r-4}+\Sig1(e_{r-1})+\Ch(e_{r-1},e_{r-2},e_{r-3})+K_r+W_r,\\
 T_2^{(r)} &= \Sig0(a_{r-1})+\Maj(a_{r-1},a_{r-2},a_{r-3}),
@@ -230,6 +253,27 @@ W_r = a_r - T_2^{(r)} - e_{r-4} - \Sig1(e_{r-1}) - \Ch(e_{r-1},e_{r-2},e_{r-3}) 
 \end{equation}
 The digest after $R$ rounds is the initial value plus
 $(a_{R-1},a_{R-2},a_{R-3},a_{R-4},e_{R-1},\dots,e_{R-4})$.
+
+For $t\ge16$, the message schedule is
+\begin{equation}
+W_t=\sig1(W_{t-2})+W_{t-7}+\sig0(W_{t-15})+W_{t-16}.
+\label{eq:schedule}
+\end{equation}
+
+\paragraph{Backward chain from the target.}
+Subtracting the standard initial value word by word from the target digest
+determines $(a_{R-1},\ldots,a_{R-4},e_{R-1},\ldots,e_{R-4})$.  For
+$r=R-1,R-2,R-3,R-4$, in that order, compute
+\begin{equation}
+T_2^{(r)}=\Sig0(a_{r-1})+\Maj(a_{r-1},a_{r-2},a_{r-3}),\quad
+T_1^{(r)}=a_r-T_2^{(r)},\quad
+a_{r-4}=e_r-T_1^{(r)}.
+\label{eq:backward}
+\end{equation}
+Each step uses only words already known from the digest or an earlier step,
+so the target fixes eight consecutive $a$-words.  This is an algebraic
+inversion of four state updates; it neither chooses nor uses a target
+preimage.
 
 \paragraph{The base attack.}
 Given the digest, the backward chain of~\cite{Basra2026R19} recovers
@@ -274,9 +318,9 @@ fixed points, giving about one preimage per 80 attempts of $2^{32}$ swept
 $a_0$ each, i.e.\ $2^{38.3}$ swept $a_0$ per preimage.\footnote{The pooled campaign estimate of~\cite{Basra2026R19},
 $\hat\mu=3/240$ per attempt, mixes a screened arm with a control arm that
 produced no events, and carries a 95\% interval of
-$[2.6\times10^{-3},\,3.7\times10^{-2}]$.  Any point in that interval is what
-this paper improves on by about $2^{23}$; the distinction does not affect the
-comparison.}
+$[2.6\times10^{-3},\,3.7\times10^{-2}]$ for the pooled rate.  It is retained
+here as a historical work figure for that campaign, not as a rate for uniform
+random contexts.}
 
 \section{The Submask Context Family}
 \label{sec:family}
@@ -294,6 +338,27 @@ $a_9 = -1-a_5+\Sig0(a_8)+\Maj(a_8,a_7,a_6)$.  The words $v,a_6,a_7,a_{10}$
 (and $a_{11}$ at $R=20$) remain free, so the family contains $2^{128}$
 contexts at 19 rounds and $2^{160}$ at 20.
 \end{definition}
+
+The table solve can be written explicitly without importing notation from the
+earlier paper.  In the order $j=0,1,2$, write the round-inverted words as
+\begin{equation}
+ W_{j+1}=a_{j+1}+B_j,\qquad W_{9+j}=A_j-a_{j+1},
+ \label{eq:AB}
+\end{equation}
+where $B_j$ depends only on variables already solved and $A_j$ depends only on
+those variables and the context.  For $j=0$, the second relation uses the
+provisional $\hat W_9-a_1$; for $j=1$ it holds in the family by
+Proposition~\ref{prop:triangular}; and for $j=2$ it follows directly from
+$e_7=a_3+T_1^{(7)}$ in~\eqref{eq:recW}.  Substitution in~\eqref{eq:Cj} gives
+\begin{equation}
+ \sig0(W_{j+1})-W_{j+1}
+ =W_{16+j}-\sig1(W_{14+j})-W_j-A_j-B_j=:R_j.
+ \label{eq:lookupRHS}
+\end{equation}
+Thus every stored root $u$ of $\sig0(u)-u=R_j$ gives
+$W_{j+1}=u$ and $a_{j+1}=u-B_j$.  This is the complete algebraic lookup used
+at each stage; a missing index rejects the path, and a multi-root table
+branches over its stored roots.
 
 \begin{proposition}[The iteration disappears]
 \label{prop:triangular}
@@ -317,8 +382,9 @@ With $a_5=a_4$, $\Maj(a_4,a_4,a_3)=a_4$; with $e_9=\hex{0xFFFFFFFF}$,
 $\Ch(e_9,e_8,\cdot)=e_8$.  Both terms are constants, so $D$ is constant.
 $C_2$'s right-hand side depends on $a_2$ (and on context) but its own unknown
 $a_3$ cancels as in the base attack.  The three constraints are therefore
-triangular in $(a_1,a_2,a_3)$ and each lookup either returns the unique stored
-root or misses.
+triangular in $(a_1,a_2,a_3)$ and each one-root lookup either returns its
+stored representative or misses; a multi-root implementation branches over
+the retained representatives.
 \end{proof}
 
 Neither condition suffices alone: an isolation test on three targets gave
@@ -335,9 +401,11 @@ $a_5=a_4$ is not needed for this part),
 \varepsilon \;=\; \Maj(v,a_3,a_2) - a_3 \pmod{2^{32}} .
 \label{eq:collapse}
 \end{equation}
-Moreover the subtraction is borrow-free: with $P = a_3\wedge\neg a_2\wedge\neg v$
-and $Q=a_2\wedge\neg a_3\wedge v$, one has $\Maj(v,a_3,a_2)=a_3-P+Q$ with
-$P\subseteq a_3$ and $Q\cap a_3=\emptyset$.  Hence $\varepsilon=0$ if and only
+With $P = a_3\wedge\neg a_2\wedge\neg v$ and
+$Q=a_2\wedge\neg a_3\wedge v$, one has $\Maj(v,a_3,a_2)=a_3-P+Q$: the first
+operation clears selected one-bits and the second sets selected zero-bits, so
+those two operations respectively use no borrows and no carries.  Hence
+$\varepsilon=0$ if and only
 if $\Maj(v,a_3,a_2)=a_3$ as bit strings, equivalently
 \begin{equation}
 (a_2\oplus a_3)\wedge(a_3\oplus v) = 0,
@@ -359,8 +427,9 @@ from $a_{3,i}$ exactly when $a_{3,i}=1,a_{2,i}=0$, the bits of $P$; where
 $v_i=1$, $\Maj$ is $a_{3,i}\vee a_{2,i}$, which differs from $a_{3,i}$ exactly
 when $a_{3,i}=0,a_{2,i}=1$, the bits of $Q$.  Since $P\subseteq a_3$,
 $a_3-P$ clears bits without borrows, and since $Q$ is disjoint from $a_3-P$,
-adding $Q$ sets bits without carries.  Thus $\varepsilon=Q-P$ with $P,Q$
-disjoint, which is zero iff $P=Q=0$, i.e.\ iff each bit position avoids the
+adding $Q$ sets bits without carries.  Independently of this representation,
+two 32-bit words have zero modular difference exactly when they are equal.
+Therefore $\varepsilon=0$ iff $P=Q=0$, i.e.\ iff each bit position avoids the
 two forbidden patterns; the surviving pairs number $3^{32}$.
 \end{proof}
 
@@ -381,7 +450,13 @@ expected number of swept $a_0$ per 19-round preimage is therefore
 \end{corollary}
 
 The last claim of the corollary, that the collapsed condition is
-\emph{sufficient}, was verified directly: on 64{,}000 triangular solutions
+\emph{sufficient}, also follows from the construction.  Equation~\eqref{eq:recW}
+makes every selected state transition hold by definition.  The constraints
+$C_0,C_1,C_2$ make the expanded words $W_{16},W_{17},W_{18}$ agree with the
+words fixed by the backward chain; at 20 rounds $C_3$ does the same for
+$W_{19}$.  Because that chain ends at the target state, a path satisfying the
+applicable constraints and the exact consistency check forward-evaluates to
+the target.  As an implementation check, on 64{,}000 triangular solutions
 recomputed from their message words, $C_1$ and $C_2$ held for all, $C_0$ held
 exactly for those with $\varepsilon=0$, and those were preimages.
 
@@ -403,13 +478,16 @@ $0.633673$ is slightly above $1-1/e=0.632121$, and the multiplicity
 distribution is slightly under-dispersed), so keeping only one discards a
 factor $1/c=1.578$ of the available continuations at each lookup.  Building
 second- and third-root tables (first free slot, $u$ distinct from the roots
-already stored) raises the per-lookup coverage to $0.8979$ and $0.9774$, and the triangular solutions per swept $a_0$ to $0.7240$ and $0.9338$;
+already stored) does not change the image fraction.  It raises the mean number
+of retained roots per uniformly selected index to $0.8979$ and $0.9774$, and
+the expected triangular paths per swept $a_0$ to $0.7240$ and $0.9338$;
 measured values are $0.725$ (\path{logs/smoke19_2roots.log}) and $0.9338$
-(\texttt{status.json} of each pod, solutions divided by swept $a_0$).  Each table is 16~GB; three fit an 80~GB GPU.
-The gain in wall-clock is smaller than the gain in solutions, since the extra
-branches cost lookups: about $1.4\times$ on a CPU for two roots ($2.80\times10^{5}$ against
-$2.06\times10^{5}$ swept $a_0$ per second, \path{logs/smoke19_1root.log} and
-\path{logs/smoke19_2roots.log}); the GPU ratio was not measured separately.  One index in $2^{32}$ is lost to the sentinel
+(\texttt{status.json} of each production run, solutions divided by swept
+$a_0$).  Each table is 16~GiB; three fit an 80-GiB GPU.  Extra branches also
+cost work: the measured CPU sweep rates were $2.80\times10^{5}$ and
+$2.06\times10^{5}$ swept $a_0$ per second for one and two roots respectively
+(\path{logs/smoke19_1root.log}, \path{logs/smoke19_2roots.log}); the GPU ratio
+was not isolated.  One index in $2^{32}$ is lost to the sentinel
 (the value $\hex{0x20000000}$ has the single root $\hex{0xFFFFFFFF}$, which
 encodes the ``miss'' sentinel); it is documented and irrelevant to any rate.
 
@@ -454,18 +532,19 @@ verified preimages.}
 \toprule
 Run & swept $a_0$ & solutions & per survivor & $\varepsilon=0$ & $a_0$/preimage \\
 \midrule
-4 random targets & $16{,}777{,}216$ & $4{,}270{,}445$ & $0.4017$ & 395 & $42{,}474$ \\
-64 random targets & $536{,}870{,}912$ & $136{,}596{,}846$ & $0.4015$ & $13{,}840$ & $38{,}791$ \\
-pooled, independent replication$^{a}$ & $270{,}532{,}608$ & --- & --- & $6{,}915$ & $39{,}123$ \\
-second independent replication$^{a}$ & $335{,}544{,}320$ & $85{,}389{,}673$ & --- & $8{,}643$ & $38{,}823$ \\
+4 generated targets & $16{,}777{,}216$ & $4{,}270{,}445$ & $0.4017$ & 395 & $42{,}474$ \\
+64 generated targets & $536{,}870{,}912$ & $136{,}596{,}846$ & $0.4015$ & $13{,}840$ & $38{,}791$ \\
+separate implementation A$^{a}$ & $270{,}532{,}608$ & --- & --- & $6{,}915$ & $39{,}123$ \\
+separate implementation B$^{a}$ & $335{,}544{,}320$ & $85{,}389{,}673$ & --- & $8{,}643$ & $38{,}823$ \\
 \midrule
 all-ones digest~\cite{Zaikin2026} & $4{,}194{,}304$ & $1{,}068{,}641$ & $0.4020$ & 108 & $38{,}836$ \\
 all-zero digest~\cite{Davydov2025} & $4{,}194{,}304$ & $1{,}068{,}359$ & $0.4019$ & 115 & $36{,}472$ \\
 \bottomrule
 \end{tabular}
 \begin{minipage}{0.95\textwidth}\footnotesize\vspace{2pt}
-$^{a}$ Twenty-four contexts, twenty-four targets and twelve values of $v$, run from a fresh implementation in an independent AI-agent review pass (see
-the disclosure); 6{,}915 of 6{,}915
+$^{a}$ Twenty-four contexts, twenty-four generated targets and twelve values of $v$, run
+from separately written code in an automated review pass that used the same
+specification and repository evidence (see the disclosure); 6{,}915 of 6{,}915
 collapsed-condition candidates verified as preimages; the second replication,
 $8{,}643$ of $8{,}643$.  Derived value: $39{,}124$.  The four-target row is the
 run reproduced bit for bit in \texttt{reviewers/reports.json}; the other rows
@@ -473,12 +552,14 @@ are in \path{logs/r19_big.log} and \path{logs/r19_fixed_targets.log}.
 \end{minipage}
 \end{table}
 
-Table~\ref{tab:r19} summarises the 19-round measurements.  The 64-target run took 151.7~s of wall time in one unpinned numpy process
+Table~\ref{tab:r19} summarises the 19-round measurements.  The 64-target run took 151.7~s of wall time in one unpinned NumPy process
 ($3.5\times10^{6}$ swept $a_0$ per wall-second); pinned to a single core the
 rate is $3.4\times10^{6}$ swept $a_0$ per core-second
 (\texttt{reviewers/reports.json}, \texttt{taskset} with
-\texttt{OMP\_NUM\_THREADS=1}), so a preimage of an arbitrary digest costs about
-12~ms of one core.  The measured collapse rate,
+\texttt{OMP\_NUM\_THREADS=1}).  Combining this throughput with the measured
+yield gives a marginal estimate of about 12~ms of one core per preimage after
+the reusable table has been built; it is not an observed cold-start latency.
+The measured collapse rate,
 $1.0132\times10^{-4}$ per solution on the 64-target run and
 $1.0122\times10^{-4}\pm1.1\times10^{-6}$ on a second, larger reviewer
 replication ($3.36\times10^{8}$ swept $a_0$), agrees with $(3/4)^{32}=
@@ -487,23 +568,23 @@ over 100 contexts at 19 and 20 rounds, $119{,}948$ collapsed-condition
 candidates, every 19-round one a verified preimage), observed divided by the
 prediction of Corollary~\ref{cor:yield} with the measured table fill
 $0.63375$, gives $0.9986\pm0.0029$, so any
-hidden gain or loss lies within a hundredth of a bit.  The rate does not
-depend on the target: the all-ones and all-zero benchmark digests yield at the
-same rate as digests of random messages.
+hidden gain or loss lies within a hundredth of a bit.  No material target
+effect is resolved in these samples: the all-ones and all-zero benchmark
+digests have observed yields near those of the generated targets.
 
 \paragraph{Comparison.}
-Table~\ref{tab:compare} compares like with like.  Two cautions apply.  The
+Table~\ref{tab:compare} keeps unlike hardware and cost measures explicit.  Two cautions apply.  The
 new cost is a \emph{marginal} cost: both our attacks presuppose the same
-one-time 16~GB table, which takes about 215 core-seconds to build, so a
+one-time 16-GiB table, which takes about 215 recorded CPU core-seconds to build, so a
 cold-start cost for a single preimage is dominated by the table.  And the
-baseline of~\cite{Basra2026R19} carries its own uncertainty (a 95\%
-interval of $2.6\times10^{-3}$ to $3.7\times10^{-2}$ on the per-attempt rate),
-so the speedup is about $2^{23}$, with an interval of $2^{21.5}$ to
-$2^{25.3}$.  Against Zaikin~\cite{Zaikin2026} the
-marginal ratio in core-time is about $10^{9}$; including the table build for a
-single preimage from cold it is about $6\times10^{4}$.  His 18~h~33~min figure
-is itself a single favourable draw: by his account the solution of the
-intermediate problem he solved is a 19-round preimage with probability $1/8$.
+baseline of~\cite{Basra2026R19} is a mixed screened/control campaign rather
+than a hardware-matched benchmark.  Its pooled work figure, $2^{38.3}$ swept
+$a_0$, divided by the present measured $2^{15.25}$, is a work-count ratio of
+about $2^{23}$ for those two implementations.  We do not turn the CPU and GPU
+timings in Table~\ref{tab:compare} into a controlled speed ratio.  Zaikin's
+18~h~33~min is the duration of one successful run; the stated one-in-eight
+acceptance probability of its intermediate solutions does not by itself
+establish an eightfold mean runtime.
 
 \begin{table}[t]
 \centering\footnotesize
@@ -514,17 +595,18 @@ standard IV, all 256 bits fixed.  Costs are per preimage.}
 \toprule
  & Zaikin~\cite{Zaikin2026} & \cite{Basra2026R19} & this work \\
 \midrule
-Targets & one fixed (all-ones) & arbitrary & arbitrary \\
+Targets & one fixed (all-ones) & six generated; one fixed & generated and fixed benchmarks \\
 Method & tuned Kissat inside Cube-and-Conquer & random context, fixed-point iteration & submask family, three lookups \\
-Cost & 18\,h\,33\,min on 192 cores$^{a}$ & $2^{38.3}$ swept $a_0$; about 2 GPU-hours & $2^{15.26}$ swept $a_0$; about 12 ms of one CPU core \\
+Cost & 18\,h\,33\,min on 192 cores$^{a}$ & $2^{38.3}$ swept $a_0$ (pooled mixed-arm campaign); about 2 GPU-hours & $2^{15.26}$ swept $a_0$; about 12 ms marginal CPU time \\
 Preimages verified & 1 & 7 & more than 20{,}000$^{b}$ \\
 \bottomrule
 \end{tabular}
 \begin{minipage}{0.95\textwidth}\footnotesize\vspace{2pt}
-$^{a}$ About 3{,}560 core-hours; obtained from an intermediate problem whose
-solutions are 19-round preimages with probability $1/8$, so the expected cost
-of that route is about eight times the reported figure.  Direct attempts on
-the 19-round instance found nothing in seven days on 192 cores (his account).
+$^{a}$ About 3{,}560 core-hours for the reported successful run, obtained from
+an intermediate problem whose solutions are 19-round preimages with
+probability $1/8$.  This single duration is not an estimate of a mean.  Direct
+attempts on the 19-round instance found nothing in seven days on 192 cores
+(Zaikin's account).
 $^{b}$ Counts are in the logs; verified blocks with their targets are printed
 in \path{logs/r19_scale.log} (33), \path{logs/r19_fixed_targets.log} (4),
 \path{logs/r19_variants.log} and \path{logs/r19_degenerate.log} (2 each) and
@@ -551,7 +633,7 @@ c_3 \;=\; \sig0(W_4) + W_3 - \kappa_3 ,\qquad
 which must vanish, where $W_3,W_4$ depend on $a_0,\dots,a_4$ and $\kappa_3$ on the
 context and digest only.
 
-\subsection{The fourth constraint is a flat filter}
+\subsection{Measured behaviour of the fourth residual}
 \label{sec:c3}
 
 We tested the distribution of $c_3$ on candidates that satisfy everything
@@ -565,17 +647,17 @@ else.
   $0.86$ at 18 (7 against 8.2).
 \item The GPU campaign's own counters
   (\texttt{gpu\_run\_snapshot/h100\_status.json}, $2.96\times10^{9}$
-  candidates): nested thresholds are correlated, but they decompose into
-  independent conditional halvings, each Binomial$(n_k,\tfrac12)$.  Aggregated
-  over steps 20 to 28 the H100 pod gives $2{,}654$ successes of $5{,}370$
-  (expected $2{,}685$), $z=-0.85$; the worst of those eight steps ($25\to26$, 78 to 28, one-sided binomial
-  $p=0.008$) is $p\approx0.07$ after correcting for the eight steps examined,
-  and the two A100 pods give $z=+1.47$ ($754$ of $1{,}452$) and $z=+1.71$
-  ($759$ of $1{,}453$) on the same steps ($+1.01$ and $+1.35$ when the step
-  $19\to20$ is included).  Including the step $19\to20$, on which the H100 alone is
-  low, the pooled three-GPU aggregate is $8{,}285$ of $16{,}712$ (expected
-  $8{,}356$), $z=-1.10$.
-\item A dedicated test on the all-ones digest itself, against random digests
+  candidates): the counts $n_k$ are nested.  Under the uniform-residual null,
+  $n_{k+1}$ is conditionally Binomial$(n_k,\tfrac12)$, but the observed ratios
+  do not thereby become unconditionally independent because their denominators
+  are random.  A score formed from the conditional transitions over bits
+  20--28 gives $2{,}654$ successes of $5{,}370$ opportunities on the H100
+  (expected $2{,}685$, $z=-0.85$).  The most extreme individual transition,
+  selected after examining the eight steps, has exact unadjusted one-sided
+  $p=0.00843$ and Bonferroni-adjusted $p=0.0674$.  The two A100 runs give
+  $z=+1.47$ and $z=+1.71$ over the same transitions.  These are descriptive
+  large-sample score calculations, not independent-binomial replications.
+\item A dedicated test on the all-ones digest itself, against generated digests
   as a matched control (\texttt{logs/ones\_obstruction.log};
   $3.95\times10^{6}$ candidates in each arm): no deficit that deepens with $k$ appears in either arm: every cell of the
   all-ones arm from 8 bits on is within $1.3\sigma$ of expectation below 18
@@ -588,12 +670,12 @@ else.
   with a widening window, so we read the surplus as noise and the test as
   excluding only an obstruction, which is what it was built for.
 \end{itemize}
-Honestly stated, the data pin the exact-zero rate only to within a factor of
-about three: the deepest cell with usable counts is 28 bits (at 24 bits the H100 cell
-holds 174 candidates against 176.5 expected, which is the depth to which the
-tests have power), and
-$P(c_3=0)=2^{-32}$ is an extrapolation over the last four bits.  The
-observed hits in Section~\ref{sec:hits} are consistent with it.
+The deepest cell with useful occupancy is the 24-bit cell (174 candidates
+against 176.5 expected on the H100 run).  Counts at 28 bits are too sparse to
+bound an atom at exact zero without distributional assumptions.  Thus
+$P(c_3=0)=2^{-32}$ is a working extrapolation, not a measured exact-zero rate.
+The two observed hits in Section~\ref{sec:hits} are consistent with it but do
+not estimate it precisely.
 
 \paragraph{Why we find no steering.}
 For a fixed candidate $(a_0,\dots,a_3)$ the digest and the context words
@@ -606,59 +688,55 @@ only a phase, $\varphi_{c_3}(\beta)=\varphi_{S}(\beta)\,e^{-2\pi i\beta
 \kappa_3/2^{32}}$, and if $W_3$ and $\sig0(W_4)$ were independent $\varphi_S$
 would factorise as $\varphi_{W_3}\varphi_{\sig0(W_4)}$; the two share
 $a_1,a_2,a_3$, so we treat the factorisation as a model and test it on 40
-contexts of about $1{,}700$ candidates each.  The largest-root table policy
-gives $W_3$ a strong bias ($|\varphi_{W_3}(1)|=0.155$ per context, a
-$255\sigma$ departure from uniform on the statistic summed over the 40
-contexts), and it is annihilated because $|\varphi_{\sig0(W_4)}(1)|=0.025$ per
-context sits at the noise floor $1/\sqrt{n}=0.024$; under the model the
-product, $0.004$, lies below that floor, and the observed
-$|\varphi_{c_3}(1)|=0.026$ is at the floor, i.e.\ noise.  Under that model,
-and at our sample size, no table representative policy, even one driving
-$|\varphi_{W_3}|$ to~1, would move $|\varphi_{c_3}(1)|$ above $0.025$, worth
-at most $9\times10^{-4}$ bits; whether a policy could induce dependence
-between $W_3$ and $\sig0(W_4)$ is excluded only by the direct tests below; and ``some contexts are cheaper'' is identically the statement ``$S$ is
-non-uniform'', for which an $8.4\times10^{6}$-frequency Fourier scan finds no
-evidence (largest statistic $30.4$ against an expected maximum of $31.9$ under
-uniformity, no exceedances), while the same scan on the known-biased $W_3$
-returns $3{,}235$, so the test has power.  A policy that stores
-roots on a density-$2^{-k}$ subset would gain $k$ bits of structure in $W_3$
-and lose exactly $2^{-k}$ in lookup hit rate.  Mutual information between
-$c_3$ and every quantity available before the lookups, $a_0$, $v$, the
-context index and their bit fields, is at the shuffle-null floor
-(maximum $1.6\times10^{-4}$ bits over 15{,}360 tests, against a null
-99.99th percentile of $1.59\times10^{-4}$); $17.3\times10^{6}$ random
-linear approximations from $a_0$ to $c_3$ give a best correlation of $5.49\sigma$
-against $5.77\sigma$ expected for pure noise.
+contexts of about $1{,}700$ candidates each.  The largest-root policy gives
+$W_3$ a visible first harmonic, $|\varphi_{W_3}(1)|=0.155$, while the observed
+$|\varphi_{\sig0(W_4)}(1)|=0.025$ and $|\varphi_{c_3}(1)|=0.026$ are near the
+per-context sampling scale $1/\sqrt n=0.024$.  An $8.4\times10^6$-frequency
+scan found no statistic above its uniform-model reference maximum; the same
+scan detects the known $W_3$ bias.  Separate mutual-information tests against
+$a_0$, $v$, context identifiers and bit fields, and random linear
+approximations from $a_0$, likewise produced maxima comparable with their
+shuffle or noise controls.
+
+These tests concern the sampled context distribution, the implemented root
+policies and the statistics just named.  They found no usable steering signal
+at their detection limits.  Marginal and pairwise tests do not establish the
+joint factorisation above, exclude sparse exact-zero effects, or rule out an
+unexamined table policy or context family.
 
 \subsection{Cost}
 \label{sec:cost20}
 
-Per swept $a_0$, the probability of a 20-round preimage is
+Under the working assumptions that the retained lookup branches follow their
+measured mean, the collapsed pairs have the uniform-pair rate of
+Proposition~\ref{prop:collapse}, and $c_3=0$ has probability $2^{-32}$, the
+probability of a 20-round preimage per swept $a_0$ is
 $0.9337\cdot(3/4)^{32}\cdot 2^{-32}=2.18\times10^{-14}$ with three-root tables,
 i.e.\ $2^{45.4}$ swept $a_0$ per preimage ($2^{47.3}$ with one root).  At
-$8.5\times10^{8}$ per second on an A100 that is a mean of about 15~h, about
-\$24 at \$1.59 per hour; on an H100, where we did not run the fused kernel, scaling by the eager
-kernel's measured ratio ($4.47$ against $2.54\times10^{8}$ swept $a_0$ per
-second) would give about 8~h at a higher hourly rate.  Being a memoryless search, the time to the first
-preimage is exponentially distributed: 63\% within one mean, 95\% within
-three.
+$8.5\times10^{8}$ per second on an A100 this model gives a mean of about
+15~h.  If successive candidates have a constant, independent success
+probability, the waiting-time model is approximately exponential; that is an
+additional modelling assumption, not a consequence of the two observed
+successes.  We do not extrapolate an H100 time because the fused production
+kernel was not run on that device.
 
 \subsection{The computed preimages}
 \label{sec:hits}
 
 \begin{table}[t]
 \centering\small
-\caption{The 20-round campaign.  Every pod built three root tables on the
-device.  ``Expected'' is candidates$\times2^{-32}$.}
+\caption{The recorded 20-round production runs.  Every run built three root
+tables on its device.  ``Model mean'' is the number of collapsed candidates
+times the assumed $2^{-32}$ fourth-constraint rate.}
 \label{tab:campaign}
 \begin{tabular}{@{}lllrrrl@{}}
 \toprule
-GPU & kernel & target & contexts & swept $a_0$ & expected & outcome \\
+GPU & kernel & target & contexts & swept $a_0$ & model mean & outcome \\
 \midrule
-H100 & PyTorch & random digest & $7{,}351$ & $3.16\times10^{13}$ & 0.690 & none \\
-A100 & PyTorch & random digest & $1{,}839$ & $7.90\times10^{12}$ & 0.173 & none \\
-A100 & PyTorch & random digest & $1{,}836$ & $7.89\times10^{12}$ & 0.172 & none \\
-A100 & Triton & random digest & $1{,}765$ & $7.58\times10^{12}$ & 0.166 & \textbf{preimage}, 2.45 h \\
+H100 & PyTorch & generated digest & $7{,}351$ & $3.16\times10^{13}$ & 0.690 & none \\
+A100 & PyTorch & generated digest & $1{,}839$ & $7.90\times10^{12}$ & 0.173 & none \\
+A100 & PyTorch & generated digest & $1{,}836$ & $7.89\times10^{12}$ & 0.172 & none \\
+A100 & Triton & generated digest & $1{,}765$ & $7.58\times10^{12}$ & 0.166 & \textbf{preimage}, 2.45 h \\
 A100 & Triton & all-ones & $12{,}203$ & $5.24\times10^{13}$ & 1.145 & \textbf{preimage}, 16.16 h \\
 A100 & Triton & all-ones & $12{,}075$ & $5.19\times10^{13}$ & 1.133 & none (stopped) \\
 \midrule
@@ -667,10 +745,14 @@ total & & & & $1.59\times10^{14}$ & 3.48 & 2 preimages \\
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:campaign} lists every GPU run (omitting about 48 contexts,
-$2\times10^{11}$ swept $a_0$, on random targets from the two all-ones pods
-before they were retargeted; \texttt{FLEET.txt}).  Two preimages were found from a
-total expectation of $3.48$; the probability of at most two is $0.32$.
+Table~\ref{tab:campaign} lists every main production run (omitting about 48 contexts,
+$2\times10^{11}$ swept $a_0$, on generated targets from the two all-ones runs
+before they were retargeted; \texttt{FLEET.txt}).  The six status records sum
+to 71.7 GPU-hours of solving time.  They produced two preimages against a
+model mean of 3.48.  Because successful jobs stopped on a hit and related jobs
+were then stopped manually, this campaign was not a fixed-exposure experiment;
+we therefore report the comparison descriptively and do not attach a Poisson
+significance test to it.
 
 \paragraph{Preimage of a solver-generated digest.}
 The target is the 20-round digest of a random 55-byte message drawn by the
@@ -695,21 +777,21 @@ was known to exist:
 7f9ef4a7 b318a7de a8848c61 a7a141a4 11ac114b 952299be 97aaa67f c6acfe57
 \end{center}
 Found 2026-09-05 in context 12{,}203 after 16.16~h on one A100
-($5.24\times10^{13}$ swept $a_0$; seed 3971886063), about \$26; a second
-A100 on the same digest (seed 1138247750) swept $5.19\times10^{13}$ in 12{,}075
+($5.24\times10^{13}$ swept $a_0$); a second A100 on the same digest swept
+$5.19\times10^{13}$ in 12{,}075
 contexts without a hit before being stopped.  The recovered state has $a_4=a_5=\hex{0x19eb97f7}$,
 $e_8=e_9=\hex{0xFFFFFFFF}$ and satisfies~\eqref{eq:compact}.
 
 Both blocks verify with \texttt{code/verify\_r19.py --rounds 20}, fail with
 \texttt{--rounds 19} and \texttt{--rounds 21}, and reproduce the digest under
-an independent from-scratch SHA-256.  Appendix~\ref{app:witness} gives the
+a separately written from-scratch SHA-256.  Appendix~\ref{app:witness} gives the
 commands.
 
 \paragraph{The same digest, one more round.}
 Zaikin inverted the all-ones digest at 19 rounds in 18~h~33~min on 192 CPU
-cores and stated that inverting the 20-round compression function would
-likely require additional effective algorithmic techniques.  The same digest
-is inverted here at 20 rounds in 16~h on one GPU.
+cores.  We use the same fixed target at 20 rounds, but the unlike algorithms,
+hardware and single successful observations are not a controlled performance
+comparison.
 
 \subsection{Validation of the pipeline}
 \label{sec:validation}
@@ -722,38 +804,39 @@ We therefore \emph{planted} 20-round preimages: blocks constructed so that
 their internal state lies in the family and satisfies~\eqref{eq:compact}, then
 hashed for 20 rounds.  Run over a window containing the true $a_0$, the
 reference implementation found every plant whose table roots were stored (10
-of 16 with two tables; an independent replication found 54 of 200 with one
+of 16 with two tables; a separate automated replication found 54 of 200 with one
 table and 145 of 200 with two, against the expected recovery fractions
 $c^3=0.25$ and $0.8979^3=0.72$) and never a wrong one.  The Triton kernel was
 then checked against the reference on 12 plants with two and three tables,
 agreeing on every hit, and an interpreter-mode execution compared all 27
 root-combination paths against the reference on identical inputs.
 
-\section{The Barrier at Twenty-One Rounds}
+\section{Twenty-One-Round Limitations}
 \label{sec:barrier}
 
 Each round beyond 19 adds one schedule constraint.  The companion
-note~\cite{Basra2026R20} showed that, for random contexts, the fourth
-constraint cannot absorb a fifth unknown because the resulting dependency
-graph contains a cycle whose heavy edge is $a_4\to C_0$ through $\Sig0(a_4)$
-in $W_9$.  The submask family does not cancel that edge; it removes a
-different dependency ($a_3\to C_1$) and pays $C_3$ in full.  The question is
-whether any context choice can go further.
+note~\cite{Basra2026R20} found that, for its tested random-context
+parameterisations, absorbing a fifth unknown creates a dependency cycle whose
+largest measured edge is $a_4\to C_0$ through $\Sig0(a_4)$ in $W_9$.  The
+submask family does not cancel that edge; it removes a different dependency
+($a_3\to C_1$) and tests $C_3$ directly.  We report the finite searches below
+as limitations of the present construction, not as an impossibility or
+optimality result.
 
-\paragraph{Which dependencies a context can clear.}
-The mechanism of Proposition~\ref{prop:triangular} clears a dependency only
-when it passes through $\Maj$ or $\Ch$ with a context word among the
-arguments, because a context word can saturate those functions.  A dependency
-that passes through $\Sig0$ or $\sig0$ of an unknown contains no context word
-and cannot be cleared.  For $C_3$ to absorb $a_4$ one would need $C_1$ free of
+\paragraph{Context families tested.}
+The saturation mechanism of Proposition~\ref{prop:triangular} clears a
+dependency when it passes through $\Maj$ or $\Ch$ with a context word among
+the arguments.  It supplies no direct lever for a dependency through $\Sig0$
+or $\sig0$ of the unknown itself.  For $C_3$ to absorb $a_4$ in this triangular
+arrangement one would need $C_1$ free of
 $a_3$ and of $a_4$, and $C_2$ free of $a_4$.  Table~\ref{tab:frames} reports,
 for six condition families, which of these hold, measured by perturbing each
 unknown and observing the constraint targets.
 
 \begin{table}[t]
 \centering\small
-\caption{Which above-diagonal dependencies each context family clears at 20
-rounds (measured on 40 random instances each by
+\caption{Observed dependency removals for six tested context families at 20
+rounds (40 random instances each, measured by
 \texttt{scripts/frame\_search2.py}; output in \texttt{logs/frame\_search.log}).}
 \label{tab:frames}
 \begin{tabular}{@{}lccc@{}}
@@ -770,25 +853,30 @@ $a_4=\dots=a_7$, $e_8=\dots=e_{11}=\hex{-1}$ & \textbf{yes} & no & \textbf{yes} 
 \end{tabular}
 \end{table}
 
-The middle column never turns.  With $a_5=a_4$ the $a_4$-dependence of $C_1$
+The middle column remains ``no'' in these six families.  With $a_5=a_4$ the $a_4$-dependence of $C_1$
 is $\Sig0(a_4)$ inside $T_1^{(6)}$; without it, $a_3$ leaks back in through
-$\Maj(a_5,a_4,a_3)$.  Either way a non-maskable path remains.  A symbolic search over 1{,}485 legal context-condition families
-(\path{analysis/scripts/symdep/}) confirmed that none clears it.  The collapse of Proposition~\ref{prop:collapse} survives the
+$\Maj(a_5,a_4,a_3)$.  A symbolic search over 1{,}485 context-condition families
+from the implemented grammar (\path{analysis/scripts/symdep/}) found none
+that clears both routes.  The collapse of Proposition~\ref{prop:collapse} survives the
 tighter families (collapse rates $1.016\times10^{-4}$ and
-$0.987\times10^{-4}$, \texttt{logs/frame\_search.log}), so they cost nothing but also gain nothing.
+$0.987\times10^{-4}$, \texttt{logs/frame\_search.log}), but they gave no gain
+under the tested solve order.
 
-\paragraph{The obstruction is a single edge.}
-The statement can be made sharper than Table~\ref{tab:frames}.  Two general
-facts hold at 20 rounds (\path{analysis/elimination_search/}).  First, an
+\paragraph{A recurring heavy edge.}
+The broader finite search localises the failure within its representation.
+Two recurring facts were observed at 20 rounds
+(\path{analysis/elimination_search/}).  First, an
 \emph{offset law}: every state word $a_k$ enters the recovered message word
 $W_{k+5}$ through $\Sig0(a_k)$, carried by the term
 $e_{k+1}=a_{k-3}+a_{k+1}-\Sig0(a_k)-\Maj(a_k,a_{k-1},a_{k-2})$ subtracted
 inside~\eqref{eq:recW}, and through $\Sig1(e_{k+4})$ with $e_{k+4}=a_k+\text{const}$;
-both are one-input functions of $a_k$ itself, so no context word can saturate
-them.  Second, $a_1$, $a_2$ and $a_3$ have forced homes: in every one of
+both are one-input functions of $a_k$ itself, so the tested saturation rule
+does not apply to them.  Second, $a_1$, $a_2$ and $a_3$ had fixed roles in
+every one of
 $11{,}086$ legal context configurations examined, $a_1$ is heavy in $C_1$, $C_2$
 and $C_3$ and can be absorbed only by $C_0$, and likewise $a_2$ only by $C_1$
-and $a_3$ only by $C_2$.  Hence a fourth absorbed word must be light in
+and $a_3$ only by $C_2$.  Within this arrangement, a fourth absorbed word
+would therefore need to be light in
 $C_0$, $C_1$ and $C_2$ and absorbable by $C_3$, and the offset law puts
 $\Sig0(a_k)$ heavily into at least one of $C_0$, $C_1$, $C_2$ for every
 $k=4,\dots,11$.
@@ -813,35 +901,43 @@ the frozen-$a_5$ residual; and a reduced-width model exhaustive over all
 $2^{25}$ contexts at five bits and checked at 6, 8, 12 and 32) found a global
 minimum of $10.86$ bits per flipped bit, against the 2-bit threshold at which
 absorption becomes possible and a control of $12.3$--$13.1$ bits on the
-$a_4\to C_0$ edge; the frozen residual is a random 32-bit map
-($P(\text{residual}=0)=2\cdot2^{-32}$, no affine output bit)
+$a_4\to C_0$ edge; the frozen residual had random-map-like measured
+collision statistics (empirical zero rate $2\cdot2^{-32}$ and no detected
+affine output bit)
 (\path{analysis/elimination_search/falsify_a5/}).  The obstruction to a fourth
-absorption at 20 rounds is therefore not a web of dependencies but this single
-edge, and it is heavy for the same reason as the $a_4\to C_0$ edge of
-\cite{Basra2026R20}: $\Sig0$ of the unknown itself.  We state this for this
-construction and its menu of context conditions; it is not a claim about
-attacks that are not table-based.
+absorption in these experiments is thus localised to this single edge.  It is
+heavy for the same reason as the $a_4\to C_0$ edge of
+\cite{Basra2026R20}: $\Sig0$ of the unknown itself.  This is a negative result
+for the stated representation, condition grammar and solve order, not for all
+table-based or algebraic methods.
 
-\paragraph{Independence of the fourth and fifth constraints.}
+\paragraph{Joint-residual measurement.}
 On 214{,}583 freshly generated 21-round candidates (84 targets,
 $8.4\times10^{9}$ swept $a_0$; \path{analysis/scripts/symdep/gen.log})
 satisfying everything up to the collapsed condition, the residuals of $C_3$ (at $W_{19}$) and $C_4$ (at
-$W_{20}$) are each uniform and their mutual information is below $10^{-5}$
-bits.  On this evidence we model 21 rounds as costing this construction the full $2^{64}$ above nineteen, about $2^{77}$ swept $a_0$ with three-root tables ($2^{79}$ with one), beyond reach; the measurement bounds the dependence between the two filters, it does not prove exact independence.
+$W_{20}$) were individually consistent with the tested uniformity statistics,
+and the estimated pairwise mutual information was below $10^{-5}$ bits.  This
+does not prove joint independence or bound sparse dependence at exact zero.
+If both residuals are modelled as independent uniform 32-bit words, 21 rounds
+adds a factor $2^{64}$ relative to the 19-round candidate generator (or
+$2^{32}$ relative to the 20-round model), for about $2^{77}$ swept $a_0$ with
+three-root tables.  This is a conditional estimate, not a lower bound.
 
-\paragraph{What the preimage set does not contain.}
+\paragraph{Exploratory corpus checks.}
 We mined 51{,}268 verified 19-round preimages and 68{,}680 20-round
 candidates for structure not forced by the construction: per-bit biases,
 GF(2)-linear and affine relations, context effects, neighbour structure in
 $a_0$, residue-class structure in $c_3$, and the entropy accounting of
-Proposition~\ref{prop:collapse}.  The 32 per-bit-position entropies of $(a_2,a_3)$ sum to $50.7189$ bits
+Proposition~\ref{prop:collapse}.  The 32 per-position marginal entropies of $(a_2,a_3)$ sum to $50.7189$ bits
 against the predicted $32\log_2 3=50.7188$ (each position
-$1.58496\pm0.00003$), and the 496 pairwise mutual informations between
-positions sum to $0.001$ bits, so the surviving pairs are consistent with uniformity on the allowed set at first and second order; higher-order dependence is not excluded by this test, and its practical effect is bounded only by the yield audit and the Fourier scan above; the GF(2) rank deficit is exactly the three carry-free least-significant
+$1.58496\pm0.00003$), and the 496 estimated pairwise mutual informations between
+positions sum to $0.001$ bits.  A sum of marginal entropies is not the joint
+entropy, and pairwise tests do not exclude higher-order dependence; these
+numbers show only agreement at first and second order.  The GF(2) rank deficit is exactly the three carry-free least-significant
 bit relations the construction implies; and no other test departed from its
-null.  Seven separate automated analyses (see the disclosure) proposed eight
-candidate levers, and a separate refutation pass rejected every one on
-re-examination.  One methodological note: a corpus that
+reference distribution.  Seven separate automated analyses (see the
+disclosure) proposed eight candidate levers, and a separate refutation pass
+rejected every one within the tested representations.  One methodological note: a corpus that
 draws $a_0$ with replacement contains duplicate rows that produce a spurious
 $69\sigma$ ``collision'' signal in $c_3$ until deduplicated.
 
@@ -854,16 +950,17 @@ all-zero digest, 19 only in a weakened form (at most 31 of the 256 digest bits f
 zero: 32 instances at one-bit steps, all but the 32-bit one solved), and
 19-round collisions, by Davydov et~al.~\cite{Davydov2025}; 19 rounds for the
 all-ones digest by Zaikin~\cite{Zaikin2026}, extending~\cite{Zaikin2024CP,
-Zaikin2024JAIR}; and 19 rounds for arbitrary digests, seven preimages, by our
-earlier paper~\cite{Basra2026R19}.  Before submitting we searched the IACR
-ePrint archive and proceedings through September 2026, dblp, OpenAlex, arXiv,
-the main SAT, CP and AI venues where the practical line lives (the SAT~2026
-and CP~2025 proceedings in full), Zaikin's repositories, and Russian- and
-Chinese-language sources, from four independent search passes.  No computed
-preimage of the SHA-256 compression function at 20 or more rounds was found,
-in any model, weakened or not.  We did not enumerate the CP~2026, IJCAI~2026
-or AAAI~2026 proceedings, doctoral theses, or SAT-competition solver logs; the
-claim is scoped accordingly.
+Zaikin2024JAIR}; and seven target-only 19-round examples from our earlier
+construction, six for image-derived targets and one for the same
+all-ones target~\cite{Basra2026R19}.  The repository records four automated
+search passes, completed in September 2026, over the IACR ePrint archive and
+proceedings, dblp, OpenAlex, arXiv, selected SAT, CP and AI venues, relevant
+repositories, and some Russian- and Chinese-language sources.  Those searches
+found no prior published, computed witness at 20 or more rounds in the same
+model: standard IV, feed-forward, one unrestricted block and all 256 output
+bits fixed.  This is a dated literature finding, not a proof of priority.  The
+search did not systematically enumerate CP~2026, IJCAI~2026, AAAI~2026,
+doctoral theses, or SAT-competition logs.
 
 \paragraph{Theoretical preimage attacks.}
 The meet-in-the-middle line~\cite{IsobeShibutani2009,AokiGuo2009,KRS2012}
@@ -908,14 +1005,17 @@ silently.
 
 \begin{itemize}
 \item \cite{Basra2026R19} reports about one preimage per 80 attempts of $2^{32}$
-  swept $a_0$, i.e.\ about $2^{38.3}$ swept $a_0$, and about two GPU-hours per
-  19-round preimage with random contexts.  Those figures remain
-  correct for that attack; the submask family is a different attack with the
-  same tables and backward chain, at $2^{15.26}$.
-\item \cite{Basra2026R20} bounds the family at about $2^{64}$ per
-  context-equivalent at 20 rounds and locates the obstruction in $\Sig0(a_4)$
-  inside $W_9$.  The factor $2^{32}$ for the fourth constraint stands, and the
-  location of the obstruction stands (Section~\ref{sec:barrier}); what changes
+  swept $a_0$, i.e.\ about $2^{38.3}$ swept $a_0$, when the screened and
+  control arms of its campaign are pooled.  All three events were in the
+  screened arm; the control arm had none.  The figure describes that mixed
+  campaign, not uniformly sampled contexts.  The submask family is a distinct
+  construction with the same table and backward chain, measured at
+  $2^{15.25}$.
+\item \cite{Basra2026R20} estimates a factor $2^{32}$ for the fourth
+  constraint under a uniform-residual model and locates the tested
+  dependency in $\Sig0(a_4)$ inside $W_9$.  The exact residual equation and
+  the finite negative searches remain useful; their extrapolation is a model,
+  not a bound (Section~\ref{sec:barrier}).  What changes
   is the per-context cost of the first three constraints, which the family
   reduces from a lossy iteration to three lookups.  The note's own caveat,
   that its negative results are properties of the parameterisations tried,
@@ -933,34 +1033,37 @@ silently.
 \section{Conclusion}
 \label{sec:conclusion}
 
-Imposing three conditions on the context words rather than drawing them all
-at random removes the
-iteration from the 19-round attack and collapses its final check to a
-bitwise condition, reducing the cost of a 19-round preimage of the SHA-256
-compression function by about $2^{23}$, to milliseconds on one CPU core, with the measured rate within one per cent of the derived one.  The same
-construction, with a fused GPU kernel and three-root tables, computes
-20-round preimages at about $2^{45.4}$ swept $a_0$, roughly fifteen hours on
-one A100; two are exhibited, one for the all-ones digest previously inverted
-at 19 rounds on 192 cores.  To our knowledge, as of September 2026 and after the search described in
+Imposing three conditions on the context words removes the iteration from the
+19-round construction and reduces its final consistency check to a bitwise
+condition.  The measured work is $2^{15.25}$ swept values per preimage, within
+one per cent of the yield model; the corresponding 12-ms CPU figure is a
+marginal estimate after reusable preprocessing.  At 20 rounds the exact
+fourth constraint remains.  Modelling its residual as uniform gives
+$2^{45.4}$ swept values and about fifteen A100 hours per preimage; two
+computed examples are exhibited, including one for the all-ones target.
+The six production records total 71.7 GPU-hours, while the two successful
+runs took 2.45 and 16.16 hours.
+
+To our knowledge, as of September 2026 and after the search described in
 Section~\ref{sec:priority}, no computed preimage of the SHA-256 compression
-function beyond 19 rounds had previously been published.  For this construction, twenty-one rounds costs the full additional $2^{64}$ on the evidence we have, for a reason we can state exactly: the surviving dependency passes
-through $\Sig0$ of the unknown, which no context word can saturate.  We do
-not claim that this is fundamental.  Full SHA-256 is
-untouched.
+function beyond 19 rounds had previously been published in the same
+full-output, fixed-IV model.  At 21 rounds the tested residuals and context
+families support, but do not prove, an independent-uniform model for two
+32-bit constraints.  No impossibility or lower-bound claim follows.  Full and
+padded SHA-256 are unaffected.
 
 \section*{Acknowledgements and disclosure}
 The derivations, code, experiments, verification and text of this paper were
-developed with substantial assistance from an AI system (Anthropic's Claude,
-used through Claude Code) operating under the author's direction, including
-the design and execution of the GPU campaign and the independent verification
-passes described in Appendix~\ref{app:repro}.  All results were verified by code that shares nothing with the attack
-implementation and can be reproduced from the repository.  The independent
-replications, reviews, corpus analyses and literature searches cited in
-Sections~\ref{sec:r19}--\ref{sec:priority} and in Table~\ref{tab:r19} were
-carried out by separate AI-agent sessions working from fresh implementations
-without access to the solver code, not by human referees; their full reports
-are in \path{experiments/submask_2026-09-03/reviewers/}, \path{analysis/} and
-\path{priority/}.
+developed with substantial assistance from Anthropic's Claude, used through
+Claude Code under the author's direction, including experiment design, code,
+analysis and drafting.  OpenAI Codex assisted with the present evidence audit,
+claim qualification and manuscript revision.  The supplied blocks were
+forward-checked by the standalone verifier and by several separately written
+SHA-256 implementations.  Other automated review sessions variously
+reimplemented parts of the construction or inspected shared logs and code;
+their reports are evidence of those specific checks, not human peer review or
+blanket independent replication.  The artefacts are listed in
+Appendix~\ref{app:repro}.
 
 \begin{thebibliography}{10}
 
@@ -974,9 +1077,8 @@ K.~S.~Basra.
 \bibitem{Basra2026R20}
 K.~S.~Basra.
 \newblock The 20-round barrier for table-based preimage attacks on
-  {SHA-256}.
-\newblock Companion note, 2026.  Source and code at
-  \url{https://github.com/kamb-code/sha256-r19-preimage}.
+  \mbox{{SHA-256}}.
+\newblock Companion note, 2026.
 
 \bibitem{FIPS180}
 National Institute of Standards and Technology.
@@ -1127,22 +1229,23 @@ All code, logs, reviewer artefacts and this paper are in the repository at
   tables built on the device; \texttt{code/submask\_triton.py}: the fused
   kernel with \texttt{--verify} (planted preimages) and \texttt{--bench}.
 \item \texttt{experiments/submask\_2026-09-03/}: as-run scripts and logs with a
-  sha256 manifest; \texttt{FLEET.txt} (every pod, GPU, target, seed, exposure
-  and cost); \texttt{NOTES.md} (corrections found by review);
+  sha256 manifest; \texttt{FLEET.txt} (hardware, target, seed, exposure,
+  and recorded runtime); \texttt{NOTES.md} (corrections found by review);
   \path{R20_PREIMAGE_ALLONES.txt} and \path{R20_PREIMAGE.txt} (witnesses and
   provenance); \path{logs/r19_fixed_targets.log}, \path{logs/frame_search.log} and
   \path{logs/ones_obstruction.log} (the fixed-target runs, the context-family
   search of Table~\ref{tab:frames}, and the all-ones obstruction test);
   \texttt{analysis/} (the corpus mining);
   \texttt{priority/} (the literature search and adjudication);
-  \texttt{reviewers/} (independent verification scripts, including three
-  SHA-256 implementations written from the specification with constants
-  derived from prime roots, and the full review reports).
+  \texttt{reviewers/} (separately written automated verification scripts,
+  including three SHA-256 implementations written from the specification with
+  constants derived from prime roots, and the full reports).
 \item Statistical method for nested thresholds: counts $n_k$ of candidates
-  whose residual has its low $k$ bits zero are nested; the ratios
-  $n_{k+1}/n_k$ are independent Binomial$(n_k,\tfrac12)$ proportions and are
-  the statistic to test, with a multiple-comparison correction over the steps
-  examined.
+  whose residual has its low $k$ bits zero are nested.  Under the uniform null,
+  $n_{k+1}$ is conditionally Binomial$(n_k,\tfrac12)$.  The manuscript reports
+  conditional score summaries and multiplicity-adjusted individual
+  transitions; it does not treat the random-denominator ratios as
+  unconditionally independent.
 \end{itemize}
 
 \end{document}

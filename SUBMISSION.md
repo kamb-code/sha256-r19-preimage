@@ -1,93 +1,72 @@
-# Filing package — Cryptology ePrint Archive
+# Manuscript Record: Context-Shaped R19/R20 Paper
 
-Everything the ePrint submit form asks for, ready to paste. The PDF to upload is
-`paper_submask_r20.pdf` (A4, 16 pages, author e-mail on page 1).
+## Current manuscript
 
-**Title**
+- **Title:** Context Shaping for 19- and 20-Round SHA-256 Compression Preimages
+- **PDF:** `paper_submask_r20.pdf`
+- **Source:** `paper_submask_r20.tex`
+- **Author:** Kameldip Singh Basra
+- **Status:** Unpublished revised manuscript; no DOI or ePrint report number
 
-Context Shaping for Reduced-Round SHA-256 Compression-Function Preimages:
-Nineteen Rounds in Milliseconds, and Computed Preimages at Twenty Rounds
+The earlier version was submitted to the Cryptology ePrint Archive as
+submission 111558 and was declined. The editor cited the archive's general
+criteria but did not identify a paper-specific technical error. The current
+manuscript is a subsequent revision and has not been resubmitted.
 
-**Authors (paper order)**
+## Scope
 
-Kameldip Singh Basra — Independent Researcher — kameldipbasra@gmail.com —
-ORCID 0009-0001-0977-4614
+The paper concerns one-block SHA-256 compression reduced to 19 or 20 rounds,
+with the standard initial value, feed-forward retained, all 256 target output
+bits fixed, and an unrestricted 512-bit input block. It does not claim a
+preimage of padded SHA-256 and does not affect full 64-round SHA-256.
 
-**Category**
+## Abstract
 
-Attacks and cryptanalysis
+We study one-block SHA-256 compression reduced to 19 or 20 rounds, with the
+standard initial value, feed-forward retained, all 256 output bits fixed, and
+an unrestricted 512-bit input block. A global table for
+`u -> sigma0(u) - u` underlies an earlier 19-round construction. We show
+that choosing internal context words so that `a4 = a5` and
+`e8 = e9 = 0xFFFFFFFF` makes its three schedule constraints triangular:
+three table lookups replace a fixed-point iteration. The same conditions
+reduce the remaining consistency test to `Maj(a4,a3,a2) = a3`, which holds
+for exactly `3^32` of the `2^64` pairs `(a2,a3)`. Under an explicit
+lookup-distribution model this predicts one 19-round preimage per 39,124
+swept values; three recorded runs give one per 38,878. A 64-target run
+produced 13,840 forward-verified preimages in 151.7 seconds. The often-quoted
+12 ms figure is a marginal estimate obtained from measured single-core
+throughput and yield after a reusable 16-GiB table has been built, not a
+cold-start latency.
 
-**Keywords** (comma-separated, no LaTeX, each under 40 characters)
+At 20 rounds, candidates must also satisfy an exact fourth schedule
+constraint. Existing residual tests are consistent with the working model
+that this condition contributes a factor `2^-32`; they do not prove
+uniformity at exact zero or rule out all alternative policies. With three
+stored roots per table value, the model predicts a mean cost of about
+`2^45.4` swept values, or about 15 hours at the measured A100 production
+rate. We report two computed, forward-verified examples: one for a
+solver-generated target after 2.45 GPU-hours and one for the fixed all-ones
+target after 16.16 GPU-hours. The six recorded production runs total about
+71.7 GPU-hours. The method uses known choice- and majority-function
+degeneracies in a new combination. Negative 21-round observations apply only
+to the tested construction and establish no lower bound.
 
-SHA-256, preimage attack, reduced-round, compression function, hash function
-cryptanalysis, table-based attack, GPU cryptanalysis, practical attack
+## Evidence qualifications
 
-**Publication status** (public field)
+- The two successful R20 runtimes are observations, not estimates of a mean.
+- The approximately 15-hour R20 value is conditional on the residual model.
+- The exact-zero R20 rate was not measured directly; useful occupancy reaches
+  24 residual bits.
+- R21 cost figures are conditional estimates for the tested construction.
+- The literature-priority statement is dated and scoped, not a proof.
+- Automated verifier passes are described according to what each pass checked;
+  they are not human peer review.
 
-Published nowhere else; no DOI.
+## Publication checklist
 
-**Message to the editors** (private field, not displayed)
-
-This is a new paper, not a revision of my earlier submission (submission
-110082, "Oracle-Free Preimage Attack on 19-Round Reduced SHA-256", not
-accepted). It cites that manuscript as unpublished, supersedes its cost
-figures, and reports new results (computed 20-round preimages). Every citation
-was checked against its source and every number is traceable to a committed
-log in the public repository.
-
-**Licence**
-
-CC BY 4.0
-
-**Abstract** (plain text, `$…$` math only, no citations)
-
-The table-based preimage attack of our earlier manuscript on the 19-round
-SHA-256 compression function chooses seven internal state words, the context,
-at random, and then pays twice: a fixed-point iteration that converges for
-about one $C_0$ survivor in $2^{16}$, and an exact 32-bit consistency check on
-a provisional value of the message word $W_9$. We show that both costs vanish
-on a large subfamily of contexts. Choosing the context so that $a_4=a_5$ and
-two derived words satisfy $e_8=e_9=$ 0xFFFFFFFF makes the three schedule
-constraints solve triangularly in three table lookups per attempt, with no
-iteration, and collapses the consistency residual to $\mathrm{Maj}(a_4,a_3,a_2)-a_3$
-modulo $2^{32}$, whose vanishing is a bitwise condition of probability exactly
-$(3/4)^{32}$ rather than $2^{-32}$. The measured cost of a 19-round preimage
-falls from about $2^{38.3}$ swept values of $a_0$ to about $2^{15.25}$, within
-one per cent of the derived $39{,}124$: about 12 milliseconds of one CPU core
-after a reusable one-time table precomputation. We exhibit 13,840 verified preimages produced in 152 seconds, and 108
-preimages of the all-ones digest that Zaikin inverted at 19 rounds in 18 hours
-33 minutes on 192 cores.
-
-At 20 rounds the fourth schedule constraint remains an exact 32-bit filter. We
-measure its residual to be uniform to 24 bits and find, by a
-characteristic-function analysis with a validated positive control, no bias
-that a table representative policy or a context choice could exploit: the first-harmonic contribution is below $10^{-3}$ bits at our
-sample size. The cost is therefore $2^{45.4}$ swept $a_0$ with three-root
-tables, about 15 hours on one NVIDIA A100. We report two computed and verified 20-round preimages, one for the
-all-ones digest, found after 16 hours on one of two A100s searching it (about 26 US dollars on
-that GPU, 52 for the pair, against an expected 15 hours and 24 dollars per
-preimage). To
-our knowledge, and after a search of the IACR ePrint archive, dblp, OpenAlex,
-arXiv and the SAT, CP and AI venues as of September 2026, no computed preimage
-of the SHA-256 compression function beyond 19 rounds has been published. We
-also give evidence that, for this construction, 21 rounds costs the full
-additional $2^{64}$: the fourth and fifth constraints are measured to be
-independent, and the dependency
-that blocks a further collapse passes through $\Sigma_0$ of the unknown itself,
-which no context word can saturate. Neither lever is new on its own; the
-contribution is their combination and the bitwise collapse. Nothing here
-affects full SHA-256.
-
----
-
-## Before you press submit
-
-* The two witnesses can be checked by a referee in under a second with the
-  commands in Appendix A of the paper.
-* All code, logs, reviewer artefacts and the manifest are public at
-  https://github.com/kamb-code/sha256-r19-preimage
-* The earlier manuscript is cited as a manuscript, not as an ePrint report,
-  because it is not on the archive.
-* The acknowledgement of AI assistance is kept, by the author's decision, in
-  both papers. It is accurate as written; several venues now require such a
-  statement, and ePrint does not forbid one.
+- Confirm that the PDF hash matches the revised TeX source.
+- Forward-check both R20 witnesses with `code/verify_r19.py`.
+- Check all references and links against the final PDF.
+- Use the title and abstract above for any future filing.
+- Do not assign or advertise an ePrint identifier unless the archive issues
+  one.

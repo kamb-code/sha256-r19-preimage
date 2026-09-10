@@ -1,4 +1,4 @@
-# Record state, 2026-09-05
+# Evidence snapshot and publication status
 
 ## Results
 * Two verified 20-round preimages: `R20_PREIMAGE_ALLONES.txt` (all-ones digest,
@@ -14,8 +14,12 @@
   arm; the all-ones arm runs high at 18–20 bits and returns to expectation at
   22. The target was never obstructed, which the preimage independently settles.
 
-## The second paper
-`paper_submask_r20.tex` / `.pdf` (16 pp) is committed at the repository root
-with `SUBMISSION.md`; the first paper (19 pp) with `RESUBMISSION_R19.md`. Two independent fact-check passes were applied before
-filing; their working files lived in the session scratchpad and are not part of
-the record. The paper's evidence map is its Appendix B. Both papers were submitted to ePrint on 2026-09-06 (submission ids 111557 and 111558, pending). When the 2026/NNNN report numbers arrive: update cross-citations, CITATION.cff and README, and file minor revisions.
+## Manuscripts
+`paper_submask_r20.tex` / `.pdf` is committed at the repository root with
+`SUBMISSION.md`; `paper_r19_final.tex` / `.pdf` is accompanied by
+`RESUBMISSION_R19.md`. Automated checking passes preceded the original
+filing; their archived reports record the checks each pass actually performed.
+Both papers were submitted to ePrint on 2026-09-06 (submission IDs 111557 and
+111558) and were later declined under the archive's general editorial
+criteria. Those IDs are not citable report numbers. The repository PDFs were
+subsequently revised and have no ePrint identifiers.

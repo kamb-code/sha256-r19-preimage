@@ -23,12 +23,18 @@ MANIFEST regenerated 2026-09-08 13:27:31 UTC: adds analysis/STATUS_AND_STOPPING_
 
 MANIFEST regenerated 2026-09-08 13:38:49 UTC: adds the lattice synthesis, lattice_3d/CORRECTIONS.md and the proper lattice diagnosis in WHAT_WOULD_BE_NEEDED.md.
 
+Publication-note update 2026-09-10 UTC: NOTES.md, STATE.md and
+analysis/STATUS_AND_STOPPING_POINT.md were revised to record the declined
+filing status, correct the nested-threshold description, scope finite negative
+findings, and remove private correspondence. As-run scripts, logs, status
+records and witnesses were not changed.
+
 sha256  path  size
 010ecd061ae440df95fa6a712bef9e58ed06b7c7b81f71e975dae18a91105dc9  FLEET.txt  3063 bytes
-41b4933ea4e151dd0f0954a6bb2bdf35d7465e00323b488b4538e75f8fe62e52  NOTES.md  6035 bytes
+659df817164df74ea49fb61eb123ebf1980c7077a6f13aafb08899e6cc9bbb75  NOTES.md  5947 bytes
 effe4b4b3b06609732ca1acf62111a7f9e909152b143151bb4274502772554f2  R20_PREIMAGE.txt  1904 bytes
 b81c339baa48606b21d13b04346ba83c3da5ecc354de296a3cc367958b4f5913  R20_PREIMAGE_ALLONES.txt  3020 bytes
-108a4ebd729b93205b2607aa2cf3a019329d12c7740e20ae36b4c3ddae4a1f09  STATE.md  1484 bytes
+3822f125d15399251ea8979479eb17b26ac32b14b6834ef8c94d22ce66068009  STATE.md  1509 bytes
 e9619741d2c4f1670f252e8817a803e446b6d52d8cf7b41130038b33136fa84f  gpu_run_snapshot/a100a_runner.log  25063 bytes
 9e93bace62b578611b06b3bcafecdd985974efd3a313c766bd053665e875182d  gpu_run_snapshot/a100a_status.json  600 bytes
 2f627c248b431c7c4cebbc20c069c18396aecc2d22ddb986fd39ac2bc8dc631d  gpu_run_snapshot/a100b_runner.log  25064 bytes
@@ -51,7 +57,7 @@ e9523dfe7b92158764c292f84be94fc5e4905e6cbd9923c1dc11a1735e744f71  gpu_run_snapsh
 eb1b77f11ee36cced88cfe749abd90834a1b8eabd5e6bfc6df0a02c79d8ce667  gpu_run_snapshot/live/t1/status.json  325 bytes
 2fa4a885d00fc5dfb5b6c5aed0ac315ff73b896ec038b4ed5fe1a36585b925f0  gpu_run_snapshot/live/t1/stdout.log  1891966 bytes
 98aa0fa2e76ea326f9b649f625351afab618e114db33b53bbbbf65bc073a9e4c  analysis/FINDINGS.md  4201 bytes
-e42dc1c418c422489008f8aebcce37c9ea43c66f0d7c2cf99ec9c3c9ca7f7893  analysis/STATUS_AND_STOPPING_POINT.md  4348 bytes
+e8859d527b823d33b119c2153c37d1e46d4cc121c9613007002f108d3d9d78e8  analysis/STATUS_AND_STOPPING_POINT.md  3113 bytes
 b87b26a127f0a0b91d36062614d7c125653edd55a9d0f8519c8c1c6058bc9df4  analysis/WHAT_WOULD_BE_NEEDED.md  11185 bytes
 a9a398a76a55e5958197b73f68bcc1ba6e1379ff20641b32daee412d172a6902  analysis/reports.json  168544 bytes
 52f028b3264dda704ebfc9fda4aa7275537d26c9d13620dc91126e82f2f80909  analysis/differential_wdomain/reports.json  66663 bytes

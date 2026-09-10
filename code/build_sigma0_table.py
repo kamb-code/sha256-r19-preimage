@@ -19,9 +19,11 @@ Note on the sentinel: u = 0xFFFFFFFF itself is a legitimate preimage
 indistinguishable from a miss under this format.  Counting non-sentinel
 entries in the file therefore gives 2,721,603,627, one below the true
 coverage of 2,721,603,628 quoted in the paper; the missing entry is
-v = 0x20000000.  The GPU build uses the int32 minimum as its sentinel
-instead and does not have this collision; the effect on any statistic is
-one entry in 2.7e9 and is ignored throughout.  A table built by this script
+v = 0x20000000.  The original H100 solver uses the int32 minimum as its
+sentinel, so it can instead obscure u = 0x80000000 if that root wins its
+CUDA scatter.  The newer submask GPU solver uses -1, like the disk format.
+Either collision affects at most one stored representative among billions
+and is ignored in rate calculations.  A table built by this script
 with --policy max is identical, entry for entry, to the table used for the
 published runs (checked 2026-09-03).
 
