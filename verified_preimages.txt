@@ -1,0 +1,111 @@
+VERIFIED 19-ROUND SHA-256 PREIMAGES
+====================================
+Convention: one-block reduced-round SHA-256 compression initialized with
+the standard SHA-256 IV. W[0..15] are arbitrary 32-bit words (no padding
+constraint). Verification: SHA256_compress_19(IV, W) + IV == target.
+
+All seven preimages were independently verified with verify_r19.py.
+Verification command (any of the seven):
+  python3 code/verify_r19.py --rounds 19 --hash <HASH> --words "<W0 .. W15>"
+
+
+--- P1 ---
+Target hash (19-round):
+  1e65261c54255188604f5375091839733de63e966b5e4715658226bf03588447
+
+Message words W[0..15]:
+  22f091af ec52d67b 74c33819 a280dc6a
+  b001ff1a 1f2356a5 3eccf108 bd9a2333
+  abe611d1 6d1e5a20 8041df25 e43d31af
+  aa895a2e 69106ad2 7479fa3a 2a9abb91
+
+Verified: OK
+
+
+--- P2 ---
+Target hash (19-round):
+  fb52f81baed24f8728faf5bbce82c67d510761172fb9876d9e3a72dda351b7ca
+
+Message words W[0..15]:
+  37e6702f bc20efea 2dd42a3e 501dfbe9
+  3cacc578 ea2de1c1 11c0f066 0f22be47
+  2a447d2d 13f0080f 1f33df6b d655d8e6
+  15730eaa 9bf64950 9f129973 5a964edf
+
+Verified: OK
+
+
+--- P3 ---
+Target hash (19-round):
+  1bd7ebbdc4d938fb26d19b5dd5caf333de397bd1c745727bd5556baf38ccf977
+
+Message words W[0..15]:
+  3ce8fba4 e2fb9661 44730c59 e1cf4bc0
+  e1a18d93 97658983 67efe2a7 ef260ecb
+  d4c6dbe0 13e9388e 95664a59 4d9e248b
+  74137862 664815ac 89eae95a cd7dbef5
+
+Verified: OK
+
+
+Preimages P4-P6 were recovered during the preregistered screening
+campaign of 2026-08-10 (240 contexts, one H100; raw per-context data in
+data_campaign_screening.json). They were verified with the same command.
+
+--- P4 ---
+Target hash (19-round):
+  c55aecafd68ac4f559bb2b940688f3bc1dabe3ff86a7d03447e8b11a637d7506
+
+Message words W[0..15]:
+  3694ee67 a1d020b9 47f08ea3 dc873e2b
+  1f41c8b1 39018970 d3a2afb2 23f6e6cf
+  80c46545 f7b2b46c 2e44f333 2effe68b
+  06d80cdf 8525e7d7 7ef008e5 13e56087
+
+Verified: OK
+
+--- P5 ---
+Target hash (19-round):
+  a8241289b5980304e9dfd401b1370200ab32b5e8cfaff26c26aabcfc8be89df4
+
+Message words W[0..15]:
+  3e0a7d67 df0944a3 4bfe156b bd344ac5
+  7b7d9587 8984e286 21c995d9 d8e53cdd
+  0a0be79d e02dda1a e17e0f4a e3ff692b
+  8c782631 97dc4811 5ed68656 dfce314f
+
+Verified: OK
+
+--- P6 ---
+Target hash (19-round):
+  09156002031fed2899bc67d0e419b6ff81b9a0dd4e3fa417e000817adb85b143
+
+Message words W[0..15]:
+  164084a5 f97bd8bd bff47431 a8e55b29
+  948d1160 10eb8f7d d0ea565e 7918b8b9
+  87527a3a 6baa5685 a1fbc5dc 7548adfc
+  be3fb206 b9738756 b4ca33e3 b8354a95
+
+Verified: OK
+
+
+P7 is a preimage of the target used by Zaikin (Constraints, 2026): the
+all-ones digest. It is a different message from the one in his Table 7, so
+it is also a second preimage of that digest. Raw solver log:
+data_ones_target_run.txt.
+
+--- P7 ---
+Target hash (19-round):
+  ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
+Message words W[0..15]:
+  3c6ff45c a5b23f8d dc6b8089 4f232935
+  79578e14 9c2da339 b22ec37a 9554191b
+  e69661f0 49a43b7a d8c60a2b 88d7588c
+  6225084d 87c95c4e 23ee573d 8d8fedfa
+
+Note: a first run on this target produced a full 32-bit W9 match at its 14th
+      context that the candidate-assembly code then discarded by crashing
+      (indexing bug, fixed in commit 66b728c). Counting it, the target gave
+      two full matches in 98 contexts.
+Verified: OK
