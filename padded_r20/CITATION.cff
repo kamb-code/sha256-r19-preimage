@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "Please cite the manuscript and its underlying context-shaping work."
+title: "A Computed Preimage of 20-Round SHA-256 with Standard Padding for a Prescribed Structured Digest"
+type: generic
+authors:
+  - family-names: Basra
+    given-names: Kameldip Singh
+    orcid: "https://orcid.org/0009-0001-0977-4614"
+date-released: 2026-10-17
+version: "1.0"
+url: "https://github.com/kamb-code/sha256-r19-preimage"
+abstract: >-
+  An explicit 55-byte message matching a prescribed structured 256-bit digest
+  under the first 20 rounds of SHA-256, with standard IV, schedule, constants,
+  feed-forward, and message padding. Includes reproducible forward verification.
+  The padded all-ones extension is unexecuted and no arbitrary-target runtime
+  guarantee is claimed.
+keywords:
+  - SHA-256
+  - reduced-round preimages
+  - standard padding
+  - context shaping
+  - reproducible verification

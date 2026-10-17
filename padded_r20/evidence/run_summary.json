@@ -1,0 +1,28 @@
+{
+  "rounds": 20,
+  "target_hex": "c799d8515f3907ec43324031d31ea13e9d2287d94cf0f4f741989d70463e45b0",
+  "hardware": "NVIDIA A100-SXM4-80GB",
+  "search_seed": 4024014854,
+  "root_tables": 3,
+  "context_sweeps": 6947,
+  "distinct_context_pairs": 6944,
+  "swept_a0": 29837137805312,
+  "reported_collapsed_candidates": 2798787536,
+  "reconstructed_hits": 1,
+  "elapsed_s": 33474.64648413658,
+  "a0_per_s": 891335411.6958823,
+  "model_expected_hits": 0.6516435034573078,
+  "model_assumption": "Each counted candidate is assigned probability 2^-32; neither uniformity nor independence is proved.",
+  "timing_scope": "Driver timer begins after device table construction and CPU table copy; includes context generation, sweeps, reconstruction and loop overhead.",
+  "reported_table_build_seconds": 6,
+  "reported_rental_hours": 9.38,
+  "reported_hourly_rate_usd": 1.79,
+  "estimated_rental_cost_usd": 16.79,
+  "cost_status": "Estimate from reported duration and rate, not an independently audited invoice.",
+  "software": {
+    "kernel": "submask_triton.py (not included in this verification release)",
+    "driver": "run_padded_r20.py",
+    "pytorch": "2.4.1+cu124"
+  },
+  "completeness": "Three retained-root tables do not establish complete enumeration of inverse branches; no candidate-distinctness or arbitrary-target guarantee is claimed."
+}

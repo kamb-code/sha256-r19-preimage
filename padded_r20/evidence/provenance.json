@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-17",
+  "source_file_sha256": {
+    "padded_structured_target.json": "5b6c916acd16651a70c50c2b19bfd94b11be39176d6a50393b2d6c96ad3b467e",
+    "padded_target.py": "17f7afd797e3d5661cf85e72e26d8ad178771f93812b837d2d03578f7bcbf066",
+    "padded_pilot.py": "d6365884ea9a6f57ad9ebbefc3ebc53b9989f901302248a3bcbb3362eb114c6a",
+    "padded_pilot.json": "c415c9e2cb9269fc84032c1fba6a3462c003a73d906eea2b6bbc0fcba86d0cc9",
+    "r20pad_pad1_status.json": "e7c3817d981952ee55450fc4c5fd840bbad1cc5d5fa164f75f0b74fe8ac3e7fa",
+    "r20pad_pad1_stdout.log": "d3763094ebc8e346003b5251d0a536b1522646e4bea5fb069684b8c4c7d357c1",
+    "run_padded_r20.py": "f96bc0d0b9c66de04635c29a2ae1b1ebda160a4aa926dd3e784052c9f210145e"
+  },
+  "scope": "Derived numerical evidence and independently replayed verification. Context CSV extracts only research counters from the recorded search log. These hashes identify source records; they are not external timestamps or a proof of search execution.",
+  "reference_verifier": {
+    "repository": "https://github.com/kamb-code/sha256-r19-preimage",
+    "commit": "f75b87a620bdbbc40cf0c8a96bcdc9e1e05e7f73",
+    "path": "code/verify_r19.py",
+    "git_blob_sha": "2779d2377906a046830890addc6e9be4a73d49ed"
+  }
+}

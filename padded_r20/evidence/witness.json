@@ -1,0 +1,37 @@
+{
+  "rounds": 20,
+  "message_hex": "63823741194daa9bb857c160fe7a02c0b400ea9d2f4c7f94a33eb2234bd3144e1c4e9b5d350df3ebf5001d7211a1b83d0886e96afa6b6b",
+  "message_length_bytes": 55,
+  "target_hex": "c799d8515f3907ec43324031d31ea13e9d2287d94cf0f4f741989d70463e45b0",
+  "padded_block_words": [
+    "63823741",
+    "194daa9b",
+    "b857c160",
+    "fe7a02c0",
+    "b400ea9d",
+    "2f4c7f94",
+    "a33eb223",
+    "4bd3144e",
+    "1c4e9b5d",
+    "350df3eb",
+    "f5001d72",
+    "11a1b83d",
+    "0886e96a",
+    "fa6b6b80",
+    "00000000",
+    "000001b8"
+  ],
+  "full_sha256_hex": "f28e1032dec89f8ad65b7c3985e41300c71dc655be08af50b42f81902cc15b7b",
+  "target_tail_a12_a19": [
+    "da12f9aa",
+    "da12f9aa",
+    "e45ab8e9",
+    "7cf465f3",
+    "2dceac04",
+    "06c34cbf",
+    "a3d15967",
+    "5d8ff1ea"
+  ],
+  "found_utc": "2026-10-16T21:32:34Z",
+  "target_selection": "Structured digest derived from a prescribed terminal state before the search; not an arbitrary-target demonstration."
+}

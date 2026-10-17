@@ -1,6 +1,30 @@
-# Reduced-round SHA-256 compression-function preimages
+# Reduced-round SHA-256 preimages
 
 Kameldip Singh Basra (ORCID 0009-0001-0977-4614), 2026.
+
+## Padded 20-round result — 17 October 2026
+
+The new paper reports a verified 55-byte message matching a prescribed structured
+digest under 20-round SHA-256, with the standard IV, schedule, constants,
+feed-forward and length padding.
+
+- [Read the paper (PDF)](padded_r20/paper_padded_r20.pdf)
+- [Editable LaTeX](padded_r20/paper_padded_r20.tex)
+- [Verification package and evidence](padded_r20/README.md)
+- [Citation](padded_r20/CITATION.cff)
+
+Run the complete verification from the repository root:
+
+```bash
+python3 padded_r20/verification/verify_release.py
+```
+
+The padded all-ones route is formulated but **has not been run**. Its conditional
+`2^40` padding-context estimate is not a measured total preimage cost.
+The earlier all-ones witness below is an **unpadded compression block**.
+The new package reproduces witness verification, not the full GPU search.
+
+## Earlier compression-function manuscripts
 
 Three manuscripts on preimages of the SHA-256 compression function reduced to
 19 and 20 of its 64 rounds, in the standard setting: fixed initial value,
@@ -13,7 +37,7 @@ block, no padding constraint. Nothing here affects full SHA-256.
 | `paper_r19_final.pdf` / `.tex` | The original 19-round table-based attack with random contexts and seven verified preimages. |
 | `paper_r20_barrier.pdf` / `.tex` | Companion note on the 20-round barrier for the random-context construction. Historical; not an impossibility result. |
 
-## Verify the witnesses in one second
+## Verify the earlier compression witnesses
 
 `code/verify_r19.py` is a standalone reference implementation (Python 3,
 standard library only, no shared code with any solver). The 20-round preimage

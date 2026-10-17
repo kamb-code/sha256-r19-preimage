@@ -1,0 +1,139 @@
+[
+  {
+    "author": "Sebastian Wain",
+    "rounds": 19,
+    "label": "padded test 1",
+    "target_hex": "146f48dd2a3324d46feb7ad2069e05ddb9530be67f8f823f9d1c2ed3ea4f1d19",
+    "message_hex": "a9cfb3f277e9e66e5a86ea3ff1dac69d3327b726deb9420583f150597ba70fa19cfc18400c1222c58d20911e6162081ebe084915634c3a",
+    "source": "https://github.com/srw/sha256-19step-preimages-with-padding/blob/d9c5abbc2682aa2385702024a898f7c79f7c00bf/witnesses/witnesses_19step.txt"
+  },
+  {
+    "author": "Sebastian Wain",
+    "rounds": 19,
+    "label": "padded test 2",
+    "target_hex": "4c51f9dde95fa3ec5545b46ca0f2d8968b2399f81f208e07304f4b00117c02df",
+    "message_hex": "c13089d977eea9843460eb14fff02051a5cf91b4ffedf39711c2ec81862939f8adcc0dc25fb391e5c84ed20f8ef02e4a205578ea45e9fd",
+    "source": "https://github.com/srw/sha256-19step-preimages-with-padding/blob/d9c5abbc2682aa2385702024a898f7c79f7c00bf/witnesses/witnesses_19step.txt"
+  },
+  {
+    "author": "Sebastian Wain",
+    "rounds": 19,
+    "label": "padded test 3",
+    "target_hex": "cb9ace26d0eee1034f838de327a72598832bfa4fa1644493ad4ef004a5a2dab9",
+    "message_hex": "e24cf94c817e32304c4162886506bdfa5d2766398d36171235b6e3fde064535456052c3022ef488175bbbd6b81085c86401df4e0dae715",
+    "source": "https://github.com/srw/sha256-19step-preimages-with-padding/blob/d9c5abbc2682aa2385702024a898f7c79f7c00bf/witnesses/witnesses_19step.txt"
+  },
+  {
+    "author": "Sebastian Wain",
+    "rounds": 19,
+    "label": "padded test 4",
+    "target_hex": "90b183e68a4966c5c268807fe3f49a4f4cf890f9f25b00bb1f836552496192f4",
+    "message_hex": "3b605fe04bdf7b05dbcae817e1a77d8e7e9ad63db1fe8f5d972828874695dde35bcf2deb7166e78132c9ac7ee9f72d07190b83c398a2ed",
+    "source": "https://github.com/srw/sha256-19step-preimages-with-padding/blob/d9c5abbc2682aa2385702024a898f7c79f7c00bf/witnesses/witnesses_19step.txt"
+  },
+  {
+    "author": "Sebastian Wain",
+    "rounds": 19,
+    "label": "padded test 5",
+    "target_hex": "286d96b78dc5b71f90b61e6374de3ffc82939941955e7b1c5d00fd9af345e80a",
+    "message_hex": "502eb30d876c48eaee8a13c08e4e15b5ac74689dfdf5e60cb2fd044d4bc8eaae640c92cf6236d908717a5842304f70d47fc4dddbe6d899",
+    "source": "https://github.com/srw/sha256-19step-preimages-with-padding/blob/d9c5abbc2682aa2385702024a898f7c79f7c00bf/witnesses/witnesses_19step.txt"
+  },
+  {
+    "author": "Sebastian Wain",
+    "rounds": 19,
+    "label": "padded test 6",
+    "target_hex": "efa23b479b7518cb4117dfdf041a694b46441fa5796e6d4b8a7443a724a0d8f1",
+    "message_hex": "782f45dda1ab000aace616e7c3076339fe8938a6f0a35fc6ff0e2739c3194c08494e5b1a4af0b10e69d87a02352ddd71034511dba58e90",
+    "source": "https://github.com/srw/sha256-19step-preimages-with-padding/blob/d9c5abbc2682aa2385702024a898f7c79f7c00bf/witnesses/witnesses_19step.txt"
+  },
+  {
+    "author": "Sebastian Wain",
+    "rounds": 19,
+    "label": "padded test 7",
+    "target_hex": "2f507443a19f9f39300d5905b02aa1cd77c744f0424c684f75a5b2cc4a0516a8",
+    "message_hex": "fb676bdeabfc0143be3d2b4c8350083e39b4aedcdfbf2b87c10c23786a901dc14ffc2879516522cbc86235d1a7bf135373355d0cf71888",
+    "source": "https://github.com/srw/sha256-19step-preimages-with-padding/blob/d9c5abbc2682aa2385702024a898f7c79f7c00bf/witnesses/witnesses_19step.txt"
+  },
+  {
+    "author": "Sebastian Wain",
+    "rounds": 19,
+    "label": "padded test 8",
+    "target_hex": "1fad9d7e79a132660d8536e6b151a4cef494bdfdc2962e0f7bae20acd8aed5c8",
+    "message_hex": "a1edbba02a9f54cf4083f7fc27156523f3acd5f52339e453c950d9ed841486dff2264d752bea2d27440984bd612c77f69b4479b63cde7f",
+    "source": "https://github.com/srw/sha256-19step-preimages-with-padding/blob/d9c5abbc2682aa2385702024a898f7c79f7c00bf/witnesses/witnesses_19step.txt"
+  },
+  {
+    "author": "Sebastian Wain",
+    "rounds": 19,
+    "label": "padded test 9",
+    "target_hex": "849564c85e22852e6af2c6ec60bd891de79298bbc8d5106a221bca536a908d1f",
+    "message_hex": "0736a2716d8ee60644b77f1e85c91f230ed82d7f242ae673baeb3049b858b159e8d90ba74901bda34b0536a82b222f425f9533e25c727c",
+    "source": "https://github.com/srw/sha256-19step-preimages-with-padding/blob/d9c5abbc2682aa2385702024a898f7c79f7c00bf/witnesses/witnesses_19step.txt"
+  },
+  {
+    "author": "Sebastian Wain",
+    "rounds": 19,
+    "label": "padded test 10",
+    "target_hex": "91e12eb79793591d6773d8c3b5090f07a69742c7031bbd514273c5de1c241c87",
+    "message_hex": "a80e3ae94cb0c81f3e591bfd4453eba61c2148ab7d32f1e524c220134d9be8e12ee2beebfa02fb6bc994272b720842d68709f1e0023b79",
+    "source": "https://github.com/srw/sha256-19step-preimages-with-padding/blob/d9c5abbc2682aa2385702024a898f7c79f7c00bf/witnesses/witnesses_19step.txt"
+  },
+  {
+    "author": "Sebastian Wain",
+    "rounds": 19,
+    "label": "padded test 11",
+    "target_hex": "7b66f998c1c60bdd65744e43b69190481502cee718245876fc2c535f4b7cf5a8",
+    "message_hex": "23ae3771d98d69c6925d4ca4b8059f84404eea570db3d014c022af5649565a9a19a0e610fdb9258ce144893cee5d25f260f11614b36253",
+    "source": "https://github.com/srw/sha256-19step-preimages-with-padding/blob/d9c5abbc2682aa2385702024a898f7c79f7c00bf/witnesses/witnesses_19step.txt"
+  },
+  {
+    "author": "Sebastian Wain",
+    "rounds": 20,
+    "target_hex": "deadbeefcafebabe0123456789abcdeffedcba987654321013579bdf2468ace0",
+    "block_words": [
+      "4334d956",
+      "6eccece1",
+      "6727a1b2",
+      "d85811af",
+      "890c5399",
+      "79018a3b",
+      "d346b94d",
+      "5f26009b",
+      "7562d311",
+      "0bfd80d5",
+      "1f8c38f4",
+      "16d8315d",
+      "e0353aa2",
+      "6adf4bd2",
+      "a2bf14a2",
+      "801ae8f7"
+    ],
+    "source": "https://github.com/srw/sha256-20step-preimages-with-no-padding/blob/0a9cb0c7836714437e8453d6c4631bf49a8f2761/witnesses/witnesses_20step.txt"
+  },
+  {
+    "author": "Kameldip Singh Basra",
+    "rounds": 20,
+    "target_hex": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "block_words": [
+      "0b0187bf",
+      "b9aea692",
+      "b66effa5",
+      "087dca3a",
+      "0caea827",
+      "1d2f9916",
+      "739a224e",
+      "a87c0eae",
+      "7f9ef4a7",
+      "b318a7de",
+      "a8848c61",
+      "a7a141a4",
+      "11ac114b",
+      "952299be",
+      "97aaa67f",
+      "c6acfe57"
+    ],
+    "source": "https://github.com/kamb-code/sha256-r19-preimage/blob/f75b87a620bdbbc40cf0c8a96bcdc9e1e05e7f73/README.md",
+    "setting": "Unrestricted compression block; not a padded all-ones witness."
+  }
+]

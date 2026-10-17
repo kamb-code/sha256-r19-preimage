@@ -1,0 +1,211 @@
+{
+  "status": "PASS",
+  "scope": "Static forward verification and record consistency only; no candidate search.",
+  "hashlib_control_messages": 17,
+  "two_forward_implementations_agree": true,
+  "message_length_bytes": 55,
+  "padded_length_bytes": 64,
+  "zero_fill_bytes_between_marker_and_length": 0,
+  "digests": {
+    "19": "0ddb3fcec22afb446a3d9f7622445b2d02f9deeabd1a2c5109e15242df46bac1",
+    "20": "c799d8515f3907ec43324031d31ea13e9d2287d94cf0f4f741989d70463e45b0",
+    "21": "0f16667f18f7a06fe0404cd9ac1341f9f42f6b39e7199de6d16f66167df590de",
+    "64": "f28e1032dec89f8ad65b7c3985e41300c71dc655be08af50b42f81902cc15b7b"
+  },
+  "schedule_residuals": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "target_tail_a12_a19": [
+    "da12f9aa",
+    "da12f9aa",
+    "e45ab8e9",
+    "7cf465f3",
+    "2dceac04",
+    "06c34cbf",
+    "a3d15967",
+    "5d8ff1ea"
+  ],
+  "state_trace_a": [
+    "5f8abf8e",
+    "5014a36f",
+    "cfcbec08",
+    "b34857fc",
+    "327853f5",
+    "327853f5",
+    "3cef771f",
+    "327853f5",
+    "327853f5",
+    "327853f5",
+    "25ed0655",
+    "b53eacdd",
+    "da12f9aa",
+    "da12f9aa",
+    "e45ab8e9",
+    "7cf465f3",
+    "2dceac04",
+    "06c34cbf",
+    "a3d15967",
+    "5d8ff1ea"
+  ],
+  "state_trace_e": [
+    "fc4a19e3",
+    "d0097d92",
+    "9338dde0",
+    "41c2e8f3",
+    "0c51aea7",
+    "9ccc4b72",
+    "a7cabb3c",
+    "e92a11ad",
+    "ffffffff",
+    "ffffffff",
+    "fdebd589",
+    "e5737273",
+    "e5fdd2b4",
+    "2717db2d",
+    "ffffffff",
+    "8365eda8",
+    "ea5d7897",
+    "2214c3c5",
+    "b1eb8c6b",
+    "4c14355a"
+  ],
+  "context_sweeps": 6947,
+  "distinct_context_pairs": 6944,
+  "repeated_context_sweeps": 3,
+  "comparison_vector_results": [
+    {
+      "author": "Sebastian Wain",
+      "rounds": 19,
+      "padded": true,
+      "checks": {
+        "18": false,
+        "19": true,
+        "20": false
+      }
+    },
+    {
+      "author": "Sebastian Wain",
+      "rounds": 19,
+      "padded": true,
+      "checks": {
+        "18": false,
+        "19": true,
+        "20": false
+      }
+    },
+    {
+      "author": "Sebastian Wain",
+      "rounds": 19,
+      "padded": true,
+      "checks": {
+        "18": false,
+        "19": true,
+        "20": false
+      }
+    },
+    {
+      "author": "Sebastian Wain",
+      "rounds": 19,
+      "padded": true,
+      "checks": {
+        "18": false,
+        "19": true,
+        "20": false
+      }
+    },
+    {
+      "author": "Sebastian Wain",
+      "rounds": 19,
+      "padded": true,
+      "checks": {
+        "18": false,
+        "19": true,
+        "20": false
+      }
+    },
+    {
+      "author": "Sebastian Wain",
+      "rounds": 19,
+      "padded": true,
+      "checks": {
+        "18": false,
+        "19": true,
+        "20": false
+      }
+    },
+    {
+      "author": "Sebastian Wain",
+      "rounds": 19,
+      "padded": true,
+      "checks": {
+        "18": false,
+        "19": true,
+        "20": false
+      }
+    },
+    {
+      "author": "Sebastian Wain",
+      "rounds": 19,
+      "padded": true,
+      "checks": {
+        "18": false,
+        "19": true,
+        "20": false
+      }
+    },
+    {
+      "author": "Sebastian Wain",
+      "rounds": 19,
+      "padded": true,
+      "checks": {
+        "18": false,
+        "19": true,
+        "20": false
+      }
+    },
+    {
+      "author": "Sebastian Wain",
+      "rounds": 19,
+      "padded": true,
+      "checks": {
+        "18": false,
+        "19": true,
+        "20": false
+      }
+    },
+    {
+      "author": "Sebastian Wain",
+      "rounds": 19,
+      "padded": true,
+      "checks": {
+        "18": false,
+        "19": true,
+        "20": false
+      }
+    },
+    {
+      "author": "Sebastian Wain",
+      "rounds": 20,
+      "padded": false,
+      "checks": {
+        "19": false,
+        "20": true,
+        "21": false
+      }
+    },
+    {
+      "author": "Kameldip Singh Basra",
+      "rounds": 20,
+      "padded": false,
+      "checks": {
+        "19": false,
+        "20": true,
+        "21": false
+      }
+    }
+  ],
+  "all_ones_padded_result": "Not executed; no witness supplied or claimed."
+}
