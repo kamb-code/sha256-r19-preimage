@@ -1,13 +1,13 @@
 cff-version: 1.2.0
 message: "Please cite the manuscript most relevant to the result you use."
 type: software
-title: "Reproducibility Package for Reduced-Round SHA-256 Compression Preimages"
+title: "Reproducibility Package for Reduced-Round SHA-256 Preimages"
 authors:
   - family-names: Basra
     given-names: Kameldip Singh
     orcid: "https://orcid.org/0009-0001-0977-4614"
-version: "2026-09-10"
-date-released: 2026-09-10
+version: "2026-10-17"
+date-released: 2026-10-17
 repository-code: "https://github.com/kamb-code/sha256-r19-preimage"
 url: "https://github.com/kamb-code/sha256-r19-preimage"
 license: MIT
@@ -17,6 +17,9 @@ keywords:
   - preimage analysis
   - message schedule
   - table lookup
+  - standard padding
+  - structured targets
+  - reproducible verification
 preferred-citation:
   type: unpublished
   title: "Context Shaping for 19- and 20-Round SHA-256 Compression Preimages"
@@ -28,6 +31,15 @@ preferred-citation:
   url: "https://github.com/kamb-code/sha256-r19-preimage/blob/main/paper_submask_r20.pdf"
   notes: "Revised manuscript; no ePrint report number or DOI has been assigned."
 references:
+  - type: unpublished
+    title: "A Computed Preimage of 20-Round SHA-256 with Standard Padding for a Prescribed Structured Digest"
+    authors:
+      - family-names: Basra
+        given-names: Kameldip Singh
+        orcid: "https://orcid.org/0009-0001-0977-4614"
+    year: 2026
+    url: "https://github.com/kamb-code/sha256-r19-preimage/blob/main/padded_r20/paper_padded_r20.pdf"
+    notes: "Computed 55-byte padded message for a prescribed structured digest; the padded all-ones extension is formulated but unexecuted."
   - type: unpublished
     title: "A Practical Preimage Attack on the 19-Round SHA-256 Compression Function via a Global sigma0-Difference Table"
     authors:

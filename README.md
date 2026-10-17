@@ -2,6 +2,10 @@
 
 Kameldip Singh Basra (ORCID 0009-0001-0977-4614), 2026.
 
+Papers, explicit witnesses and reproducible verification for 19- and 20-round
+SHA-256 compression preimages, including a 20-round preimage with standard
+padding for a prescribed structured digest. Full 64-round SHA-256 is unaffected.
+
 ## Padded 20-round result — 17 October 2026
 
 The new paper reports a verified 55-byte message matching a prescribed structured
@@ -55,4 +59,10 @@ seven 19-round witnesses are in `verified_preimages.txt`.
 
 ## Citation
 
-See `CITATION.cff`. The manuscripts have no ePrint report number or DOI.
+Cite the manuscript relevant to the result you use:
+
+- **Padded 20-round result:** [paper-specific citation](padded_r20/CITATION.cff).
+- **Context shaping and earlier compression results:** [repository citation](CITATION.cff).
+
+The main citation file lists all four manuscripts. No ePrint report number or DOI
+is assigned to these manuscripts.
